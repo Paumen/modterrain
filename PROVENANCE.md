@@ -98,6 +98,22 @@ would break the kit's modularity.
 The catalog therefore shows a *Position relative to origin* line for every
 model, with the bounding box in grid cells.
 
+## The assembly placements
+
+`assemblies/placements.json` did not come from the zip. It was read out of
+the source pack's own prefabs — the same **Modular Terrain 2.0** project
+that settles the material colors in §1 — as one flat list per prefab: piece
+name, position, rotation quaternion, scale. 212 prefabs, no geometry of
+their own, just arrangements of the pieces in `models/`.
+
+Two things about that data are Unity's rather than glTF's, and
+`tools/assemble.mjs` converts both: the coordinate system is left-handed
+(mirrored on X relative to the converted `.glb` files), and a position of
+`1.0` means one tile, not one unit — see *Scale* below.
+
+Forty of the 212 name pieces this repo doesn't carry, because those models
+were removed here, not because anything is missing from the source pack.
+
 ## Scale
 
 One grid cell is **100 units** in the source files. That's measured, not

@@ -45,7 +45,10 @@ catalog/catalog.json        generated; everything the page knows
 models/*.glb                 the 287 models, as delivered except for §2 in PROVENANCE.md
 textures/*.png               source textures for the models that were missing theirs
 vendor/model-viewer.min.js   Google's <model-viewer> (BSD-3-Clause)
+assemblies/placements.json  the pack's own prefabs as piece + transform lists
+assemblies/*.glb             assemblies built from those lists
 tools/build-catalog.mjs     builds catalog.json from models/
+tools/assemble.mjs          builds an assembly GLB out of pieces in models/
 tools/taxonomy.mjs          the classification: families, shapes, layers, sizes
 tools/glb.mjs                reading, writing, and measuring GLB files
 tools/embed-textures.mjs    patches the models in textures/ back into models/
@@ -53,6 +56,33 @@ tools/png.mjs                just enough PNG decoding to average a texture's col
 tools/textures.mjs          which material gets which texture file
 PROVENANCE.md                where the pack comes from and what's wrong with it
 ```
+
+## Assemblies
+
+The pack doesn't only ship pieces; it ships arrangements of them — a rope
+bridge over a river, a crack in a grass field, a cliff run. Those live in
+`assemblies/placements.json` as a piece name and a transform per part, 212
+of them, and `tools/assemble.mjs` turns one back into a single `.glb`:
+
+```sh
+node tools/assemble.mjs Path_Bridge_River_Wide Crack_Large
+node tools/assemble.mjs --all --only-complete --out assemblies
+```
+
+Geometry is merged once per distinct piece and instanced from there, so the
+nine wall segments of a cliff cost one copy of the wall and nine nodes.
+
+172 of the 212 build with every piece present. The remaining 40 reach for
+models this repo doesn't carry — tiered retaining walls, fences, cave props,
+all removed earlier — and build without them rather than failing; the tool
+lists what it skipped. The two checked in under `assemblies/` are complete.
+
+**Coordinates.** The placements are Unity's: left-handed, one tile = 1.0.
+The `.glb` files went through an FBX conversion that mirrored X and scaled a
+tile to 100 units, so each placement is mirrored to match — position flips
+its x, rotation flips its y and z. `--no-mirror` skips that step, which is
+worth doing once on any assembly to see what it buys: the same pieces, laid
+out inside out, overlapping by whole tiles.
 
 ## Rebuilding the catalog
 
