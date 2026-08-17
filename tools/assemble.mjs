@@ -91,19 +91,50 @@ function addBin(out, bin) {
 }
 
 /**
- * Rewrites the texture references inside a material. A glTF textureInfo is
- * any object carrying an `index` into `textures` — `baseColorTexture`,
- * `normalTexture`, and whatever an extension adds — so the walk keys off the
- * shape rather than a list of field names, and leaves every other `index`
- * (KHR_texture_transform's `texCoord`, say) alone.
+ * Rewrites the texture references inside a material. A textureInfo is
+ * `baseColorTexture`, `normalTexture`, and whatever an extension adds, so the
+ * walk keys off the shape rather than a list of field names: an object whose
+ * keys are a textureInfo's keys and nothing else. Anything else carrying an
+ * `index` — a future extension indexing into some other array — doesn't match
+ * and is copied through untouched.
  */
+const TEXTURE_INFO_KEYS = new Set(['index', 'texCoord', 'scale', 'strength', 'extensions', 'extras']);
+
+const isTextureInfo = (value) => typeof value.index === 'number'
+  && Object.keys(value).every((key) => TEXTURE_INFO_KEYS.has(key));
+
 function remapTextures(value, textureMap) {
   if (Array.isArray(value)) return value.map((item) => remapTextures(item, textureMap));
   if (!value || typeof value !== 'object') return value;
 
   const out = Object.fromEntries(Object.entries(value).map(([key, child]) => [key, remapTextures(child, textureMap)]));
-  if (typeof out.index === 'number' && textureMap.has(out.index)) out.index = textureMap.get(out.index);
+  if (isTextureInfo(out) && textureMap.has(out.index)) out.index = textureMap.get(out.index);
   return out;
+}
+
+/**
+ * What this merge carries: static geometry, its materials, and its textures.
+ * That's the whole pack — 287 files with no animation, no skinning, no morph
+ * targets, no sparse accessors, no cameras, and no node-level extensions.
+ *
+ * A file with any of that would merge into something quietly wrong: a morph
+ * target still pointing at the piece's own accessor numbering, a skin at a
+ * joint that moved. So the ones that would go unnoticed are a hard error
+ * instead, the same call `glb.mjs` makes about sparse accessors. Whoever
+ * feeds this a richer file gets told which feature to add support for,
+ * rather than a model that looks subtly wrong.
+ */
+function checkSupported(json) {
+  const unsupported = [
+    [(json.accessors ?? []).some((accessor) => accessor.sparse), 'sparse accessors'],
+    [(json.meshes ?? []).some((mesh) => (mesh.primitives ?? []).some((prim) => prim.targets)), 'morph targets'],
+    [json.skins?.length, 'skins'],
+    [json.animations?.length, 'animations'],
+    [json.cameras?.length, 'cameras'],
+    [(json.nodes ?? []).some((node) => node.extensions), 'node extensions'],
+  ];
+  const found = unsupported.filter(([present]) => present).map(([, name]) => name);
+  if (found.length) throw new Error(`assemble.mjs merges static geometry only; this piece uses ${found.join(', ')}`);
 }
 
 /**
@@ -114,6 +145,7 @@ function remapTextures(value, textureMap) {
  */
 function addPiece(out, glb) {
   const { json, bin } = glb;
+  checkSupported(json);
   const binOffset = bin ? addBin(out, bin) : 0;
 
   for (const name of json.extensionsUsed ?? []) out.extensionsUsed.add(name);
@@ -191,7 +223,17 @@ function addPiece(out, glb) {
   return { nodes, roots, meshMap };
 }
 
-/** Copies one node and everything under it into `out`, returning the new index. */
+/**
+ * Copies one node and everything under it into `out`, returning the new index.
+ *
+ * Transform, mesh and children come across; `extras` doesn't. Every node in
+ * this pack carries the same four fields the FBX exporter attaches
+ * (`UserProperties`, `IsNull`, `DefaultAttributeIndex`, `InheritType`), none
+ * of which mean anything outside that exporter — and an assembly instantiates
+ * up to 35 nodes, so carrying them would be 35 copies of exporter bookkeeping.
+ * Anything with actual behaviour attached to a node is refused outright by
+ * `checkSupported` rather than silently dropped here.
+ */
 function cloneNode(out, piece, index) {
   const node = piece.nodes[index];
   const copy = {};
