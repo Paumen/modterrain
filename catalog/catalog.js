@@ -71,37 +71,6 @@ function span(className, text = '') {
   return element;
 }
 
-/**
- * Restores this pack's material colors to what the author set.
- *
- * The FBX export wrote sRGB colors from the source straight into
- * `baseColorFactor`, and the glTF spec calls that field linear. A viewer
- * that follows the spec — this one does — applies gamma correction on top of
- * that, so the beige cliff color #bfb9ae shows up as #e0ddd7 and the grass
- * green #63ba2e as a pastel #a7de76. With two-thirds of the pack's pieces
- * made of that one beige material, that turns the catalog into a grid of
- * white blocks.
- *
- * This is the mirror of that mistake, applied only at display time: the
- * .glb files on disk and behind the download button stay untouched. Anyone
- * who wants to see the pack uncorrected can drop the calls in
- * `attachViewer` and `showDetail`.
- */
-const srgbToLinear = (v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
-
-function restoreColorSpace(viewer) {
-  for (const material of viewer.model?.materials ?? []) {
-    const factor = material.pbrMetallicRoughness?.baseColorFactor;
-    if (!factor) continue;
-    material.pbrMetallicRoughness.setBaseColorFactor([
-      srgbToLinear(factor[0]),
-      srgbToLinear(factor[1]),
-      srgbToLinear(factor[2]),
-      factor[3],
-    ]);
-  }
-}
-
 const observer = new IntersectionObserver(
   (entries) => {
     for (const { target, isIntersecting } of entries) {
@@ -122,14 +91,9 @@ function attachViewer(box) {
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.6');
   viewer.setAttribute('shadow-softness', '0.9');
-  // The pack is flat-shaded with no textures; at the neutral environment's
-  // default exposure the light cliffs blow out to white. Pulling it back
-  // gives the beige its color back and the faces their contrast.
-  viewer.setAttribute('exposure', '0.85');
   viewer.setAttribute('interaction-prompt', 'none');
   viewer.setAttribute('disable-zoom', '');
   viewer.setAttribute('loading', 'eager');
-  viewer.addEventListener('load', () => restoreColorSpace(viewer), { once: true });
   box.replaceChildren(viewer);
 }
 
@@ -362,13 +326,11 @@ function showDetail(model) {
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.7');
   viewer.setAttribute('shadow-softness', '0.9');
-  viewer.setAttribute('exposure', '0.85');
   // Nothing in this pack is animated, so the auto-rotate is the only way to
   // see the back without dragging — and on a modular piece the back is
   // exactly the side that meets the neighboring tile.
   viewer.setAttribute('auto-rotate', '');
   viewer.setAttribute('rotation-per-second', '18deg');
-  viewer.addEventListener('load', () => restoreColorSpace(viewer), { once: true });
 
   detailViewer.replaceChildren(viewer);
 

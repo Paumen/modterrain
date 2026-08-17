@@ -8,7 +8,7 @@
  * matrix.
  */
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 /* -- container --------------------------------------------------------
  * GLB: a 12-byte header, then chunks of [length, type, data]. The first
@@ -34,6 +34,62 @@ export function readGlb(path) {
   }
 
   return { json, bin, bytes: buf.length };
+}
+
+/**
+ * Writes `json` + `bin` back out as a GLB. The inverse of `readGlb`: same
+ * 12-byte header, same JSON-chunk-then-BIN-chunk layout, each padded to a
+ * 4-byte boundary as the spec requires (JSON with ASCII spaces, BIN with
+ * zero bytes).
+ */
+export function writeGlb(path, json, bin) {
+  const pad = (n) => (4 - (n % 4)) % 4;
+
+  const jsonBuf = Buffer.from(JSON.stringify(json), 'utf8');
+  const jsonChunk = Buffer.concat([jsonBuf, Buffer.alloc(pad(jsonBuf.length), 0x20)]);
+  const binChunk = Buffer.concat([bin, Buffer.alloc(pad(bin.length), 0)]);
+
+  const header = Buffer.alloc(12);
+  header.writeUInt32LE(0x46546c67, 0); // magic: 'glTF'
+  header.writeUInt32LE(2, 4); // version
+  header.writeUInt32LE(12 + 8 + jsonChunk.length + 8 + binChunk.length, 8);
+
+  const jsonChunkHeader = Buffer.alloc(8);
+  jsonChunkHeader.writeUInt32LE(jsonChunk.length, 0);
+  jsonChunkHeader.writeUInt32LE(0x4e4f534a, 4); // 'JSON'
+
+  const binChunkHeader = Buffer.alloc(8);
+  binChunkHeader.writeUInt32LE(binChunk.length, 0);
+  binChunkHeader.writeUInt32LE(0x004e4942, 4); // 'BIN\0'
+
+  writeFileSync(path, Buffer.concat([header, jsonChunkHeader, jsonChunk, binChunkHeader, binChunk]));
+}
+
+/**
+ * Embeds a PNG's bytes into a GLB in place of `images[imageIndex]`'s current
+ * (broken) `uri`, appending the pixel data to the binary chunk and pointing
+ * the image at a fresh bufferView instead. Returns the updated `{ json, bin }`
+ * — `glb` itself is left untouched, matching `readAccessor`'s no-mutation
+ * convention.
+ *
+ * Alignment matters here in a way it doesn't for `readGlb`: a bufferView's
+ * `byteOffset` must land on a 4-byte boundary, so the bin buffer is padded
+ * before the new bytes are appended, not just at the very end the way
+ * `writeGlb` pads the whole chunk.
+ */
+export function embedImage(glb, imageIndex, pngBytes) {
+  const json = structuredClone(glb.json);
+  const pad = (4 - (glb.bin.length % 4)) % 4;
+  const bin = Buffer.concat([glb.bin, Buffer.alloc(pad), pngBytes]);
+
+  json.bufferViews.push({
+    buffer: 0,
+    byteOffset: glb.bin.length + pad,
+    byteLength: pngBytes.length,
+  });
+  json.images[imageIndex] = { mimeType: 'image/png', bufferView: json.bufferViews.length - 1 };
+
+  return { json, bin };
 }
 
 /* -- matrices -----------------------------------------------------------

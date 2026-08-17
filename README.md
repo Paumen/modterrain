@@ -38,16 +38,20 @@ Beyond that:
 ## What's in the repo
 
 ```
-index.html                 the page itself
-catalog/catalog.css        styling
-catalog/catalog.js         the catalog in the browser
-catalog/catalog.json       generated; everything the page knows
-models/*.glb                the 287 models, unchanged as delivered
-vendor/model-viewer.min.js  Google's <model-viewer> (BSD-3-Clause)
-tools/build-catalog.mjs    builds catalog.json from models/
-tools/taxonomy.mjs         the classification: families, shapes, layers, sizes
-tools/glb.mjs               reading and measuring GLB files
-PROVENANCE.md               where the pack comes from and what's wrong with it
+index.html                  the page itself
+catalog/catalog.css         styling
+catalog/catalog.js          the catalog in the browser
+catalog/catalog.json        generated; everything the page knows
+models/*.glb                 the 287 models, as delivered except for §2 in PROVENANCE.md
+textures/*.png               source textures for the models that were missing theirs
+vendor/model-viewer.min.js   Google's <model-viewer> (BSD-3-Clause)
+tools/build-catalog.mjs     builds catalog.json from models/
+tools/taxonomy.mjs          the classification: families, shapes, layers, sizes
+tools/glb.mjs                reading, writing, and measuring GLB files
+tools/embed-textures.mjs    patches the models in textures/ back into models/
+tools/png.mjs                just enough PNG decoding to average a texture's color
+tools/textures.mjs          which material gets which texture file
+PROVENANCE.md                where the pack comes from and what's wrong with it
 ```
 
 ## Rebuilding the catalog
@@ -77,10 +81,11 @@ there; then run `node tools/build-catalog.mjs` again.
 The pack arrived **with no license**, and the author is unknown. Don't
 assume these models are free to use — see [PROVENANCE.md](PROVENANCE.md).
 
-That file also covers what went sideways during the FBX conversion: the
-material colors are in the wrong color space (the catalog corrects them at
-display time; the files stay as delivered), and 67 models reference
-textures that aren't in the pack.
+That file also covers what went sideways during the FBX conversion: 47
+models referenced textures that weren't in the delivery, since fixed by
+embedding the real ones (`tools/embed-textures.mjs`); a handful still don't
+have one to embed, and PROVENANCE.md explains why that's expected rather
+than left broken.
 
 One grid cell is **100 units** in the source files; every dimension in the
 catalog is expressed in grid cells.

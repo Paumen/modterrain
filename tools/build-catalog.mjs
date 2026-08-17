@@ -19,10 +19,13 @@ import {
   determineFamily, determineShape, determineLayer, determineSize, determineSizeGroup,
   determineTraits, determineVariant, readableName,
 } from './taxonomy.mjs';
+import { TEXTURE_BY_MATERIAL } from './textures.mjs';
+import { averageColor } from './png.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const MODELS_DIR = join(ROOT, 'models');
 const CATALOG_DIR = join(ROOT, 'catalog');
+const TEXTURES_DIR = join(ROOT, 'textures');
 
 /* -- materials ------------------------------------------------------------
  * The pack has no texture atlas: every material is one flat color in
@@ -91,20 +94,43 @@ const PALETTES = [
 ];
 
 /**
- * The material color as the author set it: `baseColorFactor` times 255, with
- * no conversion.
+ * The material color as it actually renders: `baseColorFactor` converted from
+ * linear to sRGB, exactly as the glTF spec says and exactly as a
+ * spec-conforming viewer draws it.
  *
- * That's not what the glTF spec says — it calls that field linear — but it
- * is what's in the files. The FBX export wrote the source sRGB values into
- * that linear field unchanged, so `Grass` = 0.388 / 0.729 / 0.180 is the
- * familiar #63ba2e and not the pastel green you'd get reading it as linear.
- * The catalog corrects for that at display time (see `restoreColorSpace` in
- * catalog/catalog.js); this is the color those values resolve to.
+ * This was briefly "corrected" the other way — on the theory that the FBX
+ * export had written sRGB bytes into that linear field — but the source
+ * Unity project's own material files (`materials.json`, PROVENANCE.md)
+ * disprove that: `Grass` = 0.3882 / 0.7294 / 0.1804 is the exact linear value
+ * Unity stores for `Terrain/Grass.mat`, and Unity's own gamma-decode of that
+ * number is #A6DD75 — a pale green, matching what plain, unmodified gamma
+ * decoding produces here too. The saturated #63ba2e some earlier build
+ * showed was the bug, not the fix.
  */
 function toHex([r, g, b] = [1, 1, 1]) {
-  const channel = (v) =>
-    Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, '0');
+  const channel = (v) => {
+    const s = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
+    return Math.round(Math.min(1, Math.max(0, s)) * 255).toString(16).padStart(2, '0');
+  };
   return `#${channel(r)}${channel(g)}${channel(b)}`;
+}
+
+/**
+ * The swatch color for a material `tools/embed-textures.mjs` has given a
+ * real texture: `baseColorFactor` is white on those (see textures.mjs), so
+ * `toHex` would just draw a blank square. The texture's own average color —
+ * computed fresh from the file on disk, not cached from the embed step —
+ * says something a flat white swatch can't: which material is the dark wood
+ * and which is the light one.
+ */
+const averageColorCache = new Map();
+function swatchColor(source, baseColorFactor) {
+  const textureFile = TEXTURE_BY_MATERIAL[source];
+  if (!textureFile) return toHex(baseColorFactor);
+  if (!averageColorCache.has(textureFile)) {
+    averageColorCache.set(textureFile, averageColor(join(TEXTURES_DIR, textureFile)));
+  }
+  return averageColorCache.get(textureFile);
 }
 
 const slugify = (name) =>
@@ -159,7 +185,7 @@ const models = files.map((file) => {
         palette,
         name: MATERIAL_NAMES[source] ?? source,
         source,
-        hex: toHex(glb.json.materials?.[index]?.pbrMetallicRoughness?.baseColorFactor),
+        hex: swatchColor(source, glb.json.materials?.[index]?.pbrMetallicRoughness?.baseColorFactor),
         count: 0,
       });
     }
@@ -169,13 +195,13 @@ const models = files.map((file) => {
 
   const size = determineSize(id);
 
-  /* A handful of models — the wood, the rope, and the signs — still carry a
-   * reference to a .png that should have sat next to the .glb but isn't
-   * there: the FBX export baked in the absolute path from the author's
-   * machine. The viewer falls back to the flat material color, so the model
-   * still shows; only the wood grain is missing. That's a property of the
-   * pack, not a bug in the catalog, so it's surfaced instead of silently
-   * hidden. */
+  /* tools/embed-textures.mjs already fixed the materials that pointed at a
+   * real, recoverable texture. What's left here is genuinely missing: a
+   * normal map (Rope NM.png) this catalog has no use for even if it existed,
+   * and Waterfall Crest's reference to a UV-checker placeholder rather than
+   * a real texture. The viewer falls back to the flat material color, so the
+   * model still shows either way — this is surfaced rather than hidden
+   * because it's a property of the pack, not a bug in the catalog. */
   const missingTextures = (glb.json.images ?? [])
     .map((image) => image.uri)
     .filter((uri) => uri && !uri.startsWith('data:'))
