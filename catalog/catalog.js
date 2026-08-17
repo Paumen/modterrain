@@ -10,29 +10,11 @@
  * keyed by file path.
  */
 
-/**
- * Triangles above which a model is heavy in absolute terms, regardless of
- * size. This pack's largest sand slopes cover 12 × 12 grid cells; they're
- * allowed more triangles than a 1 × 1 post, and the per-unit budget below
- * handles that. This limit catches the other case: a piece that in absolute
- * terms no longer fits a scene with a hundred of them.
- */
-const HEAVY_FROM = 500;
-
-/**
- * Triangles per 1×1×1 grid cell above which a model is out of step with the
- * rest of the pack. The limit itself lives in tools/glb.mjs and travels here
- * via catalog.json; the number here is only the fallback for a catalog built
- * before that field existed.
- */
-let budgetPerUnit = 250;
-
 const number = new Intl.NumberFormat('en-US');
 const unit = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
 const panel = document.querySelector('#panel');
 const tabBar = document.querySelector('#tab-bar');
-const jumpList = document.querySelector('#jump-list');
 const emptyMessage = document.querySelector('#empty');
 const summary = document.querySelector('#summary');
 const detail = document.querySelector('#detail');
@@ -127,13 +109,6 @@ function detachViewer(box) {
 /* ---------- cards ---------- */
 
 function makeCard(model, view, section) {
-  const density = Number.isFinite(model.trianglesPerUnit) ? model.trianglesPerUnit : null;
-  const overBudget = density !== null && density > budgetPerUnit;
-  // One red label for two reasons: a lot of triangles, or a lot of triangles
-  // packed into little space. What exactly is going on shows in the tooltip
-  // and the detail panel; on the card it's enough that it stands out.
-  const heavy = model.triangles >= HEAVY_FROM || overBudget;
-
   const card = document.createElement('button');
   card.type = 'button';
   card.className = 'card';
@@ -147,13 +122,8 @@ function makeCard(model, view, section) {
   const text = document.createElement('div');
   text.className = 'card-text';
   const meta = span('card-meta');
-  const tri = span(`card-tri${heavy ? ' heavy' : ''}`, `${number.format(model.triangles)} tri`);
-  if (density !== null) {
-    tri.title = `${number.format(density)} triangles per unit${overBudget ? ` — above the budget of ${number.format(budgetPerUnit)}` : ''}`;
-  }
   meta.append(
     span('card-brand', section.brand ?? ''),
-    tri,
     span('card-bytes', readableBytes(model.bytes)),
   );
   text.append(span('card-name', model.name));
@@ -227,17 +197,6 @@ function makeSection(view, section, facet) {
   return { element, grid, countEl };
 }
 
-function makeJumpItem(section, name, count, color) {
-  const link = document.createElement('a');
-  link.href = `#${section.id}`;
-  link.dataset.view = section.dataset.view;
-  const dot = span('dot');
-  if (color) dot.style.background = color;
-  link.append(dot, document.createTextNode(`${name} `), span('badge', String(count)));
-  jumpList.append(link);
-  return link;
-}
-
 /* ---------- detail view ---------- */
 
 const detailViewer = document.querySelector('#detail-viewer');
@@ -282,15 +241,12 @@ function showDetail(model) {
     ['Grid footprint', model.size ? `${model.size} cells` : '—'],
     ['Dimensions (w × d × h)', readableDimensions(model.dwh)],
     ['Position relative to origin', placement(model.min, model.max)],
-    ['Triangles', `${number.format(model.triangles)}${model.triangles >= HEAVY_FROM ? ' (heavy)' : ''}`],
-    // The budget: every axis counts for at least one unit, so a model that
-    // stays within one grid cell isn't penalized for being small
-    // (tools/glb.mjs).
+    ['Triangles', number.format(model.triangles)],
+    // Every axis counts for at least one unit, so a model that stays within
+    // one grid cell isn't penalized for being small (tools/glb.mjs).
     [
       'Triangles per unit',
-      !Number.isFinite(model.trianglesPerUnit)
-        ? '—'
-        : `${number.format(model.trianglesPerUnit)}${model.trianglesPerUnit > budgetPerUnit ? ` (above budget of ${number.format(budgetPerUnit)})` : ''}`,
+      Number.isFinite(model.trianglesPerUnit) ? number.format(model.trianglesPerUnit) : '—',
     ],
     ['Draw calls', model.calls === undefined ? '—' : number.format(model.calls)],
     [`Materials (${model.materials.length})`, materialList],
@@ -548,9 +504,7 @@ function filter() {
     const count = section.cards.filter((c) => !c.element.hidden).length;
 
     section.element.hidden = !inView || count === 0;
-    section.jumpItem.hidden = section.element.hidden;
     section.countEl.textContent = `${count} model${count === 1 ? '' : 's'}`;
-    section.jumpItem.querySelector('.badge').textContent = count;
   }
 
   emptyMessage.hidden = visible > 0;
@@ -563,8 +517,6 @@ async function start() {
   const response = await fetch(version ? `catalog/catalog.json?v=${version}` : 'catalog/catalog.json');
   if (!response.ok) throw new Error(`catalog/catalog.json not found (${response.status})`);
   const data = await response.json();
-
-  if (Number.isFinite(data.budgetPerUnit)) budgetPerUnit = data.budgetPerUnit;
 
   /* A model carries its family, shape, and layer only as an id; `facets`
    * says what those ids mean. Resolved here once so the detail view and
@@ -617,7 +569,6 @@ async function start() {
         element: parts.element,
         cards: own,
         countEl: parts.countEl,
-        jumpItem: makeJumpItem(parts.element, section.name, section.models.length, section.color),
       });
     }
   }
