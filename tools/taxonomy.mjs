@@ -26,13 +26,18 @@ export const FAMILIES = [
   { id: 'basic', name: 'Cliffs', color: '#9a8f80', test: (n) => n.startsWith('Basic_') },
   { id: 'wall', name: 'Walls', color: '#6f7b8c', test: (n) => n.startsWith('Wall_') },
   { id: 'cracked', name: 'Cracked Cliffs', color: '#a8705a', test: (n) => n.startsWith('Cracked_') },
-  { id: 'retaining-wall', name: 'Retaining Walls', color: '#b98c5a', test: (n) => n.startsWith('Tiered_Retaining_Wall_') },
   { id: 'grass-tier', name: 'Grass Steps', color: '#5f9e4a', test: (n) => n.startsWith('Tiered_Grass_') },
-  { id: 'walkway', name: 'Stairs & Walkways', color: '#c9a227', test: (n) => n.startsWith('Tiered_Walkway_') },
-  { id: 'path-terrain', name: 'Terrain Paths', color: '#d98f4f', test: (n) => n.startsWith('Path_Terrain_') },
-  { id: 'path-fence', name: 'Path Fences', color: '#8e6a4a', test: (n) => n.startsWith('Path_Fence_') },
-  { id: 'path-edging', name: 'Edging Stones', color: '#a3a3a3', test: (n) => n.startsWith('Path_Edging_Stones_') },
-  { id: 'path-bridge', name: 'Bridges & Ends', color: '#8a5a2f', test: (n) => n.startsWith('Path_Bridge_') || n.startsWith('Path_End_') },
+  // `Tiered_Walkway_` used to be its own family, but removing the actual
+  // stairs (see the repo history) left a single orphan behind: a dirt/grass
+  // path-transition piece with no steps of its own. It reads better folded
+  // in with the paths it transitions into than standing alone as a family
+  // of one.
+  { id: 'path-terrain', name: 'Terrain Paths', color: '#d98f4f', test: (n) => n.startsWith('Path_Terrain_') || n.startsWith('Tiered_Walkway_') },
+  // `Prop_Bridge_*` is folded in here too, for the same reason: the rest of
+  // Props was removed, leaving six bridge pieces that belong with the
+  // Path_Bridge_/Path_End_ pieces they're built to match, not alone under a
+  // "Props" heading that otherwise has nothing left in it.
+  { id: 'path-bridge', name: 'Bridges & Ends', color: '#8a5a2f', test: (n) => n.startsWith('Path_Bridge_') || n.startsWith('Path_End_') || n.startsWith('Prop_Bridge_') },
   { id: 'grass-carpet', name: 'Grass Carpet', color: '#79c04a', test: (n) => n.startsWith('Grass_Carpet_') || n.startsWith('Grass_Flat_') },
   { id: 'grass-hill', name: 'Grass Hills', color: '#3f8f5f', test: (n) => n.startsWith('Grass_Hill_') },
   { id: 'sand', name: 'Sand', color: '#e0c27a', test: (n) => n.startsWith('Terrain_Sand_') },
@@ -40,8 +45,17 @@ export const FAMILIES = [
   { id: 'water', name: 'Water & Waterfalls', color: '#2fc7e8', test: (n) => n.startsWith('Water_') || n.startsWith('Waterfall_') },
   { id: 'iceberg', name: 'Icebergs', color: '#8fc7ff', test: (n) => n.startsWith('Iceberg_') },
   { id: 'docks', name: 'Docks', color: '#c08447', test: (n) => n.startsWith('Docks_') },
-  { id: 'cave-wall', name: 'Cave Walls', color: '#7a6a86', test: (n) => n.startsWith('Cave_') },
-  { id: 'cave-flat', name: 'Floor & Ceiling', color: '#6b6076', test: (n) => n.startsWith('Floor_') || n.startsWith('Ceiling_') },
+  // Cave walls and cave floor/ceiling used to be two families; on their own
+  // neither reaches ten pieces. They're the same room, so one "Cave" family
+  // instead of two thin ones.
+  { id: 'cave', name: 'Cave', color: '#7a6a86', test: (n) => n.startsWith('Cave_') || n.startsWith('Floor_') || n.startsWith('Ceiling_') },
+  // Kept as the structural fallback for anything that matches no other rule
+  // above (see determineFamily) even though nothing currently lands here:
+  // the only Prop_* pieces left are the bridge props, claimed by
+  // `path-bridge` earlier in this list. Path Fences, Edging Stones, and
+  // Retaining Walls were removed outright rather than folded in — every one
+  // of their models was deleted (see the repo history), so there was
+  // nothing left to move.
   { id: 'props', name: 'Props', color: '#b76fa8', test: (n) => n.startsWith('Prop_') },
 ];
 
