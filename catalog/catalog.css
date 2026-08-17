@@ -1,0 +1,845 @@
+/* Modulair terrein — 3D-catalogus.
+ *
+ * Opgezet naar het voorbeeld van de Taaleiland-catalogus
+ * (github.com/Paumen/Taalei, kits/catalog.css); de kleuren volgen deze pack:
+ * kliffenbeige papier, mosgroen accent.
+ */
+
+:root {
+  --papier: #f7f4ee;
+  --papier-diep: #ece6db;
+  --kaart: #ffffff;
+  --inkt: #2b2a26;
+  --inkt-zacht: #78746a;
+  --lijn: #ded6c8;
+  --accent: #4f7a3a;
+  --accent-zacht: #cfe0b8;
+  --zwaar: #d1553c;
+  --radius: 12px;
+  --schaduw: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --papier: #1a1a17;
+    --papier-diep: #141412;
+    --kaart: #242320;
+    --inkt: #e9e5db;
+    --inkt-zacht: #9a958a;
+    --lijn: #383530;
+    --accent: #8fc06a;
+    --accent-zacht: #35452a;
+    --schaduw: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--inkt);
+  font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); }
+
+/* ---------- kop ---------- */
+
+.kop {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 16px clamp(16px, 4vw, 40px) 14px;
+  background: color-mix(in srgb, var(--papier) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--lijn);
+}
+
+.kop h1 {
+  margin: 0;
+  font-size: 19px;
+  letter-spacing: -.01em;
+}
+
+.kop-sub {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+.kop-bediening {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Zes tabbladen passen op een telefoon niet naast elkaar; liever schuiven dan
+   afkappen, want het laatste tabblad is niet het minst belangrijke. */
+.schakelaar {
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  max-width: 100%;
+  overflow-x: auto;
+  background: var(--papier-diep);
+  border: 1px solid var(--lijn);
+  border-radius: 999px;
+  scrollbar-width: none;
+}
+
+.schakelaar::-webkit-scrollbar { display: none; }
+
+.schakelaar button {
+  flex: none;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--inkt-zacht);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.schakelaar button[aria-selected="true"] {
+  background: var(--kaart);
+  color: var(--inkt);
+  box-shadow: var(--schaduw);
+  font-weight: 600;
+}
+
+.zoek { position: relative; display: flex; align-items: center; }
+
+.zoek input {
+  width: min(320px, 60vw);
+  padding: 8px 74px 8px 12px;
+  border: 1px solid var(--lijn);
+  border-radius: 999px;
+  background: var(--kaart);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+}
+
+.zoek input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.zoek-telling {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  color: var(--inkt-zacht);
+  pointer-events: none;
+}
+
+/* ---------- sectienavigatie ---------- */
+
+.springlijst {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 10px clamp(16px, 4vw, 40px);
+  border-bottom: 1px solid var(--lijn);
+  background: var(--papier-diep);
+  scrollbar-width: thin;
+}
+
+.springlijst a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 4px 11px;
+  border: 1px solid var(--lijn);
+  border-radius: 999px;
+  background: var(--kaart);
+  color: var(--inkt);
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.springlijst a:hover { border-color: var(--accent); }
+.springlijst a[hidden] { display: none; }
+
+.springlijst .stip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.springlijst .telling { color: var(--inkt-zacht); }
+
+/* ---------- materiaalfilter ---------- */
+
+.kleurbalk {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px clamp(16px, 4vw, 40px);
+  border-bottom: 1px solid var(--lijn);
+  background: var(--papier);
+}
+
+.kleurbalk-label {
+  flex: none;
+  font-size: 12px;
+  color: var(--inkt-zacht);
+}
+
+.kleurbalk-stalen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 18px;
+  min-width: 0;
+}
+
+/* Eén groep per soort kleur; de scheiding tussen de groepen is de boodschap:
+   links waar een stuk van gemaakt is, rechts welke vlakken de pack verbergt. */
+.kleurgroep {
+  display: flex;
+  /* Wikkelt de groep over meer regels, dan hoort het label bovenaan te staan en
+     niet halverwege de stapel te zweven. */
+  align-items: flex-start;
+  gap: 7px;
+  /* Niet meekrimpen: in de smalle, schuivende balk op een telefoon zou de
+     tweede groep anders tot een streepje worden samengeknepen. */
+  flex: none;
+}
+
+/* `display: flex` wint van het [hidden]-attribuut in de UA-stylesheet. */
+.kleurgroep[hidden] { display: none; }
+
+.kleurgroep + .kleurgroep {
+  padding-left: 18px;
+  border-left: 1px solid var(--lijn);
+}
+
+.kleurgroep-label {
+  flex: none;
+  padding-top: 7px;
+  font-size: 11px;
+  letter-spacing: .02em;
+  color: var(--inkt-zacht);
+}
+
+.kleurgroep-stalen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+
+.staal {
+  position: relative;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, .18);
+  border-radius: 7px;
+  background: var(--staal-kleur);
+  cursor: pointer;
+}
+
+.staal:hover { transform: scale(1.08); }
+.staal:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.staal[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--papier), 0 0 0 4px var(--inkt);
+}
+
+/* Vinkje in een kleur die tegen de staalkleur afsteekt. */
+.staal[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 6px;
+  height: 11px;
+  border: solid var(--vink, #fff);
+  border-width: 0 2px 2px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+
+/* De materiaalgroep draagt zijn naam mee: vier materialen delen hetzelfde
+   cyaan (rivier, meer, waterval, watervalkruin) en drie hetzelfde beige, dus
+   een kaal blokje zegt daar niet welk filter je aanzet. */
+.staal.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  height: 26px;
+  padding: 0 11px 0 8px;
+  border-radius: 999px;
+  border-color: var(--lijn);
+  background: var(--kaart);
+  color: var(--inkt-zacht);
+  font: inherit;
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+/* `display: inline-flex` wint van het [hidden]-attribuut in de UA-stylesheet. */
+.staal[hidden] { display: none; }
+
+.staal.chip::before {
+  content: "";
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 3px;
+  background: var(--staal-kleur);
+}
+
+/* Het vinkje van het kale staal zou hier midden over de tekst vallen; de chip
+   laat zijn aanstaan-toestand aan de rand en het vet zien. */
+.staal.chip::after { content: none; }
+.staal.chip:hover { transform: none; border-color: var(--accent); }
+
+.staal.chip[aria-pressed="true"] {
+  box-shadow: none;
+  border-color: var(--inkt);
+  background: var(--papier-diep);
+  color: var(--inkt);
+  font-weight: 600;
+}
+
+.kleurbalk-wis {
+  flex: none;
+  padding: 4px 11px;
+  border: 1px solid var(--lijn);
+  border-radius: 999px;
+  background: var(--kaart);
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.kleurbalk-wis[hidden] { display: none; }
+
+@media (max-width: 560px) {
+  .kleurbalk { gap: 7px; padding: 8px clamp(16px, 4vw, 40px); }
+  .kleurbalk-label { display: none; }
+
+  /* Uitgevouwen zijn dit zeven regels chips, en dan begint het rooster pas
+     onder de vouw. Op deze breedte wordt het één rij die je opzij schuift. */
+  .kleurbalk-stalen {
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .kleurbalk-stalen::-webkit-scrollbar { display: none; }
+  .kleurgroep-stalen { flex-wrap: nowrap; }
+  .kleurgroep + .kleurgroep { padding-left: 10px; }
+  .kleurgroep-label { display: none; }
+  .staal { width: 22px; height: 22px; border-radius: 6px; }
+  .staal.chip { height: 22px; padding: 0 9px 0 7px; font-size: 11px; }
+}
+
+/* ---------- secties ---------- */
+
+/* De twee deelverzamelingen — Grot en Kust — bevatten stukken die ook in de
+   andere tabbladen staan. Dat hoort de bezoeker te weten vóór hij zich afvraagt
+   waarom hij een druipsteen twee keer tegenkomt. */
+.weergave-uitleg {
+  margin: 0;
+  padding: 12px clamp(16px, 4vw, 40px) 0;
+  max-width: 80ch;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+.weergave-uitleg[hidden] { display: none; }
+
+main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
+
+/* scroll-margin houdt de sectiekop vrij van de plakkende kop bij een deeplink. */
+.sectie { padding-top: 30px; scroll-margin-top: 92px; }
+.sectie[hidden] { display: none; }
+
+.sectie-kop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--sectie-kleur, var(--lijn));
+  margin-bottom: 18px;
+}
+
+.sectie-kop h2 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -.01em;
+}
+
+.sectie-kop .aantal {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--papier-diep);
+  border: 1px solid var(--lijn);
+  font-size: 12px;
+  color: var(--inkt-zacht);
+}
+
+.sectie-kop .uitleg {
+  flex: 1 1 320px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+/* ---------- rooster + kaarten ---------- */
+
+.rooster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 10px;
+}
+
+/* De houder draagt het selectievakje boven op de kaart; de kaart zelf blijft
+ * één knop die het detail opent. Het rooster ziet de houder als vak, dus
+ * verbergt filter() de houder en niet meer de kaart. */
+.kaart-houder { position: relative; display: flex; }
+.kaart-houder[hidden] { display: none; }
+.kaart-houder > .kaart { flex: 1; min-width: 0; }
+
+.kaart-kies {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--lijn);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--kaart) 82%, transparent);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+
+/* Uit de weg tot je hem nodig hebt — bij honderden tegels van 112px telt elke
+ * stip mee. Aangevinkt blijft hij staan, anders zie je je eigen selectie niet. */
+.kaart-houder:hover .kaart-kies,
+.kaart-kies:focus-within,
+.kaart-kies:has(:checked) { opacity: 1; }
+
+/* Zonder muis is er geen hover om hem mee op te roepen. */
+@media (hover: none) { .kaart-kies { opacity: .7; } }
+
+.kaart-kies input {
+  margin: 0;
+  width: 13px;
+  height: 13px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.kaart-houder:has(.kaart-kies :checked) > .kaart {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent), var(--schaduw);
+}
+
+.kaart {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius);
+  background: var(--kaart);
+  box-shadow: var(--schaduw);
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  transition: transform .12s ease, border-color .12s ease;
+}
+
+.kaart:hover { transform: translateY(-2px); border-color: var(--accent); }
+.kaart:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.kaart[hidden] { display: none; }
+
+.kaart-viewer {
+  position: relative;
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-zacht) 45%, transparent), transparent 68%),
+    var(--papier-diep);
+}
+
+.kaart-viewer model-viewer,
+.kaart-viewer img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* De kaart zelf is de klikbare knop; de preview mag de klik niet opvangen. */
+  pointer-events: none;
+  --poster-color: transparent;
+  --progress-bar-color: var(--accent);
+}
+
+/* Het formaat linksonder in de tegel: bij een modulaire kit is de rastermaat
+   het eerste wat je van een stuk wilt weten, en in de naam staat hij achteraan
+   waar hij bij smalle tegels wegvalt. */
+.kaart-formaat {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--kaart) 82%, transparent);
+  backdrop-filter: blur(4px);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--inkt-zacht);
+}
+
+.kaart-tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 10px 10px;
+  border-top: 1px solid var(--lijn);
+}
+
+.kaart-naam {
+  font-size: 12.5px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+  /* Drie regels reserveren, zodat de metaregel over het hele rooster uitlijnt.
+     Deze namen zijn lang: "Keermuur 45 graden buitenbocht" haalt er twee, de
+     langste drie. */
+  min-height: 3.75em;
+}
+
+.kaart-meta {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  color: var(--inkt-zacht);
+}
+
+.kaart-meta .zwaar { color: var(--zwaar); font-weight: 600; }
+.kaart-tri { flex: none; }
+
+.kaart-merk {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.kaart-merk::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--merk-kleur, var(--inkt-zacht));
+}
+
+/* Boven een sectie staat het facet al in de kop; daar is het label ruis en is
+   er ruimte voor de bestandsgrootte. In het tabblad Onderdelen is de familie
+   dus overbodig, in de andere tabbladen juist het interessante — daar mengt
+   een sectie families. */
+.sectie[data-facet="familie"] .kaart-merk { display: none; }
+.sectie:not([data-facet="familie"]) .kaart-grootte { display: none; }
+
+.leeg {
+  display: none;
+  padding: 60px 0;
+  text-align: center;
+  color: var(--inkt-zacht);
+}
+
+.leeg:not([hidden]) { display: block; }
+
+/* ---------- voet ---------- */
+
+.voet {
+  padding: 20px clamp(16px, 4vw, 40px) 40px;
+  border-top: 1px solid var(--lijn);
+  font-size: 12.5px;
+  color: var(--inkt-zacht);
+}
+
+.voet p { margin: 0; max-width: 70ch; }
+
+/* ---------- detailvenster ---------- */
+
+.detail {
+  width: min(920px, 94vw);
+  max-height: 90vh;
+  padding: 0;
+  border: 1px solid var(--lijn);
+  border-radius: 16px;
+  background: var(--kaart);
+  color: var(--inkt);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .28);
+  overflow: hidden;
+}
+
+.detail::backdrop { background: rgba(18, 18, 15, .55); backdrop-filter: blur(2px); }
+
+.detail[open] {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 1fr);
+}
+
+.detail-viewer {
+  min-height: 380px;
+  background:
+    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent-zacht) 45%, transparent), transparent 70%),
+    var(--papier-diep);
+}
+
+.detail-viewer model-viewer {
+  width: 100%;
+  height: 100%;
+  --progress-bar-color: var(--accent);
+}
+
+.detail-info {
+  padding: 22px 22px 24px;
+  border-left: 1px solid var(--lijn);
+  overflow-y: auto;
+}
+
+.detail-info h2 {
+  margin: 0;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.detail-herkomst {
+  margin: 4px 0 12px;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+/* Wat er in de naam staat maar niet in een facet past: hoe steil, hoe strak,
+   welke variant. Als chips, want het zijn er soms zes. */
+.detail-kenmerken {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+
+.detail-kenmerken:empty { display: none; }
+
+.detail-kenmerken span {
+  padding: 2px 9px;
+  border: 1px solid var(--lijn);
+  border-radius: 999px;
+  background: var(--papier-diep);
+  font-size: 11.5px;
+  color: var(--inkt-zacht);
+}
+
+.detail dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 7px 14px;
+  margin: 0 0 20px;
+  font-size: 13px;
+}
+
+.detail dt { color: var(--inkt-zacht); }
+.detail dd { margin: 0; overflow-wrap: anywhere; }
+
+/* Een materiaal is een naam plus zijn kleur; zonder het blokje ervoor moet je
+   het rijtje kleuren in de filterbalk uit je hoofd kennen. */
+.detail-materiaal {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-materiaal::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 3px;
+  background: var(--materiaal-kleur);
+}
+
+.detail-acties { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.detail-acties button,
+.detail-acties a {
+  padding: 7px 14px;
+  border: 1px solid var(--lijn);
+  border-radius: 8px;
+  background: var(--papier-diep);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.detail-acties button:hover,
+.detail-acties a:hover { border-color: var(--accent); }
+
+.detail-sluit {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--lijn);
+  border-radius: 50%;
+  background: var(--kaart);
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .detail[open] { grid-template-columns: 1fr; }
+  .detail-viewer { min-height: 46vh; }
+  .detail-info { border-left: 0; border-top: 1px solid var(--lijn); }
+}
+
+/* ---------- selectiebalk ---------- */
+
+/* Verschijnt pas als er iets gekozen is, en zweeft dan over het rooster: hij
+   hoort bij de selectie, niet bij de pagina. */
+.selectiebalk {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  padding: 8px 10px 8px 16px;
+  border: 1px solid var(--lijn);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--kaart) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--schaduw), 0 8px 28px rgba(43, 42, 38, .16);
+}
+
+.selectiebalk[hidden] { display: none; }
+
+.selectiebalk-telling {
+  flex: none;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.selectiebalk button {
+  flex: none;
+  padding: 5px 12px;
+  border: 1px solid var(--lijn);
+  border-radius: 999px;
+  background: var(--papier);
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.selectiebalk button:hover { border-color: var(--accent); }
+
+/* Dezelfde ring als .kaart en .staal. De offset zet hem net buiten de knop, dus
+   hij blijft leesbaar op "Kopieer paden", die zelf al accentkleurig is. */
+.selectiebalk button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.selectiebalk button.primair {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--papier);
+}
+
+/* Anders legt de balk zich over de voet heen zodra je iets kiest. */
+body:has(.selectiebalk:not([hidden])) { padding-bottom: 56px; }
+
+/* Op een telefoon passen er anders maar twee kaarten naast elkaar. Kleinere
+   tegels, strakkere tekst: vier per rij, en tikken geeft het grote model. */
+@media (max-width: 560px) {
+  .rooster {
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    gap: 6px;
+  }
+
+  .kaart-tekst { padding: 5px 6px 6px; gap: 1px; }
+
+  .kaart-naam {
+    font-size: 10.5px;
+    /* Geen drie regels reserveren: bij deze breedte wordt dat te hoog. */
+    min-height: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .kaart-meta { font-size: 9.5px; }
+  .kaart-grootte { display: none; }
+  .kaart-merk { display: none; }
+  .kaart-formaat { font-size: 9.5px; padding: 0 5px; left: 3px; bottom: 3px; }
+
+  /* Vier tegels van 76px naast elkaar: het vakje van 22px zou de helft van de
+     preview afdekken. */
+  .kaart-kies { top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 5px; }
+  .kaart-kies input { width: 11px; height: 11px; }
+
+  /* Drie knoppen naast een telling zijn hier samen breder dan het scherm. Ze
+     mogen dus op een tweede regel; de pilvorm gaat er dan af, want een pil van
+     twee regels hoog is geen pil meer. */
+  .selectiebalk {
+    left: 12px;
+    right: 12px;
+    transform: none;
+    max-width: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: 18px;
+    bottom: 10px;
+  }
+
+  .selectiebalk-telling { font-size: 12px; }
+  .selectiebalk button { padding: 5px 10px; font-size: 11.5px; }
+
+  body:has(.selectiebalk:not([hidden])) { padding-bottom: 96px; }
+}

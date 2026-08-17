@@ -1,0 +1,54 @@
+# Zet de catalogus bij elke push op GitHub Pages.
+name: Deploy static content to Pages
+
+on:
+  # Deployt bij elke commit, op elke branch.
+  #
+  # Werkt dit niet — de run faalt binnen enkele seconden, zonder runner en
+  # zonder logs — dan wordt de deployment door GitHub geweigerd vóórdat deze
+  # workflow iets doet. Twee instellingen bepalen dat:
+  #
+  #   1. Settings → Pages → Source. Staat die op "Deploy from a branch", dan
+  #      moet een deployment van díé branch komen. Zet hem op "GitHub Actions".
+  #   2. Settings → Environments → github-pages → Deployment branches. Is er
+  #      een regel die alleen de default branch toelaat, zet die dan op
+  #      "All branches".
+  #
+  # Pages heeft één live site, dus de laatst gepushte branch wint.
+  push:
+
+  # Zodat je hem ook met de hand kunt starten vanaf het tabblad Actions.
+  workflow_dispatch:
+
+# Genoeg rechten om te deployen, en niet meer dan dat.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Eén deployment tegelijk; wachtende runs vallen weg, lopende runs mogen af.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Bewust geen `environment: github-pages`. Die koppeling laat GitHub de
+    # deployment toetsen aan de branch-regels van die omgeving, en dat weigert
+    # elke run vanaf een andere branch dan de default binnen twee seconden,
+    # zonder runner en zonder logs. Zonder de koppeling draait de job gewoon;
+    # de deployment zelf gaat via de Pages-API met de permissions hierboven.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # De hele repo: de pagina heeft models/ en vendor/ nodig.
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
