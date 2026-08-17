@@ -1,59 +1,61 @@
-# Zet de catalogus bij elke push op GitHub Pages.
+# Deploys the catalog to GitHub Pages on every push.
 name: Deploy static content to Pages
 
 on:
-  # Deployt bij elke commit, op elke branch.
+  # Deploys on every commit, on every branch.
   #
-  # Werkt dit niet — de run faalt binnen enkele seconden, zonder runner en
-  # zonder logs — dan wordt de deployment door GitHub geweigerd vóórdat deze
-  # workflow iets doet. Twee instellingen bepalen dat:
+  # If this doesn't work — the run fails within a few seconds, with no
+  # runner and no logs — GitHub is rejecting the deployment before this
+  # workflow does anything. Two settings control that:
   #
-  #   1. Settings → Pages → Source. Staat die op "Deploy from a branch", dan
-  #      moet een deployment van díé branch komen. Zet hem op "GitHub Actions".
-  #   2. Settings → Environments → github-pages → Deployment branches. Is er
-  #      een regel die alleen de default branch toelaat, zet die dan op
-  #      "All branches".
+  #   1. Settings → Pages → Source. If it's set to "Deploy from a branch",
+  #      the deployment must come from that specific branch. Set it to
+  #      "GitHub Actions".
+  #   2. Settings → Environments → github-pages → Deployment branches. If a
+  #      rule only allows the default branch, set it to "All branches".
   #
-  # Pages heeft één live site, dus de laatst gepushte branch wint.
+  # Pages has one live site, so the most recently pushed branch wins.
   push:
 
-  # Zodat je hem ook met de hand kunt starten vanaf het tabblad Actions.
+  # So it can also be started by hand from the Actions tab.
   workflow_dispatch:
 
-# Genoeg rechten om te deployen, en niet meer dan dat.
+# Just enough rights to deploy, and no more.
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Eén deployment tegelijk; wachtende runs vallen weg, lopende runs mogen af.
+# One deployment at a time; queued runs drop, running ones finish.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
   deploy:
-    # Bewust geen `environment: github-pages`. Die koppeling laat GitHub de
-    # deployment toetsen aan de branch-regels van die omgeving, en dat weigert
-    # elke run vanaf een andere branch dan de default binnen twee seconden,
-    # zonder runner en zonder logs. Zonder de koppeling draait de job gewoon;
-    # de deployment zelf gaat via de Pages-API met de permissions hierboven.
+    # Deliberately no `environment: github-pages`. That binding lets GitHub
+    # check the deployment against that environment's branch rules, which
+    # rejects every run from a branch other than the default within two
+    # seconds, with no runner and no logs. Without the binding the job just
+    # runs; the deployment itself goes through the Pages API using the
+    # permissions above.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # Bewust zonder `enablement: true`. Die optie laat de action Pages zelf
-      # aanzetten, maar dat is geprobeerd en het kan niet: de GITHUB_TOKEN van
-      # een workflow mag geen Pages-site aanmaken ("Create Pages site failed:
-      # Resource not accessible by integration"), want dat vraagt adminrechten
-      # op de repo. Pages aanzetten is dus eenmalig handwerk — zie de uitleg
-      # bij `on:` hierboven — en zonder die stap faalt elke run hier.
+      # Deliberately without `enablement: true`. That option lets the action
+      # turn Pages on itself, but that's been tried and it can't: a
+      # workflow's GITHUB_TOKEN isn't allowed to create a Pages site
+      # ("Create Pages site failed: Resource not accessible by
+      # integration"), since that needs admin rights on the repo. Turning on
+      # Pages is therefore one-time manual work — see the note under `on:`
+      # above — and without that step every run here fails.
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # De hele repo: de pagina heeft models/ en vendor/ nodig.
+          # The whole repo: the page needs models/ and vendor/.
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment

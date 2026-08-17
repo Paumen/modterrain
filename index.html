@@ -1,80 +1,63 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Modulair terrein — 3D-catalogus</title>
-<meta name="description" content="Overzicht van alle 394 modellen uit het modulaire terreinpakket: kliffen, wanden, keermuren, paden, gras, zand, water, grot en props — per onderdeel, per vorm, per laag en per rastermaat.">
-<meta name="catalogus-versie" content="17743473cf">
-<link rel="stylesheet" href="catalog/catalog.css?v=17743473cf">
+<title>Modular Terrain — 3D Catalog</title>
+<meta name="description" content="Browsable catalog of 394 models from a modular terrain pack: cliffs, walls, retaining walls, paths, grass, sand, water, a cave, and props — by part, shape, layer, and grid size.">
+<meta name="catalog-version" content="028873264e">
+<link rel="stylesheet" href="catalog/catalog.css?v=028873264e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⛰️</text></svg>">
 </head>
 <body>
 
-<header class="kop">
-  <div class="kop-titel">
-    <h1>Modulair terrein — 3D-catalogus</h1>
-    <p class="kop-sub" id="samenvatting">Catalogus laden…</p>
+<header class="head">
+  <div class="head-title">
+    <h1>Modular Terrain — 3D Catalog</h1>
+    <p class="head-sub" id="summary" hidden></p>
   </div>
 
-  <div class="kop-bediening">
-    <div class="schakelaar" id="schakelaar" role="tablist" aria-label="Weergave"></div>
-
-    <div class="zoek">
-      <input type="search" id="zoek" placeholder="Zoek op naam, vorm, maat of materiaal…" autocomplete="off" aria-label="Zoeken">
-      <span class="zoek-telling" id="zoek-telling" aria-live="polite"></span>
-    </div>
-  </div>
+  <div class="tab-bar" id="tab-bar" role="tablist" aria-label="View"></div>
 </header>
 
-<nav class="springlijst" id="springlijst" aria-label="Naar sectie"></nav>
+<nav class="jump-list" id="jump-list" aria-label="Jump to section"></nav>
 
-<div class="kleurbalk" id="kleurbalk">
-  <span class="kleurbalk-label">Filter</span>
-  <div class="kleurbalk-stalen" id="kleurbalk-stalen" role="group" aria-label="Filter op materiaal"></div>
-  <button class="kleurbalk-wis" id="kleurbalk-wis" hidden>Wis materialen</button>
+<div class="filter-bar" id="filter-bar">
+  <div class="filter-bar-head">
+    <span class="filter-label">Filter</span>
+    <button class="filter-clear" id="filter-clear" hidden>Clear filters</button>
+  </div>
+  <div class="filter-swatches" id="filter-swatches" role="group" aria-label="Filter by material"></div>
 </div>
 
-<p class="weergave-uitleg" id="weergave-uitleg" hidden></p>
+<main id="panel" role="tabpanel"></main>
 
-<main id="paneel" role="tabpanel"></main>
-
-<p class="leeg" id="leeg" hidden>Geen modellen gevonden.</p>
-
-<footer class="voet">
-  <p>
-    394 modellen uit een modulair terreinpakket, aangeleverd als FBX en hier
-    omgezet naar <code>.glb</code>. De herkomst en de licentie van de bronpack
-    staan in <a href="HERKOMST.md">HERKOMST.md</a>; de maker is niet bekend.
-    Catalogus gegenereerd met <code>node tools/build-catalog.mjs</code>, naar het
-    voorbeeld van de <a href="https://github.com/Paumen/Taalei" rel="noopener">Taaleiland-catalogus</a>.
-  </p>
-</footer>
+<p class="empty" id="empty" hidden>No models found.</p>
 
 <dialog class="detail" id="detail">
-  <button class="detail-sluit" id="detail-sluit" aria-label="Sluiten">&times;</button>
+  <button class="detail-close" id="detail-close" aria-label="Close">&times;</button>
   <div class="detail-viewer" id="detail-viewer"></div>
   <div class="detail-info">
-    <h2 id="detail-naam"></h2>
-    <p class="detail-herkomst" id="detail-herkomst"></p>
-    <div class="detail-kenmerken" id="detail-kenmerken"></div>
-    <dl id="detail-gegevens"></dl>
-    <div class="detail-acties">
-      <button id="detail-kopieer">Kopieer pad</button>
-      <button id="detail-selecteer" aria-pressed="false">Aan selectie toevoegen</button>
+    <h2 id="detail-name"></h2>
+    <p class="detail-origin" id="detail-origin"></p>
+    <div class="detail-traits" id="detail-traits"></div>
+    <dl id="detail-data"></dl>
+    <div class="detail-actions">
+      <button id="detail-copy">Copy path</button>
+      <button id="detail-select" aria-pressed="false">Add to selection</button>
       <a id="detail-download" download>Download .glb</a>
     </div>
   </div>
 </dialog>
 
-<div class="selectiebalk" id="selectiebalk" hidden>
-  <span class="selectiebalk-telling" id="selectiebalk-telling" aria-live="polite"></span>
-  <button type="button" id="selectie-alles">Alles in beeld</button>
-  <button type="button" id="selectie-kopieer" class="primair">Kopieer paden</button>
-  <button type="button" id="selectie-wis">Wis</button>
+<div class="selection-bar" id="selection-bar" hidden>
+  <span class="selection-count" id="selection-count" aria-live="polite"></span>
+  <button type="button" id="select-visible">Select all visible</button>
+  <button type="button" id="selection-copy" class="primary">Copy paths</button>
+  <button type="button" id="select-clear">Clear</button>
 </div>
 
 <script src="vendor/model-viewer.min.js" type="module"></script>
-<script src="catalog/catalog.js?v=17743473cf" type="module"></script>
+<script src="catalog/catalog.js?v=028873264e" type="module"></script>
 </body>
 </html>

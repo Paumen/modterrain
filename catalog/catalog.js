@@ -1,707 +1,673 @@
 /**
- * Modulair terrein — 3D-catalogus.
+ * Modular Terrain — 3D catalog.
  *
- * Opgezet naar het voorbeeld van de Taaleiland-catalogus
- * (github.com/Paumen/Taalei, kits/catalog.js). Het verschil zit in de bron: daar
- * beschrijft een handgeschreven manifest welke kits er zijn, hier heeft de pack
- * geen enkele metadata en komt de hele indeling uit de bestandsnamen
- * (tools/taxonomie.mjs → catalog/catalog.json).
+ * The pack ships with no metadata at all, so the entire classification comes
+ * from filenames (tools/taxonomy.mjs → catalog/catalog.json).
  *
- * Eén model staat in meerdere tabbladen — hetzelfde stuk is een binnenbocht,
- * een middenlaag én een 3 × 3 — dus één model levert meerdere kaarten op. Alles
- * wat aan het model hangt in plaats van aan de kaart (de selectie) hangt
- * daarom aan het bestandspad.
+ * One model appears in multiple tabs — the same piece is an inner curve, a
+ * mid layer, AND a 3 × 3 — so one model produces multiple cards. Anything
+ * that hangs off the model rather than the card (selection) is therefore
+ * keyed by file path.
  */
 
 /**
- * Driehoeken waarboven een model absoluut zwaar is, los van zijn maat. De
- * grootste zandhellingen van deze pack beslaan 12 × 12 rastervakken; die mogen
- * meer driehoeken hebben dan een paaltje van 1 × 1, en dat regelt het budget
- * per unit hieronder. Deze grens vangt het andere geval: een stuk dat in
- * absolute zin niet meer in een scène past waar er honderd van staan.
+ * Triangles above which a model is heavy in absolute terms, regardless of
+ * size. This pack's largest sand slopes cover 12 × 12 grid cells; they're
+ * allowed more triangles than a 1 × 1 post, and the per-unit budget below
+ * handles that. This limit catches the other case: a piece that in absolute
+ * terms no longer fits a scene with a hundred of them.
  */
-const ZWAAR_VANAF = 500;
+const HEAVY_FROM = 500;
 
 /**
- * Driehoeken per 1×1×1 unit waarboven een model uit de pas loopt met de rest
- * van de pack. De grens zelf staat in tools/glb.mjs en komt via catalog.json
- * mee; het getal hier is alleen het antwoord op een catalogus van vóór dat veld.
+ * Triangles per 1×1×1 grid cell above which a model is out of step with the
+ * rest of the pack. The limit itself lives in tools/glb.mjs and travels here
+ * via catalog.json; the number here is only the fallback for a catalog built
+ * before that field existed.
  */
 let budgetPerUnit = 250;
 
-const getal = new Intl.NumberFormat('nl-NL');
-const eenheid = new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 2 });
+const number = new Intl.NumberFormat('en-US');
+const unit = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
-const paneel = document.querySelector('#paneel');
-const schakelaar = document.querySelector('#schakelaar');
-const springlijst = document.querySelector('#springlijst');
-const zoekveld = document.querySelector('#zoek');
-const zoekTelling = document.querySelector('#zoek-telling');
-const leegmelding = document.querySelector('#leeg');
-const samenvatting = document.querySelector('#samenvatting');
-const weergaveUitleg = document.querySelector('#weergave-uitleg');
+const panel = document.querySelector('#panel');
+const tabBar = document.querySelector('#tab-bar');
+const jumpList = document.querySelector('#jump-list');
+const emptyMessage = document.querySelector('#empty');
+const summary = document.querySelector('#summary');
 const detail = document.querySelector('#detail');
 
-const kaarten = [];
-const secties = [];
-const weergaven = new Map();
+const cards = [];
+const sections = [];
+const views = new Map();
 
-let huidigeWeergave = null;
+let currentView = null;
 
 /**
- * Selectie hangt aan het pad, niet aan de kaart. Eén model heeft namelijk
- * meerdere kaarten — dezelfde binnenbocht staat in Onderdelen, Vormen, Lagen én
- * Formaten — en die moeten hetzelfde vinkje tonen. Meteen ook de ontdubbeling:
- * wie in twee tabbladen hetzelfde model aanvinkt, krijgt het pad één keer op
- * het klembord.
+ * Selection is keyed by file path, not by card. One model has multiple
+ * cards — the same inner curve appears in Parts, Shapes, Layers, AND Sizes —
+ * and they all need to show the same checkbox state. This also dedupes:
+ * checking the same model in two tabs still yields the path once on the
+ * clipboard.
  */
-const gekozenPaden = new Set();
-const kaartenPerPad = new Map();
+const selectedPaths = new Set();
+const cardsByPath = new Map();
 
-let laatsteKeuze = null;
+let lastPicked = null;
 
-const gekozenMaterialen = new Set();
-const stalen = [];
+const selectedMaterials = new Set();
+const swatches = [];
 
-const bytesLeesbaar = (bytes) =>
+const readableBytes = (bytes) =>
   bytes < 1024 ? `${bytes} B` : `${(bytes / 1024).toFixed(bytes < 10240 ? 1 : 0)} kB`;
 
-const afmeting = (wdh) =>
-  Array.isArray(wdh) ? `${wdh.map((v) => eenheid.format(v)).join(' × ')} vakken` : '—';
+const readableDimensions = (dwh) =>
+  Array.isArray(dwh) ? `${dwh.map((v) => unit.format(v)).join(' × ')} cells` : '—';
 
-function span(klasse, tekst = '') {
+function span(className, text = '') {
   const element = document.createElement('span');
-  element.className = klasse;
-  element.textContent = tekst;
+  element.className = className;
+  element.textContent = text;
   return element;
 }
 
 /**
- * De materiaalkleuren van deze pack terugzetten naar wat de maker instelde.
+ * Restores this pack's material colors to what the author set.
  *
- * De FBX-export heeft de sRGB-kleuren uit de bron ongewijzigd in
- * `baseColorFactor` gezet, en dat veld noemt de glTF-spec lineair. Een viewer
- * die zich aan de spec houdt — en dat doet deze — rekent er dus nog een keer
- * gamma overheen: het klifbeige #bfb9ae komt als #e0ddd7 op het scherm, het
- * grasgroen #63ba2e als pastel #a7de76. Bij een pack waarvan tweederde van de
- * stukken uit één beige materiaal bestaat, levert dat een catalogus van witte
- * blokken op.
+ * The FBX export wrote sRGB colors from the source straight into
+ * `baseColorFactor`, and the glTF spec calls that field linear. A viewer
+ * that follows the spec — this one does — applies gamma correction on top of
+ * that, so the beige cliff color #bfb9ae shows up as #e0ddd7 and the grass
+ * green #63ba2e as a pastel #a7de76. With two-thirds of the pack's pieces
+ * made of that one beige material, that turns the catalog into a grid of
+ * white blocks.
  *
- * Deze omrekening is het spiegelbeeld daarvan en gebeurt alleen tijdens het
- * tonen: de .glb's op schijf en achter de downloadknop zijn onaangeroerd. Wie
- * de pack ongecorrigeerd wil zien, haalt de aanroep in `koppelViewer` en
- * `toonDetail` weg.
+ * This is the mirror of that mistake, applied only at display time: the
+ * .glb files on disk and behind the download button stay untouched. Anyone
+ * who wants to see the pack uncorrected can drop the calls in
+ * `attachViewer` and `showDetail`.
  */
-const srgbNaarLineair = (v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+const srgbToLinear = (v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
 
-function herstelKleurruimte(viewer) {
-  for (const materiaal of viewer.model?.materials ?? []) {
-    const factor = materiaal.pbrMetallicRoughness?.baseColorFactor;
+function restoreColorSpace(viewer) {
+  for (const material of viewer.model?.materials ?? []) {
+    const factor = material.pbrMetallicRoughness?.baseColorFactor;
     if (!factor) continue;
-    materiaal.pbrMetallicRoughness.setBaseColorFactor([
-      srgbNaarLineair(factor[0]),
-      srgbNaarLineair(factor[1]),
-      srgbNaarLineair(factor[2]),
+    material.pbrMetallicRoughness.setBaseColorFactor([
+      srgbToLinear(factor[0]),
+      srgbToLinear(factor[1]),
+      srgbToLinear(factor[2]),
       factor[3],
     ]);
   }
 }
 
-const waarnemer = new IntersectionObserver(
-  (waarnemingen) => {
-    for (const { target, isIntersecting } of waarnemingen) {
-      if (isIntersecting) koppelViewer(target);
-      else ontkoppelViewer(target);
+const observer = new IntersectionObserver(
+  (entries) => {
+    for (const { target, isIntersecting } of entries) {
+      if (isIntersecting) attachViewer(target);
+      else detachViewer(target);
     }
   },
   { rootMargin: '800px 0px' },
 );
 
-function koppelViewer(vak) {
-  if (vak.querySelector('model-viewer')) return;
+function attachViewer(box) {
+  if (box.querySelector('model-viewer')) return;
 
   const viewer = document.createElement('model-viewer');
-  viewer.src = vak.dataset.src;
-  viewer.alt = vak.dataset.alt;
+  viewer.src = box.dataset.src;
+  viewer.alt = box.dataset.alt;
   viewer.setAttribute('camera-orbit', '35deg 68deg auto');
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.6');
   viewer.setAttribute('shadow-softness', '0.9');
-  // De pack is vlak gearceerd en heeft geen texturen; op de standaardbelichting
-  // van de neutrale omgeving lopen de lichte kliffen tot wit dicht. Iets
-  // terugnemen geeft de beige weer kleur en de vlakken weer onderscheid.
+  // The pack is flat-shaded with no textures; at the neutral environment's
+  // default exposure the light cliffs blow out to white. Pulling it back
+  // gives the beige its color back and the faces their contrast.
   viewer.setAttribute('exposure', '0.85');
   viewer.setAttribute('interaction-prompt', 'none');
   viewer.setAttribute('disable-zoom', '');
   viewer.setAttribute('loading', 'eager');
-  viewer.addEventListener('load', () => herstelKleurruimte(viewer), { once: true });
-  vak.replaceChildren(viewer);
+  viewer.addEventListener('load', () => restoreColorSpace(viewer), { once: true });
+  box.replaceChildren(viewer);
 }
 
 /**
- * Buiten beeld gaat de renderlus uit, maar het plaatje blijft staan: één
- * momentopname als webp, gemaakt op het moment dat de kaart wegscrollt. Zonder
- * dat springt het rooster bij elke scrollbeweging leeg — bij honderden tegels
- * per tabblad is dat het verschil tussen bladeren en wachten.
+ * Once out of view, the render loop stops, but the picture stays: a single
+ * snapshot as webp, taken the moment the card scrolls away. Without that the
+ * grid would go blank on every scroll — with hundreds of tiles per tab,
+ * that's the difference between browsing and waiting.
  */
-function ontkoppelViewer(vak) {
-  const viewer = vak.querySelector('model-viewer');
+function detachViewer(box) {
+  const viewer = box.querySelector('model-viewer');
   if (!viewer) return;
 
-  if (viewer.loaded && !vak.dataset.momentopname) {
+  if (viewer.loaded && !box.dataset.snapshot) {
     try {
-      vak.dataset.momentopname = viewer.toDataURL('image/webp', 0.72);
+      box.dataset.snapshot = viewer.toDataURL('image/webp', 0.72);
     } catch {}
   }
 
-  if (vak.dataset.momentopname) {
-    const plaatje = document.createElement('img');
-    plaatje.src = vak.dataset.momentopname;
-    plaatje.alt = vak.dataset.alt;
-    plaatje.loading = 'lazy';
-    vak.replaceChildren(plaatje);
+  if (box.dataset.snapshot) {
+    const image = document.createElement('img');
+    image.src = box.dataset.snapshot;
+    image.alt = box.dataset.alt;
+    image.loading = 'lazy';
+    box.replaceChildren(image);
   } else {
-    vak.replaceChildren();
+    box.replaceChildren();
   }
 }
 
-/* ---------- kaarten ---------- */
+/* ---------- cards ---------- */
 
-function maakKaart(model, weergave, sectie) {
-  const dichtheid = Number.isFinite(model.driehoekenPerUnit) ? model.driehoekenPerUnit : null;
-  const bovenBudget = dichtheid !== null && dichtheid > budgetPerUnit;
-  // Eén rood label voor twee redenen: veel driehoeken, of veel driehoeken op
-  // weinig ruimte. Wat er precies aan de hand is, staat in de tooltip en in het
-  // detailpaneel; op de kaart is het genoeg dat het opvalt.
-  const zwaar = model.driehoeken >= ZWAAR_VANAF || bovenBudget;
+function makeCard(model, view, section) {
+  const density = Number.isFinite(model.trianglesPerUnit) ? model.trianglesPerUnit : null;
+  const overBudget = density !== null && density > budgetPerUnit;
+  // One red label for two reasons: a lot of triangles, or a lot of triangles
+  // packed into little space. What exactly is going on shows in the tooltip
+  // and the detail panel; on the card it's enough that it stands out.
+  const heavy = model.triangles >= HEAVY_FROM || overBudget;
 
-  const kaart = document.createElement('button');
-  kaart.type = 'button';
-  kaart.className = 'kaart';
-  kaart.style.setProperty('--merk-kleur', sectie.kleur ?? 'currentColor');
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'card';
+  card.style.setProperty('--brand-color', section.color ?? 'currentColor');
 
-  const vak = document.createElement('div');
-  vak.className = 'kaart-viewer';
-  vak.dataset.src = model.bestand;
-  vak.dataset.alt = `3D-model ${model.naam}`;
-  if (model.formaat) vak.append(span('kaart-formaat', model.formaat));
+  const box = document.createElement('div');
+  box.className = 'card-viewer';
+  box.dataset.src = model.file;
+  box.dataset.alt = `3D model ${model.name}`;
 
-  const tekst = document.createElement('div');
-  tekst.className = 'kaart-tekst';
-  const meta = span('kaart-meta');
-  const tri = span(`kaart-tri${zwaar ? ' zwaar' : ''}`, `${getal.format(model.driehoeken)} tri`);
-  if (dichtheid !== null) {
-    tri.title = `${getal.format(dichtheid)} driehoeken per unit${bovenBudget ? ` — boven het budget van ${getal.format(budgetPerUnit)}` : ''}`;
+  const text = document.createElement('div');
+  text.className = 'card-text';
+  const meta = span('card-meta');
+  const tri = span(`card-tri${heavy ? ' heavy' : ''}`, `${number.format(model.triangles)} tri`);
+  if (density !== null) {
+    tri.title = `${number.format(density)} triangles per unit${overBudget ? ` — above the budget of ${number.format(budgetPerUnit)}` : ''}`;
   }
   meta.append(
-    span('kaart-merk', sectie.merk ?? ''),
+    span('card-brand', section.brand ?? ''),
     tri,
-    span('kaart-grootte', bytesLeesbaar(model.bytes)),
+    span('card-bytes', readableBytes(model.bytes)),
   );
-  tekst.append(span('kaart-naam', model.naam), meta);
+  text.append(span('card-name', model.name));
+  // Its own row rather than an overlay on the thumbnail: a badge sitting on
+  // top of the model made the corner of the preview harder to read and
+  // competed with the selection checkbox for the same corner.
+  if (model.size) text.append(span('card-size', model.size));
+  text.append(meta);
 
-  kaart.append(vak, tekst);
-  kaart.addEventListener('click', () => toonDetail(model));
+  card.append(box, text);
+  card.addEventListener('click', () => showDetail(model));
 
-  // Het vinkje is een broer van de kaart, geen kind: een knop in een knop mag
-  // niet, en zo blijft de kaart zelf onveranderd klikbaar naar het detail.
-  const kies = document.createElement('label');
-  kies.className = 'kaart-kies';
-  const vinkje = document.createElement('input');
-  vinkje.type = 'checkbox';
-  vinkje.checked = gekozenPaden.has(model.bestand);
-  vinkje.setAttribute('aria-label', `${model.naam} selecteren`);
-  kies.append(vinkje);
+  // The checkbox is a sibling of the card, not a child: a button inside a
+  // button isn't allowed, and this way the card itself stays fully clickable
+  // toward the detail view.
+  const pick = document.createElement('label');
+  pick.className = 'card-pick';
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.checked = selectedPaths.has(model.file);
+  checkbox.setAttribute('aria-label', `Select ${model.name}`);
+  pick.append(checkbox);
 
-  const houder = document.createElement('div');
-  houder.className = 'kaart-houder';
-  houder.append(kaart, kies);
+  const holder = document.createElement('div');
+  holder.className = 'card-holder';
+  holder.append(card, pick);
 
   const item = {
-    element: houder,
-    vinkje,
-    pad: model.bestand,
-    weergave,
-    materialen: model.materialen,
-    zoektekst: model.zoektekst,
+    element: holder,
+    checkbox,
+    path: model.file,
+    view,
+    materials: model.materials,
   };
-  kaarten.push(item);
+  cards.push(item);
 
-  const zusjes = kaartenPerPad.get(model.bestand);
-  if (zusjes) zusjes.push(item);
-  else kaartenPerPad.set(model.bestand, [item]);
+  const siblings = cardsByPath.get(model.file);
+  if (siblings) siblings.push(item);
+  else cardsByPath.set(model.file, [item]);
 
-  vinkje.addEventListener('click', (e) => {
-    if (e.shiftKey && laatsteKeuze && laatsteKeuze !== item) kiesBereik(item, vinkje.checked);
-    else zetSelectie([model.bestand], vinkje.checked);
-    laatsteKeuze = item;
+  checkbox.addEventListener('click', (e) => {
+    if (e.shiftKey && lastPicked && lastPicked !== item) pickRange(item, checkbox.checked);
+    else setSelection([model.file], checkbox.checked);
+    lastPicked = item;
   });
 
-  waarnemer.observe(vak);
+  observer.observe(box);
   return item;
 }
 
-function maakSectie(weergave, sectie, facet) {
+function makeSection(view, section, facet) {
   const element = document.createElement('section');
-  element.className = 'sectie';
-  element.id = sectie.id;
-  element.dataset.weergave = weergave.id;
+  element.className = 'section';
+  element.id = section.id;
+  element.dataset.view = view.id;
   element.dataset.facet = facet;
-  if (sectie.kleur) element.style.setProperty('--sectie-kleur', sectie.kleur);
+  if (section.color) element.style.setProperty('--section-color', section.color);
 
-  const kop = document.createElement('div');
-  kop.className = 'sectie-kop';
+  const head = document.createElement('div');
+  head.className = 'section-head';
 
-  const titel = document.createElement('h2');
-  titel.textContent = sectie.titel;
+  const title = document.createElement('h2');
+  title.textContent = section.name;
 
-  const aantalEl = span('aantal', `${sectie.modellen.length} modellen`);
-  kop.append(titel, aantalEl);
+  const countEl = span('count', `${section.models.length} models`);
+  head.append(title, countEl);
 
-  if (sectie.uitleg) {
-    const p = document.createElement('p');
-    p.className = 'uitleg';
-    p.textContent = sectie.uitleg;
-    kop.append(p);
-  }
-
-  const rooster = document.createElement('div');
-  rooster.className = 'rooster';
-  element.append(kop, rooster);
-  return { element, rooster, aantalEl };
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+  element.append(head, grid);
+  return { element, grid, countEl };
 }
 
-function maakSpringitem(sectie, titel, aantal, kleur) {
+function makeJumpItem(section, name, count, color) {
   const link = document.createElement('a');
-  link.href = `#${sectie.id}`;
-  link.dataset.weergave = sectie.dataset.weergave;
-  const stip = span('stip');
-  if (kleur) stip.style.background = kleur;
-  link.append(stip, document.createTextNode(`${titel} `), span('telling', String(aantal)));
-  springlijst.append(link);
+  link.href = `#${section.id}`;
+  link.dataset.view = section.dataset.view;
+  const dot = span('dot');
+  if (color) dot.style.background = color;
+  link.append(dot, document.createTextNode(`${name} `), span('badge', String(count)));
+  jumpList.append(link);
   return link;
 }
 
-/* ---------- detailvenster ---------- */
+/* ---------- detail view ---------- */
 
 const detailViewer = document.querySelector('#detail-viewer');
-const detailKopieer = document.querySelector('#detail-kopieer');
-let actiefPad = '';
+const detailCopy = document.querySelector('#detail-copy');
+let activePath = '';
 
-/** materiaalsleutel → { naam, hex }, gevuld door bouwKleurbalk(). */
-const materiaalInfo = new Map();
+/** material key → { name, hex }, filled in by buildFilterBar(). */
+const materialInfo = new Map();
 
 /**
- * De ligging van het model ten opzichte van zijn rastervak. Deze pack staat
- * bewust niet op de oorsprong — de oorsprong van elk stuk ís zijn vak — dus
- * "van -0,5 tot 0,5" betekent gecentreerd en "van 0 tot 1" betekent dat het
- * stuk rechtsboven zijn oorsprong ligt. Wie de kit in een engine op een raster
- * legt, heeft precies dat nodig.
+ * A model's position relative to its grid cell. This pack is deliberately
+ * not centered on the origin — a piece's origin IS its grid cell — so
+ * "-0.5 to 0.5" means centered and "0 to 1" means the piece sits up and to
+ * the right of its origin. Anyone placing the kit on a grid in an engine
+ * needs exactly that.
  */
-const ligging = (min, max) =>
-  [['breedte', 0], ['diepte', 2], ['hoogte', 1]]
-    .map(([as, index]) => `${as} ${eenheid.format(min[index])} … ${eenheid.format(max[index])}`)
+const placement = (min, max) =>
+  [['width', 0], ['depth', 2], ['height', 1]]
+    .map(([axis, index]) => `${axis} ${unit.format(min[index])} … ${unit.format(max[index])}`)
     .join(' · ');
 
-function toonDetail(model) {
-  actiefPad = model.bestand;
-  document.querySelector('#detail-naam').textContent = model.naam;
-  document.querySelector('#detail-herkomst').textContent =
-    [model.familieTitel, model.vormTitel, model.laagTitel].filter(Boolean).join(' · ');
+function showDetail(model) {
+  activePath = model.file;
+  document.querySelector('#detail-name').textContent = model.name;
+  document.querySelector('#detail-origin').textContent =
+    [model.familyName, model.shapeName, model.layerName].filter(Boolean).join(' · ');
 
-  const kenmerken = document.querySelector('#detail-kenmerken');
-  kenmerken.replaceChildren(...model.kenmerken.map((k) => span('', k)));
+  const traits = document.querySelector('#detail-traits');
+  traits.replaceChildren(...model.traits.map((t) => span('', t)));
 
-  const materiaalLijst = document.createElement('span');
-  for (const sleutel of model.materialen) {
-    const info = materiaalInfo.get(sleutel);
-    const chip = span('detail-materiaal', info?.naam ?? sleutel);
-    if (info) chip.style.setProperty('--materiaal-kleur', info.hex);
-    if (materiaalLijst.childNodes.length) materiaalLijst.append(', ');
-    materiaalLijst.append(chip);
+  const materialList = document.createElement('span');
+  for (const key of model.materials) {
+    const info = materialInfo.get(key);
+    const chip = span('detail-material', info?.name ?? key);
+    if (info) chip.style.setProperty('--material-color', info.hex);
+    if (materialList.childNodes.length) materialList.append(', ');
+    materialList.append(chip);
   }
 
-  const rijen = [
-    ['Bestand', model.bestand],
-    ['Rastervak', model.formaat ? `${model.formaat} vakken` : '—'],
-    ['Afmetingen (b × d × h)', afmeting(model.wdh)],
-    ['Ligging t.o.v. oorsprong', ligging(model.min, model.max)],
-    ['Driehoeken', `${getal.format(model.driehoeken)}${model.driehoeken >= ZWAAR_VANAF ? ' (zwaar)' : ''}`],
-    // Het budget: elke as telt voor minstens één unit mee, dus een model dat
-    // binnen één rastercel blijft wordt niet afgerekend op hoe klein het is
+  const rows = [
+    ['File', model.file],
+    ['Grid footprint', model.size ? `${model.size} cells` : '—'],
+    ['Dimensions (w × d × h)', readableDimensions(model.dwh)],
+    ['Position relative to origin', placement(model.min, model.max)],
+    ['Triangles', `${number.format(model.triangles)}${model.triangles >= HEAVY_FROM ? ' (heavy)' : ''}`],
+    // The budget: every axis counts for at least one unit, so a model that
+    // stays within one grid cell isn't penalized for being small
     // (tools/glb.mjs).
     [
-      'Driehoeken per unit',
-      !Number.isFinite(model.driehoekenPerUnit)
+      'Triangles per unit',
+      !Number.isFinite(model.trianglesPerUnit)
         ? '—'
-        : `${getal.format(model.driehoekenPerUnit)}${model.driehoekenPerUnit > budgetPerUnit ? ` (boven budget van ${getal.format(budgetPerUnit)})` : ''}`,
+        : `${number.format(model.trianglesPerUnit)}${model.trianglesPerUnit > budgetPerUnit ? ` (above budget of ${number.format(budgetPerUnit)})` : ''}`,
     ],
-    ['Tekenopdrachten', model.calls === undefined ? '—' : getal.format(model.calls)],
-    [`Materialen (${model.materialen.length})`, materiaalLijst],
-    // Alleen bij de modellen die het betreft; bij de rest heeft de rij niets te
-    // melden. De viewer toont ze gewoon, maar dan in de vlakke materiaalkleur.
-    ...(model.ontbrekendeTexturen?.length
-      ? [['Ontbrekende textuur', `${model.ontbrekendeTexturen.join(', ')} — zit niet in de pack`]]
+    ['Draw calls', model.calls === undefined ? '—' : number.format(model.calls)],
+    [`Materials (${model.materials.length})`, materialList],
+    // Only for the models it applies to; the rest have nothing to say here.
+    // The viewer still shows them, just in the flat material color.
+    ...(model.missingTextures?.length
+      ? [['Missing texture', `${model.missingTextures.join(', ')} — not in the pack`]]
       : []),
-    ...(model.variant !== null ? [['Variant', `nummer ${model.variant}`]] : []),
-    ['Grootte', bytesLeesbaar(model.bytes)],
+    ...(model.variant !== null ? [['Variant', `number ${model.variant}`]] : []),
+    ['Size', readableBytes(model.bytes)],
   ];
 
-  const gegevens = document.querySelector('#detail-gegevens');
-  gegevens.replaceChildren();
-  for (const [sleutel, waarde] of rijen) {
-    const naam = document.createElement('dt');
-    naam.textContent = sleutel;
-    const waardeEl = document.createElement('dd');
-    if (waarde instanceof Node) waardeEl.append(waarde);
-    else waardeEl.textContent = waarde;
-    gegevens.append(naam, waardeEl);
+  const data = document.querySelector('#detail-data');
+  data.replaceChildren();
+  for (const [key, value] of rows) {
+    const term = document.createElement('dt');
+    term.textContent = key;
+    const description = document.createElement('dd');
+    if (value instanceof Node) description.append(value);
+    else description.textContent = value;
+    data.append(term, description);
   }
 
   const download = document.querySelector('#detail-download');
-  download.href = model.bestand;
+  download.href = model.file;
   download.setAttribute('download', `${model.id}.glb`);
 
   const viewer = document.createElement('model-viewer');
-  viewer.src = model.bestand;
-  viewer.alt = `3D-model ${model.naam}`;
+  viewer.src = model.file;
+  viewer.alt = `3D model ${model.name}`;
   viewer.setAttribute('camera-controls', '');
   viewer.setAttribute('camera-orbit', '35deg 68deg auto');
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.7');
   viewer.setAttribute('shadow-softness', '0.9');
   viewer.setAttribute('exposure', '0.85');
-  // Niets in deze pack is geanimeerd, dus het rondje is de enige manier om de
-  // achterkant te zien zonder te slepen — en bij een modulair stuk is juist de
-  // achterkant de kant die tegen de buurtegel aan komt.
+  // Nothing in this pack is animated, so the auto-rotate is the only way to
+  // see the back without dragging — and on a modular piece the back is
+  // exactly the side that meets the neighboring tile.
   viewer.setAttribute('auto-rotate', '');
   viewer.setAttribute('rotation-per-second', '18deg');
-  viewer.addEventListener('load', () => herstelKleurruimte(viewer), { once: true });
+  viewer.addEventListener('load', () => restoreColorSpace(viewer), { once: true });
 
   detailViewer.replaceChildren(viewer);
 
   detail.showModal();
-  werkSelectieBij();
+  updateSelectionBar();
 }
 
 detail.addEventListener('close', () => detailViewer.replaceChildren());
-document.querySelector('#detail-sluit').addEventListener('click', () => detail.close());
+document.querySelector('#detail-close').addEventListener('click', () => detail.close());
 detail.addEventListener('click', (e) => { if (e.target === detail) detail.close(); });
 
-detailKopieer.addEventListener('click', async () => {
-  const gelukt = await naarKlembord(actiefPad);
-  detailKopieer.textContent = gelukt ? 'Gekopieerd' : actiefPad;
-  setTimeout(() => { detailKopieer.textContent = 'Kopieer pad'; }, 1600);
+detailCopy.addEventListener('click', async () => {
+  const ok = await toClipboard(activePath);
+  detailCopy.textContent = ok ? 'Copied' : activePath;
+  setTimeout(() => { detailCopy.textContent = 'Copy path'; }, 1600);
 });
 
-/* ---------- selectie ---------- */
+/* ---------- selection ---------- */
 
-const selectiebalk = document.querySelector('#selectiebalk');
-const selectieTelling = document.querySelector('#selectiebalk-telling');
-const selectieKopieer = document.querySelector('#selectie-kopieer');
-const detailSelecteer = document.querySelector('#detail-selecteer');
+const selectionBar = document.querySelector('#selection-bar');
+const selectionCount = document.querySelector('#selection-count');
+const selectionCopy = document.querySelector('#selection-copy');
+const detailSelect = document.querySelector('#detail-select');
 
-const zichtbareKaarten = () =>
-  kaarten.filter((k) => k.weergave === huidigeWeergave && !k.element.hidden);
+const visibleCards = () =>
+  cards.filter((c) => c.view === currentView && !c.element.hidden);
 
-function zetSelectie(paden, aan) {
-  for (const pad of paden) {
-    if (aan) gekozenPaden.add(pad);
-    else gekozenPaden.delete(pad);
-    for (const zusje of kaartenPerPad.get(pad) ?? []) zusje.vinkje.checked = aan;
+function setSelection(paths, on) {
+  for (const path of paths) {
+    if (on) selectedPaths.add(path);
+    else selectedPaths.delete(path);
+    for (const sibling of cardsByPath.get(path) ?? []) sibling.checkbox.checked = on;
   }
-  werkSelectieBij();
+  updateSelectionBar();
 }
 
 /**
- * Shift-klik trekt de selectie door van de vorige klik tot deze, over de
- * kaarten die nú in beeld staan. Dus na filteren op "curve" pakt shift precies
- * de bochten, en niet alles wat er in de ongefilterde catalogus tussen zat.
+ * Shift-click extends the selection from the previous click to this one,
+ * across whatever cards are currently visible. So after filtering to "curve"
+ * shift picks exactly the curves, not everything that sat between them in
+ * the unfiltered catalog.
  */
-function kiesBereik(tot, aan) {
-  const lijst = zichtbareKaarten();
-  const van = lijst.indexOf(laatsteKeuze);
-  const naar = lijst.indexOf(tot);
-  if (van === -1 || naar === -1) return zetSelectie([tot.pad], aan);
-  const bereik = lijst.slice(Math.min(van, naar), Math.max(van, naar) + 1);
-  zetSelectie(bereik.map((k) => k.pad), aan);
+function pickRange(to, on) {
+  const list = visibleCards();
+  const from = list.indexOf(lastPicked);
+  const target = list.indexOf(to);
+  if (from === -1 || target === -1) return setSelection([to.path], on);
+  const range = list.slice(Math.min(from, target), Math.max(from, target) + 1);
+  setSelection(range.map((c) => c.path), on);
 }
 
-function werkSelectieBij() {
-  const aantal = gekozenPaden.size;
-  selectiebalk.hidden = aantal === 0;
-  selectieTelling.textContent = `${aantal} geselecteerd`;
+function updateSelectionBar() {
+  const count = selectedPaths.size;
+  selectionBar.hidden = count === 0;
+  selectionCount.textContent = `${count} selected`;
   if (detail.open) {
-    const aan = gekozenPaden.has(actiefPad);
-    detailSelecteer.textContent = aan ? 'Uit selectie halen' : 'Aan selectie toevoegen';
-    detailSelecteer.setAttribute('aria-pressed', String(aan));
+    const on = selectedPaths.has(activePath);
+    detailSelect.textContent = on ? 'Remove from selection' : 'Add to selection';
+    detailSelect.setAttribute('aria-pressed', String(on));
   }
 }
 
 /**
- * Zonder klembordrechten — een pagina die niet over https draait, bijvoorbeeld
- * vanaf het bestandssysteem — valt de browser terug op een veld dat je met
- * ctrl-C leegt. Bij één pad past dat nog in het knoplabel, bij zeventig niet.
+ * Without clipboard permission — a page not served over https, for
+ * instance, straight from the filesystem — the browser falls back to a
+ * field you clear with ctrl-C. That still fits in the button label for one
+ * path, not for seventy.
  */
-async function naarKlembord(tekst) {
+async function toClipboard(text) {
   try {
-    await navigator.clipboard.writeText(tekst);
+    await navigator.clipboard.writeText(text);
     return true;
   } catch {}
 
-  const veld = document.createElement('textarea');
-  veld.value = tekst;
-  veld.setAttribute('readonly', '');
-  veld.style.cssText = 'position:fixed;top:0;left:-9999px';
-  document.body.append(veld);
-  veld.select();
+  const field = document.createElement('textarea');
+  field.value = text;
+  field.setAttribute('readonly', '');
+  field.style.cssText = 'position:fixed;top:0;left:-9999px';
+  document.body.append(field);
+  field.select();
   try {
     return document.execCommand('copy');
   } catch {
     return false;
   } finally {
-    veld.remove();
+    field.remove();
   }
 }
 
-selectieKopieer.addEventListener('click', async () => {
-  const aantal = gekozenPaden.size;
-  // Set houdt invoegvolgorde aan: de paden komen eruit in de volgorde waarin ze
-  // zijn aangevinkt, en bij "Alles in beeld" is dat de volgorde op het scherm.
-  const gelukt = await naarKlembord([...gekozenPaden].join('\n'));
-  selectieKopieer.textContent = gelukt
-    ? `${aantal} pad${aantal === 1 ? '' : 'en'} gekopieerd`
-    : 'Kopiëren mislukt';
-  setTimeout(() => { selectieKopieer.textContent = 'Kopieer paden'; }, 1600);
+selectionCopy.addEventListener('click', async () => {
+  const count = selectedPaths.size;
+  // A Set preserves insertion order: paths come out in the order they were
+  // checked, and with "Select all visible" that's the order on screen.
+  const ok = await toClipboard([...selectedPaths].join('\n'));
+  selectionCopy.textContent = ok
+    ? `${count} path${count === 1 ? '' : 's'} copied`
+    : 'Copy failed';
+  setTimeout(() => { selectionCopy.textContent = 'Copy paths'; }, 1600);
 });
 
-document.querySelector('#selectie-alles').addEventListener('click', () => {
-  zetSelectie(zichtbareKaarten().map((k) => k.pad), true);
+document.querySelector('#select-visible').addEventListener('click', () => {
+  setSelection(visibleCards().map((c) => c.path), true);
 });
 
-document.querySelector('#selectie-wis').addEventListener('click', () => {
-  zetSelectie([...gekozenPaden], false);
-  laatsteKeuze = null;
+document.querySelector('#select-clear').addEventListener('click', () => {
+  setSelection([...selectedPaths], false);
+  lastPicked = null;
 });
 
-detailSelecteer.addEventListener('click', () => {
-  zetSelectie([actiefPad], !gekozenPaden.has(actiefPad));
+detailSelect.addEventListener('click', () => {
+  setSelection([activePath], !selectedPaths.has(activePath));
 });
 
-/* ---------- materiaalfilter ---------- */
+/* ---------- material filter ---------- */
 
-function vinkKleur(hex) {
+function checkColor(hex) {
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
   return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.6 ? '#2b2a26' : '#ffffff';
 }
 
-function bouwKleurbalk(paletten) {
-  const houder = document.querySelector('#kleurbalk-stalen');
-  const wisknop = document.querySelector('#kleurbalk-wis');
+function buildFilterBar(palettes) {
+  const holder = document.querySelector('#filter-swatches');
+  const clearButton = document.querySelector('#filter-clear');
 
-  for (const palet of paletten) {
-    if (palet.kleuren.length === 0) continue;
+  for (const palette of palettes) {
+    if (palette.colors.length === 0) continue;
 
-    const groep = document.createElement('div');
-    groep.className = 'kleurgroep';
+    const group = document.createElement('div');
+    group.className = 'filter-group';
 
-    const label = span('kleurgroep-label', palet.naam);
-    label.title = palet.toelichting ?? palet.naam;
+    const label = span('filter-group-label', palette.name);
 
-    const knoppen = document.createElement('div');
-    knoppen.className = 'kleurgroep-stalen';
-    knoppen.setAttribute('role', 'group');
-    knoppen.setAttribute('aria-label', `Filter op materiaal — ${palet.naam}`);
+    const buttons = document.createElement('div');
+    buttons.className = 'filter-group-swatches';
+    buttons.setAttribute('role', 'group');
+    buttons.setAttribute('aria-label', `Filter by material — ${palette.name}`);
 
-    for (const kleur of palet.kleuren) {
-      materiaalInfo.set(kleur.sleutel, kleur);
+    for (const color of palette.colors) {
+      materialInfo.set(color.key, color);
 
-      const knop = document.createElement('button');
-      knop.type = 'button';
-      knop.className = palet.stijl === 'chip' ? 'staal chip' : 'staal';
-      knop.dataset.sleutel = kleur.sleutel;
-      knop.style.setProperty('--staal-kleur', kleur.hex);
-      knop.style.setProperty('--vink', vinkKleur(kleur.hex));
-      knop.setAttribute('aria-pressed', 'false');
-      knop.title = `${kleur.naam} ${kleur.hex} — ${kleur.aantal} modellen · materiaal "${kleur.bron}"`;
-      knop.setAttribute('aria-label', `${kleur.naam}, ${kleur.aantal} modellen`);
-      if (palet.stijl === 'chip') knop.append(kleur.naam);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = palette.style === 'chip' ? 'swatch chip' : 'swatch';
+      button.dataset.key = color.key;
+      button.style.setProperty('--swatch-color', color.hex);
+      button.style.setProperty('--check', checkColor(color.hex));
+      button.setAttribute('aria-pressed', 'false');
+      button.title = `${color.name} ${color.hex} — ${color.count} models · material "${color.source}"`;
+      button.setAttribute('aria-label', `${color.name}, ${color.count} models`);
+      if (palette.style === 'chip') button.append(color.name);
 
-      knop.addEventListener('click', () => {
-        const aan = !gekozenMaterialen.has(kleur.sleutel);
-        if (aan) gekozenMaterialen.add(kleur.sleutel);
-        else gekozenMaterialen.delete(kleur.sleutel);
-        knop.setAttribute('aria-pressed', String(aan));
-        wisknop.hidden = gekozenMaterialen.size === 0;
+      button.addEventListener('click', () => {
+        const on = !selectedMaterials.has(color.key);
+        if (on) selectedMaterials.add(color.key);
+        else selectedMaterials.delete(color.key);
+        button.setAttribute('aria-pressed', String(on));
+        clearButton.hidden = selectedMaterials.size === 0;
         filter();
       });
 
-      knoppen.append(knop);
-      stalen.push({ sleutel: kleur.sleutel, element: knop });
+      buttons.append(button);
+      swatches.push({ key: color.key, element: button });
     }
 
-    groep.append(label, knoppen);
-    houder.append(groep);
+    group.append(label, buttons);
+    holder.append(group);
   }
 
-  wisknop.addEventListener('click', () => {
-    gekozenMaterialen.clear();
-    for (const staal of stalen) staal.element.setAttribute('aria-pressed', 'false');
-    wisknop.hidden = true;
+  clearButton.addEventListener('click', () => {
+    selectedMaterials.clear();
+    for (const swatch of swatches) swatch.element.setAttribute('aria-pressed', 'false');
+    clearButton.hidden = true;
     filter();
   });
 }
 
-/* ---------- weergave & filter ---------- */
+/* ---------- view & filter ---------- */
 
-function pasWeergaveToe(id) {
-  huidigeWeergave = id;
-  for (const knop of schakelaar.children) {
-    knop.setAttribute('aria-selected', String(knop.dataset.weergave === id));
+function switchView(id) {
+  currentView = id;
+  for (const button of tabBar.children) {
+    button.setAttribute('aria-selected', String(button.dataset.view === id));
   }
-  paneel.setAttribute('aria-labelledby', `tab-${id}`);
+  panel.setAttribute('aria-labelledby', `tab-${id}`);
 
-  const uitleg = weergaven.get(id)?.uitleg;
-  weergaveUitleg.textContent = uitleg ?? '';
-  weergaveUitleg.hidden = !uitleg;
-
-  // Een staal dat in dit tabblad geen enkel model raakt, is een knop die alles
-  // wegfiltert. Verbergen dus — en zijn keuze intrekken, anders filtert een
-  // onzichtbare knop de hele pagina leeg.
-  const aanwezig = new Set(
-    kaarten.filter((k) => k.weergave === id).flatMap((k) => k.materialen),
+  // A swatch that touches no model in this tab is a button that filters
+  // everything away. Hide it, and clear its selection — otherwise a hidden
+  // button would empty the whole page.
+  const present = new Set(
+    cards.filter((c) => c.view === id).flatMap((c) => c.materials),
   );
-  for (const staal of stalen) {
-    staal.element.hidden = !aanwezig.has(staal.sleutel);
-    if (!staal.element.hidden) continue;
-    gekozenMaterialen.delete(staal.sleutel);
-    staal.element.setAttribute('aria-pressed', 'false');
+  for (const swatch of swatches) {
+    swatch.element.hidden = !present.has(swatch.key);
+    if (!swatch.element.hidden) continue;
+    selectedMaterials.delete(swatch.key);
+    swatch.element.setAttribute('aria-pressed', 'false');
   }
-  document.querySelector('#kleurbalk-wis').hidden = gekozenMaterialen.size === 0;
+  document.querySelector('#filter-clear').hidden = selectedMaterials.size === 0;
 
   filter();
 }
 
 function filter() {
-  const term = zoekveld.value.trim().toLowerCase();
-  let zichtbaar = 0;
+  let visible = 0;
 
-  for (const kaart of kaarten) {
-    const treffer =
-      (!term || kaart.zoektekst.includes(term)) &&
-      (gekozenMaterialen.size === 0 || kaart.materialen.some((m) => gekozenMaterialen.has(m)));
-    kaart.element.hidden = !treffer;
-    if (treffer && kaart.weergave === huidigeWeergave) zichtbaar++;
+  for (const card of cards) {
+    const match =
+      selectedMaterials.size === 0 || card.materials.some((m) => selectedMaterials.has(m));
+    card.element.hidden = !match;
+    if (match && card.view === currentView) visible++;
   }
 
-  for (const sectie of secties) {
-    const inWeergave = sectie.element.dataset.weergave === huidigeWeergave;
-    const aantal = sectie.kaarten.filter((k) => !k.element.hidden).length;
+  for (const section of sections) {
+    const inView = section.element.dataset.view === currentView;
+    const count = section.cards.filter((c) => !c.element.hidden).length;
 
-    sectie.element.hidden = !inWeergave || aantal === 0;
-    sectie.springitem.hidden = sectie.element.hidden;
-    sectie.aantalEl.textContent = `${aantal} model${aantal === 1 ? '' : 'len'}`;
-    sectie.springitem.querySelector('.telling').textContent = aantal;
+    section.element.hidden = !inView || count === 0;
+    section.jumpItem.hidden = section.element.hidden;
+    section.countEl.textContent = `${count} model${count === 1 ? '' : 's'}`;
+    section.jumpItem.querySelector('.badge').textContent = count;
   }
 
-  zoekTelling.textContent = term ? `${zichtbaar}` : '';
-  leegmelding.hidden = zichtbaar > 0;
+  emptyMessage.hidden = visible > 0;
 }
 
-/* ---------- opstarten ---------- */
+/* ---------- startup ---------- */
 
 async function start() {
-  const versie = document.querySelector('meta[name="catalogus-versie"]')?.content;
-  const respons = await fetch(versie ? `catalog/catalog.json?v=${versie}` : 'catalog/catalog.json');
-  if (!respons.ok) throw new Error(`catalog/catalog.json niet gevonden (${respons.status})`);
-  const data = await respons.json();
+  const version = document.querySelector('meta[name="catalog-version"]')?.content;
+  const response = await fetch(version ? `catalog/catalog.json?v=${version}` : 'catalog/catalog.json');
+  if (!response.ok) throw new Error(`catalog/catalog.json not found (${response.status})`);
+  const data = await response.json();
 
   if (Number.isFinite(data.budgetPerUnit)) budgetPerUnit = data.budgetPerUnit;
 
-  /* Een model draagt zijn familie, vorm en laag alleen als id; `facetten` zegt
-   * wat die ids betekenen. Hier worden ze leesbaar, zodat het detailvenster ze
-   * kan tonen en de zoektekst ze meeneemt — wie "binnenbocht" typt, hoort de
-   * binnenbochten te vinden. */
-  const titels = new Map(Object.entries(data.facetten ?? {}));
-  const titel = (id) => titels.get(id)?.titel ?? id;
+  /* A model carries its family, shape, and layer only as an id; `facets`
+   * says what those ids mean. Resolved here once so the detail view and
+   * cards can show them. */
+  const names = new Map(Object.entries(data.facets ?? {}));
+  const nameOf = (id) => names.get(id) ?? id;
 
-  for (const model of data.modellen) {
-    model.familieTitel = titel(model.familie);
-    model.familieKort = titels.get(model.familie)?.kort ?? model.familie;
-    model.vormTitel = titel(model.vorm);
-    model.laagTitel = model.laag === 'laag-geen' ? null : titel(model.laag);
-    model.zoektekst = [
-      model.naam,
-      model.familieTitel,
-      model.vormTitel,
-      model.laagTitel ?? '',
-      model.formaat ?? '',
-      ...model.kenmerken,
-      ...model.materialen.map((m) => m.split('|')[1].replace(/-/g, ' ')),
-    ].join(' ').toLowerCase();
+  for (const model of data.models) {
+    model.familyName = nameOf(model.family);
+    model.shapeName = nameOf(model.shape);
+    model.layerName = model.layer === 'layer-none' ? null : nameOf(model.layer);
   }
 
-  samenvatting.textContent =
-    `${data.totaal} modellen · ${data.weergaven[0].secties.length} onderdeelgroepen · ` +
-    `${data.paletten.reduce((som, p) => som + p.kleuren.length, 0)} materialen · ` +
-    // Alle maten hieronder staan in rastervakken; dit is de enige plek waar de
-    // brongrootte zelf staat, en zonder dat getal laadt niemand de .glb's op de
-    // juiste schaal in een engine.
-    `1 rastervak = ${getal.format(data.eenhedenPerCel ?? 1)} eenheden`;
+  buildFilterBar(data.palettes ?? []);
 
-  bouwKleurbalk(data.paletten ?? []);
+  for (const view of data.views) {
+    views.set(view.id, view);
 
-  for (const weergave of data.weergaven) {
-    weergaven.set(weergave.id, weergave);
-
-    const knop = document.createElement('button');
-    knop.type = 'button';
-    knop.role = 'tab';
-    knop.id = `tab-${weergave.id}`;
-    knop.dataset.weergave = weergave.id;
-    knop.setAttribute('aria-controls', 'paneel');
-    knop.setAttribute('aria-selected', 'false');
-    knop.textContent = weergave.label;
-    knop.addEventListener('click', () => {
-      pasWeergaveToe(weergave.id);
-      history.replaceState(null, '', `#${weergave.id}`);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.role = 'tab';
+    button.id = `tab-${view.id}`;
+    button.dataset.view = view.id;
+    button.setAttribute('aria-controls', 'panel');
+    button.setAttribute('aria-selected', 'false');
+    button.textContent = view.label;
+    button.addEventListener('click', () => {
+      switchView(view.id);
+      history.replaceState(null, '', `#${view.id}`);
       window.scrollTo({ top: 0 });
     });
-    schakelaar.append(knop);
+    tabBar.append(button);
 
-    for (const sectie of weergave.secties) {
-      const delen = maakSectie(weergave, sectie, weergave.facet);
-      const eigen = [];
+    for (const section of view.sections) {
+      const parts = makeSection(view, section, view.facet);
+      const own = [];
 
-      for (const index of sectie.modellen) {
-        const model = data.modellen[index];
-        const item = maakKaart(model, weergave.id, {
-          kleur: sectie.kleur,
-          merk: model.familieKort,
+      for (const index of section.models) {
+        const model = data.models[index];
+        const item = makeCard(model, view.id, {
+          color: section.color,
+          brand: model.familyName,
         });
-        delen.rooster.append(item.element);
-        eigen.push(item);
+        parts.grid.append(item.element);
+        own.push(item);
       }
 
-      paneel.append(delen.element);
-      secties.push({
-        element: delen.element,
-        kaarten: eigen,
-        aantalEl: delen.aantalEl,
-        springitem: maakSpringitem(delen.element, sectie.kort, sectie.modellen.length, sectie.kleur),
+      panel.append(parts.element);
+      sections.push({
+        element: parts.element,
+        cards: own,
+        countEl: parts.countEl,
+        jumpItem: makeJumpItem(parts.element, section.name, section.models.length, section.color),
       });
     }
   }
 
-  zoekveld.addEventListener('input', filter);
-
-  const anker = location.hash.slice(1);
-  const doelSectie = anker ? document.getElementById(anker) : null;
-  pasWeergaveToe(doelSectie?.dataset.weergave ?? (weergaven.has(anker) ? anker : data.weergaven[0].id));
-  doelSectie?.scrollIntoView();
+  const anchor = location.hash.slice(1);
+  const targetSection = anchor ? document.getElementById(anchor) : null;
+  switchView(targetSection?.dataset.view ?? (views.has(anchor) ? anchor : data.views[0].id));
+  targetSection?.scrollIntoView();
 }
 
-start().catch((fout) => {
-  samenvatting.textContent = `Catalogus kon niet worden geladen: ${fout.message}`;
-  console.error(fout);
+start().catch((error) => {
+  summary.hidden = false;
+  summary.textContent = `Failed to load catalog: ${error.message}`;
+  console.error(error);
 });

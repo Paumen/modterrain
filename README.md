@@ -1,108 +1,91 @@
-# Modulair terrein — 3D-catalogus
+# Modular Terrain — 3D Catalog
 
-Een bladerbare catalogus van 394 modellen uit een modulair terreinpakket:
-kliffen, wanden, keermuren, paden, gras, zand, water, een grot en losse props.
-Alles draait in de browser, zonder build-stap en zonder server — `index.html`
-openen is genoeg.
+A browsable catalog of 394 models from a modular terrain pack: cliffs,
+walls, retaining walls, paths, grass, sand, water, a cave, and standalone
+props. Everything runs in the browser, no build step and no server —
+opening `index.html` is enough.
 
-Opgezet naar het voorbeeld van de 3D-catalogus van
-[Taaleiland](https://github.com/Paumen/Taalei): dezelfde tabbladen, dezelfde
-zoekbalk, hetzelfde detailvenster en dezelfde selectiebalk. Het verschil zit in
-de bron. Daar beschrijft een handgeschreven manifest welke kits er zijn; hier
-kwam de pack zonder ook maar één regel metadata binnen en is de hele indeling
-afgeleid uit de bestandsnamen.
+The pack arrived with zero metadata, so the entire classification is derived
+from filenames.
 
-## De catalogus gebruiken
+## Using the catalog
 
-**Zes tabbladen** kijken elk anders naar dezelfde 394 modellen:
+**Four tabs** each look at the same 394 models differently:
 
-| Tabblad | Deelt in op | Waarvoor |
+| Tab | Groups by | For |
 | --- | --- | --- |
-| Onderdelen | familie | "laat me alle keermuren zien" |
-| Vormen | binnenbocht, buitenbocht, esse, recht, helling… | "welke stukken maken deze bocht af?" |
-| Lagen | onder, basis, midden, boven | "wat stapelt er op deze rij?" |
-| Formaten | rastermaat uit de naam | "wat past er in dit gat van 3 × 3?" |
-| Grot | de ondergrondse deelverzameling | een grot bouwen |
-| Kust | water, zand, steigers en bruggen | een kustlijn bouwen |
+| Parts | family | "show me all the retaining walls" |
+| Shapes | inner curve, outer curve, s-curve, straight, incline… | "which pieces complete this curve?" |
+| Layers | under, base, mid, top | "what stacks onto this row?" |
+| Sizes | grid footprint from the name | "what fits this 3 × 3 gap?" |
 
-Grot en Kust zijn geen aparte kit: hun stukken staan ook in de vier andere
-tabbladen.
+Beyond that:
 
-Verder:
+- **Filter by material** with the chips under the header. Left: what a piece
+  is made of. Right: the faces the pack marks as hidden — the sides that sit
+  against a neighboring tile.
+- **Click a tile** to open the model full-size, rotatable, with its
+  dimensions, triangle count, materials, and the *Copy path* /
+  *Download .glb* buttons.
+- **Select multiple pieces** with the checkbox in a tile's top-left corner;
+  shift-click extends the selection across whatever's currently visible. The
+  bar at the bottom copies every selected path to the clipboard at once.
+  Selection is keyed by file, not by tile: checking the same model in two
+  tabs still yields one path.
+- **Deep links** work: `#shapes` opens a tab, `#parts-retaining-wall` jumps
+  to a section.
 
-- **Zoeken** op naam, familie, vorm, laag, rastermaat, kenmerk of materiaal.
-  "binnenbocht", "getrapt", "3 × 3" en "hout" doen allemaal iets.
-- **Filteren op materiaal** met de chips onder de zoekbalk. Links waar een stuk
-  van gemaakt is, rechts de vlakken die de pack als verborgen markeert — de
-  zijden die tegen een buurtegel aan komen te liggen.
-- **Een tegel aanklikken** geeft het model groot, draaibaar, met zijn maten,
-  driehoekstelling, materialen en de knoppen *Kopieer pad* en *Download .glb*.
-- **Meerdere stukken selecteren** met het vinkje linksboven op een tegel;
-  shift-klik trekt de selectie door over alles wat op dat moment in beeld staat.
-  De balk onderin kopieert alle paden in één keer naar het klembord. De selectie
-  hangt aan het bestand, niet aan de tegel: hetzelfde model in twee tabbladen
-  aanvinken levert één pad op.
-- **Deeplinks** werken: `#vormen` opent een tabblad, `#onderdelen-keermuur`
-  springt naar een sectie.
-
-## Wat er in de repo staat
+## What's in the repo
 
 ```
-index.html                 de pagina zelf
-catalog/catalog.css        opmaak
-catalog/catalog.js         de catalogus in de browser
-catalog/catalog.json       gegenereerd; alles wat de pagina weet
-models/*.glb               de 394 modellen, ongewijzigd zoals aangeleverd
-vendor/model-viewer.min.js Google's <model-viewer> (BSD-3-Clause)
-tools/build-catalog.mjs    bouwt catalog.json vanuit models/
-tools/taxonomie.mjs        de indeling: families, vormen, lagen, formaten
-tools/glb.mjs              GLB lezen en opmeten
-HERKOMST.md                waar de pack vandaan komt en wat eraan mankeert
+index.html                 the page itself
+catalog/catalog.css        styling
+catalog/catalog.js         the catalog in the browser
+catalog/catalog.json       generated; everything the page knows
+models/*.glb                the 394 models, unchanged as delivered
+vendor/model-viewer.min.js  Google's <model-viewer> (BSD-3-Clause)
+tools/build-catalog.mjs    builds catalog.json from models/
+tools/taxonomy.mjs         the classification: families, shapes, layers, sizes
+tools/glb.mjs               reading and measuring GLB files
+PROVENANCE.md               where the pack comes from and what's wrong with it
 ```
 
-## De catalogus opnieuw bouwen
+## Rebuilding the catalog
 
 ```sh
 node tools/build-catalog.mjs
 ```
 
-Leest elke `.glb` in `models/`, meet hem op, leidt zijn plaats in de indeling af
-uit zijn naam, en schrijft `catalog/catalog.json` plus een verse versiehash in
-`index.html`. Geen dependencies; Node 18 of nieuwer.
+Reads every `.glb` in `models/`, measures it, derives its place in the
+classification from its filename, and writes `catalog/catalog.json` plus a
+fresh version hash into `index.html`. No dependencies; Node 18 or newer.
 
-De build is ook de controle op zichzelf. Hij klaagt over modellen die in geen
-enkel tabblad terechtkomen, over materialen zonder Nederlandse naam, over
-modellen die ver naast hun rastermaat vallen, over ontbrekende texturen en over
-modellen boven het driehoekenbudget.
+The build doubles as its own check. It warns about models that land in no
+tab, materials without a cleaned-up name, models that fall far outside their
+named grid size, missing textures, and models above the triangle budget.
 
-### De indeling aanpassen
+### Adjusting the classification
 
-Alles wat de catalogus over de kit "weet" staat in `tools/taxonomie.mjs`: de
-families met hun uitleg en kleur, de vormen met hun patroon, de lagen, de
-formaatgroepen, de kenmerken en de tabbladen. Eén tabel per facet, regels van
-boven naar beneden, de eerste die past wint. Een verkeerd ingedeeld model is
-daar op één plek recht te zetten; daarna `node tools/build-catalog.mjs`.
+Everything the catalog "knows" about the kit lives in `tools/taxonomy.mjs`:
+the families with their color, the shapes with their pattern, the layers,
+the size groups, the traits, and the tabs. One table per facet, rules
+top to bottom, first match wins. A mis-classified model is a one-line fix
+there; then run `node tools/build-catalog.mjs` again.
 
-## Waar je op moet letten
+## What to watch out for
 
-De pack kwam **zonder licentie** binnen en de maker is niet bekend. Ga er niet
-vanuit dat deze modellen vrij te gebruiken zijn — zie
-[HERKOMST.md](HERKOMST.md).
+The pack arrived **with no license**, and the author is unknown. Don't
+assume these models are free to use — see [PROVENANCE.md](PROVENANCE.md).
 
-Daar staat ook wat er tijdens de FBX-conversie is scheefgelopen: de
-materiaalkleuren staan in de verkeerde kleurruimte (de catalogus rekent ze bij
-het tonen terug, de bestanden blijven zoals ze zijn), en 67 modellen verwijzen
-naar texturen die niet in de pack zitten.
+That file also covers what went sideways during the FBX conversion: the
+material colors are in the wrong color space (the catalog corrects them at
+display time; the files stay as delivered), and 67 models reference
+textures that aren't in the pack.
 
-Eén rastervak is **100 eenheden** in de bronbestanden; alle maten in de
-catalogus staan in rastervakken.
+One grid cell is **100 units** in the source files; every dimension in the
+catalog is expressed in grid cells.
 
-## Publiceren
+## Publishing
 
-`.github/workflows/static.yml` zet de repo bij elke push op GitHub Pages, maar
-**Pages moet eerst één keer met de hand aan**: **Settings → Pages → Source** op
-*GitHub Actions*. De workflow kan dat niet zelf — de GITHUB_TOKEN mag geen
-Pages-site aanmaken — dus tot die klik faalt elke run binnen tien seconden op
-"Get Pages site failed".
-
-Daarna staat de catalogus op <https://paumen.github.io/modterrain/>.
+`.github/workflows/static.yml` deploys the repo to GitHub Pages on every
+push. Set **Settings → Pages → Source** to *GitHub Actions* first.

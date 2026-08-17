@@ -1,396 +1,381 @@
 /**
- * Bouwt catalog/catalog.json vanuit de .glb's in models/.
+ * Builds catalog/catalog.json from the .glb files in models/.
  *
- * Draai vanuit de repo-root:  node tools/build-catalog.mjs
+ * Run from the repo root:  node tools/build-catalog.mjs
  *
- * De catalogus wordt volledig afgeleid van wat er écht op schijf staat, zodat
- * hij niet uit de pas kan lopen met de modellen. Per model worden de
- * bestandsgrootte, de bounding box, de driehoekstelling en de gebruikte
- * materialen uit de .glb gelezen; de indeling komt uit tools/taxonomie.mjs.
+ * The catalog is derived entirely from what's actually on disk, so it can
+ * never drift from the models. For each model it reads file size, bounding
+ * box, triangle count, and materials from the .glb itself; the
+ * classification comes from tools/taxonomy.mjs.
  */
 
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { leesGlb, meetScene, driehoekenPerUnit, BUDGET_PER_UNIT, EENHEDEN_PER_CEL } from './glb.mjs';
+import { readGlb, measureScene, trianglesPerUnit, BUDGET_PER_UNIT, UNITS_PER_CELL } from './glb.mjs';
 import {
-  FAMILIES, VORMEN, LAGEN, FORMAATGROEPEN, TABBLADEN,
-  bepaalFamilie, bepaalVorm, bepaalLaag, bepaalFormaat, bepaalFormaatgroep,
-  bepaalKenmerken, bepaalVariant, leesbaar,
-} from './taxonomie.mjs';
+  FAMILIES, SHAPES, LAYERS, SIZE_GROUPS, TABS,
+  determineFamily, determineShape, determineLayer, determineSize, determineSizeGroup,
+  determineTraits, determineVariant, readableName,
+} from './taxonomy.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const MODELLEN_DIR = join(ROOT, 'models');
-const CATALOGUS_DIR = join(ROOT, 'catalog');
+const MODELS_DIR = join(ROOT, 'models');
+const CATALOG_DIR = join(ROOT, 'catalog');
 
-/* -- materialen -----------------------------------------------------------
- * De pack heeft geen texture-atlas: elk materiaal is één vlakke kleur in
- * `baseColorFactor`. Dat is precies genoeg om op te filteren, want de kleur
- * ís de betekenis — gras is groen, klifwand is beige, verborgen vlakken zijn
- * bijna wit.
+/* -- materials ------------------------------------------------------------
+ * The pack has no texture atlas: every material is one flat color in
+ * `baseColorFactor`. That's plenty to filter by — color is the whole point,
+ * grass is green, cliff wall is beige, hidden faces are near-white.
  */
 
 /**
- * De Nederlandse naam per materiaal uit de pack. Wat hier niet staat komt
- * onvertaald door, met een waarschuwing: een nieuw materiaal is iets om te
- * benoemen, niet om stilletjes als Engelse string in de filterbalk te zetten.
+ * Cleaned-up display name per material in the pack, listed explicitly so a
+ * material this build has never seen before shows up as a warning instead of
+ * passing through silently. Most of the source names are already clean
+ * English and map to themselves; the signs get their size turned into an
+ * aspect ratio.
  */
-const MATERIAALNAMEN = {
-  'Cliff Face': 'Klifwand',
-  Grass: 'Gras',
-  Dirt: 'Aarde',
-  'Rock Lightest': 'Steen lichtst',
-  'Rock Light': 'Steen licht',
-  'Rock Medium': 'Steen midden',
-  'Stone Walkway': 'Steenpad',
-  'Wood Light': 'Hout licht',
-  'Wood Light End': 'Hout licht (kopse kant)',
-  'Wood Medium': 'Hout midden',
-  'Wood Dark': 'Hout donker',
-  Rope: 'Touw',
-  Iron: 'IJzer',
-  Ice: 'IJs',
-  'Water River': 'Rivierwater',
-  'Water Lake': 'Meerwater',
-  Waterfall: 'Waterval',
-  'Waterfall Crest': 'Watervalkruin',
-  'Sign 4x1': 'Bord 4 : 1',
-  'Sign 4x3': 'Bord 4 : 3',
-  'Sign 8x3': 'Bord 8 : 3',
-  'Sign 16x9': 'Bord 16 : 9',
-  Hidden: 'Verborgen',
-  'Hidden Red': 'Verborgen rood',
-  'Hidden Orange': 'Verborgen oranje',
-  'Hidden Yellow': 'Verborgen geel',
-  'Hidden Green': 'Verborgen groen',
-  'Hidden Blue': 'Verborgen blauw',
-  'Hidden Violet': 'Verborgen violet',
-  'Hidden Pink': 'Verborgen roze',
+const MATERIAL_NAMES = {
+  'Cliff Face': 'Cliff Face',
+  Grass: 'Grass',
+  Dirt: 'Dirt',
+  'Rock Lightest': 'Rock Lightest',
+  'Rock Light': 'Rock Light',
+  'Rock Medium': 'Rock Medium',
+  'Stone Walkway': 'Stone Walkway',
+  'Wood Light': 'Wood Light',
+  'Wood Light End': 'Wood Light End',
+  'Wood Medium': 'Wood Medium',
+  'Wood Dark': 'Wood Dark',
+  Rope: 'Rope',
+  Iron: 'Iron',
+  Ice: 'Ice',
+  'Water River': 'Water River',
+  'Water Lake': 'Water Lake',
+  Waterfall: 'Waterfall',
+  'Waterfall Crest': 'Waterfall Crest',
+  'Sign 4x1': 'Sign 4:1',
+  'Sign 4x3': 'Sign 4:3',
+  'Sign 8x3': 'Sign 8:3',
+  'Sign 16x9': 'Sign 16:9',
 };
 
 /**
- * Twee groepen in de filterbalk, want het zijn twee soorten kleur. De
- * zichtbare materialen zeggen waar een stuk van gemaakt is; de `Hidden`-reeks
- * markeert vlakken die de pack als verborgen aanmerkt — de zijden die tegen
- * een buurtegel aan komen te liggen. Wat de kleurvarianten daarbinnen
- * onderscheidt zegt de pack zelf niet; ze zijn hier bij elkaar gezet zodat ze
- * de materiaalgroep niet vervuilen.
+ * Two groups in the filter bar, because they're two different kinds of
+ * color. The visible materials say what a piece is made of; the `Hidden`
+ * series marks faces the pack itself flags as hidden — the sides that sit
+ * against a neighboring tile. What distinguishes the color variants within
+ * that group isn't explained by the pack; they're kept separate here so they
+ * don't dilute the material group.
  */
-const VERBORGEN = /^Hidden/;
+const HIDDEN = /^Hidden/;
 
-const PALETTEN = [
+const PALETTES = [
   {
-    id: 'materiaal',
-    naam: 'Materiaal',
-    toelichting: 'De zichtbare vlakke kleuren van de pack.',
-    // Met naam erbij, want deze groep bevat materialen die dezelfde kleur delen:
-    // rivier, meer, waterval en watervalkruin zijn alle vier hetzelfde cyaan, en
-    // vier identieke blokjes naast elkaar zijn geen filter maar een raadsel.
-    stijl: 'chip',
+    id: 'material',
+    name: 'Material',
+    // Labeled, because this group has materials that share a color: river,
+    // lake, waterfall, and waterfall crest are all the same cyan, and four
+    // identical swatches side by side is a puzzle, not a filter.
+    style: 'chip',
   },
   {
-    id: 'verborgen',
-    naam: 'Verborgen vlakken',
-    toelichting: 'Vlakken die de pack als "Hidden" markeert: de zijden die tegen een buurtegel aan liggen.',
-    // Hier is de kleur de hele betekenis — "Verborgen rood" heet zo omdat hij
-    // rood is — dus is het blokje zelf het label. Scheelt een rij in de balk.
-    stijl: 'staal',
+    id: 'hidden',
+    name: 'Hidden Faces',
+    // Here the color is the whole meaning — "Hidden Red" is named for being
+    // red — so the swatch itself is the label. Saves a row in the bar.
+    style: 'swatch',
   },
 ];
 
 /**
- * De materiaalkleur zoals de maker hem heeft ingesteld: `baseColorFactor` maal
- * 255, zonder omrekening.
+ * The material color as the author set it: `baseColorFactor` times 255, with
+ * no conversion.
  *
- * Dat is niet wat de glTF-spec zegt — daar staat dat veld in lineaire ruimte —
- * maar het is wel wat er in de bestanden staat. De FBX-export heeft de
- * sRGB-waarden uit de bron ongewijzigd in dat lineaire veld gezet, dus
- * `Grass` = 0,388 / 0,729 / 0,180 is het bekende #63ba2e en niet het pastelgroen
- * dat je krijgt als je het als lineair leest. De catalogus rekent dat bij het
- * tonen terug (zie `herstelKleurruimte` in catalog/catalog.js); hier staan de
- * kleuren waar dat op uitkomt.
+ * That's not what the glTF spec says — it calls that field linear — but it
+ * is what's in the files. The FBX export wrote the source sRGB values into
+ * that linear field unchanged, so `Grass` = 0.388 / 0.729 / 0.180 is the
+ * familiar #63ba2e and not the pastel green you'd get reading it as linear.
+ * The catalog corrects for that at display time (see `restoreColorSpace` in
+ * catalog/catalog.js); this is the color those values resolve to.
  */
-function naarHex([r, g, b] = [1, 1, 1]) {
-  const kanaal = (v) =>
+function toHex([r, g, b] = [1, 1, 1]) {
+  const channel = (v) =>
     Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, '0');
-  return `#${kanaal(r)}${kanaal(g)}${kanaal(b)}`;
+  return `#${channel(r)}${channel(g)}${channel(b)}`;
 }
 
-const sleutelVan = (naam) =>
-  naam.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const slugify = (name) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-/* -- versie ---------------------------------------------------------------
- * GitHub Pages serveert met `cache-control: max-age=600`. Zonder versie in de
- * URL kijk je na een deploy dus tot tien minuten naar oude CSS of JS, of erger:
- * naar nieuwe HTML met oude JS. De hash hangt aan de inhoud, dus hij verandert
- * precies wanneer er iets verandert.
+/* -- version ---------------------------------------------------------------
+ * GitHub Pages serves with `cache-control: max-age=600`. Without a version in
+ * the URL you'd look at stale CSS or JS for up to ten minutes after a
+ * deploy, or worse: new HTML with old JS. The hash is derived from content,
+ * so it changes exactly when something changes.
  */
-function schrijfVersie() {
-  const inhoud = ['catalog.json', 'catalog.css', 'catalog.js']
-    .map((naam) => readFileSync(join(CATALOGUS_DIR, naam)))
+function writeVersion() {
+  const content = ['catalog.json', 'catalog.css', 'catalog.js']
+    .map((name) => readFileSync(join(CATALOG_DIR, name)))
     .join('');
-  const versie = createHash('sha256').update(inhoud).digest('hex').slice(0, 10);
+  const version = createHash('sha256').update(content).digest('hex').slice(0, 10);
 
-  const pad = join(ROOT, 'index.html');
-  const html = readFileSync(pad, 'utf8')
-    .replace(/href="catalog\/catalog\.css(?:\?v=[a-f0-9]+)?"/, `href="catalog/catalog.css?v=${versie}"`)
-    .replace(/src="catalog\/catalog\.js(?:\?v=[a-f0-9]+)?"/, `src="catalog/catalog.js?v=${versie}"`)
-    .replace(/<meta name="catalogus-versie" content="[^"]*">/, `<meta name="catalogus-versie" content="${versie}">`);
+  const path = join(ROOT, 'index.html');
+  const html = readFileSync(path, 'utf8')
+    .replace(/href="catalog\/catalog\.css(?:\?v=[a-f0-9]+)?"/, `href="catalog/catalog.css?v=${version}"`)
+    .replace(/src="catalog\/catalog\.js(?:\?v=[a-f0-9]+)?"/, `src="catalog/catalog.js?v=${version}"`)
+    .replace(/<meta name="catalog-version" content="[^"]*">/, `<meta name="catalog-version" content="${version}">`);
 
-  writeFileSync(pad, html);
-  console.log(`versie ${versie} → index.html`);
+  writeFileSync(path, html);
+  console.log(`version ${version} → index.html`);
 }
 
-/* -- modellen inlezen ------------------------------------------------------ */
+/* -- reading the models ----------------------------------------------------- */
 
-const bestanden = readdirSync(MODELLEN_DIR).filter((naam) => naam.endsWith('.glb')).sort();
-if (bestanden.length === 0) throw new Error('geen .glb-bestanden in models/');
+const files = readdirSync(MODELS_DIR).filter((name) => name.endsWith('.glb')).sort();
+if (files.length === 0) throw new Error('no .glb files in models/');
 
-/** materiaalsleutel → { sleutel, palet, naam, bron, hex, aantal } */
-const materialen = new Map();
-const onbekendeMaterialen = new Set();
+/** material key → { key, palette, name, source, hex, count } */
+const materials = new Map();
+const unknownMaterials = new Set();
 
-const modellen = bestanden.map((bestand) => {
-  const id = bestand.replace(/\.glb$/, '');
-  const glb = leesGlb(join(MODELLEN_DIR, bestand));
-  const maat = meetScene(glb);
+const models = files.map((file) => {
+  const id = file.replace(/\.glb$/, '');
+  const glb = readGlb(join(MODELS_DIR, file));
+  const measured = measureScene(glb);
 
-  const gebruikt = [];
-  for (const index of maat.materiaalIndexen) {
-    const bron = glb.json.materials?.[index]?.name ?? `materiaal ${index}`;
-    if (!(bron in MATERIAALNAMEN)) onbekendeMaterialen.add(bron);
+  const used = [];
+  for (const index of measured.materialIndices) {
+    const source = glb.json.materials?.[index]?.name ?? `material ${index}`;
+    if (!(source in MATERIAL_NAMES) && !HIDDEN.test(source)) unknownMaterials.add(source);
 
-    const palet = VERBORGEN.test(bron) ? 'verborgen' : 'materiaal';
-    const sleutel = `${palet}|${sleutelVan(bron)}`;
-    if (!materialen.has(sleutel)) {
-      materialen.set(sleutel, {
-        sleutel,
-        palet,
-        naam: MATERIAALNAMEN[bron] ?? bron,
-        bron,
-        hex: naarHex(glb.json.materials?.[index]?.pbrMetallicRoughness?.baseColorFactor),
-        aantal: 0,
+    const palette = HIDDEN.test(source) ? 'hidden' : 'material';
+    const key = `${palette}|${slugify(source)}`;
+    if (!materials.has(key)) {
+      materials.set(key, {
+        key,
+        palette,
+        name: MATERIAL_NAMES[source] ?? source,
+        source,
+        hex: toHex(glb.json.materials?.[index]?.pbrMetallicRoughness?.baseColorFactor),
+        count: 0,
       });
     }
-    if (!gebruikt.includes(sleutel)) gebruikt.push(sleutel);
+    if (!used.includes(key)) used.push(key);
   }
-  for (const sleutel of gebruikt) materialen.get(sleutel).aantal++;
+  for (const key of used) materials.get(key).count++;
 
-  /* Een handvol modellen — het hout, het touw en de borden — draagt nog een
-   * verwijzing naar een .png die naast de .glb had moeten staan maar er niet
-   * is: de FBX-export heeft het absolute pad op de computer van de maker
-   * meegeschreven. De viewer valt dan terug op de vlakke materiaalkleur, dus
-   * het model is gewoon te zien; alleen de houtnerf ontbreekt. Dat is een
-   * eigenschap van de pack en geen fout van de catalogus, dus het staat erin
-   * in plaats van dat het stilletjes wordt weggepoetst. */
-  const ontbrekendeTexturen = (glb.json.images ?? [])
-    .map((afbeelding) => afbeelding.uri)
+  const size = determineSize(id);
+
+  /* A handful of models — the wood, the rope, and the signs — still carry a
+   * reference to a .png that should have sat next to the .glb but isn't
+   * there: the FBX export baked in the absolute path from the author's
+   * machine. The viewer falls back to the flat material color, so the model
+   * still shows; only the wood grain is missing. That's a property of the
+   * pack, not a bug in the catalog, so it's surfaced instead of silently
+   * hidden. */
+  const missingTextures = (glb.json.images ?? [])
+    .map((image) => image.uri)
     .filter((uri) => uri && !uri.startsWith('data:'))
     .map((uri) => decodeURIComponent(uri).split(/[\\/]/).pop());
 
-  const formaat = bepaalFormaat(id);
-
   return {
     id,
-    naam: leesbaar(id),
-    bestand: `models/${bestand}`,
-    familie: bepaalFamilie(id).id,
-    vorm: bepaalVorm(id).id,
-    laag: bepaalLaag(id).id,
-    formaat: formaat?.label ?? null,
-    formaatgroep: bepaalFormaatgroep(formaat).id,
-    kenmerken: bepaalKenmerken(id),
-    variant: bepaalVariant(id),
-    wdh: maat.wdh,
-    // De pack staat bewust niet op de oorsprong: de oorsprong van elk stuk ís
-    // zijn rastervak. Waar het model daar precies omheen ligt — of het
-    // overhangt, of het onder nul zakt — is met deze twee hoeken na te gaan.
-    min: maat.min,
-    max: maat.max,
-    driehoeken: maat.driehoeken,
-    driehoekenPerUnit: driehoekenPerUnit(maat.driehoeken, maat.wdh),
-    calls: maat.calls,
+    name: readableName(id),
+    file: `models/${file}`,
+    family: determineFamily(id).id,
+    shape: determineShape(id).id,
+    layer: determineLayer(id).id,
+    size: size?.label ?? null,
+    sizeGroup: determineSizeGroup(size).id,
+    traits: determineTraits(id),
+    variant: determineVariant(id),
+    dwh: measured.dwh,
+    // This pack is deliberately not centered on the origin: each piece's
+    // origin IS its grid cell. Where it sits around that — whether it
+    // overhangs, whether it dips below zero — is what these two corners are
+    // for.
+    min: measured.min,
+    max: measured.max,
+    triangles: measured.triangles,
+    trianglesPerUnit: trianglesPerUnit(measured.triangles, measured.dwh),
+    calls: measured.calls,
     bytes: glb.bytes,
-    materialen: gebruikt.sort(),
-    ontbrekendeTexturen: [...new Set(ontbrekendeTexturen)],
+    materials: used.sort(),
+    missingTextures: [...new Set(missingTextures)],
   };
 });
 
-/* -- rastermaat toetsen ----------------------------------------------------
- * De hele catalogus rekent in rastervakken van EENHEDEN_PER_CEL, en dat getal
- * is uit de bestanden afgeleid, niet door de pack verteld. Deze toets houdt die
- * afleiding eerlijk: de langste zijde die we meten hoort in de buurt te liggen
- * van de langste zijde uit de naam.
+/* -- checking the grid size --------------------------------------------
+ * The whole catalog measures in grid cells of UNITS_PER_CELL, and that
+ * number was derived from the files, not stated by the pack. This check
+ * keeps that derivation honest: the longest side measured should be close
+ * to the longest side named.
  *
- * De marge is met opzet ruim, want binnen die marge is van alles normaal: een
- * hekpaal van 1 × 1 is maar een achtste cel dik, en de zijstukken van een
- * waterval hangen een cel buiten hun vak. Wat hier doorheen komt is dus geen
- * scheve tegel maar een schaal die niet klopt — een pack op centimeters in
- * plaats van decimeters valt er meteen uit.
+ * The margin is deliberately wide, because plenty is normal within it: a
+ * fence post named 1 × 1 is only an eighth of a cell thick, and a
+ * waterfall's side pieces hang a cell outside their footprint. What falls
+ * outside this margin isn't a skewed tile, it's a scale that doesn't match —
+ * a pack in centimeters instead of decimeters would fail immediately.
  */
-const scheef = modellen
+const skewed = models
   .map((model) => {
-    const treffers = [...model.id.matchAll(/(\d+)x(\d+)/g)];
-    if (treffers.length === 0) return null;
-    const [, b, d] = treffers.at(-1);
-    const vak = Math.max(Number(b), Number(d));
-    const gemeten = Math.max(model.wdh[0], model.wdh[1]);
-    const verhouding = gemeten / vak;
-    return verhouding > 2.5 || verhouding < 0.05 ? { model, vak, gemeten, verhouding } : null;
+    const matches = [...model.id.matchAll(/(\d+)x(\d+)/g)];
+    if (matches.length === 0) return null;
+    const [, w, d] = matches.at(-1);
+    const cell = Math.max(Number(w), Number(d));
+    const measured = Math.max(model.dwh[0], model.dwh[1]);
+    const ratio = measured / cell;
+    return ratio > 2.5 || ratio < 0.05 ? { model, cell, measured, ratio } : null;
   })
   .filter(Boolean)
-  .sort((a, b) => b.verhouding - a.verhouding);
+  .sort((a, b) => b.ratio - a.ratio);
 
-/* -- weergaven opbouwen ----------------------------------------------------
- * Elk tabblad is een lijst secties, en elke sectie een lijst indexen in
- * `modellen`. Indexen en niet hele records, want een model staat in vier
- * tabbladen tegelijk: uitgeschreven zou de catalogus vier keer zo groot zijn.
+/* -- building the views -----------------------------------------------
+ * Each tab is a list of sections, and each section a list of indices into
+ * `models`. Indices, not full records, because one model shows up in four
+ * tabs at once: written out in full, the catalog would be four times the
+ * size.
  */
 
-/* De ids van alle facetten samen moeten uniek zijn: catalog.json zet ze in één
- * tabel en de browser zoekt er de titel bij op zonder te weten uit welk facet
- * een id komt. Een dubbele id zou daar stilletjes de verkeerde naam opleveren
- * — een model in de laag "Basis" dat zich "Basis — kliffen" noemt. */
-const alleIds = [...FAMILIES, ...VORMEN, ...LAGEN, ...FORMAATGROEPEN].map((g) => g.id);
-const dubbel = alleIds.filter((id, i) => alleIds.indexOf(id) !== i);
-if (dubbel.length) throw new Error(`dubbele facet-id in tools/taxonomie.mjs: ${[...new Set(dubbel)].join(', ')}`);
-
-const FACETTEN = {
-  familie: { lijst: FAMILIES, veld: 'familie' },
-  vorm: { lijst: VORMEN, veld: 'vorm' },
-  laag: { lijst: LAGEN, veld: 'laag' },
-  formaat: { lijst: FORMAATGROEPEN, veld: 'formaatgroep' },
+const FACETS = {
+  family: { list: FAMILIES, field: 'family' },
+  shape: { list: SHAPES, field: 'shape' },
+  layer: { list: LAYERS, field: 'layer' },
+  size: { list: SIZE_GROUPS, field: 'sizeGroup' },
 };
 
-const weergaven = TABBLADEN.map((tab) => {
-  const { lijst, veld } = FACETTEN[tab.facet];
-  const secties = [];
+/* All facet ids together must be unique: catalog.json puts them in one table
+ * and the browser looks up a name without knowing which facet an id came
+ * from. A collision would silently produce the wrong name — a model in the
+ * "Base" layer calling itself something a family already claims. */
+const allIds = [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS].map((g) => g.id);
+const duplicateIds = allIds.filter((id, i) => allIds.indexOf(id) !== i);
+if (duplicateIds.length) throw new Error(`duplicate facet id in tools/taxonomy.mjs: ${[...new Set(duplicateIds)].join(', ')}`);
 
-  for (const groep of lijst) {
-    if (tab.families && !tab.families.includes(groep.id)) continue;
+const views = TABS.map((tab) => {
+  const { list, field } = FACETS[tab.facet];
+  const sections = [];
 
-    const indexen = modellen
+  for (const group of list) {
+    if (tab.families && !tab.families.includes(group.id)) continue;
+
+    const indices = models
       .map((model, index) => [model, index])
-      .filter(([model]) => model[veld] === groep.id && (!tab.filter || tab.filter(model.id)))
+      .filter(([model]) => model[field] === group.id && (!tab.filter || tab.filter(model.id)))
       .map(([, index]) => index);
 
-    if (indexen.length === 0) continue;
+    if (indices.length === 0) continue;
 
-    secties.push({
-      id: `${tab.id}-${groep.id}`,
-      titel: groep.titel,
-      kort: groep.kort ?? groep.titel,
-      kleur: groep.kleur,
-      // De uitleg staat bij de familie en is daar geschreven voor het tabblad
-      // Onderdelen; in Grot en Kust zou hij de sectie herhalen die er al staat.
-      uitleg: tab.families ? null : groep.uitleg ?? null,
-      modellen: indexen,
+    sections.push({
+      id: `${tab.id}-${group.id}`,
+      name: group.name,
+      color: group.color,
+      models: indices,
     });
   }
 
   return {
     id: tab.id,
     label: tab.label,
-    // Waarop dit tabblad indeelt. De catalogus in de browser gebruikt het om te
-    // weten of het familielabel op een kaart een herhaling is van de sectiekop.
+    // What this tab groups by. The browser uses it to know whether the
+    // family label on a card would just repeat the section header.
     facet: tab.facet,
-    uitleg: tab.uitleg ?? null,
-    aantal: new Set(secties.flatMap((s) => s.modellen)).size,
-    secties,
+    count: new Set(sections.flatMap((s) => s.models)).size,
+    sections,
   };
 });
 
-/* Een model dat in geen enkel tabblad staat, bestaat voor de bezoeker niet. */
-const geplaatst = new Set(weergaven.flatMap((w) => w.secties.flatMap((s) => s.modellen)));
-const verweesd = modellen.filter((_, index) => !geplaatst.has(index));
+/* A model that lands in no tab doesn't exist for the visitor. */
+const placed = new Set(views.flatMap((v) => v.sections.flatMap((s) => s.models)));
+const orphaned = models.filter((_, index) => !placed.has(index));
 
-const catalogus = {
-  gegenereerd: 'node tools/build-catalog.mjs',
-  totaal: modellen.length,
-  // Zodat de catalogus in de browser de grens niet nog eens hoeft te kennen.
+const catalog = {
+  generated: 'node tools/build-catalog.mjs',
+  total: models.length,
+  // So the browser doesn't need to know the limit a second time.
   budgetPerUnit: BUDGET_PER_UNIT,
-  // Alle maten in deze catalogus staan in rastervakken; dit is wat één vak in
-  // de bronbestanden meet. Wie de .glb's rechtstreeks in een engine laadt,
-  // heeft dat getal nodig.
-  eenhedenPerCel: EENHEDEN_PER_CEL,
-  // Elk model draagt zijn facetten als id; hier staat wat die ids betekenen.
-  // Eén tabel voor alle facetten samen — de ids zijn over de facetten heen
-  // uniek, en zo hoeft de browser niet te weten in welk facet hij moet kijken.
-  // De korte naam is voor plekken waar de volle titel niet past: op een tegel
-  // van 112 pixels wordt "Basis — kliffen" afgekapt tot "Basis — k".
-  facetten: Object.fromEntries(
-    [...FAMILIES, ...VORMEN, ...LAGEN, ...FORMAATGROEPEN]
-      .map((g) => [g.id, { titel: g.titel, kort: g.kort ?? g.titel }]),
+  // Every dimension in this catalog is in grid cells; this is what one cell
+  // measures in the source files. Whoever loads the .glb files straight
+  // into an engine needs that number.
+  unitsPerCell: UNITS_PER_CELL,
+  // Every model carries its facets as an id; this is what those ids mean.
+  // One table for all facets together — the ids are unique across facets, so
+  // the browser doesn't need to know which facet it's looking in.
+  facets: Object.fromEntries(
+    [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS].map((g) => [g.id, g.name]),
   ),
-  weergaven,
-  paletten: PALETTEN.map((palet) => ({
-    ...palet,
-    kleuren: [...materialen.values()]
-      .filter((m) => m.palet === palet.id)
-      .sort((a, b) => b.aantal - a.aantal || a.naam.localeCompare(b.naam, 'nl'))
-      .map(({ palet: _, ...rest }) => rest),
+  views,
+  palettes: PALETTES.map((palette) => ({
+    ...palette,
+    colors: [...materials.values()]
+      .filter((m) => m.palette === palette.id)
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+      .map(({ palette: _, ...rest }) => rest),
   })),
-  modellen,
+  models,
 };
 
-writeFileSync(join(CATALOGUS_DIR, 'catalog.json'), JSON.stringify(catalogus, null, 1) + '\n');
-schrijfVersie();
+writeFileSync(join(CATALOG_DIR, 'catalog.json'), JSON.stringify(catalog, null, 1) + '\n');
+writeVersion();
 
-/* -- verslag --------------------------------------------------------------- */
+/* -- report --------------------------------------------------------------- */
 
-console.log(`${modellen.length} modellen → catalog/catalog.json`);
-for (const weergave of catalogus.weergaven) {
-  console.log(`\ntabblad ${weergave.label} — ${weergave.aantal} modellen in ${weergave.secties.length} secties:`);
-  for (const sectie of weergave.secties) {
-    console.log(`  ${String(sectie.modellen.length).padStart(3)}  ${sectie.titel}`);
+console.log(`${models.length} models → catalog/catalog.json`);
+for (const view of catalog.views) {
+  console.log(`\ntab ${view.label} — ${view.count} models in ${view.sections.length} sections:`);
+  for (const section of view.sections) {
+    console.log(`  ${String(section.models.length).padStart(3)}  ${section.name}`);
   }
 }
-for (const palet of catalogus.paletten) {
-  console.log(`\npalet ${palet.id} — ${palet.kleuren.length} kleuren:`);
-  for (const kleur of palet.kleuren) {
-    console.log(`  ${String(kleur.aantal).padStart(3)}  ${kleur.hex}  ${kleur.naam}`);
+for (const palette of catalog.palettes) {
+  console.log(`\npalette ${palette.id} — ${palette.colors.length} colors:`);
+  for (const color of palette.colors) {
+    console.log(`  ${String(color.count).padStart(3)}  ${color.hex}  ${color.name}`);
   }
 }
 
-const zonderTextuur = modellen.filter((m) => m.ontbrekendeTexturen.length > 0);
-if (zonderTextuur.length) {
-  const bestanden = [...new Set(zonderTextuur.flatMap((m) => m.ontbrekendeTexturen))].sort();
+if (orphaned.length) {
+  console.warn(`\n! ${orphaned.length} models land in no tab: ${orphaned.map((m) => m.id).join(', ')}`);
+}
+if (unknownMaterials.size) {
+  console.warn(`\n! material without a cleaned-up name in tools/build-catalog.mjs: ${[...unknownMaterials].join(', ')}`);
+}
+
+const missingTexture = models.filter((m) => m.missingTextures.length > 0);
+if (missingTexture.length) {
+  const files = [...new Set(missingTexture.flatMap((m) => m.missingTextures))].sort();
   console.warn(
-    `\n! ${zonderTextuur.length} modellen verwijzen naar een textuur die niet in de pack zit;` +
-    ` de viewer valt terug op de vlakke materiaalkleur.\n  gezocht: ${bestanden.join(', ')}`,
+    `\n! ${missingTexture.length} models reference a texture that isn't in the pack;` +
+    ` the viewer falls back to the flat material color.\n  looked for: ${files.join(', ')}`,
   );
 }
-if (scheef.length) {
-  console.warn(`\n! ${scheef.length} modellen wijken sterk af van de rastermaat in hun naam (1 vak = ${EENHEDEN_PER_CEL} eenheden):`);
-  for (const { model, vak, gemeten, verhouding } of scheef) {
-    console.warn(`  ${verhouding.toFixed(2)}×  ${model.id}  (naam ${vak}, gemeten ${gemeten})`);
+if (skewed.length) {
+  console.warn(`\n! ${skewed.length} models deviate sharply from the grid size in their name (1 cell = ${UNITS_PER_CELL} units):`);
+  for (const { model, cell, measured, ratio } of skewed) {
+    console.warn(`  ${ratio.toFixed(2)}×  ${model.id}  (name ${cell}, measured ${measured})`);
   }
-}
-if (verweesd.length) {
-  console.warn(`\n! ${verweesd.length} modellen staan in geen enkel tabblad: ${verweesd.map((m) => m.id).join(', ')}`);
-}
-if (onbekendeMaterialen.size) {
-  console.warn(`\n! materiaal zonder Nederlandse naam in tools/build-catalog.mjs: ${[...onbekendeMaterialen].join(', ')}`);
 }
 
-/* Boven het budget is geen harde fout: de pack is ingekocht zoals hij is, en
- * een model dat erboven zit is een kandidaat om te vereenvoudigen, geen
- * bouwstop. De build noemt ze bij naam zodat de lijst niet stilletjes groeit. */
-const bovenBudget = modellen
-  .filter((m) => m.driehoekenPerUnit !== null && m.driehoekenPerUnit > BUDGET_PER_UNIT)
-  .sort((a, b) => b.driehoekenPerUnit - a.driehoekenPerUnit);
-const ERGSTE = 15;
-if (bovenBudget.length) {
-  console.warn(`\n! ${bovenBudget.length} modellen boven ${BUDGET_PER_UNIT} driehoeken per unit, de ergste ${Math.min(ERGSTE, bovenBudget.length)}:`);
-  for (const m of bovenBudget.slice(0, ERGSTE)) {
-    console.warn(`  ${String(m.driehoekenPerUnit).padStart(6)}  ${m.id}  (${m.driehoeken} tri, ${m.wdh.join(' × ')})`);
+/* Above budget is not a hard error: the pack is what it is, and a model
+ * above the line is a candidate to simplify, not a build stopper. The build
+ * names them so the list doesn't grow silently. */
+const overBudget = models
+  .filter((m) => m.trianglesPerUnit !== null && m.trianglesPerUnit > BUDGET_PER_UNIT)
+  .sort((a, b) => b.trianglesPerUnit - a.trianglesPerUnit);
+const WORST = 15;
+if (overBudget.length) {
+  console.warn(`\n! ${overBudget.length} models above ${BUDGET_PER_UNIT} triangles per unit, the worst ${Math.min(WORST, overBudget.length)}:`);
+  for (const m of overBudget.slice(0, WORST)) {
+    console.warn(`  ${String(m.trianglesPerUnit).padStart(6)}  ${m.id}  (${m.triangles} tri, ${m.dwh.join(' × ')})`);
   }
-  if (bovenBudget.length > ERGSTE) {
-    console.warn(`  … en nog ${bovenBudget.length - ERGSTE}; de hele lijst staat in catalog.json`);
+  if (overBudget.length > WORST) {
+    console.warn(`  … and ${overBudget.length - WORST} more; the full list is in catalog.json`);
   }
 }
-const plat = modellen.filter((m) => m.driehoekenPerUnit === null);
-if (plat.length) {
-  console.warn(`\n! ${plat.length} platte modellen zonder volume, dus zonder dichtheid: ${plat.map((m) => m.id).join(', ')}`);
+const flat = models.filter((m) => m.trianglesPerUnit === null);
+if (flat.length) {
+  console.warn(`\n! ${flat.length} flat models without volume, so without a density: ${flat.map((m) => m.id).join(', ')}`);
 }

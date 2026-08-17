@@ -1,36 +1,34 @@
-/* Modulair terrein — 3D-catalogus.
+/* Modular Terrain — 3D catalog.
  *
- * Opgezet naar het voorbeeld van de Taaleiland-catalogus
- * (github.com/Paumen/Taalei, kits/catalog.css); de kleuren volgen deze pack:
- * kliffenbeige papier, mosgroen accent.
+ * Colors follow this pack: cliff-beige paper, moss-green accent.
  */
 
 :root {
-  --papier: #f7f4ee;
-  --papier-diep: #ece6db;
-  --kaart: #ffffff;
-  --inkt: #2b2a26;
-  --inkt-zacht: #78746a;
-  --lijn: #ded6c8;
+  --paper: #f7f4ee;
+  --paper-deep: #ece6db;
+  --card-bg: #ffffff;
+  --ink: #2b2a26;
+  --ink-soft: #78746a;
+  --line: #ded6c8;
   --accent: #4f7a3a;
-  --accent-zacht: #cfe0b8;
-  --zwaar: #d1553c;
+  --accent-soft: #cfe0b8;
+  --heavy: #d1553c;
   --radius: 12px;
-  --schaduw: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
+  --shadow: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --papier: #1a1a17;
-    --papier-diep: #141412;
-    --kaart: #242320;
-    --inkt: #e9e5db;
-    --inkt-zacht: #9a958a;
-    --lijn: #383530;
+    --paper: #1a1a17;
+    --paper-deep: #141412;
+    --card-bg: #242320;
+    --ink: #e9e5db;
+    --ink-soft: #9a958a;
+    --line: #383530;
     --accent: #8fc06a;
-    --accent-zacht: #35452a;
-    --schaduw: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
+    --accent-soft: #35452a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
   }
 }
 
@@ -38,17 +36,17 @@
 
 body {
   margin: 0;
-  background: var(--papier);
-  color: var(--inkt);
+  background: var(--paper);
+  color: var(--ink);
   font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 a { color: var(--accent); }
 
-/* ---------- kop ---------- */
+/* ---------- header ---------- */
 
-.kop {
+.head {
   position: sticky;
   top: 0;
   z-index: 20;
@@ -58,191 +56,161 @@ a { color: var(--accent); }
   align-items: flex-end;
   justify-content: space-between;
   padding: 16px clamp(16px, 4vw, 40px) 14px;
-  background: color-mix(in srgb, var(--papier) 88%, transparent);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--lijn);
+  border-bottom: 1px solid var(--line);
 }
 
-.kop h1 {
+.head h1 {
   margin: 0;
   font-size: 19px;
   letter-spacing: -.01em;
 }
 
-.kop-sub {
+.head-sub {
   margin: 3px 0 0;
   font-size: 13px;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.kop-bediening {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Zes tabbladen passen op een telefoon niet naast elkaar; liever schuiven dan
-   afkappen, want het laatste tabblad is niet het minst belangrijke. */
-.schakelaar {
+/* Six tabs don't fit side by side on a phone; scroll rather than clip, since
+   the last tab isn't the least important one. */
+.tab-bar {
   display: flex;
   padding: 3px;
   gap: 2px;
   max-width: 100%;
   overflow-x: auto;
-  background: var(--papier-diep);
-  border: 1px solid var(--lijn);
+  background: var(--paper-deep);
+  border: 1px solid var(--line);
   border-radius: 999px;
   scrollbar-width: none;
 }
 
-.schakelaar::-webkit-scrollbar { display: none; }
+.tab-bar::-webkit-scrollbar { display: none; }
 
-.schakelaar button {
+.tab-bar button {
   flex: none;
   padding: 6px 14px;
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
   font: inherit;
   font-size: 13px;
   cursor: pointer;
 }
 
-.schakelaar button[aria-selected="true"] {
-  background: var(--kaart);
-  color: var(--inkt);
-  box-shadow: var(--schaduw);
+.tab-bar button[aria-selected="true"] {
+  background: var(--card-bg);
+  color: var(--ink);
+  box-shadow: var(--shadow);
   font-weight: 600;
 }
 
-.zoek { position: relative; display: flex; align-items: center; }
+/* ---------- section jump list ---------- */
 
-.zoek input {
-  width: min(320px, 60vw);
-  padding: 8px 74px 8px 12px;
-  border: 1px solid var(--lijn);
-  border-radius: 999px;
-  background: var(--kaart);
-  color: inherit;
-  font: inherit;
-  font-size: 13px;
-}
-
-.zoek input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.zoek-telling {
-  position: absolute;
-  right: 12px;
-  font-size: 12px;
-  color: var(--inkt-zacht);
-  pointer-events: none;
-}
-
-/* ---------- sectienavigatie ---------- */
-
-.springlijst {
+.jump-list {
   display: flex;
   gap: 6px;
   overflow-x: auto;
   padding: 10px clamp(16px, 4vw, 40px);
-  border-bottom: 1px solid var(--lijn);
-  background: var(--papier-diep);
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-deep);
   scrollbar-width: thin;
 }
 
-.springlijst a {
+.jump-list a {
   display: flex;
   align-items: center;
   gap: 6px;
   flex: none;
   padding: 4px 11px;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--kaart);
-  color: var(--inkt);
+  background: var(--card-bg);
+  color: var(--ink);
   font-size: 12px;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.springlijst a:hover { border-color: var(--accent); }
-.springlijst a[hidden] { display: none; }
+.jump-list a:hover { border-color: var(--accent); }
+.jump-list a[hidden] { display: none; }
 
-.springlijst .stip {
+.jump-list .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--accent);
 }
 
-.springlijst .telling { color: var(--inkt-zacht); }
+.jump-list .badge { color: var(--ink-soft); }
 
-/* ---------- materiaalfilter ---------- */
+/* ---------- material filter ---------- */
 
-.kleurbalk {
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 9px clamp(16px, 4vw, 40px);
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.filter-bar-head {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 9px clamp(16px, 4vw, 40px);
-  border-bottom: 1px solid var(--lijn);
-  background: var(--papier);
 }
 
-.kleurbalk-label {
+.filter-label {
   flex: none;
   font-size: 12px;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.kleurbalk-stalen {
+/* One row per kind of color: material on one line, hidden faces on the next.
+   Stacked rather than squeezed side by side, so neither one crowds out the
+   other or wraps into a confusing half-row. */
+.filter-swatches {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px 18px;
+  flex-direction: column;
+  gap: 8px;
   min-width: 0;
 }
 
-/* Eén groep per soort kleur; de scheiding tussen de groepen is de boodschap:
-   links waar een stuk van gemaakt is, rechts welke vlakken de pack verbergt. */
-.kleurgroep {
+.filter-group {
   display: flex;
-  /* Wikkelt de groep over meer regels, dan hoort het label bovenaan te staan en
-     niet halverwege de stapel te zweven. */
-  align-items: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 7px;
-  /* Niet meekrimpen: in de smalle, schuivende balk op een telefoon zou de
-     tweede groep anders tot een streepje worden samengeknepen. */
-  flex: none;
 }
 
-/* `display: flex` wint van het [hidden]-attribuut in de UA-stylesheet. */
-.kleurgroep[hidden] { display: none; }
+/* `display: flex` beats the [hidden] attribute in the UA stylesheet. */
+.filter-group[hidden] { display: none; }
 
-.kleurgroep + .kleurgroep {
-  padding-left: 18px;
-  border-left: 1px solid var(--lijn);
+.filter-group + .filter-group {
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
 }
 
-.kleurgroep-label {
+.filter-group-label {
   flex: none;
-  padding-top: 7px;
   font-size: 11px;
   letter-spacing: .02em;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.kleurgroep-stalen {
+.filter-group-swatches {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   min-width: 0;
 }
 
-.staal {
+.swatch {
   position: relative;
   flex: none;
   width: 26px;
@@ -250,34 +218,34 @@ a { color: var(--accent); }
   padding: 0;
   border: 1px solid rgba(0, 0, 0, .18);
   border-radius: 7px;
-  background: var(--staal-kleur);
+  background: var(--swatch-color);
   cursor: pointer;
 }
 
-.staal:hover { transform: scale(1.08); }
-.staal:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.swatch:hover { transform: scale(1.08); }
+.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.staal[aria-pressed="true"] {
-  box-shadow: 0 0 0 2px var(--papier), 0 0 0 4px var(--inkt);
+.swatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
 }
 
-/* Vinkje in een kleur die tegen de staalkleur afsteekt. */
-.staal[aria-pressed="true"]::after {
+/* Checkmark in a color that stands out against the swatch color. */
+.swatch[aria-pressed="true"]::after {
   content: "";
   position: absolute;
   inset: 0;
   margin: auto;
   width: 6px;
   height: 11px;
-  border: solid var(--vink, #fff);
+  border: solid var(--check, #fff);
   border-width: 0 2px 2px 0;
   transform: translateY(-1px) rotate(45deg);
 }
 
-/* De materiaalgroep draagt zijn naam mee: vier materialen delen hetzelfde
-   cyaan (rivier, meer, waterval, watervalkruin) en drie hetzelfde beige, dus
-   een kaal blokje zegt daar niet welk filter je aanzet. */
-.staal.chip {
+/* The material group carries its name along: four materials share the same
+   cyan (river, lake, waterfall, waterfall crest) and three share the same
+   beige, so a bare swatch doesn't say which filter it turns on. */
+.swatch.chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -285,190 +253,182 @@ a { color: var(--accent); }
   height: 26px;
   padding: 0 11px 0 8px;
   border-radius: 999px;
-  border-color: var(--lijn);
-  background: var(--kaart);
-  color: var(--inkt-zacht);
+  border-color: var(--line);
+  background: var(--card-bg);
+  color: var(--ink-soft);
   font: inherit;
   font-size: 11.5px;
   white-space: nowrap;
 }
 
-/* `display: inline-flex` wint van het [hidden]-attribuut in de UA-stylesheet. */
-.staal[hidden] { display: none; }
+/* `display: inline-flex` beats the [hidden] attribute in the UA stylesheet. */
+.swatch[hidden] { display: none; }
 
-.staal.chip::before {
+.swatch.chip::before {
   content: "";
   flex: none;
   width: 11px;
   height: 11px;
   border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 3px;
-  background: var(--staal-kleur);
+  background: var(--swatch-color);
 }
 
-/* Het vinkje van het kale staal zou hier midden over de tekst vallen; de chip
-   laat zijn aanstaan-toestand aan de rand en het vet zien. */
-.staal.chip::after { content: none; }
-.staal.chip:hover { transform: none; border-color: var(--accent); }
+/* The bare swatch's checkmark would land right on top of the text; the chip
+   shows its pressed state via the border and the bold weight instead. */
+.swatch.chip::after { content: none; }
+.swatch.chip:hover { transform: none; border-color: var(--accent); }
 
-.staal.chip[aria-pressed="true"] {
+.swatch.chip[aria-pressed="true"] {
   box-shadow: none;
-  border-color: var(--inkt);
-  background: var(--papier-diep);
-  color: var(--inkt);
+  border-color: var(--ink);
+  background: var(--paper-deep);
+  color: var(--ink);
   font-weight: 600;
 }
 
-.kleurbalk-wis {
+.filter-clear {
   flex: none;
   padding: 4px 11px;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--kaart);
+  background: var(--card-bg);
   color: inherit;
   font: inherit;
   font-size: 12px;
   cursor: pointer;
 }
 
-.kleurbalk-wis[hidden] { display: none; }
+.filter-clear[hidden] { display: none; }
 
 @media (max-width: 560px) {
-  .kleurbalk { gap: 7px; padding: 8px clamp(16px, 4vw, 40px); }
-  .kleurbalk-label { display: none; }
+  .filter-bar { gap: 6px; padding: 8px clamp(16px, 4vw, 40px); }
+  .filter-label { display: none; }
+  .filter-swatches { gap: 6px; }
+  .filter-group + .filter-group { padding-top: 6px; }
 
-  /* Uitgevouwen zijn dit zeven regels chips, en dan begint het rooster pas
-     onder de vouw. Op deze breedte wordt het één rij die je opzij schuift. */
-  .kleurbalk-stalen {
+  /* A whole row of chips still won't fit a phone's width even on its own
+     line, so within each dedicated row the chips scroll sideways instead of
+     wrapping into a tall stack. */
+  .filter-group-swatches {
     flex-wrap: nowrap;
-    gap: 10px;
     overflow-x: auto;
     scrollbar-width: none;
   }
 
-  .kleurbalk-stalen::-webkit-scrollbar { display: none; }
-  .kleurgroep-stalen { flex-wrap: nowrap; }
-  .kleurgroep + .kleurgroep { padding-left: 10px; }
-  .kleurgroep-label { display: none; }
-  .staal { width: 22px; height: 22px; border-radius: 6px; }
-  .staal.chip { height: 22px; padding: 0 9px 0 7px; font-size: 11px; }
+  .filter-group-swatches::-webkit-scrollbar { display: none; }
+  .filter-group-label { display: none; }
+  .swatch { width: 22px; height: 22px; border-radius: 6px; }
+  .swatch.chip { height: 22px; padding: 0 9px 0 7px; font-size: 11px; }
 }
 
-/* ---------- secties ---------- */
-
-/* De twee deelverzamelingen — Grot en Kust — bevatten stukken die ook in de
-   andere tabbladen staan. Dat hoort de bezoeker te weten vóór hij zich afvraagt
-   waarom hij een druipsteen twee keer tegenkomt. */
-.weergave-uitleg {
-  margin: 0;
-  padding: 12px clamp(16px, 4vw, 40px) 0;
-  max-width: 80ch;
-  font-size: 13px;
-  color: var(--inkt-zacht);
-}
-
-.weergave-uitleg[hidden] { display: none; }
+/* ---------- sections ---------- */
 
 main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
-/* scroll-margin houdt de sectiekop vrij van de plakkende kop bij een deeplink. */
-.sectie { padding-top: 30px; scroll-margin-top: 92px; }
-.sectie[hidden] { display: none; }
+/* scroll-margin keeps the section header clear of the sticky header on a
+   deep link. */
+.section { padding-top: 30px; scroll-margin-top: 92px; }
+.section[hidden] { display: none; }
 
-.sectie-kop {
+.section-head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 6px 12px;
   padding-bottom: 12px;
-  border-bottom: 2px solid var(--sectie-kleur, var(--lijn));
+  border-bottom: 2px solid var(--section-color, var(--line));
   margin-bottom: 18px;
 }
 
-.sectie-kop h2 {
+.section-head h2 {
   margin: 0;
   font-size: 17px;
   letter-spacing: -.01em;
 }
 
-.sectie-kop .aantal {
+.section-head .count {
   padding: 2px 9px;
   border-radius: 999px;
-  background: var(--papier-diep);
-  border: 1px solid var(--lijn);
+  background: var(--paper-deep);
+  border: 1px solid var(--line);
   font-size: 12px;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.sectie-kop .uitleg {
-  flex: 1 1 320px;
-  margin: 0;
-  font-size: 13px;
-  color: var(--inkt-zacht);
-}
+/* ---------- grid + cards ---------- */
 
-/* ---------- rooster + kaarten ---------- */
-
-.rooster {
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
   gap: 10px;
 }
 
-/* De houder draagt het selectievakje boven op de kaart; de kaart zelf blijft
- * één knop die het detail opent. Het rooster ziet de houder als vak, dus
- * verbergt filter() de houder en niet meer de kaart. */
-.kaart-houder { position: relative; display: flex; }
-.kaart-houder[hidden] { display: none; }
-.kaart-houder > .kaart { flex: 1; min-width: 0; }
+/* The holder carries the selection checkbox on top of the card; the card
+ * itself stays one button that opens the detail view. The grid sees the
+ * holder as its tile, so filter() hides the holder, not the card. */
+.card-holder { position: relative; display: flex; }
+.card-holder[hidden] { display: none; }
+.card-holder > .card { flex: 1; min-width: 0; }
 
-.kaart-kies {
+.card-pick {
   position: absolute;
   top: 5px;
   left: 5px;
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 22px;
-  height: 22px;
-  border: 1px solid var(--lijn);
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--kaart) 82%, transparent);
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--card-bg) 82%, transparent);
   backdrop-filter: blur(4px);
   cursor: pointer;
-  opacity: 0;
+  /* Visible at rest, not just on hover: without a hint of where it is,
+     hitting a 26px box exactly meant scrubbing around blind until it
+     appeared, which just as often opened the detail view instead. */
+  opacity: .55;
   transition: opacity .12s ease;
 }
 
-/* Uit de weg tot je hem nodig hebt — bij honderden tegels van 112px telt elke
- * stip mee. Aangevinkt blijft hij staan, anders zie je je eigen selectie niet. */
-.kaart-houder:hover .kaart-kies,
-.kaart-kies:focus-within,
-.kaart-kies:has(:checked) { opacity: 1; }
+/* `<label>` extends its clickable area to any generated content, so this
+   invisible halo widens the tap/click target well past the visible box
+   without making the badge itself any bigger on screen — the fix for
+   needing to hit the corner precisely. */
+.card-pick::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
 
-/* Zonder muis is er geen hover om hem mee op te roepen. */
-@media (hover: none) { .kaart-kies { opacity: .7; } }
+.card-holder:hover .card-pick,
+.card-pick:focus-within,
+.card-pick:has(:checked) { opacity: 1; }
 
-.kaart-kies input {
+/* No mouse means no hover to raise it from half-visible. */
+@media (hover: none) { .card-pick { opacity: .85; } }
+
+.card-pick input {
   margin: 0;
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
   accent-color: var(--accent);
   cursor: pointer;
 }
 
-.kaart-houder:has(.kaart-kies :checked) > .kaart {
+.card-holder:has(.card-pick :checked) > .card {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent), var(--schaduw);
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow);
 }
 
-.kaart {
+.card {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--kaart);
-  box-shadow: var(--schaduw);
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
   overflow: hidden;
   cursor: pointer;
   text-align: left;
@@ -478,77 +438,71 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   transition: transform .12s ease, border-color .12s ease;
 }
 
-.kaart:hover { transform: translateY(-2px); border-color: var(--accent); }
-.kaart:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.kaart[hidden] { display: none; }
+.card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.card[hidden] { display: none; }
 
-.kaart-viewer {
+.card-viewer {
   position: relative;
   aspect-ratio: 1;
   background:
-    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-zacht) 45%, transparent), transparent 68%),
-    var(--papier-diep);
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 68%),
+    var(--paper-deep);
 }
 
-.kaart-viewer model-viewer,
-.kaart-viewer img {
+.card-viewer model-viewer,
+.card-viewer img {
   width: 100%;
   height: 100%;
   display: block;
-  /* De kaart zelf is de klikbare knop; de preview mag de klik niet opvangen. */
+  /* The card itself is the clickable button; the preview must not catch the
+     click. */
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
 }
 
-/* Het formaat linksonder in de tegel: bij een modulaire kit is de rastermaat
-   het eerste wat je van een stuk wilt weten, en in de naam staat hij achteraan
-   waar hij bij smalle tegels wegvalt. */
-.kaart-formaat {
-  position: absolute;
-  left: 5px;
-  bottom: 5px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--kaart) 82%, transparent);
-  backdrop-filter: blur(4px);
-  font-size: 10.5px;
+/* The grid footprint, as its own line under the name rather than an overlay
+   on the thumbnail — a badge sitting on top of the model competed with the
+   selection checkbox for the same corner and covered part of the preview. */
+.card-size {
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.kaart-tekst {
+.card-text {
   display: flex;
   flex-direction: column;
   gap: 3px;
   padding: 9px 10px 10px;
-  border-top: 1px solid var(--lijn);
+  border-top: 1px solid var(--line);
 }
 
-.kaart-naam {
+.card-name {
   font-size: 12.5px;
   font-weight: 600;
   overflow-wrap: anywhere;
   line-height: 1.25;
-  /* Drie regels reserveren, zodat de metaregel over het hele rooster uitlijnt.
-     Deze namen zijn lang: "Keermuur 45 graden buitenbocht" haalt er twee, de
-     langste drie. */
+  /* Reserve three lines so the meta row lines up across the whole grid.
+     These names are long: "Retaining Wall 45 Degrees Outer Curve" takes two,
+     the longest take three. */
   min-height: 3.75em;
 }
 
-.kaart-meta {
+.card-meta {
   display: flex;
   gap: 8px;
   justify-content: space-between;
   align-items: baseline;
   font-size: 11px;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.kaart-meta .zwaar { color: var(--zwaar); font-weight: 600; }
-.kaart-tri { flex: none; }
+.card-meta .heavy { color: var(--heavy); font-weight: 600; }
+.card-tri { flex: none; }
 
-.kaart-merk {
+.card-brand {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -558,52 +512,54 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   text-overflow: ellipsis;
 }
 
-.kaart-merk::before {
+.card-brand::before {
   content: "";
   flex: none;
   width: 7px;
   height: 7px;
   border-radius: 2px;
-  background: var(--merk-kleur, var(--inkt-zacht));
+  background: var(--brand-color, var(--ink-soft));
 }
 
-/* Boven een sectie staat het facet al in de kop; daar is het label ruis en is
-   er ruimte voor de bestandsgrootte. In het tabblad Onderdelen is de familie
-   dus overbodig, in de andere tabbladen juist het interessante — daar mengt
-   een sectie families. */
-.sectie[data-facet="familie"] .kaart-merk { display: none; }
-.sectie:not([data-facet="familie"]) .kaart-grootte { display: none; }
+/* In the Parts tab the family already sits in the section header; there the
+   label is noise, and the room goes to the file size instead. In the other
+   tabs it's the other way around — a section there mixes families, and the
+   origin is exactly what's interesting. This hangs off the facet the tab
+   groups by, not the tab itself, so a family that moves to its own tab
+   behaves correctly on its own. */
+.section[data-facet="family"] .card-brand { display: none; }
+.section:not([data-facet="family"]) .card-bytes { display: none; }
 
-.leeg {
+.empty {
   display: none;
   padding: 60px 0;
   text-align: center;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.leeg:not([hidden]) { display: block; }
+.empty:not([hidden]) { display: block; }
 
-/* ---------- voet ---------- */
+/* ---------- footer ---------- */
 
-.voet {
+.foot {
   padding: 20px clamp(16px, 4vw, 40px) 40px;
-  border-top: 1px solid var(--lijn);
+  border-top: 1px solid var(--line);
   font-size: 12.5px;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-.voet p { margin: 0; max-width: 70ch; }
+.foot p { margin: 0; max-width: 70ch; }
 
-/* ---------- detailvenster ---------- */
+/* ---------- detail dialog ---------- */
 
 .detail {
   width: min(920px, 94vw);
   max-height: 90vh;
   padding: 0;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 16px;
-  background: var(--kaart);
-  color: var(--inkt);
+  background: var(--card-bg);
+  color: var(--ink);
   box-shadow: 0 24px 60px rgba(0, 0, 0, .28);
   overflow: hidden;
 }
@@ -618,8 +574,8 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 .detail-viewer {
   min-height: 380px;
   background:
-    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent-zacht) 45%, transparent), transparent 70%),
-    var(--papier-diep);
+    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 70%),
+    var(--paper-deep);
 }
 
 .detail-viewer model-viewer {
@@ -630,7 +586,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .detail-info {
   padding: 22px 22px 24px;
-  border-left: 1px solid var(--lijn);
+  border-left: 1px solid var(--line);
   overflow-y: auto;
 }
 
@@ -640,30 +596,30 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   overflow-wrap: anywhere;
 }
 
-.detail-herkomst {
+.detail-origin {
   margin: 4px 0 12px;
   font-size: 13px;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
-/* Wat er in de naam staat maar niet in een facet past: hoe steil, hoe strak,
-   welke variant. Als chips, want het zijn er soms zes. */
-.detail-kenmerken {
+/* Whatever's in the name but doesn't fit a facet: how steep, how tight,
+   which variant. As chips, since there are sometimes six of them. */
+.detail-traits {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 16px;
 }
 
-.detail-kenmerken:empty { display: none; }
+.detail-traits:empty { display: none; }
 
-.detail-kenmerken span {
+.detail-traits span {
   padding: 2px 9px;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--papier-diep);
+  background: var(--paper-deep);
   font-size: 11.5px;
-  color: var(--inkt-zacht);
+  color: var(--ink-soft);
 }
 
 .detail dl {
@@ -674,34 +630,34 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   font-size: 13px;
 }
 
-.detail dt { color: var(--inkt-zacht); }
+.detail dt { color: var(--ink-soft); }
 .detail dd { margin: 0; overflow-wrap: anywhere; }
 
-/* Een materiaal is een naam plus zijn kleur; zonder het blokje ervoor moet je
-   het rijtje kleuren in de filterbalk uit je hoofd kennen. */
-.detail-materiaal {
+/* A material is a name plus its color; without the swatch in front you'd
+   have to know the filter bar's colors by heart. */
+.detail-material {
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
 
-.detail-materiaal::before {
+.detail-material::before {
   content: "";
   width: 9px;
   height: 9px;
   border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 3px;
-  background: var(--materiaal-kleur);
+  background: var(--material-color);
 }
 
-.detail-acties { display: flex; flex-wrap: wrap; gap: 8px; }
+.detail-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
-.detail-acties button,
-.detail-acties a {
+.detail-actions button,
+.detail-actions a {
   padding: 7px 14px;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--papier-diep);
+  background: var(--paper-deep);
   color: inherit;
   font: inherit;
   font-size: 13px;
@@ -709,19 +665,19 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   cursor: pointer;
 }
 
-.detail-acties button:hover,
-.detail-acties a:hover { border-color: var(--accent); }
+.detail-actions button:hover,
+.detail-actions a:hover { border-color: var(--accent); }
 
-.detail-sluit {
+.detail-close {
   position: absolute;
   top: 10px;
   right: 12px;
   z-index: 2;
   width: 30px;
   height: 30px;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 50%;
-  background: var(--kaart);
+  background: var(--card-bg);
   color: inherit;
   font-size: 18px;
   line-height: 1;
@@ -731,14 +687,14 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 @media (max-width: 720px) {
   .detail[open] { grid-template-columns: 1fr; }
   .detail-viewer { min-height: 46vh; }
-  .detail-info { border-left: 0; border-top: 1px solid var(--lijn); }
+  .detail-info { border-left: 0; border-top: 1px solid var(--line); }
 }
 
-/* ---------- selectiebalk ---------- */
+/* ---------- selection bar ---------- */
 
-/* Verschijnt pas als er iets gekozen is, en zweeft dan over het rooster: hij
-   hoort bij de selectie, niet bij de pagina. */
-.selectiebalk {
+/* Only appears once something is selected, then floats over the grid: it
+   belongs to the selection, not to the page. */
+.selection-bar {
   position: fixed;
   left: 50%;
   bottom: 18px;
@@ -749,28 +705,28 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   gap: 8px;
   max-width: calc(100vw - 24px);
   padding: 8px 10px 8px 16px;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--kaart) 92%, transparent);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
   backdrop-filter: blur(10px);
-  box-shadow: var(--schaduw), 0 8px 28px rgba(43, 42, 38, .16);
+  box-shadow: var(--shadow), 0 8px 28px rgba(43, 42, 38, .16);
 }
 
-.selectiebalk[hidden] { display: none; }
+.selection-bar[hidden] { display: none; }
 
-.selectiebalk-telling {
+.selection-count {
   flex: none;
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
 }
 
-.selectiebalk button {
+.selection-bar button {
   flex: none;
   padding: 5px 12px;
-  border: 1px solid var(--lijn);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--papier);
+  background: var(--paper);
   color: inherit;
   font: inherit;
   font-size: 12px;
@@ -778,54 +734,57 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   cursor: pointer;
 }
 
-.selectiebalk button:hover { border-color: var(--accent); }
+.selection-bar button:hover { border-color: var(--accent); }
 
-/* Dezelfde ring als .kaart en .staal. De offset zet hem net buiten de knop, dus
-   hij blijft leesbaar op "Kopieer paden", die zelf al accentkleurig is. */
-.selectiebalk button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Same ring as .card and .swatch. The offset keeps it clear of the button,
+   so it stays legible on "Copy paths", which is already accent-colored. */
+.selection-bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.selectiebalk button.primair {
+.selection-bar button.primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--papier);
+  color: var(--paper);
 }
 
-/* Anders legt de balk zich over de voet heen zodra je iets kiest. */
-body:has(.selectiebalk:not([hidden])) { padding-bottom: 56px; }
+/* Otherwise the bar would sit on top of the footer as soon as something is
+   selected. */
+body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 
-/* Op een telefoon passen er anders maar twee kaarten naast elkaar. Kleinere
-   tegels, strakkere tekst: vier per rij, en tikken geeft het grote model. */
+/* On a phone only two cards fit side by side otherwise. Smaller tiles,
+   tighter text: four per row, and a tap opens the full model. */
 @media (max-width: 560px) {
-  .rooster {
+  .grid {
     grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
     gap: 6px;
   }
 
-  .kaart-tekst { padding: 5px 6px 6px; gap: 1px; }
+  .card-text { padding: 5px 6px 6px; gap: 1px; }
 
-  .kaart-naam {
+  .card-name {
     font-size: 10.5px;
-    /* Geen drie regels reserveren: bij deze breedte wordt dat te hoog. */
+    /* Don't reserve three lines: too tall at this width. */
     min-height: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .kaart-meta { font-size: 9.5px; }
-  .kaart-grootte { display: none; }
-  .kaart-merk { display: none; }
-  .kaart-formaat { font-size: 9.5px; padding: 0 5px; left: 3px; bottom: 3px; }
+  .card-meta { font-size: 9.5px; }
+  .card-bytes { display: none; }
+  .card-brand { display: none; }
+  .card-size { font-size: 9.5px; }
 
-  /* Vier tegels van 76px naast elkaar: het vakje van 22px zou de helft van de
-     preview afdekken. */
-  .kaart-kies { top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 5px; }
-  .kaart-kies input { width: 11px; height: 11px; }
+  /* Four 76px tiles side by side: a 26px checkbox would cover half the
+     preview. Still bigger than the old 18px, and the expanded hit area below
+     is pulled in so it doesn't bleed into the next tile 6px over. */
+  .card-pick { top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 5px; }
+  .card-pick::before { inset: -6px; }
+  .card-pick input { width: 12px; height: 12px; }
 
-  /* Drie knoppen naast een telling zijn hier samen breder dan het scherm. Ze
-     mogen dus op een tweede regel; de pilvorm gaat er dan af, want een pil van
-     twee regels hoog is geen pil meer. */
-  .selectiebalk {
+  /* Three buttons next to a count are together wider than the screen here.
+     Let them wrap to a second line; the pill shape goes away, since a pill
+     two lines tall isn't a pill anymore. */
+  .selection-bar {
     left: 12px;
     right: 12px;
     transform: none;
@@ -838,8 +797,8 @@ body:has(.selectiebalk:not([hidden])) { padding-bottom: 56px; }
     bottom: 10px;
   }
 
-  .selectiebalk-telling { font-size: 12px; }
-  .selectiebalk button { padding: 5px 10px; font-size: 11.5px; }
+  .selection-count { font-size: 12px; }
+  .selection-bar button { padding: 5px 10px; font-size: 11.5px; }
 
-  body:has(.selectiebalk:not([hidden])) { padding-bottom: 96px; }
+  body:has(.selection-bar:not([hidden])) { padding-bottom: 96px; }
 }
