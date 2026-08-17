@@ -1,20 +1,20 @@
 # Modular Terrain — 3D Catalog
 
-A browsable catalog of 394 models from a modular terrain pack: cliffs,
-walls, retaining walls, paths, grass, sand, water, a cave, and standalone
-props. Everything runs in the browser, no build step and no server —
-opening `index.html` is enough.
+A browsable catalog of 287 models from a modular terrain pack: cliffs,
+walls, cracked cliffs, terrain paths, grass, sand, water, a cave, and
+standalone props. Everything runs in the browser, no build step and no
+server — opening `index.html` is enough.
 
 The pack arrived with zero metadata, so the entire classification is derived
 from filenames.
 
 ## Using the catalog
 
-**Four tabs** each look at the same 394 models differently:
+**Four tabs** each look at the same 287 models differently:
 
 | Tab | Groups by | For |
 | --- | --- | --- |
-| Parts | family | "show me all the retaining walls" |
+| Parts | family | "show me all the cracked cliffs" |
 | Shapes | inner curve, outer curve, s-curve, straight, incline… | "which pieces complete this curve?" |
 | Layers | under, base, mid, top | "what stacks onto this row?" |
 | Sizes | grid footprint from the name | "what fits this 3 × 3 gap?" |
@@ -32,8 +32,8 @@ Beyond that:
   bar at the bottom copies every selected path to the clipboard at once.
   Selection is keyed by file, not by tile: checking the same model in two
   tabs still yields one path.
-- **Deep links** work: `#shapes` opens a tab, `#parts-retaining-wall` jumps
-  to a section.
+- **Deep links** work: `#shapes` opens a tab, `#parts-cracked` jumps to a
+  section.
 
 ## What's in the repo
 
@@ -42,7 +42,7 @@ index.html                 the page itself
 catalog/catalog.css        styling
 catalog/catalog.js         the catalog in the browser
 catalog/catalog.json       generated; everything the page knows
-models/*.glb                the 394 models, unchanged as delivered
+models/*.glb                the 287 models, unchanged as delivered
 vendor/model-viewer.min.js  Google's <model-viewer> (BSD-3-Clause)
 tools/build-catalog.mjs    builds catalog.json from models/
 tools/taxonomy.mjs         the classification: families, shapes, layers, sizes

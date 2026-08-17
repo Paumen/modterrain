@@ -1,6 +1,6 @@
 {
  "generated": "node tools/build-catalog.mjs",
- "total": 394,
+ "total": 287,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -54,7 +54,7 @@
    "id": "parts",
    "label": "Parts",
    "facet": "family",
-   "count": 394,
+   "count": 287,
    "sections": [
     {
      "id": "parts-basic",
@@ -109,49 +109,49 @@
      "name": "Walls",
      "color": "#6f7b8c",
      "models": [
-      336,
-      337,
-      338,
-      339,
-      340,
-      341,
-      342,
-      343,
-      344,
-      345,
-      346,
-      347,
-      348,
-      349,
-      350,
-      351,
-      352,
-      353,
-      354,
-      355,
-      356,
-      357,
-      358,
-      359,
-      360,
-      361,
-      362,
-      363,
-      364,
-      365,
-      366,
-      367,
-      368,
-      369,
-      370,
-      371,
-      372,
-      373,
-      374,
-      375,
-      376,
-      377,
-      378
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271
      ]
     },
     {
@@ -184,71 +184,27 @@
      ]
     },
     {
-     "id": "parts-retaining-wall",
-     "name": "Retaining Walls",
-     "color": "#b98c5a",
-     "models": [
-      283,
-      284,
-      285,
-      286,
-      287,
-      288,
-      289,
-      290,
-      291,
-      292,
-      293,
-      294,
-      295,
-      296,
-      297,
-      298,
-      299,
-      300,
-      301,
-      302,
-      303,
-      304,
-      305,
-      306,
-      307,
-      308,
-      309,
-      310,
-      311,
-      312,
-      313,
-      314,
-      315,
-      316,
-      317,
-      318,
-      319
-     ]
-    },
-    {
      "id": "parts-grass-tier",
      "name": "Grass Steps",
      "color": "#5f9e4a",
      "models": [
-      266,
-      267,
-      268,
-      269,
-      270,
-      271,
-      272,
-      273,
-      274,
-      275,
-      276,
-      277,
-      278,
-      279,
-      280,
-      281,
-      282
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227
      ]
     },
     {
@@ -256,22 +212,7 @@
      "name": "Stairs & Walkways",
      "color": "#c9a227",
      "models": [
-      320,
-      321,
-      322,
-      323,
-      324,
-      325,
-      326,
-      327,
-      328,
-      329,
-      330,
-      331,
-      332,
-      333,
-      334,
-      335
+      228
      ]
     },
     {
@@ -279,41 +220,19 @@
      "name": "Terrain Paths",
      "color": "#d98f4f",
      "models": [
-      181,
-      182,
-      183,
-      184,
-      185,
-      186,
-      187,
-      188,
-      189,
-      190,
-      191,
-      192,
-      193,
-      194,
-      195,
-      196,
-      197,
-      198,
-      199,
-      200,
-      201,
-      202,
-      203,
-      204,
-      205,
-      206,
-      207,
-      208
-     ]
-    },
-    {
-     "id": "parts-path-fence",
-     "name": "Path Fences",
-     "color": "#8e6a4a",
-     "models": [
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
       165,
       166,
       167,
@@ -328,28 +247,7 @@
       176,
       177,
       178,
-      179,
-      180
-     ]
-    },
-    {
-     "id": "parts-path-edging",
-     "name": "Edging Stones",
-     "color": "#a3a3a3",
-     "models": [
-      150,
-      151,
-      152,
-      153,
-      154,
-      155,
-      156,
-      157,
-      158,
-      159,
-      160,
-      161,
-      162
+      179
      ]
     },
     {
@@ -359,8 +257,8 @@
      "models": [
       148,
       149,
-      163,
-      164
+      150,
+      151
      ]
     },
     {
@@ -414,18 +312,18 @@
      "name": "Sand",
      "color": "#e0c27a",
      "models": [
-      241,
-      242,
-      243,
-      244,
-      245,
-      246,
-      247,
-      248,
-      249,
-      250,
-      251,
-      252
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197
      ]
     },
     {
@@ -433,19 +331,19 @@
      "name": "River",
      "color": "#3aa7d6",
      "models": [
-      253,
-      254,
-      255,
-      256,
-      257,
-      258,
-      259,
-      260,
-      261,
-      262,
-      263,
-      264,
-      265
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210
      ]
     },
     {
@@ -453,21 +351,21 @@
      "name": "Water & Waterfalls",
      "color": "#2fc7e8",
      "models": [
-      379,
-      380,
-      381,
-      382,
-      383,
-      384,
-      385,
-      386,
-      387,
-      388,
-      389,
-      390,
-      391,
-      392,
-      393
+      272,
+      273,
+      274,
+      275,
+      276,
+      277,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286
      ]
     },
     {
@@ -556,38 +454,12 @@
      "name": "Props",
      "color": "#b76fa8",
      "models": [
-      209,
-      210,
-      211,
-      212,
-      213,
-      214,
-      215,
-      216,
-      217,
-      218,
-      219,
-      220,
-      221,
-      222,
-      223,
-      224,
-      225,
-      226,
-      227,
-      228,
-      229,
-      230,
-      231,
-      232,
-      233,
-      234,
-      235,
-      236,
-      237,
-      238,
-      239,
-      240
+      180,
+      181,
+      182,
+      183,
+      184,
+      185
      ]
     }
    ]
@@ -596,7 +468,7 @@
    "id": "shapes",
    "label": "Shapes",
    "facet": "shape",
-   "count": 394,
+   "count": 287,
    "sections": [
     {
      "id": "shapes-curve-inner",
@@ -641,42 +513,36 @@
       137,
       138,
       139,
-      150,
-      165,
-      181,
-      184,
-      185,
-      186,
-      187,
-      188,
-      206,
-      207,
-      208,
-      244,
-      245,
-      266,
-      267,
-      271,
-      272,
-      273,
-      274,
-      275,
-      283,
-      284,
-      321,
-      322,
-      336,
-      337,
-      338,
-      339,
-      340,
-      341,
-      342,
-      343,
-      344,
-      345,
-      346,
-      347
+      152,
+      155,
+      156,
+      157,
+      158,
+      159,
+      177,
+      178,
+      179,
+      189,
+      190,
+      211,
+      212,
+      216,
+      217,
+      218,
+      219,
+      220,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240
      ]
     },
     {
@@ -720,35 +586,29 @@
       140,
       141,
       142,
-      151,
-      166,
-      182,
-      189,
-      190,
+      153,
+      160,
+      161,
+      162,
       191,
+      192,
+      193,
+      213,
+      214,
+      221,
+      222,
+      223,
+      224,
+      225,
+      241,
+      242,
+      243,
+      244,
+      245,
       246,
       247,
       248,
-      268,
-      269,
-      276,
-      277,
-      278,
-      279,
-      280,
-      285,
-      286,
-      323,
-      324,
-      348,
-      349,
-      350,
-      351,
-      352,
-      353,
-      354,
-      355,
-      356
+      249
      ]
     },
     {
@@ -756,47 +616,13 @@
      "name": "Curve",
      "color": "#c9a227",
      "models": [
-      153,
-      154,
-      155,
-      156,
-      157,
-      168,
-      169,
-      170,
-      171,
-      172,
-      204,
-      242,
-      243,
-      253,
-      254,
-      255,
-      256,
-      295,
-      296,
-      297,
-      298,
-      299,
-      300,
-      301,
-      302,
-      303,
-      304,
-      308,
-      309,
-      310,
-      311,
-      312,
-      313,
-      314,
-      315,
-      327,
-      328,
-      329,
-      330,
-      331,
-      332
+      175,
+      187,
+      188,
+      198,
+      199,
+      200,
+      201
      ]
     },
     {
@@ -818,27 +644,23 @@
       118,
       132,
       133,
-      159,
-      173,
-      192,
-      249,
+      163,
+      194,
+      195,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      226,
+      227,
       250,
-      257,
-      258,
-      259,
-      260,
-      261,
-      262,
-      281,
-      282,
-      293,
-      294,
-      357,
-      358,
-      359,
-      360,
-      361,
-      362
+      251,
+      252,
+      253,
+      254,
+      255
      ]
     },
     {
@@ -854,22 +676,18 @@
       55,
       101,
       102,
-      160,
-      161,
-      177,
-      178,
-      199,
-      200,
-      201,
-      202,
-      251,
-      252,
-      264,
-      265,
-      363,
-      364,
-      365,
-      366
+      170,
+      171,
+      172,
+      173,
+      196,
+      197,
+      209,
+      210,
+      256,
+      257,
+      258,
+      259
      ]
     },
     {
@@ -913,40 +731,26 @@
       145,
       146,
       147,
-      152,
-      162,
+      154,
+      164,
+      165,
+      166,
       167,
-      180,
-      183,
-      193,
-      194,
-      195,
-      196,
-      197,
-      205,
+      168,
+      176,
+      215,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
       270,
-      287,
-      288,
-      316,
-      317,
-      318,
-      319,
-      325,
-      333,
-      334,
-      335,
-      367,
-      368,
-      369,
-      370,
-      371,
-      372,
-      373,
-      374,
-      375,
-      376,
-      377,
-      378
+      271
      ]
     },
     {
@@ -965,8 +769,8 @@
      "name": "Transition",
      "color": "#d76fa0",
      "models": [
-      203,
-      326
+      174,
+      228
      ]
     },
     {
@@ -980,10 +784,9 @@
       95,
       114,
       143,
-      198,
-      241,
-      263,
-      320
+      169,
+      186,
+      208
      ]
     },
     {
@@ -991,15 +794,10 @@
      "name": "End & Corner",
      "color": "#6f7b8c",
      "models": [
-      158,
-      163,
-      164,
-      210,
-      211,
-      289,
-      290,
-      291,
-      292
+      150,
+      151,
+      181,
+      182
      ]
     },
     {
@@ -1022,58 +820,25 @@
       104,
       148,
       149,
-      174,
-      175,
-      176,
-      179,
-      209,
-      212,
-      213,
-      214,
-      215,
-      216,
-      217,
-      218,
-      219,
-      220,
-      221,
-      222,
-      223,
-      224,
-      225,
-      226,
-      227,
-      228,
-      229,
-      230,
-      231,
-      232,
-      233,
-      234,
-      235,
-      236,
-      237,
-      238,
-      239,
-      240,
-      305,
-      306,
-      307,
-      379,
-      380,
-      381,
-      382,
-      383,
-      384,
-      385,
-      386,
-      387,
-      388,
-      389,
-      390,
-      391,
-      392,
-      393
+      180,
+      183,
+      184,
+      185,
+      272,
+      273,
+      274,
+      275,
+      276,
+      277,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286
      ]
     }
    ]
@@ -1082,7 +847,7 @@
    "id": "layers",
    "label": "Layers",
    "facet": "layer",
-   "count": 394,
+   "count": 287,
    "sections": [
     {
      "id": "layers-layer-under",
@@ -1121,25 +886,24 @@
       41,
       43,
       46,
-      305,
-      336,
-      339,
-      342,
-      345,
-      348,
-      351,
-      354,
-      357,
-      360,
-      363,
-      365,
-      367,
-      370,
-      373,
-      376,
-      382,
-      383,
-      384
+      229,
+      232,
+      235,
+      238,
+      241,
+      244,
+      247,
+      250,
+      253,
+      256,
+      258,
+      260,
+      263,
+      266,
+      269,
+      275,
+      276,
+      277
      ]
     },
     {
@@ -1170,35 +934,22 @@
       75,
       77,
       94,
-      283,
-      285,
-      287,
-      289,
-      291,
-      293,
-      295,
-      297,
-      299,
-      301,
-      303,
-      306,
-      318,
-      337,
-      340,
-      343,
-      346,
-      349,
-      352,
-      355,
-      358,
-      361,
-      368,
-      371,
-      374,
-      377,
-      385,
-      386,
-      387
+      230,
+      233,
+      236,
+      239,
+      242,
+      245,
+      248,
+      251,
+      254,
+      261,
+      264,
+      267,
+      270,
+      278,
+      279,
+      280
      ]
     },
     {
@@ -1235,43 +986,30 @@
       87,
       148,
       149,
-      163,
-      164,
+      150,
+      151,
+      228,
+      231,
+      234,
+      237,
+      240,
+      243,
+      246,
+      249,
+      252,
+      255,
+      257,
+      259,
+      262,
+      265,
+      268,
+      271,
+      281,
+      282,
+      283,
       284,
-      286,
-      288,
-      290,
-      292,
-      294,
-      296,
-      298,
-      300,
-      302,
-      304,
-      307,
-      319,
-      326,
-      338,
-      341,
-      344,
-      347,
-      350,
-      353,
-      356,
-      359,
-      362,
-      364,
-      366,
-      369,
-      372,
-      375,
-      378,
-      388,
-      389,
-      390,
-      391,
-      392,
-      393
+      285,
+      286
      ]
     },
     {
@@ -1352,8 +1090,6 @@
       145,
       146,
       147,
-      150,
-      151,
       152,
       153,
       154,
@@ -1365,6 +1101,8 @@
       160,
       161,
       162,
+      163,
+      164,
       165,
       166,
       167,
@@ -1428,89 +1166,9 @@
       225,
       226,
       227,
-      228,
-      229,
-      230,
-      231,
-      232,
-      233,
-      234,
-      235,
-      236,
-      237,
-      238,
-      239,
-      240,
-      241,
-      242,
-      243,
-      244,
-      245,
-      246,
-      247,
-      248,
-      249,
-      250,
-      251,
-      252,
-      253,
-      254,
-      255,
-      256,
-      257,
-      258,
-      259,
-      260,
-      261,
-      262,
-      263,
-      264,
-      265,
-      266,
-      267,
-      268,
-      269,
-      270,
-      271,
       272,
       273,
-      274,
-      275,
-      276,
-      277,
-      278,
-      279,
-      280,
-      281,
-      282,
-      308,
-      309,
-      310,
-      311,
-      312,
-      313,
-      314,
-      315,
-      316,
-      317,
-      320,
-      321,
-      322,
-      323,
-      324,
-      325,
-      327,
-      328,
-      329,
-      330,
-      331,
-      332,
-      333,
-      334,
-      335,
-      379,
-      380,
-      381
+      274
      ]
     }
    ]
@@ -1519,7 +1177,7 @@
    "id": "sizes",
    "label": "Sizes",
    "facet": "size",
-   "count": 394,
+   "count": 287,
    "sections": [
     {
      "id": "sizes-size-1x1",
@@ -1557,71 +1215,31 @@
       113,
       114,
       143,
-      153,
-      158,
-      162,
-      163,
+      150,
+      151,
+      155,
+      160,
       164,
-      168,
+      167,
+      169,
       174,
       175,
       176,
-      179,
-      180,
+      177,
+      183,
       184,
-      189,
-      193,
-      196,
-      198,
-      203,
-      204,
-      205,
-      206,
-      212,
-      213,
-      214,
+      185,
+      186,
+      208,
       215,
       216,
-      217,
-      229,
-      230,
-      231,
-      232,
-      233,
-      234,
-      235,
-      236,
-      237,
-      238,
-      239,
-      240,
-      241,
-      263,
-      270,
-      271,
+      221,
+      275,
       276,
-      289,
-      290,
-      291,
-      292,
-      295,
-      296,
-      305,
-      306,
-      307,
-      308,
-      318,
-      319,
-      320,
-      321,
-      323,
-      325,
-      382,
-      383,
-      384,
-      385,
-      386,
-      387
+      277,
+      278,
+      279,
+      280
      ]
     },
     {
@@ -1647,36 +1265,27 @@
       144,
       148,
       149,
-      160,
-      161,
-      177,
+      165,
+      170,
+      171,
+      172,
+      173,
       178,
-      194,
-      199,
-      200,
-      201,
-      202,
-      207,
+      180,
+      182,
+      197,
       209,
+      210,
       211,
-      252,
-      264,
-      265,
-      266,
-      267,
+      212,
+      226,
+      227,
+      228,
+      260,
+      261,
+      262,
       281,
-      282,
-      316,
-      317,
-      326,
-      333,
-      334,
-      335,
-      367,
-      368,
-      369,
-      388,
-      391
+      284
      ]
     },
     {
@@ -1730,49 +1339,33 @@
       145,
       146,
       147,
-      152,
       154,
-      159,
-      167,
-      169,
-      173,
-      183,
-      185,
-      190,
-      192,
-      195,
-      197,
-      208,
-      210,
+      156,
+      161,
+      163,
+      166,
+      168,
+      179,
+      181,
+      213,
+      214,
+      217,
+      222,
+      241,
+      242,
+      243,
+      256,
+      257,
+      258,
+      259,
+      263,
+      264,
+      265,
+      266,
+      267,
       268,
-      269,
-      272,
-      277,
-      287,
-      288,
-      293,
-      294,
-      297,
-      298,
-      309,
-      322,
-      324,
-      327,
-      348,
-      349,
-      350,
-      363,
-      364,
-      365,
-      366,
-      370,
-      371,
-      372,
-      373,
-      374,
-      375,
-      389,
-      390
+      282,
+      283
      ]
     },
     {
@@ -1804,48 +1397,30 @@
       137,
       141,
       142,
-      150,
-      151,
-      155,
-      165,
-      166,
-      170,
-      181,
-      182,
-      186,
-      191,
-      219,
-      224,
-      227,
-      253,
-      255,
-      257,
-      260,
-      273,
-      278,
-      283,
-      284,
+      152,
+      153,
+      157,
+      162,
+      198,
+      200,
+      202,
+      205,
+      218,
+      223,
+      229,
+      230,
+      231,
+      244,
+      245,
+      246,
+      250,
+      251,
+      252,
+      269,
+      270,
+      271,
       285,
-      286,
-      299,
-      300,
-      310,
-      313,
-      328,
-      336,
-      337,
-      338,
-      351,
-      352,
-      353,
-      357,
-      358,
-      359,
-      376,
-      377,
-      378,
-      392,
-      393
+      286
      ]
     },
     {
@@ -1875,35 +1450,22 @@
       133,
       138,
       139,
-      156,
-      171,
-      187,
-      218,
-      220,
-      223,
-      225,
-      226,
-      244,
+      158,
+      189,
+      192,
+      196,
+      203,
+      204,
+      206,
+      207,
+      219,
+      224,
       247,
-      251,
-      258,
-      259,
-      261,
-      262,
-      274,
-      279,
-      301,
-      302,
-      311,
-      314,
-      329,
-      331,
-      354,
-      355,
-      356,
-      360,
-      361,
-      362
+      248,
+      249,
+      253,
+      254,
+      255
      ]
     },
     {
@@ -1920,37 +1482,27 @@
       116,
       123,
       129,
-      157,
-      172,
+      159,
+      187,
       188,
-      221,
-      222,
-      242,
-      243,
-      245,
-      246,
-      248,
-      249,
-      250,
-      254,
-      256,
-      275,
-      280,
-      303,
-      304,
-      312,
-      315,
-      330,
-      332,
-      339,
-      340,
-      341,
-      342,
-      343,
-      344,
-      345,
-      346,
-      347
+      190,
+      191,
+      193,
+      194,
+      195,
+      199,
+      201,
+      220,
+      225,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240
      ]
     },
     {
@@ -1958,10 +1510,9 @@
      "name": "No Grid Size",
      "color": "#9a9a9a",
      "models": [
-      228,
-      379,
-      380,
-      381
+      272,
+      273,
+      274
      ]
     }
    ]
@@ -1978,7 +1529,7 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#bfb9ae",
-     "count": 160
+     "count": 138
     },
     {
      "key": "material|grass",
@@ -1992,42 +1543,7 @@
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#ead7a6",
-     "count": 50
-    },
-    {
-     "key": "material|rock-light",
-     "name": "Rock Light",
-     "source": "Rock Light",
-     "hex": "#cfcbc2",
-     "count": 37
-    },
-    {
-     "key": "material|rock-medium",
-     "name": "Rock Medium",
-     "source": "Rock Medium",
-     "hex": "#aaa391",
-     "count": 34
-    },
-    {
-     "key": "material|wood-dark",
-     "name": "Wood Dark",
-     "source": "Wood Dark",
-     "hex": "#8e5a2f",
-     "count": 34
-    },
-    {
-     "key": "material|wood-light",
-     "name": "Wood Light",
-     "source": "Wood Light",
-     "hex": "#daa052",
-     "count": 33
-    },
-    {
-     "key": "material|wood-light-end",
-     "name": "Wood Light End",
-     "source": "Wood Light End",
-     "hex": "#cccccc",
-     "count": 30
+     "count": 45
     },
     {
      "key": "material|water-river",
@@ -2037,18 +1553,25 @@
      "count": 16
     },
     {
-     "key": "material|rock-lightest",
-     "name": "Rock Lightest",
-     "source": "Rock Lightest",
-     "hex": "#e1ddd7",
+     "key": "material|wood-dark",
+     "name": "Wood Dark",
+     "source": "Wood Dark",
+     "hex": "#8e5a2f",
+     "count": 16
+    },
+    {
+     "key": "material|wood-light-end",
+     "name": "Wood Light End",
+     "source": "Wood Light End",
+     "hex": "#cccccc",
      "count": 15
     },
     {
-     "key": "material|stone-walkway",
-     "name": "Stone Walkway",
-     "source": "Stone Walkway",
-     "hex": "#bfb9ae",
-     "count": 13
+     "key": "material|wood-light",
+     "name": "Wood Light",
+     "source": "Wood Light",
+     "hex": "#daa052",
+     "count": 14
     },
     {
      "key": "material|ice",
@@ -2076,7 +1599,7 @@
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#c57e3f",
-     "count": 5
+     "count": 4
     },
     {
      "key": "material|water-lake",
@@ -2091,41 +1614,6 @@
      "source": "Waterfall Crest",
      "hex": "#28caff",
      "count": 3
-    },
-    {
-     "key": "material|iron",
-     "name": "Iron",
-     "source": "Iron",
-     "hex": "#63564e",
-     "count": 2
-    },
-    {
-     "key": "material|sign-16x9",
-     "name": "Sign 16:9",
-     "source": "Sign 16x9",
-     "hex": "#c1e8e6",
-     "count": 1
-    },
-    {
-     "key": "material|sign-4x1",
-     "name": "Sign 4:1",
-     "source": "Sign 4x1",
-     "hex": "#c1e8e6",
-     "count": 1
-    },
-    {
-     "key": "material|sign-4x3",
-     "name": "Sign 4:3",
-     "source": "Sign 4x3",
-     "hex": "#c1e8e6",
-     "count": 1
-    },
-    {
-     "key": "material|sign-8x3",
-     "name": "Sign 8:3",
-     "source": "Sign 8x3",
-     "hex": "#c1e8e6",
-     "count": 1
     }
    ]
   },
@@ -2139,14 +1627,7 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f0f0f0",
-     "count": 309
-    },
-    {
-     "key": "hidden|hidden-orange",
-     "name": "Hidden Orange",
-     "source": "Hidden Orange",
-     "hex": "#ffca99",
-     "count": 88
+     "count": 241
     },
     {
      "key": "hidden|hidden-violet",
@@ -2170,13 +1651,6 @@
      "count": 59
     },
     {
-     "key": "hidden|hidden-pink",
-     "name": "Hidden Pink",
-     "source": "Hidden Pink",
-     "hex": "#ffbdff",
-     "count": 51
-    },
-    {
      "key": "hidden|hidden-green",
      "name": "Hidden Green",
      "source": "Hidden Green",
@@ -2184,11 +1658,25 @@
      "count": 49
     },
     {
+     "key": "hidden|hidden-orange",
+     "name": "Hidden Orange",
+     "source": "Hidden Orange",
+     "hex": "#ffca99",
+     "count": 39
+    },
+    {
      "key": "hidden|hidden-red",
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ff9f9f",
-     "count": 46
+     "count": 37
+    },
+    {
+     "key": "hidden|hidden-pink",
+     "name": "Hidden Pink",
+     "source": "Hidden Pink",
+     "hex": "#ffbdff",
+     "count": 33
     }
    ]
   }
@@ -8031,509 +7519,6 @@
    "missingTextures": []
   },
   {
-   "id": "Path_Edging_Stones_45_Degrees_Curve_Inner_3x3",
-   "name": "Path Edging Stones 45 Degrees Curve Inner 3x3",
-   "file": "models/Path_Edging_Stones_45_Degrees_Curve_Inner_3x3.glb",
-   "family": "path-edging",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    2.403,
-    1.474,
-    0.25
-   ],
-   "min": [
-    -1.5,
-    0,
-    -0.156
-   ],
-   "max": [
-    0.903,
-    0.25,
-    1.318
-   ],
-   "triangles": 108,
-   "trianglesPerUnit": 30,
-   "calls": 4,
-   "bytes": 12992,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_45_Degrees_Curve_Outer_3x4",
-   "name": "Path Edging Stones 45 Degrees Curve Outer 3x4",
-   "file": "models/Path_Edging_Stones_45_Degrees_Curve_Outer_3x4.glb",
-   "family": "path-edging",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    3.818,
-    2.06,
-    0.25
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.156
-   ],
-   "max": [
-    2.318,
-    0.25,
-    0.903
-   ],
-   "triangles": 172,
-   "trianglesPerUnit": 22,
-   "calls": 4,
-   "bytes": 17332,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_45_Degrees_Straight_2x2",
-   "name": "Path Edging Stones 45 Degrees Straight 2x2",
-   "file": "models/Path_Edging_Stones_45_Degrees_Straight_2x2.glb",
-   "family": "path-edging",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    1.221,
-    1.221,
-    0.25
-   ],
-   "min": [
-    0.097,
-    0,
-    -1.318
-   ],
-   "max": [
-    1.318,
-    0.25,
-    -0.097
-   ],
-   "triangles": 76,
-   "trianglesPerUnit": 51,
-   "calls": 4,
-   "bytes": 10628,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Curve_1x1",
-   "name": "Path Edging Stones Curve 1x1",
-   "file": "models/Path_Edging_Stones_Curve_1x1.glb",
-   "family": "path-edging",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    0.656,
-    0.656,
-    0.25
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.156
-   ],
-   "max": [
-    0.156,
-    0.25,
-    0.5
-   ],
-   "triangles": 44,
-   "trianglesPerUnit": 44,
-   "calls": 4,
-   "bytes": 8240,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Curve_2x2",
-   "name": "Path Edging Stones Curve 2x2",
-   "file": "models/Path_Edging_Stones_Curve_2x2.glb",
-   "family": "path-edging",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1.656,
-    1.656,
-    0.25
-   ],
-   "min": [
-    -0.5,
-    0,
-    -1.156
-   ],
-   "max": [
-    1.156,
-    0.25,
-    0.5
-   ],
-   "triangles": 108,
-   "trianglesPerUnit": 39,
-   "calls": 4,
-   "bytes": 12392,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Curve_3x3",
-   "name": "Path Edging Stones Curve 3x3",
-   "file": "models/Path_Edging_Stones_Curve_3x3.glb",
-   "family": "path-edging",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    2.656,
-    2.656,
-    0.25
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.156
-   ],
-   "max": [
-    1.156,
-    0.25,
-    1.5
-   ],
-   "triangles": 172,
-   "trianglesPerUnit": 24,
-   "calls": 4,
-   "bytes": 16488,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Curve_4x4",
-   "name": "Path Edging Stones Curve 4x4",
-   "file": "models/Path_Edging_Stones_Curve_4x4.glb",
-   "family": "path-edging",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3.656,
-    3.656,
-    0.25
-   ],
-   "min": [
-    -2.5,
-    0,
-    -1.156
-   ],
-   "max": [
-    1.156,
-    0.25,
-    2.5
-   ],
-   "triangles": 236,
-   "trianglesPerUnit": 18,
-   "calls": 4,
-   "bytes": 20604,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Curve_5x5",
-   "name": "Path Edging Stones Curve 5x5",
-   "file": "models/Path_Edging_Stones_Curve_5x5.glb",
-   "family": "path-edging",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    4.656,
-    4.656,
-    0.25
-   ],
-   "min": [
-    -2.5,
-    0,
-    -2.156
-   ],
-   "max": [
-    2.156,
-    0.25,
-    2.5
-   ],
-   "triangles": 300,
-   "trianglesPerUnit": 14,
-   "calls": 4,
-   "bytes": 24708,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_End_1x1",
-   "name": "Path Edging Stones End 1x1",
-   "file": "models/Path_Edging_Stones_End_1x1.glb",
-   "family": "path-edging",
-   "shape": "end",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    0.25,
-    0.313,
-    0.25
-   ],
-   "min": [
-    0.25,
-    0,
-    -0.156
-   ],
-   "max": [
-    0.5,
-    0.25,
-    0.156
-   ],
-   "triangles": 16,
-   "trianglesPerUnit": 16,
-   "calls": 3,
-   "bytes": 5168,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Esse_2x3",
-   "name": "Path Edging Stones Esse 2x3",
-   "file": "models/Path_Edging_Stones_Esse_2x3.glb",
-   "family": "path-edging",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3,
-    1.313,
-    0.25
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.156
-   ],
-   "max": [
-    1.5,
-    0.25,
-    0.156
-   ],
-   "triangles": 140,
-   "trianglesPerUnit": 36,
-   "calls": 4,
-   "bytes": 14504,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Incline_Gentle_1x4",
-   "name": "Path Edging Stones Incline Gentle 1x4",
-   "file": "models/Path_Edging_Stones_Incline_Gentle_1x4.glb",
-   "family": "path-edging",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "gentle"
-   ],
-   "variant": null,
-   "dwh": [
-    4,
-    0.313,
-    1.25
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.156
-   ],
-   "max": [
-    3.5,
-    1.25,
-    0.156
-   ],
-   "triangles": 172,
-   "trianglesPerUnit": 110,
-   "calls": 4,
-   "bytes": 17104,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Incline_Sharp_1x2",
-   "name": "Path Edging Stones Incline Sharp 1x2",
-   "file": "models/Path_Edging_Stones_Incline_Sharp_1x2.glb",
-   "family": "path-edging",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "sharp"
-   ],
-   "variant": null,
-   "dwh": [
-    2,
-    0.313,
-    1.25
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.156
-   ],
-   "max": [
-    1.5,
-    1.25,
-    0.156
-   ],
-   "triangles": 108,
-   "trianglesPerUnit": 86,
-   "calls": 4,
-   "bytes": 12876,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Path_Edging_Stones_Straight_1x1",
-   "name": "Path Edging Stones Straight 1x1",
-   "file": "models/Path_Edging_Stones_Straight_1x1.glb",
-   "family": "path-edging",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    0.313,
-    0.25
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.156
-   ],
-   "max": [
-    0.5,
-    0.25,
-    0.156
-   ],
-   "triangles": 44,
-   "trianglesPerUnit": 44,
-   "calls": 4,
-   "bytes": 8180,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
    "id": "Path_End_Center_Top_1x1",
    "name": "Path End Center Top 1x1",
    "file": "models/Path_End_Center_Top_1x1.glb",
@@ -8615,686 +7600,6 @@
     "material|grass"
    ],
    "missingTextures": []
-  },
-  {
-   "id": "Path_Fence_45_Degrees_Curve_Inner_3x3",
-   "name": "Path Fence 45 Degrees Curve Inner 3x3",
-   "file": "models/Path_Fence_45_Degrees_Curve_Inner_3x3.glb",
-   "family": "path-fence",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    2.02,
-    1.041,
-    0.875
-   ],
-   "min": [
-    -0.505,
-    0,
-    -0.523
-   ],
-   "max": [
-    1.515,
-    0.875,
-    0.518
-   ],
-   "triangles": 84,
-   "trianglesPerUnit": 40,
-   "calls": 4,
-   "bytes": 11584,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light End.png",
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_45_Degrees_Curve_Outer_3x4",
-   "name": "Path Fence 45 Degrees Curve Outer 3x4",
-   "file": "models/Path_Fence_45_Degrees_Curve_Outer_3x4.glb",
-   "family": "path-fence",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    4.018,
-    2.038,
-    0.875
-   ],
-   "min": [
-    -1.502,
-    0,
-    -0.523
-   ],
-   "max": [
-    2.516,
-    0.875,
-    1.515
-   ],
-   "triangles": 264,
-   "trianglesPerUnit": 32,
-   "calls": 4,
-   "bytes": 21852,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light.png",
-    "Wood Dark.png",
-    "Wood Light End.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_45_Degrees_Straight_2x2",
-   "name": "Path Fence 45 Degrees Straight 2x2",
-   "file": "models/Path_Fence_45_Degrees_Straight_2x2.glb",
-   "family": "path-fence",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    1.033,
-    1.033,
-    0.375
-   ],
-   "min": [
-    -0.517,
-    0.438,
-    -0.517
-   ],
-   "max": [
-    0.517,
-    0.813,
-    0.517
-   ],
-   "triangles": 24,
-   "trianglesPerUnit": 22,
-   "calls": 2,
-   "bytes": 5292,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-light"
-   ],
-   "missingTextures": [
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Curve_1x1",
-   "name": "Path Fence Curve 1x1",
-   "file": "models/Path_Fence_Curve_1x1.glb",
-   "family": "path-fence",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1.031,
-    1.031,
-    0.875
-   ],
-   "min": [
-    -0.509,
-    0,
-    -0.522
-   ],
-   "max": [
-    0.522,
-    0.875,
-    0.509
-   ],
-   "triangles": 84,
-   "trianglesPerUnit": 79,
-   "calls": 4,
-   "bytes": 11544,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light End.png",
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Curve_2x2",
-   "name": "Path Fence Curve 2x2",
-   "file": "models/Path_Fence_Curve_2x2.glb",
-   "family": "path-fence",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    2.029,
-    2.029,
-    0.875
-   ],
-   "min": [
-    -1.506,
-    0,
-    -0.523
-   ],
-   "max": [
-    0.523,
-    0.875,
-    1.506
-   ],
-   "triangles": 144,
-   "trianglesPerUnit": 35,
-   "calls": 4,
-   "bytes": 15004,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light.png",
-    "Wood Dark.png",
-    "Wood Light End.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Curve_3x3",
-   "name": "Path Fence Curve 3x3",
-   "file": "models/Path_Fence_Curve_3x3.glb",
-   "family": "path-fence",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3.027,
-    3.027,
-    0.875
-   ],
-   "min": [
-    -1.504,
-    0,
-    -1.523
-   ],
-   "max": [
-    1.523,
-    0.875,
-    1.504
-   ],
-   "triangles": 264,
-   "trianglesPerUnit": 29,
-   "calls": 4,
-   "bytes": 21828,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light End.png",
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Curve_4x4",
-   "name": "Path Fence Curve 4x4",
-   "file": "models/Path_Fence_Curve_4x4.glb",
-   "family": "path-fence",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    4.026,
-    4.026,
-    0.875
-   ],
-   "min": [
-    -2.503,
-    0,
-    -1.523
-   ],
-   "max": [
-    1.523,
-    0.875,
-    2.503
-   ],
-   "triangles": 384,
-   "trianglesPerUnit": 24,
-   "calls": 4,
-   "bytes": 28652,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light.png",
-    "Wood Dark.png",
-    "Wood Light End.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Curve_5x5",
-   "name": "Path Fence Curve 5x5",
-   "file": "models/Path_Fence_Curve_5x5.glb",
-   "family": "path-fence",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    5.025,
-    5.025,
-    0.875
-   ],
-   "min": [
-    -3.502,
-    0,
-    -1.523
-   ],
-   "max": [
-    1.523,
-    0.875,
-    3.502
-   ],
-   "triangles": 504,
-   "trianglesPerUnit": 20,
-   "calls": 4,
-   "bytes": 35524,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light.png",
-    "Wood Dark.png",
-    "Wood Light End.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Esse_2x3",
-   "name": "Path Fence Esse 2x3",
-   "file": "models/Path_Fence_Esse_2x3.glb",
-   "family": "path-fence",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3.013,
-    1.045,
-    0.875
-   ],
-   "min": [
-    -1.503,
-    0,
-    -0.523
-   ],
-   "max": [
-    1.51,
-    0.875,
-    0.521
-   ],
-   "triangles": 144,
-   "trianglesPerUnit": 46,
-   "calls": 4,
-   "bytes": 15012,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light End.png",
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Gate_Door_1x1",
-   "name": "Path Fence Gate Door 1x1",
-   "file": "models/Path_Fence_Gate_Door_1x1.glb",
-   "family": "path-fence",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "gate"
-   ],
-   "variant": null,
-   "dwh": [
-    1.023,
-    0.125,
-    0.789
-   ],
-   "min": [
-    -1,
-    0.055,
-    -0.063
-   ],
-   "max": [
-    0.023,
-    0.844,
-    0.063
-   ],
-   "triangles": 188,
-   "trianglesPerUnit": 188,
-   "calls": 4,
-   "bytes": 20596,
-   "materials": [
-    "material|iron",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-medium"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light.png",
-    "Wood Medium.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Gate_Frame_Hinged_1x1",
-   "name": "Path Fence Gate Frame Hinged 1x1",
-   "file": "models/Path_Fence_Gate_Frame_Hinged_1x1.glb",
-   "family": "path-fence",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "hinged",
-    "gate"
-   ],
-   "variant": null,
-   "dwh": [
-    0.612,
-    0.188,
-    0.938
-   ],
-   "min": [
-    -0.023,
-    0,
-    -0.594
-   ],
-   "max": [
-    0.589,
-    0.937,
-    -0.406
-   ],
-   "triangles": 148,
-   "trianglesPerUnit": 148,
-   "calls": 5,
-   "bytes": 16028,
-   "materials": [
-    "hidden|hidden",
-    "material|iron",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light End.png",
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Gate_Frame_Plain_1x1",
-   "name": "Path Fence Gate Frame Plain 1x1",
-   "file": "models/Path_Fence_Gate_Frame_Plain_1x1.glb",
-   "family": "path-fence",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "no hinge",
-    "gate"
-   ],
-   "variant": null,
-   "dwh": [
-    0.565,
-    0.188,
-    0.938
-   ],
-   "min": [
-    0.023,
-    0,
-    -0.594
-   ],
-   "max": [
-    0.589,
-    0.937,
-    -0.406
-   ],
-   "triangles": 112,
-   "trianglesPerUnit": 112,
-   "calls": 4,
-   "bytes": 12368,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light End.png",
-    "Wood Light.png",
-    "Wood Dark.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Incline_Gentle_1x4",
-   "name": "Path Fence Incline Gentle 1x4",
-   "file": "models/Path_Fence_Incline_Gentle_1x4.glb",
-   "family": "path-fence",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "gentle"
-   ],
-   "variant": null,
-   "dwh": [
-    4.018,
-    0.125,
-    1.656
-   ],
-   "min": [
-    -0.509,
-    0.156,
-    -0.563
-   ],
-   "max": [
-    3.509,
-    1.812,
-    -0.437
-   ],
-   "triangles": 204,
-   "trianglesPerUnit": 123,
-   "calls": 4,
-   "bytes": 18492,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light End.png",
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Incline_Sharp_1x2",
-   "name": "Path Fence Incline Sharp 1x2",
-   "file": "models/Path_Fence_Incline_Sharp_1x2.glb",
-   "family": "path-fence",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "sharp"
-   ],
-   "variant": null,
-   "dwh": [
-    2.057,
-    0.125,
-    1.362
-   ],
-   "min": [
-    -0.529,
-    0.444,
-    -0.562
-   ],
-   "max": [
-    1.529,
-    1.806,
-    -0.437
-   ],
-   "triangles": 84,
-   "trianglesPerUnit": 62,
-   "calls": 4,
-   "bytes": 11648,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light.png",
-    "Wood Dark.png",
-    "Wood Light End.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Post_1x1",
-   "name": "Path Fence Post 1x1",
-   "file": "models/Path_Fence_Post_1x1.glb",
-   "family": "path-fence",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    0.125,
-    0.125,
-    0.875
-   ],
-   "min": [
-    0.438,
-    0,
-    -0.562
-   ],
-   "max": [
-    0.563,
-    0.875,
-    -0.437
-   ],
-   "triangles": 44,
-   "trianglesPerUnit": 44,
-   "calls": 3,
-   "bytes": 6940,
-   "materials": [
-    "hidden|hidden",
-    "material|wood-dark",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Dark.png",
-    "Wood Light End.png"
-   ]
-  },
-  {
-   "id": "Path_Fence_Straight_1x1",
-   "name": "Path Fence Straight 1x1",
-   "file": "models/Path_Fence_Straight_1x1.glb",
-   "family": "path-fence",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    0.047,
-    0.375
-   ],
-   "min": [
-    -0.5,
-    0.437,
-    -0.523
-   ],
-   "max": [
-    0.5,
-    0.812,
-    -0.477
-   ],
-   "triangles": 24,
-   "trianglesPerUnit": 24,
-   "calls": 1,
-   "bytes": 3868,
-   "materials": [
-    "material|wood-light"
-   ],
-   "missingTextures": [
-    "Wood Light.png"
-   ]
   },
   {
    "id": "Path_Terrain_45_Degrees_Curve_Inner_3x3",
@@ -10702,986 +9007,6 @@
     "Rope.png",
     "Rope NM.png"
    ]
-  },
-  {
-   "id": "Prop_Column_1_1x1",
-   "name": "Prop Column 1 1x1",
-   "file": "models/Prop_Column_1_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "pillar"
-   ],
-   "variant": 1,
-   "dwh": [
-    0.727,
-    0.628,
-    4
-   ],
-   "min": [
-    -0.361,
-    0,
-    -0.315
-   ],
-   "max": [
-    0.366,
-    4,
-    0.313
-   ],
-   "triangles": 80,
-   "trianglesPerUnit": 20,
-   "calls": 2,
-   "bytes": 9056,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Column_2_1x1",
-   "name": "Prop Column 2 1x1",
-   "file": "models/Prop_Column_2_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "pillar"
-   ],
-   "variant": 2,
-   "dwh": [
-    1,
-    0.866,
-    4
-   ],
-   "min": [
-    -0.495,
-    0,
-    -0.436
-   ],
-   "max": [
-    0.505,
-    4,
-    0.43
-   ],
-   "triangles": 80,
-   "trianglesPerUnit": 20,
-   "calls": 2,
-   "bytes": 9132,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Column_3_1x1",
-   "name": "Prop Column 3 1x1",
-   "file": "models/Prop_Column_3_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "pillar"
-   ],
-   "variant": 3,
-   "dwh": [
-    1.125,
-    0.977,
-    4
-   ],
-   "min": [
-    -0.558,
-    0,
-    -0.49
-   ],
-   "max": [
-    0.567,
-    4,
-    0.487
-   ],
-   "triangles": 68,
-   "trianglesPerUnit": 15,
-   "calls": 2,
-   "bytes": 8220,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Ceiling_1_4x8",
-   "name": "Prop Protrusion Ceiling 1 4x8",
-   "file": "models/Prop_Protrusion_Ceiling_1_4x8.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "4 × 8",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": 1,
-   "dwh": [
-    3.906,
-    7.18,
-    0.438
-   ],
-   "min": [
-    -1.581,
-    -0.438,
-    -3.583
-   ],
-   "max": [
-    2.325,
-    0,
-    3.598
-   ],
-   "triangles": 140,
-   "trianglesPerUnit": 5,
-   "calls": 2,
-   "bytes": 12928,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Ceiling_2_3x6",
-   "name": "Prop Protrusion Ceiling 2 3x6",
-   "file": "models/Prop_Protrusion_Ceiling_2_3x6.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "3 × 6",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": 2,
-   "dwh": [
-    3.232,
-    5.784,
-    0.625
-   ],
-   "min": [
-    -1.592,
-    -0.625,
-    -2.888
-   ],
-   "max": [
-    1.639,
-    0,
-    2.896
-   ],
-   "triangles": 126,
-   "trianglesPerUnit": 7,
-   "calls": 2,
-   "bytes": 12188,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Ceiling_3_4x5",
-   "name": "Prop Protrusion Ceiling 3 4x5",
-   "file": "models/Prop_Protrusion_Ceiling_3_4x5.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": 3,
-   "dwh": [
-    3.736,
-    4.656,
-    0.563
-   ],
-   "min": [
-    -1.885,
-    -0.563,
-    -2.312
-   ],
-   "max": [
-    1.851,
-    0,
-    2.343
-   ],
-   "triangles": 106,
-   "trianglesPerUnit": 6,
-   "calls": 2,
-   "bytes": 10772,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Ceiling_4_5x7",
-   "name": "Prop Protrusion Ceiling 4 5x7",
-   "file": "models/Prop_Protrusion_Ceiling_4_5x7.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "5 × 7",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": 4,
-   "dwh": [
-    4.49,
-    6.334,
-    0.563
-   ],
-   "min": [
-    -2.24,
-    -0.563,
-    -3.135
-   ],
-   "max": [
-    2.25,
-    0,
-    3.199
-   ],
-   "triangles": 116,
-   "trianglesPerUnit": 4,
-   "calls": 2,
-   "bytes": 11456,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Ceiling_5_5x6",
-   "name": "Prop Protrusion Ceiling 5 5x6",
-   "file": "models/Prop_Protrusion_Ceiling_5_5x6.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "5 × 6",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": 5,
-   "dwh": [
-    4.728,
-    5.679,
-    0.375
-   ],
-   "min": [
-    -2.369,
-    -0.375,
-    -3.009
-   ],
-   "max": [
-    2.358,
-    0,
-    2.67
-   ],
-   "triangles": 84,
-   "trianglesPerUnit": 3,
-   "calls": 2,
-   "bytes": 9124,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Floor_1_4x6",
-   "name": "Prop Protrusion Floor 1 4x6",
-   "file": "models/Prop_Protrusion_Floor_1_4x6.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "4 × 6",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": 1,
-   "dwh": [
-    5.625,
-    3.813,
-    0.252
-   ],
-   "min": [
-    -3,
-    0,
-    -2.187
-   ],
-   "max": [
-    2.625,
-    0.252,
-    1.625
-   ],
-   "triangles": 104,
-   "trianglesPerUnit": 5,
-   "calls": 2,
-   "bytes": 10152,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Floor_2_3x4",
-   "name": "Prop Protrusion Floor 2 3x4",
-   "file": "models/Prop_Protrusion_Floor_2_3x4.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": 2,
-   "dwh": [
-    2.622,
-    3.778,
-    0.257
-   ],
-   "min": [
-    -1.313,
-    0,
-    -1.821
-   ],
-   "max": [
-    1.309,
-    0.257,
-    1.957
-   ],
-   "triangles": 72,
-   "trianglesPerUnit": 7,
-   "calls": 2,
-   "bytes": 8148,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Floor_3_4x5",
-   "name": "Prop Protrusion Floor 3 4x5",
-   "file": "models/Prop_Protrusion_Floor_3_4x5.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": 3,
-   "dwh": [
-    4.194,
-    3.465,
-    0.25
-   ],
-   "min": [
-    -2.564,
-    0,
-    -1.808
-   ],
-   "max": [
-    1.63,
-    0.25,
-    1.657
-   ],
-   "triangles": 58,
-   "trianglesPerUnit": 4,
-   "calls": 2,
-   "bytes": 7200,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Floor_4_4x5",
-   "name": "Prop Protrusion Floor 4 4x5",
-   "file": "models/Prop_Protrusion_Floor_4_4x5.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": 4,
-   "dwh": [
-    3.61,
-    4.228,
-    0.25
-   ],
-   "min": [
-    -1.851,
-    0,
-    -2.054
-   ],
-   "max": [
-    1.758,
-    0.25,
-    2.174
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 4,
-   "calls": 2,
-   "bytes": 7596,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Floor_5_3x7",
-   "name": "Prop Protrusion Floor 5 3x7",
-   "file": "models/Prop_Protrusion_Floor_5_3x7.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "3 × 7",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": 5,
-   "dwh": [
-    2.734,
-    5.845,
-    0.25
-   ],
-   "min": [
-    -1.512,
-    0,
-    -3.034
-   ],
-   "max": [
-    1.223,
-    0.25,
-    2.811
-   ],
-   "triangles": 80,
-   "trianglesPerUnit": 5,
-   "calls": 2,
-   "bytes": 8656,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Protrusion_Floor_Mound_1",
-   "name": "Prop Protrusion Floor Mound 1",
-   "file": "models/Prop_Protrusion_Floor_Mound_1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": null,
-   "sizeGroup": "size-none",
-   "traits": [
-    "mound"
-   ],
-   "variant": 1,
-   "dwh": [
-    1.5,
-    1.5,
-    0.75
-   ],
-   "min": [
-    -0.75,
-    0,
-    -0.75
-   ],
-   "max": [
-    0.75,
-    0.75,
-    0.75
-   ],
-   "triangles": 46,
-   "trianglesPerUnit": 20,
-   "calls": 2,
-   "bytes": 6708,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Sign_16x9_1_1x1",
-   "name": "Prop Sign 16x9 1 1x1",
-   "file": "models/Prop_Sign_16x9_1_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "sign"
-   ],
-   "variant": 1,
-   "dwh": [
-    0.155,
-    1.154,
-    1.172
-   ],
-   "min": [
-    -0.104,
-    0,
-    -0.584
-   ],
-   "max": [
-    0.051,
-    1.172,
-    0.57
-   ],
-   "triangles": 154,
-   "trianglesPerUnit": 131,
-   "calls": 4,
-   "bytes": 16728,
-   "materials": [
-    "hidden|hidden",
-    "material|sign-16x9",
-    "material|wood-dark",
-    "material|wood-light"
-   ],
-   "missingTextures": [
-    "Wood Light.png",
-    "Wood Dark.png",
-    "sign 16x9.png"
-   ]
-  },
-  {
-   "id": "Prop_Sign_4x1_1_1x1",
-   "name": "Prop Sign 4x1 1 1x1",
-   "file": "models/Prop_Sign_4x1_1_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "sign"
-   ],
-   "variant": 1,
-   "dwh": [
-    0.137,
-    0.875,
-    1.563
-   ],
-   "min": [
-    -0.086,
-    0,
-    -0.438
-   ],
-   "max": [
-    0.051,
-    1.562,
-    0.437
-   ],
-   "triangles": 60,
-   "trianglesPerUnit": 38,
-   "calls": 5,
-   "bytes": 11092,
-   "materials": [
-    "hidden|hidden",
-    "material|sign-4x1",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light End.png",
-    "Wood Dark.png",
-    "sign 4x1.png",
-    "Wood Light.png"
-   ]
-  },
-  {
-   "id": "Prop_Sign_4x3_1_1x1",
-   "name": "Prop Sign 4x3 1 1x1",
-   "file": "models/Prop_Sign_4x3_1_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "sign"
-   ],
-   "variant": 1,
-   "dwh": [
-    0.098,
-    0.577,
-    0.806
-   ],
-   "min": [
-    -0.067,
-    0,
-    -0.29
-   ],
-   "max": [
-    0.031,
-    0.806,
-    0.286
-   ],
-   "triangles": 126,
-   "trianglesPerUnit": 126,
-   "calls": 4,
-   "bytes": 14832,
-   "materials": [
-    "hidden|hidden",
-    "material|sign-4x3",
-    "material|wood-dark",
-    "material|wood-light"
-   ],
-   "missingTextures": [
-    "Wood Light.png",
-    "Wood Dark.png",
-    "sign 4x3.png"
-   ]
-  },
-  {
-   "id": "Prop_Sign_8x3_1_1x1",
-   "name": "Prop Sign 8x3 1 1x1",
-   "file": "models/Prop_Sign_8x3_1_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "sign"
-   ],
-   "variant": 1,
-   "dwh": [
-    0.145,
-    0.924,
-    1
-   ],
-   "min": [
-    -0.098,
-    0,
-    -0.483
-   ],
-   "max": [
-    0.047,
-    1,
-    0.441
-   ],
-   "triangles": 106,
-   "trianglesPerUnit": 106,
-   "calls": 5,
-   "bytes": 14276,
-   "materials": [
-    "hidden|hidden",
-    "material|sign-8x3",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
-   ],
-   "missingTextures": [
-    "Wood Light End.png",
-    "Wood Dark.png",
-    "Wood Light.png",
-    "sign 8x3.png"
-   ]
-  },
-  {
-   "id": "Prop_Stalactite_1_1x1",
-   "name": "Prop Stalactite 1 1x1",
-   "file": "models/Prop_Stalactite_1_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 1,
-   "dwh": [
-    0.326,
-    0.282,
-    0.562
-   ],
-   "min": [
-    -0.163,
-    -0.563,
-    -0.141
-   ],
-   "max": [
-    0.163,
-    0,
-    0.141
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 34,
-   "calls": 2,
-   "bytes": 5860,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Stalactite_2_1x1",
-   "name": "Prop Stalactite 2 1x1",
-   "file": "models/Prop_Stalactite_2_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 2,
-   "dwh": [
-    0.378,
-    0.327,
-    0.75
-   ],
-   "min": [
-    -0.189,
-    -0.75,
-    -0.164
-   ],
-   "max": [
-    0.189,
-    0,
-    0.164
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 34,
-   "calls": 2,
-   "bytes": 5836,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Stalactite_3_1x1",
-   "name": "Prop Stalactite 3 1x1",
-   "file": "models/Prop_Stalactite_3_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 3,
-   "dwh": [
-    0.504,
-    0.436,
-    0.937
-   ],
-   "min": [
-    -0.252,
-    -0.938,
-    -0.218
-   ],
-   "max": [
-    0.252,
-    0,
-    0.218
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 34,
-   "calls": 2,
-   "bytes": 5852,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Stalactite_4_1x1",
-   "name": "Prop Stalactite 4 1x1",
-   "file": "models/Prop_Stalactite_4_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 4,
-   "dwh": [
-    0.577,
-    0.5,
-    1.189
-   ],
-   "min": [
-    -0.289,
-    -1.189,
-    -0.25
-   ],
-   "max": [
-    0.289,
-    0,
-    0.25
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 29,
-   "calls": 2,
-   "bytes": 5804,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Stalagmite_1_1x1",
-   "name": "Prop Stalagmite 1 1x1",
-   "file": "models/Prop_Stalagmite_1_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 1,
-   "dwh": [
-    0.326,
-    0.282,
-    0.563
-   ],
-   "min": [
-    -0.163,
-    0,
-    -0.141
-   ],
-   "max": [
-    0.163,
-    0.562,
-    0.141
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 34,
-   "calls": 2,
-   "bytes": 5860,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Stalagmite_2_1x1",
-   "name": "Prop Stalagmite 2 1x1",
-   "file": "models/Prop_Stalagmite_2_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 2,
-   "dwh": [
-    0.378,
-    0.327,
-    0.75
-   ],
-   "min": [
-    -0.189,
-    0,
-    -0.164
-   ],
-   "max": [
-    0.189,
-    0.75,
-    0.164
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 34,
-   "calls": 2,
-   "bytes": 5832,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Stalagmite_3_1x1",
-   "name": "Prop Stalagmite 3 1x1",
-   "file": "models/Prop_Stalagmite_3_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 3,
-   "dwh": [
-    0.504,
-    0.436,
-    0.938
-   ],
-   "min": [
-    -0.252,
-    0,
-    -0.218
-   ],
-   "max": [
-    0.252,
-    0.937,
-    0.218
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 34,
-   "calls": 2,
-   "bytes": 5848,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Prop_Stalagmite_4_1x1",
-   "name": "Prop Stalagmite 4 1x1",
-   "file": "models/Prop_Stalagmite_4_1x1.glb",
-   "family": "props",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 4,
-   "dwh": [
-    0.577,
-    0.5,
-    1.189
-   ],
-   "min": [
-    -0.289,
-    0,
-    -0.25
-   ],
-   "max": [
-    0.289,
-    1.189,
-    0.25
-   ],
-   "triangles": 34,
-   "trianglesPerUnit": 29,
-   "calls": 2,
-   "bytes": 5796,
-   "materials": [
-    "hidden|hidden",
-    "material|cliff-face"
-   ],
-   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Flat_1x1",
@@ -13320,1635 +10645,6 @@
    "missingTextures": []
   },
   {
-   "id": "Tiered_Retaining_Wall_45_Degrees_Curve_Inner_3x3_Mid",
-   "name": "Tiered Retaining Wall 45 Degrees Curve Inner 3x3 Mid",
-   "file": "models/Tiered_Retaining_Wall_45_Degrees_Curve_Inner_3x3_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    2.028,
-    1.274,
-    1
-   ],
-   "min": [
-    -0.528,
-    0,
-    -0.649
-   ],
-   "max": [
-    1.5,
-    1,
-    0.625
-   ],
-   "triangles": 36,
-   "trianglesPerUnit": 14,
-   "calls": 2,
-   "bytes": 5796,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_45_Degrees_Curve_Inner_3x3_Top",
-   "name": "Tiered Retaining Wall 45 Degrees Curve Inner 3x3 Top",
-   "file": "models/Tiered_Retaining_Wall_45_Degrees_Curve_Inner_3x3_Top.glb",
-   "family": "retaining-wall",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    2.05,
-    1.327,
-    0.375
-   ],
-   "min": [
-    -0.55,
-    0,
-    -0.671
-   ],
-   "max": [
-    1.5,
-    0.375,
-    0.656
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 24,
-   "calls": 3,
-   "bytes": 9128,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_45_Degrees_Curve_Outer_3x4_Mid",
-   "name": "Tiered Retaining Wall 45 Degrees Curve Outer 3x4 Mid",
-   "file": "models/Tiered_Retaining_Wall_45_Degrees_Curve_Outer_3x4_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    4.149,
-    2.153,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.625
-   ],
-   "max": [
-    3.649,
-    1,
-    1.528
-   ],
-   "triangles": 36,
-   "trianglesPerUnit": 4,
-   "calls": 2,
-   "bytes": 5792,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_45_Degrees_Curve_Outer_3x4_Top",
-   "name": "Tiered Retaining Wall 45 Degrees Curve Outer 3x4 Top",
-   "file": "models/Tiered_Retaining_Wall_45_Degrees_Curve_Outer_3x4_Top.glb",
-   "family": "retaining-wall",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    4.171,
-    2.206,
-    0.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    3.671,
-    0.375,
-    1.55
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 7,
-   "calls": 3,
-   "bytes": 9144,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_45_Degrees_Straight_2x2_Mid",
-   "name": "Tiered Retaining Wall 45 Degrees Straight 2x2 Mid",
-   "file": "models/Tiered_Retaining_Wall_45_Degrees_Straight_2x2_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    1.177,
-    1.177,
-    1
-   ],
-   "min": [
-    -0.528,
-    0,
-    -0.649
-   ],
-   "max": [
-    0.649,
-    1,
-    0.528
-   ],
-   "triangles": 12,
-   "trianglesPerUnit": 9,
-   "calls": 2,
-   "bytes": 4012,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_45_Degrees_Straight_2x2_Top",
-   "name": "Tiered Retaining Wall 45 Degrees Straight 2x2 Top",
-   "file": "models/Tiered_Retaining_Wall_45_Degrees_Straight_2x2_Top.glb",
-   "family": "retaining-wall",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45,
-   "dwh": [
-    1.221,
-    1.221,
-    0.375
-   ],
-   "min": [
-    -0.55,
-    0,
-    -0.671
-   ],
-   "max": [
-    0.671,
-    0.375,
-    0.55
-   ],
-   "triangles": 22,
-   "trianglesPerUnit": 15,
-   "calls": 3,
-   "bytes": 6020,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Corner_Outer_1x1_Mid",
-   "name": "Tiered Retaining Wall Corner Outer 1x1 Mid",
-   "file": "models/Tiered_Retaining_Wall_Corner_Outer_1x1_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "end",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    0.125,
-    0.125,
-    1
-   ],
-   "min": [
-    0.375,
-    0,
-    -0.5
-   ],
-   "max": [
-    0.5,
-    1,
-    -0.375
-   ],
-   "triangles": 12,
-   "trianglesPerUnit": 12,
-   "calls": 2,
-   "bytes": 3784,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Corner_Outer_1x1_Top",
-   "name": "Tiered Retaining Wall Corner Outer 1x1 Top",
-   "file": "models/Tiered_Retaining_Wall_Corner_Outer_1x1_Top.glb",
-   "family": "retaining-wall",
-   "shape": "end",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    0.156,
-    0.156,
-    0.375
-   ],
-   "min": [
-    0.344,
-    0,
-    -0.5
-   ],
-   "max": [
-    0.5,
-    0.375,
-    -0.344
-   ],
-   "triangles": 22,
-   "trianglesPerUnit": 22,
-   "calls": 3,
-   "bytes": 5684,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_End_1x1_Mid",
-   "name": "Tiered Retaining Wall End 1x1 Mid",
-   "file": "models/Tiered_Retaining_Wall_End_1x1_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "end",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    0.5,
-    0.25,
-    1
-   ],
-   "min": [
-    0,
-    0,
-    -0.625
-   ],
-   "max": [
-    0.5,
-    1,
-    -0.375
-   ],
-   "triangles": 12,
-   "trianglesPerUnit": 12,
-   "calls": 2,
-   "bytes": 3796,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_End_1x1_Top",
-   "name": "Tiered Retaining Wall End 1x1 Top",
-   "file": "models/Tiered_Retaining_Wall_End_1x1_Top.glb",
-   "family": "retaining-wall",
-   "shape": "end",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    0.531,
-    0.313,
-    0.375
-   ],
-   "min": [
-    -0.031,
-    0,
-    -0.656
-   ],
-   "max": [
-    0.5,
-    0.375,
-    -0.344
-   ],
-   "triangles": 22,
-   "trianglesPerUnit": 22,
-   "calls": 3,
-   "bytes": 5676,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Esse_2x3_Mid",
-   "name": "Tiered Retaining Wall Esse 2x3 Mid",
-   "file": "models/Tiered_Retaining_Wall_Esse_2x3_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "esse",
-   "layer": "layer-mid",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3,
-    1.25,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.625
-   ],
-   "max": [
-    2.5,
-    1,
-    0.625
-   ],
-   "triangles": 52,
-   "trianglesPerUnit": 14,
-   "calls": 2,
-   "bytes": 7008,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Esse_2x3_Top",
-   "name": "Tiered Retaining Wall Esse 2x3 Top",
-   "file": "models/Tiered_Retaining_Wall_Esse_2x3_Top.glb",
-   "family": "retaining-wall",
-   "shape": "esse",
-   "layer": "layer-top",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3,
-    1.313,
-    0.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    2.5,
-    0.375,
-    0.656
-   ],
-   "triangles": 92,
-   "trianglesPerUnit": 23,
-   "calls": 3,
-   "bytes": 11216,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_1x1_Mid",
-   "name": "Tiered Retaining Wall Flat Curve 1x1 Mid",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_1x1_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1.125,
-    1.125,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.625
-   ],
-   "max": [
-    0.625,
-    1,
-    0.5
-   ],
-   "triangles": 36,
-   "trianglesPerUnit": 28,
-   "calls": 2,
-   "bytes": 5724,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_1x1_Top",
-   "name": "Tiered Retaining Wall Flat Curve 1x1 Top",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_1x1_Top.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1.156,
-    1.156,
-    0.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    0.656,
-    0.375,
-    0.5
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 48,
-   "calls": 3,
-   "bytes": 9044,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_2x2_Mid",
-   "name": "Tiered Retaining Wall Flat Curve 2x2 Mid",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_2x2_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    2.125,
-    2.125,
-    1
-   ],
-   "min": [
-    -1.5,
-    0,
-    -0.625
-   ],
-   "max": [
-    0.625,
-    1,
-    1.5
-   ],
-   "triangles": 36,
-   "trianglesPerUnit": 8,
-   "calls": 2,
-   "bytes": 5724,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_2x2_Top",
-   "name": "Tiered Retaining Wall Flat Curve 2x2 Top",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_2x2_Top.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    2.156,
-    2.156,
-    0.375
-   ],
-   "min": [
-    -1.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    0.656,
-    0.375,
-    1.5
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 14,
-   "calls": 3,
-   "bytes": 9044,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_3x3_Mid",
-   "name": "Tiered Retaining Wall Flat Curve 3x3 Mid",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_3x3_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3.125,
-    3.125,
-    1
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.625
-   ],
-   "max": [
-    1.625,
-    1,
-    1.5
-   ],
-   "triangles": 36,
-   "trianglesPerUnit": 4,
-   "calls": 2,
-   "bytes": 5720,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_3x3_Top",
-   "name": "Tiered Retaining Wall Flat Curve 3x3 Top",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_3x3_Top.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3.156,
-    3.156,
-    0.375
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    1.656,
-    0.375,
-    1.5
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 6,
-   "calls": 3,
-   "bytes": 9048,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_4x4_Mid",
-   "name": "Tiered Retaining Wall Flat Curve 4x4 Mid",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_4x4_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-mid",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    4.125,
-    4.125,
-    1
-   ],
-   "min": [
-    -2.5,
-    0,
-    -1.625
-   ],
-   "max": [
-    1.625,
-    1,
-    2.5
-   ],
-   "triangles": 36,
-   "trianglesPerUnit": 2,
-   "calls": 2,
-   "bytes": 5724,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_4x4_Top",
-   "name": "Tiered Retaining Wall Flat Curve 4x4 Top",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_4x4_Top.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-top",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    4.156,
-    4.156,
-    0.375
-   ],
-   "min": [
-    -2.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    1.656,
-    0.375,
-    2.5
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 4,
-   "calls": 3,
-   "bytes": 9048,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_5x5_Mid",
-   "name": "Tiered Retaining Wall Flat Curve 5x5 Mid",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_5x5_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-mid",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    5.125,
-    5.125,
-    1
-   ],
-   "min": [
-    -3.5,
-    0,
-    -1.625
-   ],
-   "max": [
-    1.625,
-    1,
-    3.5
-   ],
-   "triangles": 36,
-   "trianglesPerUnit": 1,
-   "calls": 2,
-   "bytes": 5720,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Flat_Curve_5x5_Top",
-   "name": "Tiered Retaining Wall Flat Curve 5x5 Top",
-   "file": "models/Tiered_Retaining_Wall_Flat_Curve_5x5_Top.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-top",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    5.156,
-    5.156,
-    0.375
-   ],
-   "min": [
-    -3.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    1.656,
-    0.375,
-    3.5
-   ],
-   "triangles": 64,
-   "trianglesPerUnit": 2,
-   "calls": 3,
-   "bytes": 9048,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Pillar_Base_1x1",
-   "name": "Tiered Retaining Wall Pillar Base 1x1",
-   "file": "models/Tiered_Retaining_Wall_Pillar_Base_1x1.glb",
-   "family": "retaining-wall",
-   "shape": "standalone",
-   "layer": "layer-base",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "pillar"
-   ],
-   "variant": null,
-   "dwh": [
-    0.438,
-    0.438,
-    1
-   ],
-   "min": [
-    0.281,
-    0,
-    -0.719
-   ],
-   "max": [
-    0.719,
-    1,
-    -0.281
-   ],
-   "triangles": 30,
-   "trianglesPerUnit": 30,
-   "calls": 3,
-   "bytes": 6364,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Pillar_Mid_1x1",
-   "name": "Tiered Retaining Wall Pillar Mid 1x1",
-   "file": "models/Tiered_Retaining_Wall_Pillar_Mid_1x1.glb",
-   "family": "retaining-wall",
-   "shape": "standalone",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "pillar"
-   ],
-   "variant": null,
-   "dwh": [
-    0.375,
-    0.375,
-    1
-   ],
-   "min": [
-    0.313,
-    0,
-    -0.688
-   ],
-   "max": [
-    0.688,
-    1,
-    -0.312
-   ],
-   "triangles": 10,
-   "trianglesPerUnit": 10,
-   "calls": 1,
-   "bytes": 2580,
-   "materials": [
-    "material|rock-light"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Pillar_Top_1x1",
-   "name": "Tiered Retaining Wall Pillar Top 1x1",
-   "file": "models/Tiered_Retaining_Wall_Pillar_Top_1x1.glb",
-   "family": "retaining-wall",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "pillar"
-   ],
-   "variant": null,
-   "dwh": [
-    0.438,
-    0.438,
-    0.438
-   ],
-   "min": [
-    0.281,
-    0,
-    -0.719
-   ],
-   "max": [
-    0.719,
-    0.437,
-    -0.281
-   ],
-   "triangles": 38,
-   "trianglesPerUnit": 38,
-   "calls": 3,
-   "bytes": 6960,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-lightest"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Short_1x1",
-   "name": "Tiered Retaining Wall Stepped Curve Short 1x1",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Short_1x1.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "stepped",
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    1.156,
-    1.156,
-    1.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    0.656,
-    1.375,
-    0.5
-   ],
-   "triangles": 136,
-   "trianglesPerUnit": 74,
-   "calls": 3,
-   "bytes": 14092,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Short_2x2",
-   "name": "Tiered Retaining Wall Stepped Curve Short 2x2",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Short_2x2.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "stepped",
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    2.156,
-    2.156,
-    1.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    1.656,
-    1.375,
-    0.5
-   ],
-   "triangles": 136,
-   "trianglesPerUnit": 21,
-   "calls": 3,
-   "bytes": 14096,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Short_3x3",
-   "name": "Tiered Retaining Wall Stepped Curve Short 3x3",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Short_3x3.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "stepped",
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    3.156,
-    3.156,
-    1.375
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    1.656,
-    1.375,
-    1.5
-   ],
-   "triangles": 136,
-   "trianglesPerUnit": 10,
-   "calls": 3,
-   "bytes": 14092,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Short_4x4",
-   "name": "Tiered Retaining Wall Stepped Curve Short 4x4",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Short_4x4.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "stepped",
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    4.156,
-    4.156,
-    1.375
-   ],
-   "min": [
-    0.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    4.656,
-    1.375,
-    2.5
-   ],
-   "triangles": 136,
-   "trianglesPerUnit": 6,
-   "calls": 3,
-   "bytes": 13876,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Short_5x5",
-   "name": "Tiered Retaining Wall Stepped Curve Short 5x5",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Short_5x5.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "stepped",
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    5.156,
-    5.156,
-    1.375
-   ],
-   "min": [
-    0.5,
-    0,
-    -2.656
-   ],
-   "max": [
-    5.656,
-    1.375,
-    2.5
-   ],
-   "triangles": 136,
-   "trianglesPerUnit": 4,
-   "calls": 3,
-   "bytes": 13876,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Tall_3x3",
-   "name": "Tiered Retaining Wall Stepped Curve Tall 3x3",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Tall_3x3.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "stepped",
-    "tall"
-   ],
-   "variant": null,
-   "dwh": [
-    3.156,
-    3.156,
-    2.375
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    1.656,
-    2.375,
-    1.5
-   ],
-   "triangles": 156,
-   "trianglesPerUnit": 7,
-   "calls": 3,
-   "bytes": 15544,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Tall_4x4",
-   "name": "Tiered Retaining Wall Stepped Curve Tall 4x4",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Tall_4x4.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "stepped",
-    "tall"
-   ],
-   "variant": null,
-   "dwh": [
-    4.156,
-    4.156,
-    2.375
-   ],
-   "min": [
-    -1.5,
-    0,
-    -2.656
-   ],
-   "max": [
-    2.656,
-    2.375,
-    1.5
-   ],
-   "triangles": 156,
-   "trianglesPerUnit": 4,
-   "calls": 3,
-   "bytes": 15548,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Curve_Tall_5x5",
-   "name": "Tiered Retaining Wall Stepped Curve Tall 5x5",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Curve_Tall_5x5.glb",
-   "family": "retaining-wall",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "stepped",
-    "tall"
-   ],
-   "variant": null,
-   "dwh": [
-    5.156,
-    5.156,
-    2.375
-   ],
-   "min": [
-    -3.5,
-    0,
-    -1.656
-   ],
-   "max": [
-    1.656,
-    2.375,
-    3.5
-   ],
-   "triangles": 156,
-   "trianglesPerUnit": 2,
-   "calls": 3,
-   "bytes": 15544,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Straight_1x2",
-   "name": "Tiered Retaining Wall Stepped Straight 1x2",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Straight_1x2.glb",
-   "family": "retaining-wall",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "stepped"
-   ],
-   "variant": null,
-   "dwh": [
-    2,
-    0.313,
-    1.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    1.5,
-    1.375,
-    -0.344
-   ],
-   "triangles": 58,
-   "trianglesPerUnit": 42,
-   "calls": 3,
-   "bytes": 8208,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Stepped_Straight_1x4",
-   "name": "Tiered Retaining Wall Stepped Straight 1x4",
-   "file": "models/Tiered_Retaining_Wall_Stepped_Straight_1x4.glb",
-   "family": "retaining-wall",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "stepped"
-   ],
-   "variant": null,
-   "dwh": [
-    4,
-    0.313,
-    1.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    3.5,
-    1.375,
-    -0.344
-   ],
-   "triangles": 58,
-   "trianglesPerUnit": 34,
-   "calls": 3,
-   "bytes": 8192,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Straight_1x1_Mid",
-   "name": "Tiered Retaining Wall Straight 1x1 Mid",
-   "file": "models/Tiered_Retaining_Wall_Straight_1x1_Mid.glb",
-   "family": "retaining-wall",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    0.25,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.625
-   ],
-   "max": [
-    0.5,
-    1,
-    -0.375
-   ],
-   "triangles": 12,
-   "trianglesPerUnit": 12,
-   "calls": 2,
-   "bytes": 3816,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Retaining_Wall_Straight_1x1_Top",
-   "name": "Tiered Retaining Wall Straight 1x1 Top",
-   "file": "models/Tiered_Retaining_Wall_Straight_1x1_Top.glb",
-   "family": "retaining-wall",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    0.313,
-    0.375
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.656
-   ],
-   "max": [
-    0.5,
-    0.375,
-    -0.344
-   ],
-   "triangles": 22,
-   "trianglesPerUnit": 22,
-   "calls": 3,
-   "bytes": 5696,
-   "materials": [
-    "hidden|hidden-orange",
-    "material|rock-light",
-    "material|rock-medium"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Path_Flat_1x1",
-   "name": "Tiered Walkway Path Flat 1x1",
-   "file": "models/Tiered_Walkway_Path_Flat_1x1.glb",
-   "family": "walkway",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    1,
-    1
-   ],
-   "min": [
-    -0.5,
-    -1,
-    -0.5
-   ],
-   "max": [
-    0.5,
-    0,
-    0.5
-   ],
-   "triangles": 12,
-   "trianglesPerUnit": 12,
-   "calls": 3,
-   "bytes": 4956,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Path_Transition_Curve_Inner_1x1",
-   "name": "Tiered Walkway Path Transition Curve Inner 1x1",
-   "file": "models/Tiered_Walkway_Path_Transition_Curve_Inner_1x1.glb",
-   "family": "walkway",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    1,
-    1.06
-   ],
-   "min": [
-    -0.5,
-    -1,
-    -0.5
-   ],
-   "max": [
-    0.5,
-    0.06,
-    0.5
-   ],
-   "triangles": 20,
-   "trianglesPerUnit": 19,
-   "calls": 3,
-   "bytes": 5596,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|dirt"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Path_Transition_Curve_Inner_2x2",
-   "name": "Tiered Walkway Path Transition Curve Inner 2x2",
-   "file": "models/Tiered_Walkway_Path_Transition_Curve_Inner_2x2.glb",
-   "family": "walkway",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    2,
-    2,
-    1.06
-   ],
-   "min": [
-    -0.5,
-    -1,
-    -1.5
-   ],
-   "max": [
-    1.5,
-    0.06,
-    0.5
-   ],
-   "triangles": 42,
-   "trianglesPerUnit": 10,
-   "calls": 5,
-   "bytes": 9316,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-pink",
-    "material|dirt",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Path_Transition_Curve_Outer_1x1",
-   "name": "Tiered Walkway Path Transition Curve Outer 1x1",
-   "file": "models/Tiered_Walkway_Path_Transition_Curve_Outer_1x1.glb",
-   "family": "walkway",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    1,
-    1.06
-   ],
-   "min": [
-    -0.5,
-    -1,
-    -0.5
-   ],
-   "max": [
-    0.5,
-    0.06,
-    0.5
-   ],
-   "triangles": 20,
-   "trianglesPerUnit": 19,
-   "calls": 5,
-   "bytes": 7896,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-pink",
-    "material|dirt",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Path_Transition_Curve_Outer_2x2",
-   "name": "Tiered Walkway Path Transition Curve Outer 2x2",
-   "file": "models/Tiered_Walkway_Path_Transition_Curve_Outer_2x2.glb",
-   "family": "walkway",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    2,
-    2,
-    1.06
-   ],
-   "min": [
-    -0.5,
-    -1,
-    -1.5
-   ],
-   "max": [
-    1.5,
-    0.06,
-    0.5
-   ],
-   "triangles": 42,
-   "trianglesPerUnit": 10,
-   "calls": 5,
-   "bytes": 9288,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-pink",
-    "material|dirt",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Path_Transition_Straight_1x1",
-   "name": "Tiered Walkway Path Transition Straight 1x1",
-   "file": "models/Tiered_Walkway_Path_Transition_Straight_1x1.glb",
-   "family": "walkway",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    1,
-    1,
-    1.06
-   ],
-   "min": [
-    -0.5,
-    -1,
-    -0.5
-   ],
-   "max": [
-    0.5,
-    0.06,
-    0.5
-   ],
-   "triangles": 16,
-   "trianglesPerUnit": 15,
-   "calls": 3,
-   "bytes": 5240,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-pink",
-    "material|dirt"
-   ],
-   "missingTextures": []
-  },
-  {
    "id": "Tiered_Walkway_Step_Top_Path_Transition_1x2",
    "name": "Tiered Walkway Step Top Path Transition 1x2",
    "file": "models/Tiered_Walkway_Step_Top_Path_Transition_1x2.glb",
@@ -14985,360 +10681,6 @@
     "hidden|hidden-violet",
     "material|dirt",
     "material|grass"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Curve_Short_2x2",
-   "name": "Tiered Walkway Steps Curve Short 2x2",
-   "file": "models/Tiered_Walkway_Steps_Curve_Short_2x2.glb",
-   "family": "walkway",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    2,
-    2,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -1.5
-   ],
-   "max": [
-    1.5,
-    1,
-    0.5
-   ],
-   "triangles": 128,
-   "trianglesPerUnit": 32,
-   "calls": 4,
-   "bytes": 13848,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Curve_Short_3x3",
-   "name": "Tiered Walkway Steps Curve Short 3x3",
-   "file": "models/Tiered_Walkway_Steps_Curve_Short_3x3.glb",
-   "family": "walkway",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    3,
-    3,
-    1
-   ],
-   "min": [
-    -1.5,
-    0,
-    -1.5
-   ],
-   "max": [
-    1.5,
-    1,
-    1.5
-   ],
-   "triangles": 128,
-   "trianglesPerUnit": 14,
-   "calls": 4,
-   "bytes": 13848,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Curve_Short_4x4",
-   "name": "Tiered Walkway Steps Curve Short 4x4",
-   "file": "models/Tiered_Walkway_Steps_Curve_Short_4x4.glb",
-   "family": "walkway",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    4,
-    4,
-    1
-   ],
-   "min": [
-    -1.5,
-    0,
-    -2.5
-   ],
-   "max": [
-    2.5,
-    1,
-    1.5
-   ],
-   "triangles": 128,
-   "trianglesPerUnit": 8,
-   "calls": 4,
-   "bytes": 13848,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Curve_Short_5x5",
-   "name": "Tiered Walkway Steps Curve Short 5x5",
-   "file": "models/Tiered_Walkway_Steps_Curve_Short_5x5.glb",
-   "family": "walkway",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "short"
-   ],
-   "variant": null,
-   "dwh": [
-    5,
-    5,
-    1
-   ],
-   "min": [
-    -2.5,
-    0,
-    -2.5
-   ],
-   "max": [
-    2.5,
-    1,
-    2.5
-   ],
-   "triangles": 128,
-   "trianglesPerUnit": 5,
-   "calls": 4,
-   "bytes": 13720,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Curve_Tall_4x4",
-   "name": "Tiered Walkway Steps Curve Tall 4x4",
-   "file": "models/Tiered_Walkway_Steps_Curve_Tall_4x4.glb",
-   "family": "walkway",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "tall"
-   ],
-   "variant": null,
-   "dwh": [
-    4,
-    4,
-    2
-   ],
-   "min": [
-    -2.5,
-    0,
-    -1.5
-   ],
-   "max": [
-    1.5,
-    2,
-    2.5
-   ],
-   "triangles": 224,
-   "trianglesPerUnit": 7,
-   "calls": 4,
-   "bytes": 19644,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Curve_Tall_5x5",
-   "name": "Tiered Walkway Steps Curve Tall 5x5",
-   "file": "models/Tiered_Walkway_Steps_Curve_Tall_5x5.glb",
-   "family": "walkway",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "tall"
-   ],
-   "variant": null,
-   "dwh": [
-    5,
-    5,
-    2
-   ],
-   "min": [
-    -2.5,
-    0,
-    -2.5
-   ],
-   "max": [
-    2.5,
-    2,
-    2.5
-   ],
-   "triangles": 224,
-   "trianglesPerUnit": 4,
-   "calls": 4,
-   "bytes": 19516,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Straight_1x2",
-   "name": "Tiered Walkway Steps Straight 1x2",
-   "file": "models/Tiered_Walkway_Steps_Straight_1x2.glb",
-   "family": "walkway",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    2,
-    1,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.5
-   ],
-   "max": [
-    1.5,
-    1,
-    0.5
-   ],
-   "triangles": 100,
-   "trianglesPerUnit": 50,
-   "calls": 4,
-   "bytes": 11376,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Straight_1x3",
-   "name": "Tiered Walkway Steps Straight 1x3",
-   "file": "models/Tiered_Walkway_Steps_Straight_1x3.glb",
-   "family": "walkway",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    3,
-    1,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.5
-   ],
-   "max": [
-    2.5,
-    1,
-    0.5
-   ],
-   "triangles": 100,
-   "trianglesPerUnit": 33,
-   "calls": 4,
-   "bytes": 11392,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "Tiered_Walkway_Steps_Straight_1x4",
-   "name": "Tiered Walkway Steps Straight 1x4",
-   "file": "models/Tiered_Walkway_Steps_Straight_1x4.glb",
-   "family": "walkway",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    4,
-    1,
-    1
-   ],
-   "min": [
-    -0.5,
-    0,
-    -0.5
-   ],
-   "max": [
-    3.5,
-    1,
-    0.5
-   ],
-   "triangles": 100,
-   "trianglesPerUnit": 25,
-   "calls": 4,
-   "bytes": 11376,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "material|stone-walkway"
    ],
    "missingTextures": []
   },
