@@ -99,5 +99,10 @@ catalogus staan in rastervakken.
 
 ## Publiceren
 
-`.github/workflows/static.yml` zet de repo bij elke push op GitHub Pages. Zet
-daarvoor in **Settings → Pages** de bron op *GitHub Actions*.
+`.github/workflows/static.yml` zet de repo bij elke push op GitHub Pages, maar
+**Pages moet eerst één keer met de hand aan**: **Settings → Pages → Source** op
+*GitHub Actions*. De workflow kan dat niet zelf — de GITHUB_TOKEN mag geen
+Pages-site aanmaken — dus tot die klik faalt elke run binnen tien seconden op
+"Get Pages site failed".
+
+Daarna staat de catalogus op <https://paumen.github.io/modterrain/>.

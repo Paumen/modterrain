@@ -42,15 +42,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      # Bewust zonder `enablement: true`. Die optie laat de action Pages zelf
+      # aanzetten, maar dat is geprobeerd en het kan niet: de GITHUB_TOKEN van
+      # een workflow mag geen Pages-site aanmaken ("Create Pages site failed:
+      # Resource not accessible by integration"), want dat vraagt adminrechten
+      # op de repo. Pages aanzetten is dus eenmalig handwerk — zie de uitleg
+      # bij `on:` hierboven — en zonder die stap faalt elke run hier.
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          # Zet Pages zelf aan als dat nog niet gebeurd is. Zonder dit faalt de
-          # allereerste run binnen tien seconden op "Get Pages site failed", en
-          # moet je eerst met de hand langs Settings → Pages. Met `enablement`
-          # doet de action dat via de API — de `pages: write` hierboven is
-          # precies het recht dat daarvoor nodig is.
-          enablement: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
