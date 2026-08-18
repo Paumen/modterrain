@@ -102,7 +102,6 @@ function makeCard(model, view, section) {
   const name = span('card-name', model.name);
   if (model.incomplete) name.classList.add('is-incomplete');
   text.append(name);
-  if (model.size) text.append(span('card-size', model.size));
   text.append(meta);
 
   card.append(box, text);

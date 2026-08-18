@@ -372,6 +372,15 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
     var(--paper-deep);
 }
 
+/* A reference grid under each part so its footprint in cells reads at a glance. */
+.section[data-facet="family"] .card-viewer {
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 68%),
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 20px),
+    var(--paper-deep);
+}
+
 .card-viewer model-viewer,
 .card-viewer img {
   width: 100%;
@@ -381,12 +390,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
-}
-
-.card-size {
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-soft);
 }
 
 .card-text {
@@ -666,7 +669,6 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
   .card-meta { font-size: 9.5px; }
   .card-bytes { display: none; }
   .card-brand { display: none; }
-  .card-size { font-size: 9.5px; }
 
   .card-pick { top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 5px; }
   .card-pick::before { inset: -6px; }
