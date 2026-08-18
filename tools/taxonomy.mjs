@@ -45,14 +45,17 @@ export const FAMILIES = [
   { id: 'water', name: 'Water & Waterfalls', color: '#2fc7e8', test: (n) => n.startsWith('Water_') || n.startsWith('Waterfall_') },
   { id: 'iceberg', name: 'Icebergs', color: '#8fc7ff', test: (n) => n.startsWith('Iceberg_') },
   { id: 'docks', name: 'Docks', color: '#c08447', test: (n) => n.startsWith('Docks_') },
+  // What's left of the Cave family after its walls, floors and ceilings were
+  // removed: the five pieces that finish the mouth of a cave where it meets
+  // a cliff face, which the Cliff_Cave_Entrance_* assemblies are built from.
+  { id: 'cave', name: 'Cave Edges', color: '#7a6a86', test: (n) => n.startsWith('Cave_') },
   // Kept as the structural fallback for anything that matches no other rule
   // above (see determineFamily) even though nothing currently lands here:
   // the only Prop_* pieces left are the bridge props, claimed by
   // `path-bridge` earlier in this list. Path Fences, Edging Stones,
-  // Retaining Walls and — most recently — the whole Cave family (its walls,
-  // floors and ceilings alike) were removed outright rather than folded in:
-  // every one of their models was deleted, so there was nothing left to
-  // move.
+  // Retaining Walls and most of the Cave family — its walls, floors and
+  // ceilings — were removed outright rather than folded in: every one of
+  // those models was deleted, so there was nothing left to move.
   { id: 'props', name: 'Props', color: '#b76fa8', test: (n) => n.startsWith('Prop_') },
 ];
 

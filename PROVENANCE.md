@@ -118,13 +118,20 @@ Two things about that data are Unity's rather than glTF's, and
 (mirrored on X relative to the converted `.glb` files), and a position of
 `1.0` means one tile, not one unit — see *Scale* below.
 
-Thirty-one of the 123 name pieces this repo doesn't carry. The waterfalls
-ask for `Mist` and `Ripple`, which are particle effects rather than models,
-and three ask for a crest and river surface that isn't here; the cave
-entrances ask for the floors, ceilings and cave edges that went with the
-Cave family. Twelve of those are nothing but cave pieces, so there is no
-model to build at all — their placements stay in the list as a record of
-what the prefab was. That's this repo's scope again, not a gap in the pack.
+Twenty-one of the 123 name pieces this repo doesn't carry. The waterfalls
+ask for `Mist` and `Ripple`, which are particle effects rather than models;
+the straight cave entrances ask for the `Cave_Edge_Straight_*` pieces, which
+went with the Cave family. Two of those have nothing else in them, so there
+is no model to build at all — their placements stay in the list as a record
+of what the prefab was. That's this repo's scope again, not a gap in the
+pack.
+
+A name with no `.glb` behind it isn't always a missing model, either: a
+prefab lists its own child objects the same way it lists whole models, so
+`Water_Waterfall_Top_Center_1x3_Crest` reads like a piece when it is one of
+the three nodes inside `Water_Waterfall_Top_Center_1x3.glb`. Both tools
+check the nodes inside the models they loaded before calling anything
+missing.
 
 ## Scale
 

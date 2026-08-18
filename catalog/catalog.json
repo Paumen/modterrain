@@ -1,7 +1,7 @@
 {
  "generated": "node tools/build-catalog.mjs",
- "total": 262,
- "assemblies": 111,
+ "total": 267,
+ "assemblies": 121,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -18,6 +18,7 @@
   "water": "Water & Waterfalls",
   "iceberg": "Icebergs",
   "docks": "Docks",
+  "cave": "Cave Edges",
   "props": "Props",
   "curve-inner": "Inner Curve",
   "curve-outer": "Outer Curve",
@@ -55,7 +56,7 @@
    "id": "parts",
    "label": "Parts",
    "facet": "family",
-   "count": 262,
+   "count": 267,
    "sections": [
     {
      "id": "parts-basic",
@@ -110,11 +111,6 @@
      "name": "Walls",
      "color": "#6f7b8c",
      "models": [
-      204,
-      205,
-      206,
-      207,
-      208,
       209,
       210,
       211,
@@ -152,7 +148,12 @@
       243,
       244,
       245,
-      246
+      246,
+      247,
+      248,
+      249,
+      250,
+      251
      ]
     },
     {
@@ -160,11 +161,6 @@
      "name": "Cracked Cliffs",
      "color": "#a8705a",
      "models": [
-      41,
-      42,
-      43,
-      44,
-      45,
       46,
       47,
       48,
@@ -181,7 +177,12 @@
       59,
       60,
       61,
-      62
+      62,
+      63,
+      64,
+      65,
+      66,
+      67
      ]
     },
     {
@@ -189,11 +190,6 @@
      "name": "Grass Steps",
      "color": "#5f9e4a",
      "models": [
-      186,
-      187,
-      188,
-      189,
-      190,
       191,
       192,
       193,
@@ -205,7 +201,12 @@
       199,
       200,
       201,
-      202
+      202,
+      203,
+      204,
+      205,
+      206,
+      207
      ]
     },
     {
@@ -213,11 +214,6 @@
      "name": "Terrain Paths",
      "color": "#d98f4f",
      "models": [
-      127,
-      128,
-      129,
-      130,
-      131,
       132,
       133,
       134,
@@ -241,7 +237,12 @@
       152,
       153,
       154,
-      203
+      155,
+      156,
+      157,
+      158,
+      159,
+      208
      ]
     },
     {
@@ -249,16 +250,16 @@
      "name": "Bridges & Ends",
      "color": "#8a5a2f",
      "models": [
-      123,
-      124,
-      125,
-      126,
-      155,
-      156,
-      157,
-      158,
-      159,
-      160
+      128,
+      129,
+      130,
+      131,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165
      ]
     },
     {
@@ -266,17 +267,17 @@
      "name": "Grass Carpet",
      "color": "#79c04a",
      "models": [
-      79,
-      80,
-      81,
-      82,
-      83,
       84,
       85,
       86,
       87,
       88,
-      89
+      89,
+      90,
+      91,
+      92,
+      93,
+      94
      ]
     },
     {
@@ -284,11 +285,6 @@
      "name": "Grass Hills",
      "color": "#3f8f5f",
      "models": [
-      90,
-      91,
-      92,
-      93,
-      94,
       95,
       96,
       97,
@@ -304,7 +300,12 @@
       107,
       108,
       109,
-      110
+      110,
+      111,
+      112,
+      113,
+      114,
+      115
      ]
     },
     {
@@ -312,18 +313,18 @@
      "name": "Sand",
      "color": "#e0c27a",
      "models": [
-      161,
-      162,
-      163,
-      164,
-      165,
       166,
       167,
       168,
       169,
       170,
       171,
-      172
+      172,
+      173,
+      174,
+      175,
+      176,
+      177
      ]
     },
     {
@@ -331,11 +332,6 @@
      "name": "River",
      "color": "#3aa7d6",
      "models": [
-      173,
-      174,
-      175,
-      176,
-      177,
       178,
       179,
       180,
@@ -343,7 +339,12 @@
       182,
       183,
       184,
-      185
+      185,
+      186,
+      187,
+      188,
+      189,
+      190
      ]
     },
     {
@@ -351,11 +352,6 @@
      "name": "Water & Waterfalls",
      "color": "#2fc7e8",
      "models": [
-      247,
-      248,
-      249,
-      250,
-      251,
       252,
       253,
       254,
@@ -365,7 +361,12 @@
       258,
       259,
       260,
-      261
+      261,
+      262,
+      263,
+      264,
+      265,
+      266
      ]
     },
     {
@@ -373,18 +374,18 @@
      "name": "Icebergs",
      "color": "#8fc7ff",
      "models": [
-      111,
-      112,
-      113,
-      114,
-      115,
       116,
       117,
       118,
       119,
       120,
       121,
-      122
+      122,
+      123,
+      124,
+      125,
+      126,
+      127
      ]
     },
     {
@@ -392,11 +393,6 @@
      "name": "Docks",
      "color": "#c08447",
      "models": [
-      63,
-      64,
-      65,
-      66,
-      67,
       68,
       69,
       70,
@@ -407,7 +403,24 @@
       75,
       76,
       77,
-      78
+      78,
+      79,
+      80,
+      81,
+      82,
+      83
+     ]
+    },
+    {
+     "id": "parts-cave",
+     "name": "Cave Edges",
+     "color": "#7a6a86",
+     "models": [
+      41,
+      42,
+      43,
+      44,
+      45
      ]
     }
    ]
@@ -416,7 +429,7 @@
    "id": "shapes",
    "label": "Shapes",
    "facet": "shape",
-   "count": 262,
+   "count": 267,
    "sections": [
     {
      "id": "shapes-curve-inner",
@@ -435,58 +448,58 @@
       9,
       10,
       11,
-      41,
-      42,
-      43,
-      44,
-      45,
       46,
       47,
       48,
-      80,
-      81,
-      82,
-      90,
-      91,
-      97,
-      98,
+      49,
+      50,
+      51,
+      52,
+      53,
+      85,
+      86,
+      87,
+      95,
+      96,
       102,
       103,
-      104,
-      111,
-      112,
-      113,
-      114,
-      127,
-      130,
-      131,
+      107,
+      108,
+      109,
+      116,
+      117,
+      118,
+      119,
       132,
-      133,
-      134,
-      152,
-      153,
-      154,
-      164,
-      165,
-      186,
-      187,
+      135,
+      136,
+      137,
+      138,
+      139,
+      157,
+      158,
+      159,
+      169,
+      170,
       191,
       192,
-      193,
-      194,
-      195,
-      204,
-      205,
-      206,
-      207,
-      208,
+      196,
+      197,
+      198,
+      199,
+      200,
       209,
       210,
       211,
       212,
       213,
       214,
-      215
+      215,
+      216,
+      217,
+      218,
+      219,
+      220
      ]
     },
     {
@@ -510,45 +523,45 @@
       25,
       26,
       27,
-      49,
-      50,
-      51,
-      52,
-      53,
       54,
-      83,
-      84,
-      85,
-      92,
-      99,
-      105,
-      106,
-      115,
-      116,
-      117,
-      128,
-      135,
-      136,
-      137,
-      166,
-      167,
-      168,
-      188,
-      189,
-      196,
-      197,
-      198,
-      199,
-      200,
-      216,
-      217,
-      218,
-      219,
-      220,
+      55,
+      56,
+      57,
+      58,
+      59,
+      88,
+      89,
+      90,
+      97,
+      104,
+      110,
+      111,
+      120,
+      121,
+      122,
+      133,
+      140,
+      141,
+      142,
+      171,
+      172,
+      173,
+      193,
+      194,
+      201,
+      202,
+      203,
+      204,
+      205,
       221,
       222,
       223,
-      224
+      224,
+      225,
+      226,
+      227,
+      228,
+      229
      ]
     },
     {
@@ -556,13 +569,13 @@
      "name": "Curve",
      "color": "#c9a227",
      "models": [
-      150,
-      162,
-      163,
-      173,
-      174,
-      175,
-      176
+      155,
+      167,
+      168,
+      178,
+      179,
+      180,
+      181
      ]
     },
     {
@@ -574,28 +587,31 @@
       29,
       30,
       31,
-      86,
-      87,
-      93,
-      107,
-      108,
-      138,
-      169,
-      170,
-      177,
-      178,
-      179,
-      180,
-      181,
+      43,
+      44,
+      45,
+      91,
+      92,
+      98,
+      112,
+      113,
+      143,
+      174,
+      175,
       182,
-      201,
-      202,
-      225,
-      226,
-      227,
-      228,
-      229,
-      230
+      183,
+      184,
+      185,
+      186,
+      187,
+      206,
+      207,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235
      ]
     },
     {
@@ -607,18 +623,18 @@
       33,
       34,
       40,
-      145,
-      146,
-      147,
-      148,
-      171,
-      172,
-      184,
-      185,
-      231,
-      232,
-      233,
-      234
+      150,
+      151,
+      152,
+      153,
+      176,
+      177,
+      189,
+      190,
+      236,
+      237,
+      238,
+      239
      ]
     },
     {
@@ -626,9 +642,9 @@
      "name": "Overlapping",
      "color": "#7f8fa6",
      "models": [
-      94,
-      95,
-      109
+      99,
+      100,
+      114
      ]
     },
     {
@@ -640,43 +656,43 @@
       36,
       37,
       38,
-      55,
-      56,
-      57,
-      58,
-      59,
       60,
       61,
       62,
-      88,
-      96,
-      100,
+      63,
+      64,
+      65,
+      66,
+      67,
+      93,
       101,
-      110,
-      119,
-      120,
-      121,
-      122,
-      129,
-      139,
-      140,
-      141,
-      142,
-      143,
-      151,
-      190,
-      235,
-      236,
-      237,
-      238,
-      239,
+      105,
+      106,
+      115,
+      124,
+      125,
+      126,
+      127,
+      134,
+      144,
+      145,
+      146,
+      147,
+      148,
+      156,
+      195,
       240,
       241,
       242,
       243,
       244,
       245,
-      246
+      246,
+      247,
+      248,
+      249,
+      250,
+      251
      ]
     },
     {
@@ -684,10 +700,10 @@
      "name": "Stairs & Ladder",
      "color": "#b98c5a",
      "models": [
-      66,
-      67,
-      68,
-      72
+      71,
+      72,
+      73,
+      77
      ]
     },
     {
@@ -695,8 +711,8 @@
      "name": "Transition",
      "color": "#d76fa0",
      "models": [
-      149,
-      203
+      154,
+      208
      ]
     },
     {
@@ -705,13 +721,13 @@
      "color": "#8d8377",
      "models": [
       39,
-      64,
-      65,
-      89,
-      118,
-      144,
-      161,
-      183
+      69,
+      70,
+      94,
+      123,
+      149,
+      166,
+      188
      ]
     },
     {
@@ -719,10 +735,10 @@
      "name": "End & Corner",
      "color": "#6f7b8c",
      "models": [
-      125,
-      126,
-      156,
-      157
+      130,
+      131,
+      161,
+      162
      ]
     },
     {
@@ -730,28 +746,25 @@
      "name": "Standalone",
      "color": "#9a9a9a",
      "models": [
-      63,
-      69,
-      70,
-      71,
-      73,
+      41,
+      42,
+      68,
       74,
       75,
       76,
-      77,
       78,
       79,
-      123,
-      124,
-      155,
-      158,
-      159,
+      80,
+      81,
+      82,
+      83,
+      84,
+      128,
+      129,
       160,
-      247,
-      248,
-      249,
-      250,
-      251,
+      163,
+      164,
+      165,
       252,
       253,
       254,
@@ -761,7 +774,12 @@
       258,
       259,
       260,
-      261
+      261,
+      262,
+      263,
+      264,
+      265,
+      266
      ]
     }
    ]
@@ -770,7 +788,7 @@
    "id": "layers",
    "label": "Layers",
    "facet": "layer",
-   "count": 262,
+   "count": 267,
    "sections": [
     {
      "id": "layers-layer-under",
@@ -806,24 +824,26 @@
       28,
       32,
       35,
-      204,
-      207,
-      210,
-      213,
-      216,
-      219,
-      222,
-      225,
-      228,
-      231,
+      41,
+      43,
+      209,
+      212,
+      215,
+      218,
+      221,
+      224,
+      227,
+      230,
       233,
-      235,
+      236,
       238,
-      241,
-      244,
-      250,
-      251,
-      252
+      240,
+      243,
+      246,
+      249,
+      255,
+      256,
+      257
      ]
     },
     {
@@ -840,34 +860,35 @@
       25,
       29,
       36,
-      41,
-      43,
-      45,
-      47,
-      49,
-      51,
-      53,
-      55,
-      57,
-      59,
-      61,
-      78,
-      205,
-      208,
-      211,
-      214,
-      217,
-      220,
-      223,
-      226,
-      229,
-      236,
-      239,
-      242,
-      245,
-      253,
-      254,
-      255
+      44,
+      46,
+      48,
+      50,
+      52,
+      54,
+      56,
+      58,
+      60,
+      62,
+      64,
+      66,
+      83,
+      210,
+      213,
+      216,
+      219,
+      222,
+      225,
+      228,
+      231,
+      234,
+      241,
+      244,
+      247,
+      250,
+      258,
+      259,
+      260
      ]
     },
     {
@@ -886,45 +907,47 @@
       33,
       37,
       42,
-      44,
-      46,
-      48,
-      50,
-      52,
-      54,
-      56,
-      58,
-      60,
-      62,
-      68,
-      70,
-      71,
-      123,
-      124,
-      125,
-      126,
-      203,
-      206,
-      209,
-      212,
-      215,
-      218,
-      221,
-      224,
-      227,
-      230,
+      45,
+      47,
+      49,
+      51,
+      53,
+      55,
+      57,
+      59,
+      61,
+      63,
+      65,
+      67,
+      73,
+      75,
+      76,
+      128,
+      129,
+      130,
+      131,
+      208,
+      211,
+      214,
+      217,
+      220,
+      223,
+      226,
+      229,
       232,
-      234,
+      235,
       237,
-      240,
-      243,
-      246,
-      256,
-      257,
-      258,
-      259,
-      260,
-      261
+      239,
+      242,
+      245,
+      248,
+      251,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266
      ]
     },
     {
@@ -932,23 +955,18 @@
      "name": "No Layer",
      "color": "#9a9a9a",
      "models": [
-      63,
-      64,
-      65,
-      66,
-      67,
+      68,
       69,
+      70,
+      71,
       72,
-      73,
       74,
-      75,
-      76,
       77,
+      78,
       79,
       80,
       81,
       82,
-      83,
       84,
       85,
       86,
@@ -988,11 +1006,11 @@
       120,
       121,
       122,
+      123,
+      124,
+      125,
+      126,
       127,
-      128,
-      129,
-      130,
-      131,
       132,
       133,
       134,
@@ -1064,9 +1082,14 @@
       200,
       201,
       202,
-      247,
-      248,
-      249
+      203,
+      204,
+      205,
+      206,
+      207,
+      252,
+      253,
+      254
      ]
     }
    ]
@@ -1075,7 +1098,7 @@
    "id": "sizes",
    "label": "Sizes",
    "facet": "size",
-   "count": 262,
+   "count": 267,
    "sections": [
     {
      "id": "sizes-size-1x1",
@@ -1090,50 +1113,52 @@
       37,
       38,
       39,
-      63,
-      64,
-      67,
+      41,
+      42,
       68,
       69,
-      70,
-      71,
+      72,
       73,
       74,
       75,
       76,
-      77,
       78,
       79,
       80,
+      81,
+      82,
       83,
+      84,
+      85,
       88,
-      89,
-      118,
-      125,
-      126,
+      93,
+      94,
+      123,
       130,
+      131,
       135,
-      139,
-      142,
+      140,
       144,
+      147,
       149,
-      150,
-      151,
-      152,
-      158,
-      159,
-      160,
-      161,
-      183,
-      190,
-      191,
+      154,
+      155,
+      156,
+      157,
+      163,
+      164,
+      165,
+      166,
+      188,
+      195,
       196,
-      250,
-      251,
-      252,
-      253,
-      254,
-      255
+      201,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260
      ]
     },
     {
@@ -1144,37 +1169,37 @@
       34,
       35,
       40,
-      55,
-      56,
-      65,
-      66,
-      72,
-      96,
-      110,
-      119,
-      123,
+      60,
+      61,
+      70,
+      71,
+      77,
+      101,
+      115,
       124,
-      140,
+      128,
+      129,
       145,
-      146,
-      147,
-      148,
+      150,
+      151,
+      152,
       153,
-      155,
-      157,
-      172,
-      184,
-      185,
-      186,
-      187,
-      201,
-      202,
-      203,
-      235,
-      236,
-      237,
-      256,
-      259
+      158,
+      160,
+      162,
+      177,
+      189,
+      190,
+      191,
+      192,
+      206,
+      207,
+      208,
+      240,
+      241,
+      242,
+      261,
+      264
      ]
     },
     {
@@ -1204,55 +1229,56 @@
       31,
       32,
       33,
-      41,
-      42,
-      49,
-      50,
-      57,
-      58,
-      59,
-      60,
-      61,
+      44,
+      46,
+      47,
+      54,
+      55,
       62,
-      81,
-      84,
+      63,
+      64,
+      65,
+      66,
+      67,
       86,
-      95,
-      102,
-      105,
-      109,
-      111,
-      115,
+      89,
+      91,
+      100,
+      107,
+      110,
+      114,
+      116,
       120,
-      121,
-      122,
-      129,
-      131,
+      125,
+      126,
+      127,
+      134,
       136,
-      138,
       141,
       143,
-      154,
-      156,
-      188,
-      189,
-      192,
+      146,
+      148,
+      159,
+      161,
+      193,
+      194,
       197,
-      216,
-      217,
-      218,
-      231,
-      232,
-      233,
-      234,
+      202,
+      221,
+      222,
+      223,
+      236,
+      237,
       238,
       239,
-      240,
-      241,
-      242,
       243,
-      257,
-      258
+      244,
+      245,
+      246,
+      247,
+      248,
+      262,
+      263
      ]
     },
     {
@@ -1269,43 +1295,45 @@
       26,
       27,
       43,
-      44,
-      51,
-      52,
-      53,
-      54,
-      82,
-      85,
+      45,
+      48,
+      49,
+      56,
+      57,
+      58,
+      59,
       87,
-      101,
-      107,
+      90,
+      92,
+      106,
       112,
-      116,
       117,
-      127,
-      128,
+      121,
+      122,
       132,
+      133,
       137,
-      173,
-      175,
-      177,
+      142,
+      178,
       180,
-      193,
+      182,
+      185,
       198,
-      204,
-      205,
-      206,
-      219,
-      220,
-      221,
+      203,
+      209,
+      210,
+      211,
+      224,
       225,
       226,
-      227,
-      244,
-      245,
-      246,
-      260,
-      261
+      230,
+      231,
+      232,
+      249,
+      250,
+      251,
+      265,
+      266
      ]
     },
     {
@@ -1313,38 +1341,38 @@
      "name": "4 × 4 and 4 × n",
      "color": "#e08b3e",
      "models": [
-      45,
-      46,
-      47,
-      48,
-      90,
-      92,
-      93,
-      94,
+      50,
+      51,
+      52,
+      53,
+      95,
       97,
+      98,
       99,
-      100,
-      103,
-      106,
+      102,
+      104,
+      105,
       108,
+      111,
       113,
-      114,
-      133,
-      164,
-      167,
-      171,
-      178,
-      179,
-      181,
-      182,
-      194,
+      118,
+      119,
+      138,
+      169,
+      172,
+      176,
+      183,
+      184,
+      186,
+      187,
       199,
-      222,
-      223,
-      224,
+      204,
+      227,
       228,
       229,
-      230
+      233,
+      234,
+      235
      ]
     },
     {
@@ -1352,30 +1380,30 @@
      "name": "5 × 5 and larger",
      "color": "#d4694f",
      "models": [
-      91,
-      98,
-      104,
-      134,
-      162,
-      163,
-      165,
-      166,
+      96,
+      103,
+      109,
+      139,
+      167,
       168,
-      169,
       170,
+      171,
+      173,
       174,
-      176,
-      195,
+      175,
+      179,
+      181,
       200,
-      207,
-      208,
-      209,
-      210,
-      211,
+      205,
       212,
       213,
       214,
-      215
+      215,
+      216,
+      217,
+      218,
+      219,
+      220
      ]
     },
     {
@@ -1383,9 +1411,9 @@
      "name": "No Grid Size",
      "color": "#9a9a9a",
      "models": [
-      247,
-      248,
-      249
+      252,
+      253,
+      254
      ]
     }
    ]
@@ -1394,18 +1422,13 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 111,
+   "count": 121,
    "sections": [
     {
      "id": "assemblies-assembly-cliff",
      "name": "Cliff Runs",
      "color": "#9a8f80",
      "models": [
-      262,
-      263,
-      264,
-      265,
-      266,
       267,
       268,
       269,
@@ -1430,7 +1453,12 @@
       288,
       289,
       290,
-      291
+      291,
+      292,
+      293,
+      294,
+      295,
+      296
      ]
     },
     {
@@ -1438,11 +1466,6 @@
      "name": "Waterfalls & Cave Entrances",
      "color": "#2fc7e8",
      "models": [
-      292,
-      293,
-      294,
-      295,
-      296,
       297,
       298,
       299,
@@ -1465,44 +1488,11 @@
       316,
       317,
       318,
-      361,
-      362,
-      363,
-      364,
-      365,
-      366,
-      367,
-      368,
-      369,
-      370,
-      371,
-      372
-     ]
-    },
-    {
-     "id": "assemblies-assembly-crack",
-     "name": "Cracks",
-     "color": "#a8705a",
-     "models": [
       319,
-      320
-     ]
-    },
-    {
-     "id": "assemblies-assembly-bridge",
-     "name": "Bridges",
-     "color": "#8a5a2f",
-     "models": [
+      320,
       321,
       322,
-      323
-     ]
-    },
-    {
-     "id": "assemblies-assembly-river",
-     "name": "Rivers",
-     "color": "#3aa7d6",
-     "models": [
+      323,
       324,
       325,
       326,
@@ -1513,11 +1503,44 @@
       331,
       332,
       333,
+      376,
+      377,
+      378,
+      379,
+      380,
+      381,
+      382,
+      383,
+      384,
+      385,
+      386,
+      387
+     ]
+    },
+    {
+     "id": "assemblies-assembly-crack",
+     "name": "Cracks",
+     "color": "#a8705a",
+     "models": [
       334,
-      335,
+      335
+     ]
+    },
+    {
+     "id": "assemblies-assembly-bridge",
+     "name": "Bridges",
+     "color": "#8a5a2f",
+     "models": [
       336,
       337,
-      338,
+      338
+     ]
+    },
+    {
+     "id": "assemblies-assembly-river",
+     "name": "Rivers",
+     "color": "#3aa7d6",
+     "models": [
       339,
       340,
       341,
@@ -1539,7 +1562,22 @@
       357,
       358,
       359,
-      360
+      360,
+      361,
+      362,
+      363,
+      364,
+      365,
+      366,
+      367,
+      368,
+      369,
+      370,
+      371,
+      372,
+      373,
+      374,
+      375
      ]
     }
    ]
@@ -1556,7 +1594,7 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#e0ddd7",
-     "count": 166
+     "count": 187
     },
     {
      "key": "material|grass",
@@ -1654,7 +1692,7 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 297
+     "count": 318
     },
     {
      "key": "hidden|hidden-violet",
@@ -1664,18 +1702,18 @@
      "count": 106
     },
     {
+     "key": "hidden|hidden-yellow",
+     "name": "Hidden Yellow",
+     "source": "Hidden Yellow",
+     "hex": "#fcfbc8",
+     "count": 85
+    },
+    {
      "key": "hidden|hidden-orange",
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
      "count": 78
-    },
-    {
-     "key": "hidden|hidden-yellow",
-     "name": "Hidden Yellow",
-     "source": "Hidden Yellow",
-     "hex": "#fcfbc8",
-     "count": 69
     },
     {
      "key": "hidden|hidden-blue",
@@ -1696,7 +1734,7 @@
      "name": "Hidden Green",
      "source": "Hidden Green",
      "hex": "#dcfdc8",
-     "count": 43
+     "count": 58
     },
     {
      "key": "hidden|hidden-red",
@@ -3242,6 +3280,203 @@
    "bytes": 4344,
    "materials": [
     "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cave_Center_Base_1x1",
+   "name": "Cave Center Base 1x1",
+   "file": "models/Cave_Center_Base_1x1.glb",
+   "family": "cave",
+   "shape": "standalone",
+   "layer": "layer-base",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
+   "dwh": [
+    1,
+    1,
+    1.045
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    0.045,
+    0.5
+   ],
+   "triangles": 16,
+   "trianglesPerUnit": 15,
+   "calls": 3,
+   "bytes": 5324,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cave_Center_Top_1x1",
+   "name": "Cave Center Top 1x1",
+   "file": "models/Cave_Center_Top_1x1.glb",
+   "family": "cave",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
+   "dwh": [
+    0.5,
+    1,
+    1
+   ],
+   "min": [
+    0,
+    0,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    1,
+    0.5
+   ],
+   "triangles": 16,
+   "trianglesPerUnit": 16,
+   "calls": 3,
+   "bytes": 5296,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cave_Edge_Esse_Base_3x3",
+   "name": "Cave Edge Esse Base 3x3",
+   "file": "models/Cave_Edge_Esse_Base_3x3.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-base",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
+   "dwh": [
+    2.25,
+    3,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    1.5
+   ],
+   "triangles": 80,
+   "trianglesPerUnit": 4,
+   "calls": 4,
+   "bytes": 11056,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cave_Edge_Esse_Mid_2x3",
+   "name": "Cave Edge Esse Mid 2x3",
+   "file": "models/Cave_Edge_Esse_Mid_2x3.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-mid",
+   "size": "2 × 3",
+   "sizeGroup": "size-2",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
+   "dwh": [
+    1.5,
+    2.004,
+    1
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    1,
+    0.504
+   ],
+   "triangles": 24,
+   "trianglesPerUnit": 8,
+   "calls": 3,
+   "bytes": 5744,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cave_Edge_Esse_Top_3x4",
+   "name": "Cave Edge Esse Top 3x4",
+   "file": "models/Cave_Edge_Esse_Top_3x4.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-top",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
+   "dwh": [
+    1.5,
+    3,
+    2
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    1.5
+   ],
+   "triangles": 48,
+   "trianglesPerUnit": 5,
+   "calls": 4,
+   "bytes": 8496,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
     "material|cliff-face"
    ],
    "missingTextures": []
@@ -13801,6 +14036,520 @@
    ]
   },
   {
+   "id": "Cliff_Cave_Entrance_Esse_Narrow_Base",
+   "name": "Cliff Cave Entrance Esse Narrow Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Narrow_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Base_3x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    7,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 176,
+   "trianglesPerUnit": 4,
+   "calls": 11,
+   "bytes": 15336,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Narrow_Mid",
+   "name": "Cliff Cave Entrance Esse Narrow Mid",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Narrow_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Mid_2x3",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    1.5,
+    7,
+    1
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    1,
+    5.5
+   ],
+   "triangles": 48,
+   "trianglesPerUnit": 5,
+   "calls": 6,
+   "bytes": 5932,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Narrow_Top",
+   "name": "Cliff Cave Entrance Esse Narrow Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Narrow_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Top_3x4",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    7,
+    2
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 112,
+   "trianglesPerUnit": 5,
+   "calls": 11,
+   "bytes": 12708,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Wide_Base",
+   "name": "Cliff Cave Entrance Esse Wide Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Wide_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Base_3x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    8,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    6.5
+   ],
+   "triangles": 176,
+   "trianglesPerUnit": 3,
+   "calls": 11,
+   "bytes": 15328,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Wide_Mid",
+   "name": "Cliff Cave Entrance Esse Wide Mid",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Wide_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Mid_2x3",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    1.5,
+    8,
+    1
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    1,
+    6.5
+   ],
+   "triangles": 48,
+   "trianglesPerUnit": 4,
+   "calls": 6,
+   "bytes": 5932,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Wide_Top",
+   "name": "Cliff Cave Entrance Esse Wide Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Wide_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Top_3x4",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    8,
+    2
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    6.5
+   ],
+   "triangles": 112,
+   "trianglesPerUnit": 5,
+   "calls": 11,
+   "bytes": 12708,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Narrow_Base",
+   "name": "Cliff Cave Entrance Straight Narrow Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Narrow_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Cave_Edge_Straight_Base_2x2"
+   ],
+   "incomplete": true,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1,
+    1,
+    1.045
+   ],
+   "min": [
+    -0.5,
+    -1,
+    1.5
+   ],
+   "max": [
+    0.5,
+    0.045,
+    2.5
+   ],
+   "triangles": 16,
+   "trianglesPerUnit": 15,
+   "calls": 3,
+   "bytes": 5244,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Narrow_Top",
+   "name": "Cliff Cave Entrance Straight Narrow Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Narrow_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Cave_Edge_Straight_Top_1x3"
+   ],
+   "incomplete": true,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Top_1x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.5,
+    1,
+    1
+   ],
+   "min": [
+    0,
+    1,
+    1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    2.5
+   ],
+   "triangles": 16,
+   "trianglesPerUnit": 16,
+   "calls": 3,
+   "bytes": 5204,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Wide_Base",
+   "name": "Cliff Cave Entrance Straight Wide Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Wide_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Cave_Edge_Straight_Base_2x2"
+   ],
+   "incomplete": true,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1,
+    2,
+    1.045
+   ],
+   "min": [
+    -0.5,
+    -1,
+    1.5
+   ],
+   "max": [
+    0.5,
+    0.045,
+    3.5
+   ],
+   "triangles": 16,
+   "trianglesPerUnit": 8,
+   "calls": 3,
+   "bytes": 5244,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Wide_Top",
+   "name": "Cliff Cave Entrance Straight Wide Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Wide_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Cave_Edge_Straight_Top_1x3"
+   ],
+   "incomplete": true,
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Top_1x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.5,
+    2,
+    1
+   ],
+   "min": [
+    0,
+    1,
+    1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    3.5
+   ],
+   "triangles": 16,
+   "trianglesPerUnit": 16,
+   "calls": 3,
+   "bytes": 5204,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Cave_Entrance_Waterfall_Narrow_Base",
    "name": "Cliff Cave Entrance Waterfall Narrow Base",
    "file": "assemblies/Cliff_Cave_Entrance_Waterfall_Narrow_Base.glb",
@@ -13815,11 +14564,9 @@
    "placed": 16,
    "missingPieces": [
     "Mist",
-    "Ripple",
-    "Cave_Edge_Esse_Base_3x3",
-    "Cave_Center_Base_1x1"
+    "Ripple"
    ],
-   "incomplete": true,
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -13851,25 +14598,29 @@
     }
    ],
    "dwh": [
-    0.75,
-    5,
-    2
+    2.25,
+    7,
+    3
    ],
    "min": [
+    -1.75,
     -1,
-    -0.25,
-    -0.5
+    -1.5
    ],
    "max": [
-    -0.25,
-    1.75,
-    4.5
+    0.5,
+    2,
+    5.5
    ],
-   "triangles": 52,
-   "trianglesPerUnit": 7,
-   "calls": 3,
-   "bytes": 17040,
+   "triangles": 228,
+   "trianglesPerUnit": 5,
+   "calls": 14,
+   "bytes": 32104,
    "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
     "material|waterfall"
    ],
    "missingTextures": []
@@ -13887,10 +14638,8 @@
    "traits": [],
    "variant": null,
    "placed": 5,
-   "missingPieces": [
-    "Cave_Edge_Esse_Mid_2x3"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Cave_Edge_Esse_Mid_2x3",
@@ -13910,25 +14659,28 @@
     }
    ],
    "dwh": [
-    0.75,
-    5,
-    1
+    1.5,
+    7,
+    1.25
    ],
    "min": [
     -1,
     -0.25,
-    -0.5
+    -1.5
    ],
    "max": [
-    -0.25,
-    0.75,
-    4.5
+    0.5,
+    1,
+    5.5
    ],
-   "triangles": 26,
-   "trianglesPerUnit": 7,
-   "calls": 3,
-   "bytes": 15504,
+   "triangles": 74,
+   "trianglesPerUnit": 6,
+   "calls": 9,
+   "bytes": 21152,
    "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face",
     "material|waterfall"
    ],
    "missingTextures": []
@@ -13946,11 +14698,8 @@
    "traits": [],
    "variant": null,
    "placed": 9,
-   "missingPieces": [
-    "Cave_Edge_Esse_Top_3x4",
-    "Cave_Center_Top_1x1"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Cave_Edge_Esse_Top_3x4",
@@ -13974,25 +14723,29 @@
     }
    ],
    "dwh": [
-    0.75,
-    5,
-    2
+    1.5,
+    7,
+    2.25
    ],
    "min": [
     -1,
     -0.25,
-    -0.5
+    -1.5
    ],
    "max": [
-    -0.25,
-    1.75,
-    4.5
+    0.5,
+    2,
+    5.5
    ],
-   "triangles": 52,
+   "triangles": 164,
    "trianglesPerUnit": 7,
-   "calls": 6,
-   "bytes": 16416,
+   "calls": 17,
+   "bytes": 28860,
    "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
     "material|waterfall"
    ],
    "missingTextures": []
@@ -14012,11 +14765,9 @@
    "placed": 19,
    "missingPieces": [
     "Mist",
-    "Ripple",
-    "Cave_Edge_Esse_Base_3x3",
-    "Cave_Center_Base_1x1"
+    "Ripple"
    ],
-   "incomplete": true,
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -14048,25 +14799,29 @@
     }
    ],
    "dwh": [
-    0.75,
-    6,
-    2
+    2.25,
+    8,
+    3
    ],
    "min": [
+    -1.75,
     -1,
-    -0.25,
-    -0.5
+    -1.5
    ],
    "max": [
-    -0.25,
-    1.75,
-    5.5
+    0.5,
+    2,
+    6.5
    ],
-   "triangles": 56,
-   "trianglesPerUnit": 6,
-   "calls": 4,
-   "bytes": 17344,
+   "triangles": 232,
+   "trianglesPerUnit": 4,
+   "calls": 15,
+   "bytes": 32424,
    "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
     "material|waterfall"
    ],
    "missingTextures": []
@@ -14084,10 +14839,8 @@
    "traits": [],
    "variant": null,
    "placed": 6,
-   "missingPieces": [
-    "Cave_Edge_Esse_Mid_2x3"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Cave_Edge_Esse_Mid_2x3",
@@ -14107,25 +14860,28 @@
     }
    ],
    "dwh": [
-    0.75,
-    6,
-    1
+    1.5,
+    8,
+    1.25
    ],
    "min": [
     -1,
     -0.25,
-    -0.5
+    -1.5
    ],
    "max": [
-    -0.25,
-    0.75,
-    5.5
+    0.5,
+    1,
+    6.5
    ],
-   "triangles": 28,
-   "trianglesPerUnit": 6,
-   "calls": 4,
-   "bytes": 15804,
+   "triangles": 76,
+   "trianglesPerUnit": 5,
+   "calls": 10,
+   "bytes": 21456,
    "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face",
     "material|waterfall"
    ],
    "missingTextures": []
@@ -14143,11 +14899,8 @@
    "traits": [],
    "variant": null,
    "placed": 11,
-   "missingPieces": [
-    "Cave_Edge_Esse_Top_3x4",
-    "Cave_Center_Top_1x1"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Mid_Center_1x1",
@@ -14171,25 +14924,29 @@
     }
    ],
    "dwh": [
-    0.75,
-    6,
-    2
+    1.5,
+    8,
+    2.25
    ],
    "min": [
     -1,
     -0.25,
-    -0.5
+    -1.5
    ],
    "max": [
-    -0.25,
-    1.75,
-    5.5
+    0.5,
+    2,
+    6.5
    ],
-   "triangles": 56,
+   "triangles": 168,
    "trianglesPerUnit": 6,
-   "calls": 8,
-   "bytes": 17024,
+   "calls": 19,
+   "bytes": 29460,
    "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
     "material|waterfall"
    ],
    "missingTextures": []
