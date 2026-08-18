@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riverfall Bluff — Scene Viewer</title>
+<meta name="description" content="An orbitable view of Riverfall Bluff, a scene assembled from the modular terrain pack: a grass plateau on a cliff stack, a river cut into it, and the pack's wide waterfall spilling over the north edge.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🏞️</text></svg>">
+<style>
+  :root {
+    --bg: #eef2f5;
+    --ink: #1d2429;
+    --muted: #5c6a75;
+    --line: #d4dde4;
+    --panel: #fff;
+    --sky: #aecfe6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14181b;
+      --ink: #e8edf1;
+      --muted: #94a3ad;
+      --line: #2b3238;
+      --panel: #1c2226;
+      --sky: #33556e;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    margin: 0;
+    font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+  }
+
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    align-items: baseline;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  h1 { margin: 0; font-size: 17px; }
+
+  .sub { margin: 0; font-size: 13px; color: var(--muted); }
+
+  .views {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  button {
+    padding: 5px 11px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+
+  button:hover { border-color: var(--muted); }
+
+  button[aria-pressed="true"] {
+    color: var(--panel);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  model-viewer {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    background: var(--sky);
+    --poster-color: transparent;
+  }
+
+  footer {
+    padding: 9px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  footer code {
+    font-size: 12px;
+    color: var(--ink);
+  }
+
+  a { color: inherit; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Riverfall Bluff</h1>
+    <p class="sub">184 pieces built from 29 distinct parts · 5,044 triangles</p>
+  </div>
+  <div class="views" id="views" role="group" aria-label="Camera"></div>
+</header>
+
+<model-viewer
+  id="mv"
+  src="Riverfall_Bluff.glb"
+  alt="A grass plateau on a stacked cliff standing in a lake, cut by a river that falls over the north edge"
+  camera-controls
+  interaction-prompt="none"
+  environment-image="neutral"
+  exposure="1.0"
+  shadow-intensity="1.1"
+  shadow-softness="0.7"
+  min-camera-orbit="auto auto 0m"
+  max-camera-orbit="auto auto 100000m"
+  camera-orbit="42deg 52deg 1900m"
+  camera-target="550m 280m 450m"></model-viewer>
+
+<footer>
+  Drag to orbit, scroll to zoom. Built by <code>scenes/riverfall-bluff.mjs</code> — see the
+  <a href="../index.html">piece catalog</a> for the parts it draws from.
+</footer>
+
+<script src="../vendor/model-viewer.min.js" type="module"></script>
+<script type="module">
+  // Same framings the committed renders in scenes/shots/ were taken from.
+  const VIEWS = [
+    { name: 'Iso', orbit: '42deg 52deg 1900m', target: '550m 280m 450m' },
+    { name: 'Falls', orbit: '8deg 72deg 2100m', target: '600m 200m 400m' },
+    { name: 'Plan', orbit: '0deg 18deg 1900m', target: '550m 400m 450m' },
+    { name: 'Trail', orbit: '196deg 58deg 1500m', target: '600m 450m 350m' },
+  ];
+
+  const viewer = document.querySelector('#mv');
+  const bar = document.querySelector('#views');
+
+  const buttons = VIEWS.map((view) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = view.name;
+    button.setAttribute('aria-pressed', 'false');
+    button.addEventListener('click', () => {
+      viewer.cameraOrbit = view.orbit;
+      viewer.cameraTarget = view.target;
+      for (const other of buttons) other.setAttribute('aria-pressed', String(other === button));
+    });
+    bar.append(button);
+    return button;
+  });
+
+  buttons[0].setAttribute('aria-pressed', 'true');
+  // Any hand driven orbit means the camera is no longer on a preset.
+  viewer.addEventListener('camera-change', ({ detail }) => {
+    if (detail.source !== 'user-interaction') return;
+    for (const button of buttons) button.setAttribute('aria-pressed', 'false');
+  });
+</script>
+
+</body>
+</html>
