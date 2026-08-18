@@ -239,6 +239,61 @@ function render() {
 
 const short = (id) => id.replace(/_/g, ' ').replace(/\s(Base|Mid|Top|Under)$/, '');
 
+// ------------------------------------------------------------------ save
+
+const STORAGE = 'modterrain-build';
+
+/* A build is a list of placements and nothing else, so it saves as plain
+ * JSON: small enough to keep in the browser between visits, and readable
+ * enough to hand to tools/assemble.mjs or keep under version control. */
+const toJson = () => JSON.stringify({
+  format: 'modterrain-build/1',
+  units: 'cells',
+  placements: placements.map(({ id, ...rest }) => rest),
+}, null, 1);
+
+function download(name, blob) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function load(text) {
+  const data = JSON.parse(text);
+  const list = Array.isArray(data) ? data : data.placements;
+  if (!Array.isArray(list)) throw new Error('no placements in that file');
+
+  placements.length = 0;
+  for (const entry of list) {
+    const piece = sockets.pieces[entry.piece];
+    if (!piece) continue;
+    placements.push({
+      id: nextId++,
+      piece: entry.piece,
+      dir: piece.dir,
+      scale: piece.scale,
+      cx: Math.round(entry.cx ?? 0),
+      cz: Math.round(entry.cz ?? 0),
+      level: entry.level ?? 0,
+      rot: ((entry.rot ?? 0) % 4 + 4) % 4,
+      mirror: Boolean(entry.mirror),
+    });
+  }
+  selected = null;
+  commit();
+  render();
+  showInspector();
+  showPick();
+}
+
+// The board survives a reload without anyone having to remember to save it.
+function remember() {
+  try { localStorage.setItem(STORAGE, toJson()); } catch { /* private mode, or full */ }
+}
+
 // ---------------------------------------------------------------- history
 
 /* Undo keeps whole snapshots of the board. Placements are a handful of plain
@@ -251,6 +306,7 @@ function commit() {
   past.push(JSON.stringify(placements));
   at = past.length - 1;
   syncHistory();
+  remember();
 }
 
 function step(to) {
@@ -260,6 +316,7 @@ function step(to) {
   placements.push(...JSON.parse(past[at]));
   if (!placements.some((placement) => placement.id === selected)) selected = null;
   syncHistory();
+  remember();
   render();
   showInspector();
   showPick();
@@ -651,6 +708,20 @@ export async function mount(container, catalog) {
   for (const name of ['top', 'iso', 'front']) {
     role(`view-${name}`).addEventListener('click', () => viewport.setView(name));
   }
+  const stamp = () => new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+  role('save-json').addEventListener('click', () =>
+    download(`build-${stamp()}.json`, new Blob([toJson()], { type: 'application/json' })));
+  role('save-glb').addEventListener('click', async () =>
+    download(`build-${stamp()}.glb`, await viewport.exportGlb()));
+
+  const opener = role('open');
+  opener.addEventListener('change', async () => {
+    const file = opener.files?.[0];
+    opener.value = '';
+    if (!file) return;
+    try { load(await file.text()); } catch (error) { alert(`Could not open that build: ${error.message}`); }
+  });
+
   role('orbit-left').addEventListener('click', () => viewport.orbit(-Math.PI / 8));
   role('orbit-right').addEventListener('click', () => viewport.orbit(Math.PI / 8));
   role('zoom-in').addEventListener('click', () => viewport.zoom(0.8));
@@ -713,7 +784,11 @@ export async function mount(container, catalog) {
   addEventListener('resize', chrome);
 
   measureDrawer();
-  commit();
+
+  const saved = (() => { try { return localStorage.getItem(STORAGE); } catch { return null; } })();
+  if (saved) { try { load(saved); } catch { /* a stale or hand-edited save */ } }
+  if (!past.length) commit();
+
   syncToolbar();
   render();
   showInspector();

@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Modular Terrain — 3D Catalog</title>
 <meta name="description" content="Browsable catalog of 270 models from a modular terrain pack: cliffs, walls, cracked cliffs, terrain paths, grass, sand, water, and props — by part, shape, layer, and grid size, plus the pack's own assemblies rebuilt from those pieces.">
-<meta name="catalog-version" content="de8078d083">
-<link rel="stylesheet" href="catalog/catalog.css?v=de8078d083">
-<link rel="stylesheet" href="catalog/builder.css?v=de8078d083">
+<meta name="catalog-version" content="abbf89531e">
+<link rel="stylesheet" href="catalog/catalog.css?v=abbf89531e">
+<link rel="stylesheet" href="catalog/builder.css?v=abbf89531e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⛰️</text></svg>">
 </head>
 <body>
@@ -48,6 +48,14 @@
     <button type="button" data-role="undo" title="Undo" disabled>↶</button>
     <button type="button" data-role="redo" title="Redo" disabled>↷</button>
     <button type="button" data-role="clear" title="Clear the board">✕</button>
+  </div>
+
+  <div class="hud hud-save">
+    <button type="button" data-role="save-json" title="Save the build as JSON">JSON</button>
+    <button type="button" data-role="save-glb" title="Export the build as GLB">GLB</button>
+    <label class="open" title="Open a saved build">
+      Open<input type="file" data-role="open" accept="application/json,.json" hidden>
+    </label>
   </div>
 
   <div class="hud hud-views">
@@ -114,6 +122,6 @@
 { "imports": { "three": "./vendor/three/build/three.module.min.js" } }
 </script>
 <script src="vendor/model-viewer.min.js" type="module"></script>
-<script src="catalog/catalog.js?v=de8078d083" type="module"></script>
+<script src="catalog/catalog.js?v=abbf89531e" type="module"></script>
 </body>
 </html>

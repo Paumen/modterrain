@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from '../vendor/three/loaders/GLTFLoader.js';
 import { OrbitControls } from '../vendor/three/controls/OrbitControls.js';
+import { GLTFExporter } from '../vendor/three/exporters/GLTFExporter.js';
 
 /* The pack stores 100 units to a cell; the viewport works in cells, so every
  * loaded piece is scaled down once on the way in and all placement maths stays
@@ -382,6 +383,19 @@ export function createViewport(canvas, { onTap, onHover }) {
     invalidate();
   }
 
+  /* The placed pieces as one binary glTF. Sockets stay out of it — they are
+   * hidden in the view and they are not part of what was built. */
+  function exportGlb() {
+    return new Promise((resolve, reject) => {
+      new GLTFExporter().parse(
+        pieces,
+        (result) => resolve(new Blob([result], { type: 'model/gltf-binary' })),
+        reject,
+        { binary: true, onlyVisible: true },
+      );
+    });
+  }
+
   resize();
-  return { sync, ghost, setView, setLevel, orbit, zoom, resize, invalidate };
+  return { sync, ghost, setView, setLevel, orbit, zoom, exportGlb, resize, invalidate };
 }
