@@ -35,6 +35,19 @@
    tab has to opt back out explicitly. */
 .builder[hidden] { display: none; }
 
+.builder button,
+.builder label,
+.builder [role="tab"] {
+  transition: transform .09s ease, background-color .12s ease, border-color .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.builder button:active,
+.builder label:active,
+.builder [role="tab"]:active { transform: scale(.92); }
+
+.builder button:disabled:active { transform: none; }
+
 .builder {
   position: relative;
   height: calc(100svh - var(--chrome, 64px));
@@ -148,6 +161,21 @@
   text-align: center;
   white-space: nowrap;
 }
+
+/* Icons carry the controls, so they need to be legible: a stroked glyph at a
+   real size rather than a small character in the middle of a button. */
+.builder [data-icon] svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.hud-views [data-icon] svg { width: 17px; height: 17px; }
 
 /* Standing viewpoints, tucked under the control bar so they never land on
    the drawer. */

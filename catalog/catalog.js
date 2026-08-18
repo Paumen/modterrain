@@ -161,18 +161,17 @@ function showDetail(model) {
   const heading = document.querySelector('#detail-name');
   heading.textContent = model.name;
   heading.classList.toggle('is-incomplete', Boolean(model.incomplete));
-  document.querySelector('#detail-origin').textContent =
-    [model.familyName, model.groupName, model.shapeName, model.layerName].filter(Boolean).join(' · ');
-
   const traits = document.querySelector('#detail-traits');
   traits.replaceChildren(...model.traits.map((t) => span('', t)));
 
+  const swatchesOnly = model.group === 'scene-diorama';
   const materialList = document.createElement('span');
+  materialList.className = swatchesOnly ? 'detail-materials swatches' : 'detail-materials';
   for (const key of model.materials) {
     const info = materialInfo.get(key);
-    const chip = span('detail-material', info?.name ?? key);
+    const chip = span('detail-material', swatchesOnly ? '' : (info?.short ?? info?.name ?? key));
+    chip.title = info?.name ?? key;
     if (info) chip.style.setProperty('--material-color', info.hex);
-    if (materialList.childNodes.length) materialList.append(', ');
     materialList.append(chip);
   }
 
@@ -181,7 +180,7 @@ function showDetail(model) {
     ...(model.pieces
       ? [
         ['Built from', `${model.placed} pieces, ${model.pieces.length} distinct`],
-        [`Pieces (${model.pieces.length})`, pieceList(model.pieces)],
+        ...(model.group === 'scene-diorama' ? [] : [[`Pieces (${model.pieces.length})`, pieceList(model.pieces)]]),
         ...(model.missingPieces?.length
           ? [[
             'Not in this repo',
@@ -371,7 +370,7 @@ function buildFilterBar(palettes) {
         if (on) selectedMaterials.add(color.key);
         else selectedMaterials.delete(color.key);
         button.setAttribute('aria-pressed', String(on));
-        clearButton.hidden = selectedMaterials.size === 0;
+        clearButton.disabled = selectedMaterials.size === 0;
         filter();
       });
 
@@ -386,7 +385,7 @@ function buildFilterBar(palettes) {
   clearButton.addEventListener('click', () => {
     selectedMaterials.clear();
     for (const swatch of swatches) swatch.element.setAttribute('aria-pressed', 'false');
-    clearButton.hidden = true;
+    clearButton.disabled = true;
     filter();
   });
 }
@@ -434,7 +433,7 @@ function switchView(id) {
     selectedMaterials.delete(swatch.key);
     swatch.element.setAttribute('aria-pressed', 'false');
   }
-  document.querySelector('#filter-clear').hidden = selectedMaterials.size === 0;
+  document.querySelector('#filter-clear').disabled = selectedMaterials.size === 0;
 
   filter();
 }

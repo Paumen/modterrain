@@ -83,7 +83,8 @@ export function createViewport(canvas, { onTap, onHover }) {
   const pieces = new THREE.Group();
   const seams = new THREE.Group();
   const preview = new THREE.Group();
-  scene.add(pieces, seams, preview);
+  const marks = new THREE.Group();
+  scene.add(pieces, seams, preview, marks);
 
   // The cell under the pointer, so a placement is never a guess about where
   // the piece is going to land.
@@ -378,9 +379,45 @@ export function createViewport(canvas, { onTap, onHover }) {
       seams.add(quad);
     }
 
+    marks.clear();
+    for (const placement of placements) {
+      if (placement.id !== selected) continue;
+      marks.add(anchor(placement));
+    }
+
     frame(placements);
     resize();
     invalidate();
+  }
+
+  /* Which cell a piece is anchored on, and which way it is facing. A multi-cell
+   * piece hangs off one specific cell and every rotation is about that cell, so
+   * without the marker there is no way to tell where a piece will pivot. */
+  function anchor(placement) {
+    const group = new THREE.Group();
+    group.position.set(placement.cx, placement.level + 0.01, placement.cz);
+
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(0.13, 0.2, 24),
+      new THREE.MeshBasicMaterial({ color: 0x2b2a26, transparent: true, opacity: 0.75, side: THREE.DoubleSide, depthTest: false }),
+    );
+    ring.rotation.x = -Math.PI / 2;
+    group.add(ring);
+
+    const arrow = new THREE.Mesh(
+      new THREE.ConeGeometry(0.13, 0.3, 3),
+      new THREE.MeshBasicMaterial({ color: 0x4f7a3a, depthTest: false }),
+    );
+    arrow.position.set(0, 0, 0.42);
+    arrow.rotation.set(Math.PI / 2, 0, 0);
+    group.add(arrow);
+
+    // Facing follows the piece: a quarter turn about the vertical, and a
+    // mirrored piece faces the other way across x.
+    group.rotation.y = placement.rot * (Math.PI / 2);
+    group.scale.x = placement.mirror ? -1 : 1;
+    group.renderOrder = 2;
+    return group;
   }
 
   /* The placed pieces as one binary glTF. Sockets stay out of it — they are

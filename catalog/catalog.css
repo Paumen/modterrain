@@ -26,7 +26,21 @@
   }
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+label,
+summary,
+[role="tab"] {
+  transition: transform .09s ease, background-color .12s ease, border-color .12s ease;
+}
+
+button:active,
+label:active,
+[role="tab"]:active { transform: scale(.94); }
 
 .offscreen {
   position: absolute;
@@ -113,11 +127,18 @@ a { color: var(--accent); }
   font-weight: 600;
 }
 
+/* The clear button sits with the filters and only ever greys out, so the bar
+   keeps its height and the page under it never jumps as you select. */
 .filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
   padding: 9px clamp(16px, 4vw, 40px);
   border-bottom: 1px solid var(--line);
   background: var(--paper);
 }
+
+.filter-swatches { flex: 1; }
 
 .filter-swatches {
   display: flex;
@@ -148,12 +169,19 @@ a { color: var(--accent); }
   color: var(--ink-soft);
 }
 
+/* One row per group, scrolled sideways rather than wrapped: the bar keeps a
+   fixed height, so selecting a filter never reflows the page under it. */
 .filter-group-swatches {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 5px;
   min-width: 0;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+
+.filter-group-swatches::-webkit-scrollbar { display: none; }
 
 .swatch {
   position: relative;
@@ -238,18 +266,16 @@ a { color: var(--accent); }
   cursor: pointer;
 }
 
-.filter-clear[hidden] { display: none; }
+.filter-clear:disabled {
+  opacity: .4;
+  cursor: default;
+}
 
 @media (max-width: 560px) {
   .filter-bar { padding: 8px clamp(16px, 4vw, 40px); }
   .filter-swatches { gap: 6px; }
   .filter-group + .filter-group { padding-top: 6px; }
 
-  .filter-group-swatches {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
 
   .filter-group-swatches::-webkit-scrollbar { display: none; }
   .filter-group-label { display: none; }
@@ -302,6 +328,10 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
     grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
   }
 }
+
+/* A whole diorama is unreadable at one tile wide, so a scene spans two of
+   them. The raster is unchanged; the card just covers more of it. */
+.section[data-facet="scene"] .card-holder { grid-column: span 2; }
 
 
 .card-holder { position: relative; display: flex; }

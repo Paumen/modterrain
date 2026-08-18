@@ -33,6 +33,8 @@ let rotation = 0;
 let mirrored = false;
 let level = 0;
 let selected = null;
+let armed = null;
+let placeButton;
 
 // ------------------------------------------------------------------ shapes
 
@@ -330,6 +332,24 @@ function syncHistory() {
 
 // ---------------------------------------------------------------- editing
 
+/* Placing takes two taps, never one. A touch screen has no hover, so the
+ * first tap is what shows the ghost: it aims, and only a second tap on the
+ * same cell commits. Turning the camera, or changing your mind about where a
+ * piece goes, therefore never drops one by accident. */
+function aim(x, z) {
+  if (armed && armed.cx === x && armed.cz === z) return commitArmed();
+  armed = { cx: x, cz: z };
+  syncToolbar();
+}
+
+function commitArmed() {
+  if (!armed) return;
+  const { cx, cz } = armed;
+  armed = null;
+  addAt(cx, cz);
+  syncToolbar();
+}
+
 /* Bodies do not take clicks: laying a surface layer means clicking a cell
  * that is already occupied, so the grid always answers the click. With a
  * piece loaded a click places it; with none, a click selects what is there. */
@@ -371,6 +391,7 @@ function showSheet(name) {
 }
 
 function select(id) {
+  armed = null;
   selected = id;
   render();
   showInspector();
@@ -627,7 +648,7 @@ function renderPalette() {
     button.append(colours);
     button.append(element('span', 'tile-name', name));
 
-    button.addEventListener('click', () => { brush = brush === id ? null : id; syncToolbar(); });
+    button.addEventListener('click', () => { brush = brush === id ? null : id; armed = null; syncToolbar(); });
     item.append(button);
     paletteList.append(item);
     observe(box);
@@ -636,13 +657,27 @@ function renderPalette() {
 
 // ---------------------------------------------------------------- toolbar
 
+function showGhost(x, z) {
+  const piece = sockets.pieces[brush];
+  if (!piece) return viewport?.ghost(null);
+  viewport?.ghost({
+    piece: brush, dir: piece.dir, scale: piece.scale, cx: x, cz: z, level, rot: rotation, mirror: mirrored,
+  });
+}
+
 function syncToolbar() {
-  brushLabel.textContent = brush
-    ? `${names.get(brush) ?? brush}${rotation ? ` · ${rotation * 90}°` : ''}${mirrored ? ' · mirrored' : ''}`
-    : 'Pick a piece to place — or click the grid to inspect';
+  const name = brush ? (names.get(brush) ?? brush) : null;
+  brushLabel.textContent = !name ? 'Pick a piece — then tap once to aim, again to place'
+    : `${armed ? 'Tap again to place · ' : ''}${name}`
+      + `${rotation ? ` · ${rotation * 90}°` : ''}${mirrored ? ' · mirrored' : ''}`;
   levelLabel.textContent = `level ${Number(level.toFixed(3))}`;
   mirrorButton.setAttribute('aria-pressed', String(mirrored));
+  if (placeButton) placeButton.disabled = !armed;
+  if (host) host.dataset.aim = armed ? `${armed.cx},${armed.cz}` : '';
+
   viewport?.setLevel(level);
+  if (armed) showGhost(armed.cx, armed.cz);
+  else if (!brush) viewport?.ghost(null);
   renderPalette();
 }
 
@@ -730,6 +765,9 @@ export async function mount(container, catalog) {
   removeButton = role('remove');
   removeButton.addEventListener('click', () => remove(selected));
 
+  placeButton = role('place');
+  placeButton.addEventListener('click', commitArmed);
+
   drawer = { root: role('drawer') };
   drawer.root.addEventListener('transitionend', measureDrawer);
   new ResizeObserver(measureDrawer).observe(drawer.root);
@@ -738,6 +776,22 @@ export async function mount(container, catalog) {
     pieces: { tab: role('tab-pieces'), panel: role('panel-pieces') },
     seams: { tab: role('tab-seams'), panel: role('panel-seams') },
   };
+
+  /* Swiping across the drawer moves between its tabs, since reaching for a
+   * tab is the one thing a thumb on a phone cannot do comfortably. */
+  const order = Object.keys(sheet);
+  const body = container.querySelector('.drawer-body');
+  let swipe = null;
+  body.addEventListener('pointerdown', (event) => { swipe = { x: event.clientX, y: event.clientY }; });
+  body.addEventListener('pointerup', (event) => {
+    if (!swipe) return;
+    const dx = event.clientX - swipe.x;
+    const dy = event.clientY - swipe.y;
+    swipe = null;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    const current = order.findIndex((name) => sheet[name].tab.getAttribute('aria-selected') === 'true');
+    showSheet(order[Math.min(order.length - 1, Math.max(0, current + (dx < 0 ? 1 : -1)))]);
+  });
   for (const name of Object.keys(sheet)) {
     sheet[name].tab.addEventListener('click', () => {
       const shut = drawer.root.classList.contains('is-shut');
@@ -754,7 +808,8 @@ export async function mount(container, catalog) {
     if (host.hidden || event.target.matches('input, select, textarea')) return;
     const undoKey = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z';
     if (undoKey) { event.preventDefault(); step(event.shiftKey ? at + 1 : at - 1); return; }
-    if (event.key === 'Escape') { brush = null; syncToolbar(); }
+    if (event.key === 'Escape') { armed = null; brush = null; syncToolbar(); }
+    if (event.key === 'Enter' && armed) { event.preventDefault(); commitArmed(); }
     if (event.key === 'r' || event.key === 'R') { rotation = (rotation + 1) % 4; syncToolbar(); }
     if (event.key === 'm' || event.key === 'M') { mirrored = !mirrored; syncToolbar(); }
     if ((event.key === 'Delete' || event.key === 'Backspace') && selected) { event.preventDefault(); remove(selected); }
@@ -763,15 +818,14 @@ export async function mount(container, catalog) {
   const { createViewport } = await import('./viewport.js');
   viewport = createViewport(role('view'), {
     onTap: ({ id, x, z }) => {
-      if (brush && x !== null) return addAt(x, z);
+      if (brush && x !== null) return aim(x, z);
       select(id ?? (x === null ? null : topmostAt(x, z)));
     },
+    // Hover only sharpens the aim on a pointer that has one; the ghost is
+    // held by the aim, so a touch screen loses nothing by having no hover.
     onHover: (x, z) => {
-      if (!brush || x === null) return viewport.ghost(null);
-      const piece = sockets.pieces[brush];
-      viewport.ghost({
-        piece: brush, dir: piece.dir, scale: piece.scale, cx: x, cz: z, level, rot: rotation, mirror: mirrored,
-      });
+      if (!brush || armed || x === null) return;
+      showGhost(x, z);
     },
   });
 
