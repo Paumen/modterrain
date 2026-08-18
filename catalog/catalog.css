@@ -313,6 +313,15 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   gap: 10px;
 }
 
+/* An assembly is not a tile: it's a whole scene — the wide river bridge is
+   ten cells across — and inside a 112px square it reads as a smudge. Its
+   sections get wider tiles and a landscape preview instead. */
+.section[data-facet="assembly"] .grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.section[data-facet="assembly"] .card-viewer { aspect-ratio: 4 / 3; }
+
 /* The holder carries the selection checkbox on top of the card; the card
  * itself stays one button that opens the detail view. The grid sees the
  * holder as its tile, so filter() hides the holder, not the card. */
@@ -702,6 +711,10 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
     gap: 6px;
+  }
+
+  .section[data-facet="assembly"] .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   .card-text { padding: 5px 6px 6px; gap: 1px; }

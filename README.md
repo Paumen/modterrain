@@ -10,7 +10,8 @@ from filenames.
 
 ## Using the catalog
 
-**Four tabs** each look at the same 287 models differently:
+**Five tabs.** The first four look at the same 287 pieces differently; the
+fifth shows what those pieces build:
 
 | Tab | Groups by | For |
 | --- | --- | --- |
@@ -18,6 +19,7 @@ from filenames.
 | Shapes | inner curve, outer curve, s-curve, straight, incline… | "which pieces complete this curve?" |
 | Layers | under, base, mid, top | "what stacks onto this row?" |
 | Sizes | grid footprint from the name | "what fits this 3 × 3 gap?" |
+| Assemblies | what the arrangement builds | "what does a finished bridge look like?" |
 
 Beyond that:
 
@@ -49,7 +51,7 @@ assemblies/placements.json  the pack's own prefabs as piece + transform lists
 assemblies/*.glb             assemblies built from those lists
 tools/build-catalog.mjs     builds catalog.json from models/
 tools/assemble.mjs          builds an assembly GLB out of pieces in models/
-tools/taxonomy.mjs          the classification: families, shapes, layers, sizes
+tools/taxonomy.mjs          the classification: families, shapes, layers, sizes, assemblies
 tools/glb.mjs                reading, writing, and measuring GLB files
 tools/embed-textures.mjs    patches the models in textures/ back into models/
 tools/png.mjs                just enough PNG decoding to average a texture's color
@@ -72,6 +74,11 @@ node tools/assemble.mjs --all --only-complete --out assemblies
 Geometry is merged once per distinct piece and instanced from there, so the
 nine wall segments of a cliff cost one copy of the wall and nine nodes.
 
+Whatever ends up in `assemblies/` shows up in the catalog's **Assemblies**
+tab on the next `node tools/build-catalog.mjs`, with the piece list it was
+built from in the detail panel. Two are checked in: the wide river bridge
+and the large crack.
+
 172 of the 212 build with every piece present. The remaining 40 reach for
 models this repo doesn't carry — tiered retaining walls, fences, cave props,
 all removed earlier — and build without them rather than failing; the tool
@@ -90,9 +97,10 @@ out inside out, overlapping by whole tiles.
 node tools/build-catalog.mjs
 ```
 
-Reads every `.glb` in `models/`, measures it, derives its place in the
-classification from its filename, and writes `catalog/catalog.json` plus a
-fresh version hash into `index.html`. No dependencies; Node 18 or newer.
+Reads every `.glb` in `models/` and in `assemblies/`, measures it, derives
+its place in the classification from its filename, and writes
+`catalog/catalog.json` plus a fresh version hash into `index.html`. No
+dependencies; Node 18 or newer.
 
 The build doubles as its own check. It warns about models that land in no
 tab, materials without a cleaned-up name, models that fall far outside their
@@ -102,7 +110,7 @@ named grid size, missing textures, and models above the triangle budget.
 
 Everything the catalog "knows" about the kit lives in `tools/taxonomy.mjs`:
 the families with their color, the shapes with their pattern, the layers,
-the size groups, the traits, and the tabs. One table per facet, rules
+the size groups, the assembly groups, the traits, and the tabs. One table per facet, rules
 top to bottom, first match wins. A mis-classified model is a one-line fix
 there; then run `node tools/build-catalog.mjs` again.
 

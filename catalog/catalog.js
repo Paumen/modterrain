@@ -174,6 +174,15 @@ function makeCard(model, view, section) {
   return item;
 }
 
+/**
+ * "12 models", "1 assembly" — the noun follows what the tab is counting, and
+ * the count itself changes as the material filter narrows the section.
+ */
+const counted = (facet) => (n) =>
+  facet === 'assembly'
+    ? `${n} ${n === 1 ? 'assembly' : 'assemblies'}`
+    : `${n} model${n === 1 ? '' : 's'}`;
+
 function makeSection(view, section, facet) {
   const element = document.createElement('section');
   element.className = 'section';
@@ -188,13 +197,14 @@ function makeSection(view, section, facet) {
   const title = document.createElement('h2');
   title.textContent = section.name;
 
-  const countEl = span('count', `${section.models.length} models`);
+  const label = counted(facet);
+  const countEl = span('count', label(section.models.length));
   head.append(title, countEl);
 
   const grid = document.createElement('div');
   grid.className = 'grid';
   element.append(head, grid);
-  return { element, grid, countEl };
+  return { element, grid, countEl, label };
 }
 
 /* ---------- detail view ---------- */
@@ -218,11 +228,25 @@ const placement = (min, max) =>
     .map(([axis, index]) => `${axis} ${unit.format(min[index])} … ${unit.format(max[index])}`)
     .join(' · ');
 
+/**
+ * The pieces an assembly is built from, most-used first, each with how often
+ * it occurs. A count of one stays bare — "× 1" on two thirds of the list is
+ * noise around the entries that actually repeat.
+ */
+function pieceList(pieces) {
+  const holder = document.createElement('span');
+  for (const piece of pieces) {
+    if (holder.childNodes.length) holder.append(', ');
+    holder.append(piece.count > 1 ? `${piece.id.replace(/_/g, ' ')} × ${piece.count}` : piece.id.replace(/_/g, ' '));
+  }
+  return holder;
+}
+
 function showDetail(model) {
   activePath = model.file;
   document.querySelector('#detail-name').textContent = model.name;
   document.querySelector('#detail-origin').textContent =
-    [model.familyName, model.shapeName, model.layerName].filter(Boolean).join(' · ');
+    [model.familyName, model.groupName, model.shapeName, model.layerName].filter(Boolean).join(' · ');
 
   const traits = document.querySelector('#detail-traits');
   traits.replaceChildren(...model.traits.map((t) => span('', t)));
@@ -238,7 +262,17 @@ function showDetail(model) {
 
   const rows = [
     ['File', model.file],
-    ['Grid footprint', model.size ? `${model.size} cells` : '—'],
+    // An assembly has no grid footprint of its own — it's an arrangement of
+    // pieces that do — so it says what it's built from instead.
+    ...(model.pieces
+      ? [
+        ['Built from', `${model.placed} pieces, ${model.pieces.length} distinct`],
+        [`Pieces (${model.pieces.length})`, pieceList(model.pieces)],
+        ...(model.missingPieces?.length
+          ? [['Not in this repo', `${model.missingPieces.join(', ')} — built without them`]]
+          : []),
+      ]
+      : [['Grid footprint', model.size ? `${model.size} cells` : '—']]),
     ['Dimensions (w × d × h)', readableDimensions(model.dwh)],
     ['Position relative to origin', placement(model.min, model.max)],
     ['Triangles', number.format(model.triangles)],
@@ -504,7 +538,7 @@ function filter() {
     const count = section.cards.filter((c) => !c.element.hidden).length;
 
     section.element.hidden = !inView || count === 0;
-    section.countEl.textContent = `${count} model${count === 1 ? '' : 's'}`;
+    section.countEl.textContent = section.label(count);
   }
 
   emptyMessage.hidden = visible > 0;
@@ -526,6 +560,8 @@ async function start() {
 
   for (const model of data.models) {
     model.familyName = nameOf(model.family);
+    // Assemblies carry a group instead of the four piece facets.
+    model.groupName = model.group ? nameOf(model.group) : null;
     model.shapeName = nameOf(model.shape);
     model.layerName = model.layer === 'layer-none' ? null : nameOf(model.layer);
   }
@@ -558,7 +594,10 @@ async function start() {
         const model = data.models[index];
         const item = makeCard(model, view.id, {
           color: section.color,
-          brand: model.familyName,
+          // What the card says about itself beside its size: which family a
+          // piece belongs to, and for an assembly — which has no family —
+          // how many pieces went into it.
+          brand: model.pieces ? `${model.placed} pieces` : model.familyName,
         });
         parts.grid.append(item.element);
         own.push(item);
@@ -569,6 +608,7 @@ async function start() {
         element: parts.element,
         cards: own,
         countEl: parts.countEl,
+        label: parts.label,
       });
     }
   }

@@ -156,14 +156,39 @@ const TRAITS = [
   [/Sign/, 'sign'],
 ];
 
+/* -- assemblies --------------------------------------------------------
+ * Not pieces: whole arrangements of them, the pack's own prefabs rebuilt by
+ * tools/assemble.mjs into one .glb each (see assemblies/placements.json).
+ * They classify by what they build rather than by how they fit a grid, so
+ * they get one table of their own instead of borrowing the four above —
+ * `Crack_Large` is a hole in a grass field, not a "Prop" and not a size.
+ *
+ * Colors match the families the pieces come from, so a cliff assembly reads
+ * as the same thing as the cliff pieces it's made of. The table covers all
+ * 212 prefabs; the tab shows whichever ones have actually been built into
+ * assemblies/.
+ */
+export const ASSEMBLY_GROUPS = [
+  { id: 'assembly-cliff', name: 'Cliff Runs', color: '#9a8f80', test: (n) => n.startsWith('Cliff_Assembly_') },
+  { id: 'assembly-cave', name: 'Cave Tunnels & Walls', color: '#7a6a86', test: (n) => n.startsWith('Cave_') },
+  { id: 'assembly-water', name: 'Waterfalls & Cave Entrances', color: '#2fc7e8', test: (n) => n.startsWith('Cliff_') || n.startsWith('Water_') },
+  { id: 'assembly-crack', name: 'Cracks', color: '#a8705a', test: (n) => n.startsWith('Crack_') },
+  { id: 'assembly-path', name: 'Paths & Bridges', color: '#d98f4f', test: (n) => n.startsWith('Path_') },
+  { id: 'assembly-river', name: 'Rivers', color: '#3aa7d6', test: (n) => n.startsWith('River_') || n.startsWith('Terrain_Water_') },
+  { id: 'assembly-structure', name: 'Stairs, Walls & Gates', color: '#b98c5a', test: () => true },
+];
+
 /* -- tabs -----------------------------------------------------------
- * Four facets across the whole pack.
+ * Four facets across the pieces, then the assemblies built from them.
+ * `source` says which collection a tab draws from; without it, a tab reads
+ * models/.
  */
 export const TABS = [
   { id: 'parts', label: 'Parts', facet: 'family' },
   { id: 'shapes', label: 'Shapes', facet: 'shape' },
   { id: 'layers', label: 'Layers', facet: 'layer' },
   { id: 'sizes', label: 'Sizes', facet: 'size' },
+  { id: 'assemblies', label: 'Assemblies', facet: 'assembly', source: 'assemblies' },
 ];
 
 /* -- deriving -------------------------------------------------------------- */
@@ -200,6 +225,11 @@ export function determineSize(name) {
   if (matches.length === 0) return null;
   const [, w, d] = matches.at(-1);
   return { label: `${w} × ${d}`, width: Number(w), depth: Number(d) };
+}
+
+/** An assembly's group; the last rule catches everything. */
+export function determineAssemblyGroup(name) {
+  return first(ASSEMBLY_GROUPS, (g) => g.test(name)) ?? ASSEMBLY_GROUPS.at(-1);
 }
 
 export function determineSizeGroup(size) {
