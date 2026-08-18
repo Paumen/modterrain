@@ -2,7 +2,7 @@
  "generated": "node tools/build-catalog.mjs",
  "total": 270,
  "assemblies": 123,
- "scenes": 8,
+ "scenes": 6,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1602,7 +1602,7 @@
    "id": "scenes",
    "label": "Scenes",
    "facet": "scene",
-   "count": 8,
+   "count": 6,
    "sections": [
     {
      "id": "scenes-scene-diorama",
@@ -1614,9 +1614,7 @@
       395,
       396,
       397,
-      398,
-      399,
-      400
+      398
      ]
     }
    ]
@@ -1633,63 +1631,56 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#e0ddd7",
-     "count": 195
+     "count": 193
     },
     {
      "key": "material|grass",
      "name": "Grass",
      "source": "Grass",
      "hex": "#a7de76",
-     "count": 141
+     "count": 139
     },
     {
      "key": "material|water-river",
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 66
+     "count": 64
     },
     {
      "key": "material|dirt",
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#f6edd3",
-     "count": 55
+     "count": 53
     },
     {
      "key": "material|waterfall",
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 44
+     "count": 42
     },
     {
      "key": "material|wood-dark",
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 23
+     "count": 22
     },
     {
      "key": "material|wood-light-end",
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 22
+     "count": 21
     },
     {
      "key": "material|wood-light",
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 21
-    },
-    {
-     "key": "material|waterfall-crest",
-     "name": "Waterfall Crest",
-     "source": "Waterfall Crest",
-     "hex": "#6ee6ff",
-     "count": 14
+     "count": 20
     },
     {
      "key": "material|rope",
@@ -1706,11 +1697,11 @@
      "count": 12
     },
     {
-     "key": "material|water-lake",
-     "name": "Water Lake",
-     "source": "Water Lake",
-     "hex": "#009bc3",
-     "count": 9
+     "key": "material|waterfall-crest",
+     "name": "Waterfall Crest",
+     "source": "Waterfall Crest",
+     "hex": "#6ee6ff",
+     "count": 12
     },
     {
      "key": "material|wood-medium",
@@ -1718,6 +1709,13 @@
      "source": "Wood Medium",
      "hex": "#935f32",
      "count": 9
+    },
+    {
+     "key": "material|water-lake",
+     "name": "Water Lake",
+     "source": "Water Lake",
+     "hex": "#009bc3",
+     "count": 8
     },
     {
      "key": "material|material-0",
@@ -1850,41 +1848,34 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 327
+     "count": 326
     },
     {
      "key": "hidden|hidden-violet",
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 109
+     "count": 108
     },
     {
      "key": "hidden|hidden-yellow",
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 89
+     "count": 88
     },
     {
      "key": "hidden|hidden-orange",
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 81
+     "count": 80
     },
     {
      "key": "hidden|hidden-blue",
      "name": "Hidden Blue",
      "source": "Hidden Blue",
      "hex": "#d8efff",
-     "count": 69
-    },
-    {
-     "key": "hidden|hidden-pink",
-     "name": "Hidden Pink",
-     "source": "Hidden Pink",
-     "hex": "#ffdfff",
      "count": 68
     },
     {
@@ -1895,11 +1886,18 @@
      "count": 67
     },
     {
+     "key": "hidden|hidden-pink",
+     "name": "Hidden Pink",
+     "source": "Hidden Pink",
+     "hex": "#ffdfff",
+     "count": 67
+    },
+    {
      "key": "hidden|hidden-red",
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 45
+     "count": 44
     }
    ]
   }
@@ -19917,181 +19915,6 @@
    "missingTextures": []
   },
   {
-   "id": "Riverfall_Bluff",
-   "name": "Riverfall Bluff",
-   "file": "scenes/Riverfall_Bluff.glb",
-   "group": "scene-diorama",
-   "family": null,
-   "shape": null,
-   "layer": null,
-   "size": null,
-   "sizeGroup": null,
-   "traits": [],
-   "variant": null,
-   "placed": 194,
-   "missingPieces": [
-    "Mist",
-    "Ripple"
-   ],
-   "incomplete": false,
-   "pieces": [
-    {
-     "id": "Basic_Straight_Base_1x2",
-     "count": 30
-    },
-    {
-     "id": "Basic_Straight_Mid_1x1",
-     "count": 30
-    },
-    {
-     "id": "Grass_Carpet_Center_1x1",
-     "count": 28
-    },
-    {
-     "id": "Basic_Straight_Top_1x1",
-     "count": 25
-    },
-    {
-     "id": "Path_Terrain_Basic_Straight_1x1",
-     "count": 20
-    },
-    {
-     "id": "Terrain_Water_River_Flat_1x1",
-     "count": 9
-    },
-    {
-     "id": "Grass_Hill_Sharp_Straight_1x2",
-     "count": 5
-    },
-    {
-     "id": "Mist",
-     "count": 5
-    },
-    {
-     "id": "Ripple",
-     "count": 5
-    },
-    {
-     "id": "Basic_Curve_Outer_1x1_Base",
-     "count": 4
-    },
-    {
-     "id": "Basic_Curve_Outer_1x1_Mid",
-     "count": 4
-    },
-    {
-     "id": "Basic_Curve_Outer_1x1_Top",
-     "count": 4
-    },
-    {
-     "id": "Path_End_Edge_Top_1x1",
-     "count": 4
-    },
-    {
-     "id": "Basic_Esse_Base_2x2",
-     "count": 2
-    },
-    {
-     "id": "Basic_Esse_Mid_2x2",
-     "count": 2
-    },
-    {
-     "id": "Grass_Flat_1x1",
-     "count": 2
-    },
-    {
-     "id": "Grass_Hill_Sharp_Curve_Inner_2x2",
-     "count": 2
-    },
-    {
-     "id": "Waterfall_Left_Top_Terrain_3x3",
-     "count": 2
-    },
-    {
-     "id": "Water_Circle_2_Midpoly",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Base_Center_1x1",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Base_Left_1x1",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Base_Right_1x1",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Mid_Center_1x1",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Mid_Left_1x1",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Mid_Right_1x1",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Top_Center_1x3",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Top_Left_2x3",
-     "count": 1
-    },
-    {
-     "id": "Water_Waterfall_Top_Right_2x3",
-     "count": 1
-    },
-    {
-     "id": "Waterfall_Center_Top_Terrain_1x3",
-     "count": 1
-    }
-   ],
-   "dwh": [
-    22.439,
-    22.439,
-    6.25
-   ],
-   "min": [
-    -6.22,
-    -1,
-    -7.22
-   ],
-   "max": [
-    16.22,
-    5.25,
-    15.22
-   ],
-   "triangles": 5044,
-   "trianglesPerUnit": 2,
-   "calls": 580,
-   "bytes": 400132,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-blue",
-    "hidden|hidden-orange",
-    "hidden|hidden-pink",
-    "hidden|hidden-red",
-    "hidden|hidden-violet",
-    "hidden|hidden-yellow",
-    "material|cliff-face",
-    "material|dirt",
-    "material|grass",
-    "material|water-lake",
-    "material|water-river",
-    "material|waterfall",
-    "material|waterfall-crest"
-   ],
-   "missingTextures": [
-    "uvmap image 32x16.png"
-   ]
-  },
-  {
    "id": "Winter_v2",
    "name": "Winter v2",
    "file": "scenes/Winter_v2.glb",
@@ -20132,50 +19955,6 @@
     "material|material-6",
     "material|material-7",
     "material|material-8"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "floating_island_v3",
-   "name": "floating island v3",
-   "file": "scenes/floating_island_v3.glb",
-   "group": "scene-diorama",
-   "family": null,
-   "shape": null,
-   "layer": null,
-   "size": null,
-   "sizeGroup": null,
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    11.9,
-    10.9,
-    9.089
-   ],
-   "min": [
-    -1.45,
-    -5.65,
-    -0.45
-   ],
-   "max": [
-    10.45,
-    3.439,
-    10.45
-   ],
-   "triangles": 2990,
-   "trianglesPerUnit": 3,
-   "calls": 9,
-   "bytes": 108880,
-   "materials": [
-    "material|cliff-face",
-    "material|dirt",
-    "material|grass",
-    "material|water-river",
-    "material|waterfall",
-    "material|waterfall-crest",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end"
    ],
    "missingTextures": []
   },
