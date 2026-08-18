@@ -123,64 +123,22 @@
 
 .stage { padding: 10px 12px 8px; }
 
-/* The grid keeps its natural size and the box pans, rather than being
-   stretched to fit: shrinking it would take the cells below a reliable tap. */
+/* The view takes the drag itself — orbiting and pinching are the camera, so
+   the page must not steal them. */
 .grid-wrap {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  max-height: 42svh;
-  overflow: auto;
-  padding: 6px;
+  height: 42svh;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--card-bg);
-  overscroll-behavior: contain;
-  touch-action: pan-x pan-y;
+  touch-action: none;
 }
 
-.grid-wrap svg { flex: none; }
-
-.grid-lines line {
-  stroke: var(--line);
-  stroke-width: 1;
+.grid-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
-
-.cell { fill: transparent; }
-.cell:active { fill: color-mix(in srgb, var(--accent) 16%, transparent); }
-
-.bodies { pointer-events: none; }
-
-.body rect {
-  fill: color-mix(in srgb, var(--accent) 16%, var(--card-bg));
-  stroke: color-mix(in srgb, var(--accent) 45%, transparent);
-}
-
-.body.is-selected rect {
-  fill: color-mix(in srgb, var(--accent) 30%, var(--card-bg));
-  stroke: var(--accent);
-  stroke-width: 2;
-}
-
-.body-label {
-  fill: var(--ink);
-  font-size: 9px;
-  text-anchor: middle;
-  pointer-events: none;
-}
-
-.seam {
-  stroke-width: 4;
-  stroke-linecap: round;
-  opacity: .75;
-}
-
-.seam.is-selected { stroke-width: 6; opacity: 1; }
-.seam.mated { stroke: var(--mated); }
-.seam.partial { stroke: var(--partial); }
-.seam.clash { stroke: var(--clash); }
-.seam.open { stroke: var(--open); stroke-dasharray: 3 4; }
-.seam.abut { stroke: var(--abut); stroke-dasharray: 6 3; }
 
 .legend {
   display: flex;

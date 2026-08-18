@@ -3,9 +3,6 @@
  * the catalog data the page has already fetched. One instance per page, hence
  * plain module state. */
 
-const CELL = 46;
-const PAD = 1.5;
-
 let sockets;
 let STEP;
 let QUANT;
@@ -14,7 +11,7 @@ let families;
 let swatches;
 
 let host;
-let grid;
+let viewport;
 let inspector;
 let sheet;
 let search;
@@ -224,100 +221,19 @@ function stacking(placement) {
 
 // ---------------------------------------------------------------- drawing
 
-const svg = (tag, attributes = {}) => {
-  const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
-  for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
-  return node;
-};
-
-function bounds() {
-  const cells = placements.flatMap(worldCells);
-  if (!cells.length) return { x0: -4, z0: -4, x1: 4, z1: 4 };
-  return {
-    x0: Math.min(...cells.map((c) => c[0])) - PAD,
-    z0: Math.min(...cells.map((c) => c[1])) - PAD,
-    x1: Math.max(...cells.map((c) => c[0])) + PAD,
-    z1: Math.max(...cells.map((c) => c[1])) + PAD,
-  };
-}
-
+/* The viewport owns the three.js scene; this module only tells it what is
+ * placed and how each seam came out. Seams carry their own height so the
+ * overlay sits exactly where the sockets meet. */
 function render() {
-  const view = bounds();
-  const width = (view.x1 - view.x0 + 1) * CELL;
-  const depth = (view.z1 - view.z0 + 1) * CELL;
-  const sx = (x) => (x - view.x0) * CELL;
-  const sz = (z) => (z - view.z0) * CELL;
-
-  grid.setAttribute('viewBox', `0 0 ${width} ${depth}`);
-  grid.setAttribute('width', width);
-  grid.setAttribute('height', depth);
-  grid.replaceChildren();
-
-  const lines = svg('g', { class: 'grid-lines' });
-  for (let x = Math.floor(view.x0); x <= Math.ceil(view.x1) + 1; x++) {
-    lines.append(svg('line', { x1: sx(x - 0.5), y1: 0, x2: sx(x - 0.5), y2: depth }));
-  }
-  for (let z = Math.floor(view.z0); z <= Math.ceil(view.z1) + 1; z++) {
-    lines.append(svg('line', { x1: 0, y1: sz(z - 0.5), x2: width, y2: sz(z - 0.5) }));
-  }
-  grid.append(lines);
-
-  const hits = svg('g', { class: 'grid-hits' });
-  for (let x = Math.floor(view.x0); x <= Math.ceil(view.x1); x++) {
-    for (let z = Math.floor(view.z0); z <= Math.ceil(view.z1); z++) {
-      const cell = svg('rect', {
-        x: sx(x - 0.5), y: sz(z - 0.5), width: CELL, height: CELL, class: 'cell',
-        'data-x': x, 'data-z': z,
-      });
-      cell.addEventListener('click', () => (brush ? addAt(x, z) : select(topmostAt(x, z))));
-      hits.append(cell);
-    }
-  }
-  grid.append(hits);
-
-  const bodies = svg('g', { class: 'bodies' });
-  for (const placement of [...placements].sort((a, b) => a.level - b.level)) {
-    const group = svg('g', {
-      class: `body${placement.id === selected ? ' is-selected' : ''}`,
-      'data-level': placement.level,
-    });
-    const cells = worldCells(placement);
-    for (const [x, z] of cells) {
-      group.append(svg('rect', { x: sx(x - 0.5) + 2, y: sz(z - 0.5) + 2, width: CELL - 4, height: CELL - 4, rx: 4 }));
-    }
-
-    // Labels are clipped to the footprint they sit on, so a big name on a
-    // one-cell piece cannot run across its neighbours.
-    const span = Math.max(...cells.map((c) => c[0])) - Math.min(...cells.map((c) => c[0])) + 1;
-    const label = svg('text', {
-      x: sx(cells.reduce((sum, c) => sum + c[0], 0) / cells.length),
-      y: sz(cells.reduce((sum, c) => sum + c[1], 0) / cells.length) + 4,
-      class: 'body-label',
-    });
-    label.textContent = clip(short(placement.piece), Math.floor(span * CELL / 4.6));
-    const title = svg('title');
-    title.textContent = names.get(placement.piece) ?? placement.piece;
-    label.append(title);
-    group.append(label);
-    bodies.append(group);
-  }
-  grid.append(bodies);
-
-  const seams = svg('g', { class: 'seams' });
-  for (const socket of evaluate()) {
-    const isSelected = socket.owner === selected;
-    const classes = ['seam', socket.verdict === 'open' && socket.abuts ? 'abut' : socket.verdict];
-    if (isSelected) classes.push('is-selected');
-    const line = socket.axis === 'x'
-      ? { x1: sx(socket.at), y1: sz(socket.from - 0.5) + CELL / 2, x2: sx(socket.at), y2: sz(socket.to - 0.5) + CELL / 2 }
-      : { x1: sx(socket.from - 0.5) + CELL / 2, y1: sz(socket.at), x2: sx(socket.to - 0.5) + CELL / 2, y2: sz(socket.at) };
-    seams.append(svg('line', { ...line, class: classes.join(' ') }));
-  }
-  grid.append(seams);
+  if (!viewport) return;
+  const sockets_ = evaluate().map((socket) => ({
+    ...socket,
+    height: Math.max(sockets.shapes[socket.shape]?.height ?? 0, 0.02),
+  }));
+  viewport.sync(placements, sockets_, selected);
 }
 
 const short = (id) => id.replace(/_/g, ' ').replace(/\s(Base|Mid|Top|Under)$/, '');
-const clip = (text, max) => (text.length <= max ? text : `${text.slice(0, Math.max(1, max - 1))}…`);
 
 // ---------------------------------------------------------------- editing
 
@@ -627,7 +543,6 @@ export async function mount(container, catalog) {
   container.replaceChildren(template.content.cloneNode(true));
   const role = (name) => container.querySelector(`[data-role="${name}"]`);
 
-  grid = role('grid');
   inspector = role('panel-seams');
   search = role('search');
   familySelect = role('family');
@@ -671,6 +586,12 @@ export async function mount(container, catalog) {
     if (event.key === 'r' || event.key === 'R') { rotation = (rotation + 1) % 4; syncToolbar(); }
     if (event.key === 'm' || event.key === 'M') { mirrored = !mirrored; syncToolbar(); }
     if ((event.key === 'Delete' || event.key === 'Backspace') && selected) { event.preventDefault(); remove(selected); }
+  });
+
+  const { createViewport } = await import('./viewport.js');
+  viewport = createViewport(role('view'), {
+    onGround: (x, z) => (brush ? addAt(x, z) : select(topmostAt(x, z))),
+    onPick: (id) => (brush ? null : select(id)),
   });
 
   syncToolbar();
