@@ -29,12 +29,6 @@ Practical facts about the kit:
 - **Index:** `catalog/catalog.json` lists every piece's family, shape, layer,
   grid size, bounds (in cells), and materials/sockets — check it before
   opening GLBs. Browse the pieces visually via `index.html`.
-- **Ground truth:** `assemblies/placements.json` plus the rebuilt
-  `assemblies/*.glb` are the pack's own prefabs — worked examples of correct
-  placement. When in doubt, look at how the pack itself combines pieces.
-- **Coordinates:** the FBX → glTF conversion mirrored X; the transforms in
-  `placements.json` are in Unity's left-handed space and must be mirrored the
-  same way before reuse (see the notes in `tools/assemble.mjs`).
 - **Rendering:** make sure backface culling is enabled, as standard glTF
   behavior requires. Every material is single-sided and most pieces are
   one-sided shells; drawing backfaces hides the shells, a real glTF viewer
