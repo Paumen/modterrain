@@ -12,6 +12,7 @@ const sections = [];
 const views = new Map();
 
 let currentView = null;
+let catalogData = null;
 
 const selectedPaths = new Set();
 const cardsByPath = new Map();
@@ -452,12 +453,38 @@ function buildFilterBar(palettes) {
   });
 }
 
+/* The builder is a tool rather than a facet of the models, so it has no
+ * sections to filter and takes over the panel wholesale. Its module is pulled
+ * in the first time the tab is opened, keeping it off the catalog's own load. */
+const builderHost = document.querySelector('#builder');
+const assetVersion = document.querySelector('meta[name="catalog-version"]')?.content;
+let builderLoaded = null;
+
+function showBuilder(data) {
+  builderHost.hidden = false;
+  panel.hidden = true;
+  document.querySelector('#filter-bar').hidden = true;
+  emptyMessage.hidden = true;
+
+  builderLoaded ??= import(assetVersion ? `./builder.js?v=${assetVersion}` : './builder.js')
+    .then((module) => module.mount(builderHost, data))
+    .catch((error) => {
+      builderHost.textContent = `Failed to load the builder: ${error.message}`;
+      console.error(error);
+    });
+}
+
 function switchView(id) {
   currentView = id;
   for (const button of tabBar.children) {
     button.setAttribute('aria-selected', String(button.dataset.view === id));
   }
   panel.setAttribute('aria-labelledby', `tab-${id}`);
+
+  if (id === 'builder') return showBuilder(catalogData);
+  builderHost.hidden = true;
+  panel.hidden = false;
+  document.querySelector('#filter-bar').hidden = false;
 
   // A hidden swatch must also lose its selection, or it filters everything away.
   const present = new Set(
@@ -496,10 +523,10 @@ function filter() {
 }
 
 async function start() {
-  const version = document.querySelector('meta[name="catalog-version"]')?.content;
-  const response = await fetch(version ? `catalog/catalog.json?v=${version}` : 'catalog/catalog.json');
+  const response = await fetch(assetVersion ? `catalog/catalog.json?v=${assetVersion}` : 'catalog/catalog.json');
   if (!response.ok) throw new Error(`catalog/catalog.json not found (${response.status})`);
   const data = await response.json();
+  catalogData = data;
 
   const names = new Map(Object.entries(data.facets ?? {}));
   const nameOf = (id) => names.get(id) ?? id;
@@ -554,6 +581,22 @@ async function start() {
       });
     }
   }
+
+  const builderTab = document.createElement('button');
+  builderTab.type = 'button';
+  builderTab.role = 'tab';
+  builderTab.id = 'tab-builder';
+  builderTab.dataset.view = 'builder';
+  builderTab.setAttribute('aria-controls', 'panel');
+  builderTab.setAttribute('aria-selected', 'false');
+  builderTab.textContent = 'Builder';
+  builderTab.addEventListener('click', () => {
+    switchView('builder');
+    history.replaceState(null, '', '#builder');
+    window.scrollTo({ top: 0 });
+  });
+  tabBar.append(builderTab);
+  views.set('builder', { id: 'builder', label: 'Builder' });
 
   const anchor = location.hash.slice(1);
   const targetSection = anchor ? document.getElementById(anchor) : null;

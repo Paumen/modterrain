@@ -1,21 +1,28 @@
-const [sockets, catalog] = await Promise.all([
-  fetch('catalog/sockets.json').then((r) => r.json()),
-  fetch('catalog/catalog.json').then((r) => r.json()),
-]);
+/* The builder is a tab of the catalog rather than a page of its own, so it
+ * builds its own markup into whatever host the catalog hands it and reuses
+ * the catalog data the page has already fetched. One instance per page, hence
+ * plain module state. */
 
-const STEP = sockets.step;
-const QUANT = sockets.quant ?? 256;
 const CELL = 46;
 const PAD = 1.5;
 
-const names = new Map(catalog.models.map((entry) => [entry.id, entry.name]));
-const families = new Map((catalog.facets ? Object.entries(catalog.facets) : []).map(([id, name]) => [id, name]));
-const swatches = new Map(
-  (catalog.palettes.find((palette) => palette.id === 'hidden')?.colors ?? []).map((color) => [color.source, color.hex]),
-);
+let sockets;
+let STEP;
+let QUANT;
+let names;
+let families;
+let swatches;
 
-const grid = document.querySelector('#grid');
-const inspector = document.querySelector('#inspect');
+let host;
+let grid;
+let inspector;
+let search;
+let familySelect;
+let paletteList;
+let paletteCount;
+let brushLabel;
+let levelLabel;
+let mirrorButton;
 
 const placements = [];
 let nextId = 1;
@@ -541,15 +548,6 @@ function showCandidates(item, socket, button) {
 
 // ---------------------------------------------------------------- palette
 
-const search = document.querySelector('#search');
-const familySelect = document.querySelector('#family');
-const paletteList = document.querySelector('#palette-list');
-const paletteCount = document.querySelector('#palette-count');
-
-const allFamilies = [...new Set(Object.values(sockets.pieces).map((piece) => piece.family))].filter(Boolean).sort();
-familySelect.append(new Option('All families', ''));
-for (const id of allFamilies) familySelect.append(new Option(families.get(id) ?? id, id));
-
 function renderPalette() {
   const term = search.value.trim().toLowerCase();
   const family = familySelect.value;
@@ -575,10 +573,6 @@ function renderPalette() {
 
 // ---------------------------------------------------------------- toolbar
 
-const brushLabel = document.querySelector('#brush');
-const levelLabel = document.querySelector('#level');
-const mirrorButton = document.querySelector('#mirror');
-
 function syncToolbar() {
   brushLabel.textContent = brush
     ? `${names.get(brush) ?? brush}${rotation ? ` · ${rotation * 90}°` : ''}${mirrored ? ' · mirrored' : ''}`
@@ -588,28 +582,105 @@ function syncToolbar() {
   renderPalette();
 }
 
-document.querySelector('#rotate').addEventListener('click', () => { rotation = (rotation + 1) % 4; syncToolbar(); });
-mirrorButton.addEventListener('click', () => { mirrored = !mirrored; syncToolbar(); });
-document.querySelector('#level-up').addEventListener('click', () => { level += 1; syncToolbar(); });
-document.querySelector('#level-down').addEventListener('click', () => { level -= 1; syncToolbar(); });
-document.querySelector('#clear').addEventListener('click', () => {
-  placements.length = 0;
-  selected = null;
+const MARKUP = `
+<aside class="palette">
+  <div class="palette-controls">
+    <input type="search" data-role="search" placeholder="Search pieces" aria-label="Search pieces">
+    <select data-role="family" aria-label="Filter by family"></select>
+  </div>
+  <p class="palette-count" data-role="count"></p>
+  <ul class="palette-list" data-role="list"></ul>
+</aside>
+
+<section class="board">
+  <div class="toolbar">
+    <span class="brush" data-role="brush"></span>
+    <span class="toolbar-group">
+      <button type="button" data-role="rotate" title="Rotate (R)">Rotate <kbd>R</kbd></button>
+      <button type="button" data-role="mirror" aria-pressed="false" title="Mirror (M)">Mirror <kbd>M</kbd></button>
+    </span>
+    <span class="toolbar-group">
+      <button type="button" data-role="down" title="Lower level">−</button>
+      <span class="level" data-role="level">level 0</span>
+      <button type="button" data-role="up" title="Raise level">+</button>
+    </span>
+    <button type="button" data-role="clear">Clear</button>
+  </div>
+
+  <div class="grid-wrap"><svg data-role="grid" role="application" aria-label="Build grid"></svg></div>
+
+  <ul class="legend">
+    <li><i class="key mated"></i>mates exactly</li>
+    <li><i class="key partial"></i>mates in part</li>
+    <li><i class="key clash"></i>will not fit</li>
+    <li><i class="key open"></i>open edge</li>
+    <li><i class="key abut"></i>neighbour, no socket</li>
+  </ul>
+</section>
+
+<aside class="inspect" data-role="inspect"></aside>`;
+
+export async function mount(container, catalog) {
+  host = container;
+  const version = document.querySelector('meta[name="catalog-version"]')?.content;
+  const url = version ? `catalog/sockets.json?v=${version}` : 'catalog/sockets.json';
+  sockets = await fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`catalog/sockets.json not found (${response.status})`);
+    return response.json();
+  });
+  STEP = sockets.step;
+  QUANT = sockets.quant ?? 256;
+
+  names = new Map(catalog.models.map((entry) => [entry.id, entry.name]));
+  families = new Map(Object.entries(catalog.facets ?? {}));
+  swatches = new Map(
+    (catalog.palettes?.find((palette) => palette.id === 'hidden')?.colors ?? [])
+      .map((color) => [color.source, color.hex]),
+  );
+
+  container.classList.add('builder');
+  container.innerHTML = MARKUP;
+  const role = (name) => container.querySelector(`[data-role="${name}"]`);
+
+  grid = role('grid');
+  inspector = role('inspect');
+  search = role('search');
+  familySelect = role('family');
+  paletteList = role('list');
+  paletteCount = role('count');
+  brushLabel = role('brush');
+  levelLabel = role('level');
+  mirrorButton = role('mirror');
+
+  familySelect.append(new Option('All families', ''));
+  for (const id of [...new Set(Object.values(sockets.pieces).map((piece) => piece.family))].filter(Boolean).sort()) {
+    familySelect.append(new Option(families.get(id) ?? id, id));
+  }
+
+  role('rotate').addEventListener('click', () => { rotation = (rotation + 1) % 4; syncToolbar(); });
+  mirrorButton.addEventListener('click', () => { mirrored = !mirrored; syncToolbar(); });
+  role('up').addEventListener('click', () => { level += 1; syncToolbar(); });
+  role('down').addEventListener('click', () => { level -= 1; syncToolbar(); });
+  role('clear').addEventListener('click', () => {
+    placements.length = 0;
+    selected = null;
+    render();
+    showInspector();
+  });
+
+  search.addEventListener('input', renderPalette);
+  familySelect.addEventListener('change', renderPalette);
+
+  // Shortcuts belong to this tab, not the whole catalog.
+  document.addEventListener('keydown', (event) => {
+    if (host.hidden || event.target.matches('input, select, textarea')) return;
+    if (event.key === 'Escape') { brush = null; syncToolbar(); }
+    if (event.key === 'r' || event.key === 'R') { rotation = (rotation + 1) % 4; syncToolbar(); }
+    if (event.key === 'm' || event.key === 'M') { mirrored = !mirrored; syncToolbar(); }
+    if ((event.key === 'Delete' || event.key === 'Backspace') && selected) { event.preventDefault(); remove(selected); }
+  });
+
+  syncToolbar();
   render();
   showInspector();
-});
-
-search.addEventListener('input', renderPalette);
-familySelect.addEventListener('change', renderPalette);
-
-document.addEventListener('keydown', (event) => {
-  if (event.target.matches('input, select, textarea')) return;
-  if (event.key === 'Escape') { brush = null; syncToolbar(); }
-  if (event.key === 'r' || event.key === 'R') { rotation = (rotation + 1) % 4; syncToolbar(); }
-  if (event.key === 'm' || event.key === 'M') { mirrored = !mirrored; syncToolbar(); }
-  if ((event.key === 'Delete' || event.key === 'Backspace') && selected) { event.preventDefault(); remove(selected); }
-});
-
-syncToolbar();
-render();
-showInspector();
+}

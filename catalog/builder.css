@@ -1,90 +1,45 @@
+/* Socket builder — the catalog's Builder tab. Base tokens, typography and the
+   page shell come from catalog.css; only the seam verdict colours and this
+   tab's own layout live here. */
+
 :root {
-  --paper: #f7f4ee;
-  --paper-deep: #ece6db;
-  --card-bg: #ffffff;
-  --ink: #2b2a26;
-  --ink-soft: #78746a;
-  --line: #ded6c8;
-  --accent: #4f7a3a;
-  --warn: #b3382c;
   --mated: #3f8f5f;
   --partial: #c9a227;
   --clash: #c9422f;
   --open: #9a958a;
   --abut: #4f7a9e;
-  --radius: 12px;
-  --shadow: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
-  color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #1a1a17;
-    --paper-deep: #141412;
-    --card-bg: #242320;
-    --ink: #e9e5db;
-    --ink-soft: #9a958a;
-    --line: #383530;
-    --accent: #8fc06a;
-    --warn: #f28b7d;
     --mated: #6fbb8a;
     --partial: #ddbc4c;
     --clash: #ef7a66;
     --open: #6d6961;
     --abut: #79aad0;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
   }
 }
 
-* { box-sizing: border-box; }
+/* An author `display` beats the UA rule behind the hidden attribute, so the
+   tab has to opt back out explicitly. */
+.builder[hidden] { display: none; }
 
-body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-a { color: var(--accent); }
-
-.head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 16px clamp(16px, 4vw, 32px) 14px;
-  border-bottom: 1px solid var(--line);
-}
-
-.head h1 {
-  margin: 0;
-  font-size: 20px;
-  letter-spacing: -.01em;
-}
-
-.head-sub {
-  margin: 2px 0 0;
-  color: var(--ink-soft);
-  font-size: 13px;
-}
-
-.stage {
+.builder {
   display: grid;
   grid-template-columns: minmax(220px, 300px) minmax(0, 1fr) minmax(280px, 360px);
   gap: 1px;
-  min-height: calc(100vh - 64px);
+  min-height: 70vh;
   background: var(--line);
+  border-top: 1px solid var(--line);
 }
 
-.palette,
-.board,
-.inspect {
-  background: var(--paper);
+.builder .palette,
+.builder .board,
+.builder .inspect {
+  max-height: 78vh;
   padding: 14px clamp(12px, 1.6vw, 18px);
   overflow: auto;
-  max-height: calc(100vh - 64px);
+  background: var(--paper);
 }
 
 /* ------------------------------------------------------------- palette */
@@ -429,9 +384,9 @@ a { color: var(--accent); }
 }
 
 @media (max-width: 1080px) {
-  .stage { grid-template-columns: 1fr; }
+  .builder { grid-template-columns: 1fr; }
 
-  .palette,
-  .board,
-  .inspect { max-height: none; }
+  .builder .palette,
+  .builder .board,
+  .builder .inspect { max-height: none; }
 }

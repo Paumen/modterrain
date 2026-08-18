@@ -84,7 +84,10 @@ const slugify = (name) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function writeVersion() {
-  const content = ['catalog.json', 'catalog.css', 'catalog.js']
+  // The builder is part of the catalog page, so its assets ride the same
+  // stamp; builder.js and sockets.json are fetched from script and pick the
+  // version up from the meta tag.
+  const content = ['catalog.json', 'catalog.css', 'catalog.js', 'builder.css', 'builder.js', 'sockets.json']
     .map((name) => readFileSync(join(CATALOG_DIR, name)))
     .join('');
   const version = createHash('sha256').update(content).digest('hex').slice(0, 10);
@@ -92,6 +95,7 @@ function writeVersion() {
   const path = join(ROOT, 'index.html');
   const html = readFileSync(path, 'utf8')
     .replace(/href="catalog\/catalog\.css(?:\?v=[a-f0-9]+)?"/, `href="catalog/catalog.css?v=${version}"`)
+    .replace(/href="catalog\/builder\.css(?:\?v=[a-f0-9]+)?"/, `href="catalog/builder.css?v=${version}"`)
     .replace(/src="catalog\/catalog\.js(?:\?v=[a-f0-9]+)?"/, `src="catalog/catalog.js?v=${version}"`)
     .replace(/<meta name="catalog-version" content="[^"]*">/, `<meta name="catalog-version" content="${version}">`);
 
