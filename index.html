@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Modular Terrain — 3D Catalog</title>
 <meta name="description" content="Browsable catalog of 270 models from a modular terrain pack: cliffs, walls, cracked cliffs, terrain paths, grass, sand, water, and props — by part, shape, layer, and grid size, plus the pack's own assemblies rebuilt from those pieces.">
-<meta name="catalog-version" content="bb31a2c6d5">
-<link rel="stylesheet" href="catalog/catalog.css?v=bb31a2c6d5">
-<link rel="stylesheet" href="catalog/builder.css?v=bb31a2c6d5">
+<meta name="catalog-version" content="434aa276e3">
+<link rel="stylesheet" href="catalog/catalog.css?v=434aa276e3">
+<link rel="stylesheet" href="catalog/builder.css?v=434aa276e3">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⛰️</text></svg>">
 </head>
 <body>
@@ -44,11 +44,18 @@
       <span class="level" data-role="level" title="Build level">0</span>
       <button type="button" data-role="up" aria-label="Raise level">+</button>
     </span>
-    <button type="button" data-role="place" data-icon title="Place the aimed piece (Enter)" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
     <button type="button" data-role="remove" data-icon title="Remove the selected piece" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg></button>
     <button type="button" data-role="undo" data-icon title="Undo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
     <button type="button" data-role="redo" data-icon title="Redo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
     <button type="button" data-role="clear" data-icon title="Clear the board"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+  </div>
+
+  <div class="hud hud-move">
+    <button type="button" class="move-away" data-role="move-away" data-icon aria-label="Move the piece away" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
+    <button type="button" class="move-left" data-role="move-left" data-icon aria-label="Move the piece left" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+    <button type="button" class="move-place" data-role="place" data-icon title="Place the piece here (Enter)" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+    <button type="button" class="move-right" data-role="move-right" data-icon aria-label="Move the piece right" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+    <button type="button" class="move-near" data-role="move-near" data-icon aria-label="Move the piece nearer" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
   </div>
 
   <div class="hud hud-save" data-role="save" data-open="false">
@@ -128,6 +135,6 @@
 { "imports": { "three": "./vendor/three/build/three.module.min.js" } }
 </script>
 <script src="vendor/model-viewer.min.js" type="module"></script>
-<script src="catalog/catalog.js?v=bb31a2c6d5" type="module"></script>
+<script src="catalog/catalog.js?v=434aa276e3" type="module"></script>
 </body>
 </html>

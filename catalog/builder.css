@@ -188,30 +188,65 @@
 
 .hud-views [data-icon] svg { width: 17px; height: 17px; }
 
-/* The camera controls read as a second row of the toolbar rather than as a
-   column stuck to the edge of the view. */
+/* The camera controls stand as a column against the right edge: a vertical
+   strip leaves the width of the view to the build, and the camera is a thing
+   you reach for beside the picture rather than above it. */
 .hud-views {
   top: 58px;
   right: 8px;
   display: flex;
+  flex-direction: column;
   gap: 4px;
-  align-items: center;
+  align-items: stretch;
   padding: 4px;
 }
 
 .hud-views button {
-  min-width: 34px;
+  min-width: 38px;
   min-height: 30px;
-  padding: 0 6px;
+  padding: 0 4px;
   font-size: 11px;
 }
 
 .hud-split {
-  width: 1px;
-  height: 18px;
-  margin: 0 2px;
+  height: 1px;
+  margin: 2px 0;
   background: var(--line);
 }
+
+/* Steering the ghost a cell at a time beats aiming at a cell with a thumb:
+   the pad sits under the thumb on the opposite side to the save controls,
+   and Place is in its middle where the thumb already is. */
+.hud-move {
+  bottom: calc(var(--drawer, 46px) + 10px);
+  left: 8px;
+  display: grid;
+  grid-template-areas:
+    ". away ."
+    "left place right"
+    ". near .";
+  gap: 3px;
+  padding: 4px;
+}
+
+.hud-move button {
+  min-width: 34px;
+  min-height: 32px;
+  padding: 0;
+}
+
+.move-away { grid-area: away; }
+.move-left { grid-area: left; }
+.move-right { grid-area: right; }
+.move-near { grid-area: near; }
+
+.move-place {
+  grid-area: place;
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  background: color-mix(in srgb, var(--accent) 22%, var(--card-bg));
+}
+
+.hud-move [data-icon] svg { width: 18px; height: 18px; }
 
 .hud-save {
   bottom: calc(var(--drawer, 46px) + 10px);
@@ -252,9 +287,11 @@
 .palette[hidden],
 .inspect[hidden] { display: none; }
 
+/* The seam key sits under the toolbar rather than by the drawer: the pad for
+   steering a piece has the bottom-left corner now. */
 .legend {
   position: absolute;
-  bottom: calc(var(--drawer, 46px) + 10px);
+  top: 58px;
   left: 12px;
   z-index: 1;
   display: flex;

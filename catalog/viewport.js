@@ -133,6 +133,18 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   // wherever the camera was first aimed, or the view swings around a point
   // off to one side of what is being built.
   const middle = new THREE.Vector3(0, 0.5, 0);
+  const bounds = new THREE.Box3(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 1, 1));
+
+  /* The panels float over the canvas rather than beside it, so the picture is
+   * wider than the part of it anyone can see. Framing works against the clear
+   * band between them: fitting to the whole canvas hides half a build behind
+   * the picker, which is where the picker usually is. */
+  let insets = { top: 0, right: 0, bottom: 0 };
+
+  function setInsets(next) {
+    insets = { top: next.top ?? 0, right: next.right ?? 0, bottom: next.bottom ?? 0 };
+    invalidate();
+  }
   controls.addEventListener('start', () => { steered = true; });
   const draw = () => { renderer.render(scene, camera); frameNeeded = false; };
   const invalidate = () => { frameNeeded = true; };
@@ -266,22 +278,93 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
    * fiddly and the level of a piece is far easier to read from the front. */
   // Pitch is kept well off the horizon: at a few degrees the ground collapses
   // to a strip and there is nowhere left to build.
+  // Pitch, then compass bearing of the camera about the build. Iso stands off
+  // a corner; front stands square-on to the near edge, which is the whole
+  // point of having it.
   const ANGLES = {
-    iso: [0.62, 0.78],
-    top: [1.52, 0.0001],
-    front: [0.36, 0],
-    side: [0.36, Math.PI / 2],
+    iso: [0.62, Math.PI / 4],
+    top: [1.52, 0],
+    front: [0.34, 0],
+    side: [0.34, Math.PI / 2],
   };
 
+  /* How far back the camera has to stand, along a given heading, for the
+   * whole build to be on screen. The build is measured across the screen
+   * rather than as a sphere: a long thin row of pieces seen end-on needs a
+   * fraction of the room the same row needs seen broadside. Both fields are
+   * checked, because on a portrait phone the horizontal one is the tight
+   * one and fitting to the vertical alone pushes the build off the sides. */
+  // The camera's own axes for a heading, so the build can be measured the way
+  // it will be seen rather than as a sphere.
+  function basis(heading) {
+    const dir = heading.clone().normalize();
+    const right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir);
+    if (right.lengthSq() < 1e-6) right.set(1, 0, 0);
+    right.normalize();
+    return { dir, right, up: new THREE.Vector3().crossVectors(dir, right).normalize() };
+  }
+
+  // What fraction of the canvas is left clear by the panels over it.
+  function clear() {
+    const width = canvas.clientWidth || 1;
+    const height = canvas.clientHeight || 1;
+    return {
+      across: Math.max(0.25, (width - insets.right) / width),
+      down: Math.max(0.25, (height - insets.top - insets.bottom) / height),
+    };
+  }
+
+  function span(heading) {
+    const { dir, right, up } = basis(heading);
+    const size = bounds.getSize(new THREE.Vector3()).multiplyScalar(0.5);
+    let across = 0;
+    let tall = 0;
+    let deep = 0;
+    for (const sx of [-1, 1]) {
+      for (const sy of [-1, 1]) {
+        for (const sz of [-1, 1]) {
+          const corner = new THREE.Vector3(size.x * sx, size.y * sy, size.z * sz);
+          across = Math.max(across, Math.abs(corner.dot(right)));
+          tall = Math.max(tall, Math.abs(corner.dot(up)));
+          deep = Math.max(deep, Math.abs(corner.dot(dir)));
+        }
+      }
+    }
+
+    const vertical = (camera.fov * Math.PI) / 360;
+    const horizontal = Math.atan(Math.tan(vertical) * camera.aspect);
+    const room = clear();
+    const reach = Math.max(
+      across / (Math.tan(horizontal) * room.across),
+      tall / (Math.tan(vertical) * room.down),
+    );
+    return Math.max(reach * 1.12 + deep, controls.minDistance);
+  }
+
+  /* Aim so the build sits in the clear band, not at the centre of the canvas:
+   * the target is lifted off the build by however far the middle of that band
+   * is from the middle of the picture. */
+  function aimAt(heading, distance) {
+    const { dir, right, up } = basis(heading);
+    const width = canvas.clientWidth || 1;
+    const height = canvas.clientHeight || 1;
+    const vertical = Math.tan((camera.fov * Math.PI) / 360) * distance;
+    controls.target.copy(middle)
+      .addScaledVector(up, ((insets.top - insets.bottom) / height) * vertical)
+      .addScaledVector(right, (insets.right / width) * vertical * camera.aspect);
+    camera.position.copy(controls.target).addScaledVector(dir, distance);
+  }
+
+  // A standing viewpoint frames what is on the grid: turning to the front of
+  // a build only helps if the build is actually in the picture.
   function setView(name) {
     const [pitch, yaw] = ANGLES[name] ?? ANGLES.iso;
-    const distance = camera.position.distanceTo(controls.target);
-    controls.target.copy(middle);
-    camera.position.set(
-      controls.target.x + distance * Math.cos(pitch) * Math.sin(yaw + Math.PI / 4),
-      controls.target.y + distance * Math.sin(pitch),
-      controls.target.z + distance * Math.cos(pitch) * Math.cos(yaw + Math.PI / 4),
+    const heading = new THREE.Vector3(
+      Math.cos(pitch) * Math.sin(yaw),
+      Math.sin(pitch),
+      Math.cos(pitch) * Math.cos(yaw),
     );
+    aimAt(heading, span(heading));
     controls.update();
     steered = true;
     invalidate();
@@ -290,15 +373,10 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   /* Turning and zooming from buttons as well as from the drag, because on a
    * touch screen the drag is also how a piece gets placed. */
   function orbit(radians) {
-    controls.target.copy(middle);
     const offset = camera.position.clone().sub(controls.target);
     const angle = Math.atan2(offset.x, offset.z) + radians;
     const flat = Math.hypot(offset.x, offset.z);
-    camera.position.set(
-      controls.target.x + flat * Math.sin(angle),
-      camera.position.y,
-      controls.target.z + flat * Math.cos(angle),
-    );
+    aimAt(new THREE.Vector3(flat * Math.sin(angle), offset.y, flat * Math.cos(angle)), offset.length());
     controls.update();
     steered = true;
     invalidate();
@@ -315,16 +393,28 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   function zoom(direction) {
     const inward = direction < 0;
     const stops = inward ? [...ZOOM_STOPS].reverse() : ZOOM_STOPS;
-    controls.target.copy(middle);
     const offset = camera.position.clone().sub(controls.target);
     const current = offset.length();
     const next = stops.find((stop) => (inward ? stop < current * 0.99 : stop > current * 1.01));
     const distance = next ?? stops[stops.length - 1];
-    camera.position.copy(controls.target).add(offset.setLength(distance));
+    aimAt(offset, distance);
     controls.update();
     steered = true;
     invalidate();
     return distance;
+  }
+
+  /* Which way the grid runs across the screen. The nudge buttons move the
+   * ghost the way the arrow points, and after the camera has been turned
+   * that is no longer the way the grid's own axes run. The heading snaps to
+   * the nearest quarter turn, so a nudge is always a whole cell. */
+  function axes() {
+    const offset = camera.position.clone().sub(controls.target);
+    const turns = ((Math.round(Math.atan2(offset.x, offset.z) / (Math.PI / 2)) % 4) + 4) % 4;
+    return {
+      right: [[1, 0], [0, -1], [-1, 0], [0, 1]][turns],
+      away: [[0, -1], [-1, 0], [0, 1], [1, 0]][turns],
+    };
   }
 
   // Sockets can be taken back out of the view once they have been read; the
@@ -364,30 +454,23 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
  * so after the first piece the camera is the user's alone. */
   let framed = false;
 
+  // What is on the grid, in cells, with a cell of air around it so a piece on
+  // the edge is not flush against the side of the picture.
+  function extent(placements) {
+    bounds.makeEmpty();
+    for (const placement of placements) {
+      bounds.expandByPoint(new THREE.Vector3(placement.cx - 1, placement.level, placement.cz - 1));
+      bounds.expandByPoint(new THREE.Vector3(placement.cx + 1, placement.level + 1, placement.cz + 1));
+    }
+    if (bounds.isEmpty()) bounds.set(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 1, 1));
+    bounds.getCenter(middle);
+  }
+
   function frame(placements) {
     if (steered || framed || !placements.length) return;
     framed = true;
-    const box = new THREE.Box3();
-    for (const placement of placements) {
-      box.expandByPoint(new THREE.Vector3(placement.cx - 1, placement.level, placement.cz - 1));
-      box.expandByPoint(new THREE.Vector3(placement.cx + 1, placement.level + 1, placement.cz + 1));
-    }
-
-    const centre = box.getCenter(new THREE.Vector3());
-    const radius = Math.max(box.getSize(new THREE.Vector3()).length() / 2, 1.5);
-
-    // On a portrait screen the horizontal field is the tight one, so fitting
-    // to the vertical fov alone would push the build off the sides.
-    const vertical = (camera.fov * Math.PI) / 360;
-    const horizontal = Math.atan(Math.tan(vertical) * camera.aspect);
-    const distance = (radius / Math.sin(Math.min(vertical, horizontal))) * 1.45;
-
-    controls.target.copy(centre);
-    camera.position.set(
-      centre.x + distance * 0.42,
-      centre.y + distance * 0.72,
-      centre.z + distance * 0.55,
-    );
+    const heading = new THREE.Vector3(0.42, 0.72, 0.55);
+    aimAt(heading, span(heading));
     controls.update();
   }
 
@@ -436,17 +519,9 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
       seams.add(quad);
     }
 
-    // The pivot follows the build, whether or not the camera does.
-    if (placements.length) {
-      const box = new THREE.Box3();
-      for (const placement of placements) {
-        box.expandByPoint(new THREE.Vector3(placement.cx, placement.level, placement.cz));
-      }
-      box.getCenter(middle);
-      middle.y += 0.5;
-    } else {
-      middle.set(0, 0.5, 0);
-    }
+    // The pivot and the framing both follow the build, whether or not the
+    // camera does.
+    extent(placements);
 
     marks.clear();
     for (const placement of placements) {
@@ -503,5 +578,5 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   }
 
   resize();
-  return { sync, ghost, setView, setLevel, setSockets, orbit, zoom, exportGlb, resize, invalidate };
+  return { sync, ghost, setView, setLevel, setSockets, setInsets, orbit, zoom, axes, exportGlb, resize, invalidate };
 }
