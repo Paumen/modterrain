@@ -2,7 +2,7 @@
  "generated": "node tools/build-catalog.mjs",
  "total": 270,
  "assemblies": 98,
- "scenes": 6,
+ "scenes": 5,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1577,7 +1577,7 @@
    "id": "scenes",
    "label": "Scenes",
    "facet": "scene",
-   "count": 6,
+   "count": 5,
    "sections": [
     {
      "id": "scenes-scene-diorama",
@@ -1588,8 +1588,7 @@
       369,
       370,
       371,
-      372,
-      373
+      372
      ]
     }
    ]
@@ -1606,21 +1605,21 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#e0ddd7",
-     "count": 193
+     "count": 192
     },
     {
      "key": "material|grass",
      "name": "Grass",
      "source": "Grass",
      "hex": "#a7de76",
-     "count": 139
+     "count": 138
     },
     {
      "key": "material|dirt",
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#f6edd3",
-     "count": 53
+     "count": 52
     },
     {
      "key": "material|water-river",
@@ -1641,34 +1640,34 @@
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 22
+     "count": 21
     },
     {
      "key": "material|wood-light-end",
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 21
+     "count": 20
     },
     {
      "key": "material|wood-light",
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 20
-    },
-    {
-     "key": "material|rope",
-     "name": "Rope",
-     "source": "Rope",
-     "hex": "#7f725a",
-     "count": 13
+     "count": 19
     },
     {
      "key": "material|ice",
      "name": "Ice",
      "source": "Ice",
      "hex": "#6aa1fb",
+     "count": 12
+    },
+    {
+     "key": "material|rope",
+     "name": "Rope",
+     "source": "Rope",
+     "hex": "#7f725a",
      "count": 12
     },
     {
@@ -1683,14 +1682,14 @@
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 9
+     "count": 8
     },
     {
      "key": "material|water-lake",
      "name": "Water Lake",
      "source": "Water Lake",
      "hex": "#009bc3",
-     "count": 5
+     "count": 4
     },
     {
      "key": "material|material-0",
@@ -1756,13 +1755,6 @@
      "count": 3
     },
     {
-     "key": "material|iron",
-     "name": "Iron",
-     "source": "Iron",
-     "hex": "#a0a2a5",
-     "count": 1
-    },
-    {
      "key": "material|material-10",
      "name": "material 10",
      "source": "material 10",
@@ -1803,13 +1795,6 @@
      "source": "material 9",
      "hex": "#d0b698",
      "count": 1
-    },
-    {
-     "key": "material|sign-4x3",
-     "name": "Sign 4:3",
-     "source": "Sign 4x3",
-     "hex": "#b6b6b6",
-     "count": 1
     }
    ]
   },
@@ -1823,28 +1808,28 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 326
+     "count": 325
     },
     {
      "key": "hidden|hidden-violet",
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 108
+     "count": 107
     },
     {
      "key": "hidden|hidden-yellow",
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 88
+     "count": 87
     },
     {
      "key": "hidden|hidden-orange",
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 80
+     "count": 79
     },
     {
      "key": "hidden|hidden-blue",
@@ -1872,7 +1857,7 @@
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 44
+     "count": 43
     }
    ]
   }
@@ -18736,57 +18721,6 @@
     "material|material-6",
     "material|material-7",
     "material|material-8"
-   ],
-   "missingTextures": []
-  },
-  {
-   "id": "island_bridge",
-   "name": "island bridge",
-   "file": "scenes/island_bridge.glb",
-   "group": "scene-diorama",
-   "family": null,
-   "shape": null,
-   "layer": null,
-   "size": null,
-   "sizeGroup": null,
-   "traits": [],
-   "variant": null,
-   "dwh": [
-    40.532,
-    40.532,
-    5.189
-   ],
-   "min": [
-    -13.266,
-    -1.75,
-    -17.266
-   ],
-   "max": [
-    27.266,
-    3.439,
-    23.266
-   ],
-   "triangles": 13620,
-   "trianglesPerUnit": 2,
-   "calls": 455,
-   "bytes": 494160,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-red",
-    "hidden|hidden-violet",
-    "hidden|hidden-yellow",
-    "material|cliff-face",
-    "material|dirt",
-    "material|grass",
-    "material|iron",
-    "material|rope",
-    "material|sign-4x3",
-    "material|water-lake",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end",
-    "material|wood-medium"
    ],
    "missingTextures": []
   }
