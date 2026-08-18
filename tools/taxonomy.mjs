@@ -92,10 +92,10 @@ const TRAITS = [
 
 export const ASSEMBLY_GROUPS = [
   { id: 'assembly-cliff', name: 'Cliff Runs', color: '#9a8f80', test: (n) => n.startsWith('Cliff_Assembly_') },
-  { id: 'assembly-water', name: 'Waterfalls & Cave Entrances', color: '#2fc7e8', test: (n) => n.startsWith('Cliff_') || n.startsWith('Water_') },
+  { id: 'assembly-water', name: 'Waterfalls & Cave Entrances', color: '#2fc7e8', test: (n) => n.startsWith('Cliff_') },
   { id: 'assembly-crack', name: 'Cracks', color: '#a8705a', test: (n) => n.startsWith('Crack_') },
   { id: 'assembly-bridge', name: 'Bridges', color: '#8a5a2f', test: (n) => n.startsWith('Path_Bridge_') },
-  { id: 'assembly-river', name: 'Rivers', color: '#3aa7d6', test: (n) => n.startsWith('River_') || n.startsWith('Terrain_Water_') },
+  { id: 'assembly-river', name: 'Rivers', color: '#3aa7d6', test: (n) => n.startsWith('River_') },
   { id: 'assembly-structure', name: 'Other', color: '#b98c5a', test: () => true },
 ];
 
