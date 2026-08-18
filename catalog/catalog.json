@@ -1,7 +1,7 @@
 {
  "generated": "node tools/build-catalog.mjs",
  "total": 287,
- "assemblies": 2,
+ "assemblies": 10,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1503,14 +1503,41 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 2,
+   "count": 10,
    "sections": [
+    {
+     "id": "assemblies-assembly-cliff",
+     "name": "Cliff Runs",
+     "color": "#9a8f80",
+     "models": [
+      290,
+      291
+     ]
+    },
+    {
+     "id": "assemblies-assembly-cave",
+     "name": "Cave Tunnels & Walls",
+     "color": "#7a6a86",
+     "models": [
+      287,
+      288,
+      289
+     ]
+    },
+    {
+     "id": "assemblies-assembly-water",
+     "name": "Waterfalls & Cave Entrances",
+     "color": "#2fc7e8",
+     "models": [
+      292
+     ]
+    },
     {
      "id": "assemblies-assembly-crack",
      "name": "Cracks",
      "color": "#a8705a",
      "models": [
-      287
+      293
      ]
     },
     {
@@ -1518,7 +1545,9 @@
      "name": "Paths & Bridges",
      "color": "#d98f4f",
      "models": [
-      288
+      294,
+      295,
+      296
      ]
     }
    ]
@@ -1535,49 +1564,49 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#e0ddd7",
-     "count": 139
+     "count": 145
     },
     {
      "key": "material|grass",
      "name": "Grass",
      "source": "Grass",
      "hex": "#a7de76",
-     "count": 91
+     "count": 93
     },
     {
      "key": "material|dirt",
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#f6edd3",
-     "count": 46
+     "count": 48
     },
     {
      "key": "material|water-river",
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 17
+     "count": 18
     },
     {
      "key": "material|wood-dark",
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 17
+     "count": 18
     },
     {
      "key": "material|wood-light-end",
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 16
+     "count": 17
     },
     {
      "key": "material|wood-light",
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 15
+     "count": 16
     },
     {
      "key": "material|ice",
@@ -1598,14 +1627,14 @@
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 9
+     "count": 10
     },
     {
      "key": "material|wood-medium",
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 5
+     "count": 6
     },
     {
      "key": "material|water-lake",
@@ -1633,56 +1662,56 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 243
-    },
-    {
-     "key": "hidden|hidden-violet",
-     "name": "Hidden Violet",
-     "source": "Hidden Violet",
-     "hex": "#dccdff",
-     "count": 74
+     "count": 251
     },
     {
      "key": "hidden|hidden-yellow",
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 73
+     "count": 77
+    },
+    {
+     "key": "hidden|hidden-violet",
+     "name": "Hidden Violet",
+     "source": "Hidden Violet",
+     "hex": "#dccdff",
+     "count": 75
     },
     {
      "key": "hidden|hidden-blue",
      "name": "Hidden Blue",
      "source": "Hidden Blue",
      "hex": "#d8efff",
-     "count": 59
+     "count": 62
     },
     {
      "key": "hidden|hidden-green",
      "name": "Hidden Green",
      "source": "Hidden Green",
      "hex": "#dcfdc8",
-     "count": 49
+     "count": 53
     },
     {
      "key": "hidden|hidden-orange",
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 41
+     "count": 42
     },
     {
      "key": "hidden|hidden-red",
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 38
+     "count": 40
     },
     {
      "key": "hidden|hidden-pink",
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 34
+     "count": 35
     }
    ]
   }
@@ -12841,6 +12870,364 @@
    "missingTextures": []
   },
   {
+   "id": "Cave_Tunnel_Incline_Wide_Gentle",
+   "name": "Cave Tunnel Incline Wide Gentle",
+   "file": "assemblies/Cave_Tunnel_Incline_Wide_Gentle.glb",
+   "group": "assembly-cave",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Wall_Incline_2x6_Base",
+     "count": 2
+    },
+    {
+     "id": "Wall_Incline_2x6_Top",
+     "count": 2
+    },
+    {
+     "id": "Ceiling_Incline_1x6",
+     "count": 1
+    },
+    {
+     "id": "Floor_Incline_1x6",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    6,
+    6
+   ],
+   "min": [
+    -0.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    5.5,
+    6,
+    4.5
+   ],
+   "triangles": 424,
+   "trianglesPerUnit": 2,
+   "calls": 26,
+   "bytes": 33628,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cave_Wall_Esse_Short",
+   "name": "Cave Wall Esse Short",
+   "file": "assemblies/Cave_Wall_Esse_Short.glb",
+   "group": "assembly-cave",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Floor_And_Ceiling_Flat_1x1",
+     "count": 2
+    },
+    {
+     "id": "Wall_Esse_3x4_Base",
+     "count": 1
+    },
+    {
+     "id": "Wall_Esse_3x4_Top",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    3,
+    6
+   ],
+   "min": [
+    -1.5,
+    -1,
+    -1.5
+   ],
+   "max": [
+    2.5,
+    5,
+    1.5
+   ],
+   "triangles": 188,
+   "trianglesPerUnit": 3,
+   "calls": 12,
+   "bytes": 23792,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cave_Wall_Straight_Concave",
+   "name": "Cave Wall Straight Concave",
+   "file": "assemblies/Cave_Wall_Straight_Concave.glb",
+   "group": "assembly-cave",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Floor_And_Ceiling_Flat_1x1",
+     "count": 2
+    },
+    {
+     "id": "Wall_Straight_Deformed_Concave_2x2_Base",
+     "count": 1
+    },
+    {
+     "id": "Wall_Straight_Deformed_Concave_2x2_Top",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2,
+    2,
+    6
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -0.5
+   ],
+   "max": [
+    1.5,
+    5,
+    1.5
+   ],
+   "triangles": 152,
+   "trianglesPerUnit": 6,
+   "calls": 12,
+   "bytes": 21476,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Outer_1_Mid",
+   "name": "Cliff Assembly Curve Outer 1 Mid",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_1_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 8,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Mid",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    8.5,
+    9.5,
+    1
+   ],
+   "min": [
+    -3,
+    0,
+    -5.5
+   ],
+   "max": [
+    5.5,
+    1,
+    4
+   ],
+   "triangles": 140,
+   "trianglesPerUnit": 2,
+   "calls": 16,
+   "bytes": 17944,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Straight_3_Mid",
+   "name": "Cliff Assembly Straight 3 Mid",
+   "file": "assemblies/Cliff_Assembly_Straight_3_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 9,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 4
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Mid",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5.5,
+    15,
+    1
+   ],
+   "min": [
+    -1,
+    0,
+    -7.5
+   ],
+   "max": [
+    4.5,
+    1,
+    7.5
+   ],
+   "triangles": 172,
+   "trianglesPerUnit": 2,
+   "calls": 18,
+   "bytes": 18692,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Waterfall_Narrow_Top",
+   "name": "Cliff Cave Entrance Waterfall Narrow Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Waterfall_Narrow_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 9,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Top_3x4",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Left_1x1",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    7,
+    2.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 164,
+   "trianglesPerUnit": 7,
+   "calls": 17,
+   "bytes": 28860,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Crack_Large",
    "name": "Crack Large",
    "file": "assemblies/Crack_Large.glb",
@@ -12954,6 +13341,81 @@
    "missingTextures": []
   },
   {
+   "id": "Path_Bridge_River_Narrow",
+   "name": "Path Bridge River Narrow",
+   "file": "assemblies/Path_Bridge_River_Narrow.glb",
+   "group": "assembly-path",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 22,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Path_Terrain_Basic_Straight_1x1",
+     "count": 6
+    },
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 6
+    },
+    {
+     "id": "Path_Terrain_Basic_Curve_Inner_1x1",
+     "count": 4
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 2
+    },
+    {
+     "id": "Prop_Bridge_Center_1x2",
+     "count": 2
+    },
+    {
+     "id": "Prop_Bridge_End_2x2",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    8,
+    3,
+    2.25
+   ],
+   "min": [
+    -3.5,
+    -1,
+    -1.5
+   ],
+   "max": [
+    4.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 3976,
+   "trianglesPerUnit": 74,
+   "calls": 86,
+   "bytes": 162356,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "material|dirt",
+    "material|grass",
+    "material|water-river",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Path_Bridge_River_Wide",
    "name": "Path Bridge River Wide",
    "file": "assemblies/Path_Bridge_River_Wide.glb",
@@ -13029,6 +13491,53 @@
     "material|wood-light",
     "material|wood-light-end",
     "material|wood-medium"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Crossway_Narrow",
+   "name": "Path Crossway Narrow",
+   "file": "assemblies/Path_Crossway_Narrow.glb",
+   "group": "assembly-path",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Path_Terrain_Basic_Curve_Outer_1x1",
+     "count": 4
+    }
+   ],
+   "dwh": [
+    3,
+    3,
+    0.25
+   ],
+   "min": [
+    -0.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    0.25,
+    0.5
+   ],
+   "triangles": 120,
+   "trianglesPerUnit": 13,
+   "calls": 16,
+   "bytes": 8600,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-red",
+    "material|dirt",
+    "material|grass"
    ],
    "missingTextures": []
   }
