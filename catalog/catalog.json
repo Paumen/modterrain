@@ -1,7 +1,7 @@
 {
  "generated": "node tools/build-catalog.mjs",
  "total": 287,
- "assemblies": 30,
+ "assemblies": 123,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1502,7 +1502,7 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 30,
+   "count": 123,
    "sections": [
     {
      "id": "assemblies-assembly-cliff",
@@ -1518,14 +1518,7 @@
       293,
       294,
       295,
-      296
-     ]
-    },
-    {
-     "id": "assemblies-assembly-water",
-     "name": "Waterfalls & Cave Entrances",
-     "color": "#2fc7e8",
-     "models": [
+      296,
       297,
       298,
       299,
@@ -1534,31 +1527,10 @@
       302,
       303,
       304,
-      305
-     ]
-    },
-    {
-     "id": "assemblies-assembly-crack",
-     "name": "Cracks",
-     "color": "#a8705a",
-     "models": [
-      306
-     ]
-    },
-    {
-     "id": "assemblies-assembly-bridge",
-     "name": "Bridges",
-     "color": "#8a5a2f",
-     "models": [
+      305,
+      306,
       307,
-      308
-     ]
-    },
-    {
-     "id": "assemblies-assembly-river",
-     "name": "Rivers",
-     "color": "#3aa7d6",
-     "models": [
+      308,
       309,
       310,
       311,
@@ -1567,6 +1539,127 @@
       314,
       315,
       316
+     ]
+    },
+    {
+     "id": "assemblies-assembly-water",
+     "name": "Waterfalls & Cave Entrances",
+     "color": "#2fc7e8",
+     "models": [
+      317,
+      318,
+      319,
+      320,
+      321,
+      322,
+      323,
+      324,
+      325,
+      326,
+      327,
+      328,
+      329,
+      330,
+      331,
+      332,
+      333,
+      334,
+      335,
+      336,
+      337,
+      338,
+      339,
+      340,
+      341,
+      342,
+      343,
+      344,
+      345,
+      346,
+      347,
+      348,
+      349,
+      350,
+      351,
+      352,
+      353,
+      354,
+      355,
+      398,
+      399,
+      400,
+      401,
+      402,
+      403,
+      404,
+      405,
+      406,
+      407,
+      408,
+      409
+     ]
+    },
+    {
+     "id": "assemblies-assembly-crack",
+     "name": "Cracks",
+     "color": "#a8705a",
+     "models": [
+      356,
+      357
+     ]
+    },
+    {
+     "id": "assemblies-assembly-bridge",
+     "name": "Bridges",
+     "color": "#8a5a2f",
+     "models": [
+      358,
+      359,
+      360
+     ]
+    },
+    {
+     "id": "assemblies-assembly-river",
+     "name": "Rivers",
+     "color": "#3aa7d6",
+     "models": [
+      361,
+      362,
+      363,
+      364,
+      365,
+      366,
+      367,
+      368,
+      369,
+      370,
+      371,
+      372,
+      373,
+      374,
+      375,
+      376,
+      377,
+      378,
+      379,
+      380,
+      381,
+      382,
+      383,
+      384,
+      385,
+      386,
+      387,
+      388,
+      389,
+      390,
+      391,
+      392,
+      393,
+      394,
+      395,
+      396,
+      397
      ]
     }
    ]
@@ -1583,56 +1676,56 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#e0ddd7",
-     "count": 158
+     "count": 209
     },
     {
      "key": "material|grass",
      "name": "Grass",
      "source": "Grass",
      "hex": "#a7de76",
-     "count": 107
-    },
-    {
-     "key": "material|dirt",
-     "name": "Dirt",
-     "source": "Dirt",
-     "hex": "#f6edd3",
-     "count": 49
+     "count": 137
     },
     {
      "key": "material|water-river",
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 28
+     "count": 64
     },
     {
-     "key": "material|wood-dark",
-     "name": "Wood Dark",
-     "source": "Wood Dark",
-     "hex": "#673a10",
-     "count": 18
-    },
-    {
-     "key": "material|wood-light-end",
-     "name": "Wood Light End",
-     "source": "Wood Light End",
-     "hex": "#bd905c",
-     "count": 17
-    },
-    {
-     "key": "material|wood-light",
-     "name": "Wood Light",
-     "source": "Wood Light",
-     "hex": "#c89c6a",
-     "count": 16
+     "key": "material|dirt",
+     "name": "Dirt",
+     "source": "Dirt",
+     "hex": "#f6edd3",
+     "count": 51
     },
     {
      "key": "material|waterfall",
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 14
+     "count": 42
+    },
+    {
+     "key": "material|wood-dark",
+     "name": "Wood Dark",
+     "source": "Wood Dark",
+     "hex": "#673a10",
+     "count": 20
+    },
+    {
+     "key": "material|wood-light-end",
+     "name": "Wood Light End",
+     "source": "Wood Light End",
+     "hex": "#bd905c",
+     "count": 19
+    },
+    {
+     "key": "material|wood-light",
+     "name": "Wood Light",
+     "source": "Wood Light",
+     "hex": "#c89c6a",
+     "count": 18
     },
     {
      "key": "material|ice",
@@ -1642,32 +1735,32 @@
      "count": 12
     },
     {
+     "key": "material|waterfall-crest",
+     "name": "Waterfall Crest",
+     "source": "Waterfall Crest",
+     "hex": "#6ee6ff",
+     "count": 12
+    },
+    {
      "key": "material|rope",
      "name": "Rope",
      "source": "Rope",
      "hex": "#7f725a",
-     "count": 10
+     "count": 11
     },
     {
      "key": "material|wood-medium",
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 6
-    },
-    {
-     "key": "material|waterfall-crest",
-     "name": "Waterfall Crest",
-     "source": "Waterfall Crest",
-     "hex": "#6ee6ff",
-     "count": 5
+     "count": 7
     },
     {
      "key": "material|water-lake",
      "name": "Water Lake",
      "source": "Water Lake",
      "hex": "#009bc3",
-     "count": 3
+     "count": 6
     }
    ]
   },
@@ -1681,56 +1774,56 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 271
+     "count": 339
     },
     {
      "key": "hidden|hidden-violet",
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 85
+     "count": 106
     },
     {
      "key": "hidden|hidden-yellow",
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 81
-    },
-    {
-     "key": "hidden|hidden-blue",
-     "name": "Hidden Blue",
-     "source": "Hidden Blue",
-     "hex": "#d8efff",
-     "count": 62
+     "count": 104
     },
     {
      "key": "hidden|hidden-orange",
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 53
+     "count": 78
+    },
+    {
+     "key": "hidden|hidden-blue",
+     "name": "Hidden Blue",
+     "source": "Hidden Blue",
+     "hex": "#d8efff",
+     "count": 67
     },
     {
      "key": "hidden|hidden-green",
      "name": "Hidden Green",
      "source": "Hidden Green",
      "hex": "#dcfdc8",
-     "count": 52
+     "count": 67
     },
     {
      "key": "hidden|hidden-pink",
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 46
+     "count": 66
     },
     {
      "key": "hidden|hidden-red",
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 41
+     "count": 42
     }
    ]
   }
@@ -12942,6 +13035,180 @@
    "missingTextures": []
   },
   {
+   "id": "Cliff_Assembly_Curve_Inner_1_Mid",
+   "name": "Cliff Assembly Curve Inner 1 Mid",
+   "file": "assemblies/Cliff_Assembly_Curve_Inner_1_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_3x3_Mid",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    8,
+    9,
+    1
+   ],
+   "min": [
+    -4.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    3.5,
+    1,
+    6.5
+   ],
+   "triangles": 112,
+   "trianglesPerUnit": 2,
+   "calls": 12,
+   "bytes": 11876,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Inner_1_Top",
+   "name": "Cliff Assembly Curve Inner 1 Top",
+   "file": "assemblies/Cliff_Assembly_Curve_Inner_1_Top.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Top_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Straight_Top_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_3x3_Top",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    8,
+    9,
+    2.25
+   ],
+   "min": [
+    -4.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    3.5,
+    2.25,
+    6.5
+   ],
+   "triangles": 330,
+   "trianglesPerUnit": 2,
+   "calls": 30,
+   "bytes": 28332,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Inner_2_Base",
+   "name": "Cliff Assembly Curve Inner 2 Base",
+   "file": "assemblies/Cliff_Assembly_Curve_Inner_2_Base.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 10,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Base",
+     "count": 2
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_3x3_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Base",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    9,
+    10,
+    3
+   ],
+   "min": [
+    -8.5,
+    -1,
+    -2.5
+   ],
+   "max": [
+    0.5,
+    2,
+    7.5
+   ],
+   "triangles": 386,
+   "trianglesPerUnit": 1,
+   "calls": 20,
+   "bytes": 31668,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Assembly_Curve_Inner_2_Mid",
    "name": "Cliff Assembly Curve Inner 2 Mid",
    "file": "assemblies/Cliff_Assembly_Curve_Inner_2_Mid.glb",
@@ -13000,6 +13267,196 @@
    "trianglesPerUnit": 2,
    "calls": 20,
    "bytes": 22172,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Inner_2_Top",
+   "name": "Cliff Assembly Curve Inner 2 Top",
+   "file": "assemblies/Cliff_Assembly_Curve_Inner_2_Top.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 10,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Straight_Top_1x1",
+     "count": 3
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Top",
+     "count": 2
+    },
+    {
+     "id": "Basic_Esse_Top_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_3x3_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Top",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    9,
+    10,
+    2.25
+   ],
+   "min": [
+    -8.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    0.5,
+    2.25,
+    7.5
+   ],
+   "triangles": 554,
+   "trianglesPerUnit": 3,
+   "calls": 50,
+   "bytes": 55972,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Inner_3_Base",
+   "name": "Cliff Assembly Curve Inner 3 Base",
+   "file": "assemblies/Cliff_Assembly_Curve_Inner_3_Base.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    9,
+    8,
+    3
+   ],
+   "min": [
+    -6.5,
+    -1,
+    -4.5
+   ],
+   "max": [
+    2.5,
+    2,
+    3.5
+   ],
+   "triangles": 296,
+   "trianglesPerUnit": 1,
+   "calls": 14,
+   "bytes": 25472,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Inner_3_Mid",
+   "name": "Cliff Assembly Curve Inner 3 Mid",
+   "file": "assemblies/Cliff_Assembly_Curve_Inner_3_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    9,
+    8,
+    1
+   ],
+   "min": [
+    -6.5,
+    0,
+    -4.5
+   ],
+   "max": [
+    2.5,
+    1,
+    3.5
+   ],
+   "triangles": 136,
+   "trianglesPerUnit": 2,
+   "calls": 14,
+   "bytes": 18136,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -13071,6 +13528,67 @@
    "missingTextures": []
   },
   {
+   "id": "Cliff_Assembly_Curve_Outer_1_Base",
+   "name": "Cliff Assembly Curve Outer 1 Base",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_1_Base.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 8,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Base",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    9.25,
+    10.25,
+    3
+   ],
+   "min": [
+    -3.75,
+    -1,
+    -5.5
+   ],
+   "max": [
+    5.5,
+    2,
+    4.75
+   ],
+   "triangles": 320,
+   "trianglesPerUnit": 1,
+   "calls": 16,
+   "bytes": 25748,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Assembly_Curve_Outer_1_Mid",
    "name": "Cliff Assembly Curve Outer 1 Mid",
    "file": "assemblies/Cliff_Assembly_Curve_Outer_1_Mid.glb",
@@ -13125,6 +13643,374 @@
    "trianglesPerUnit": 2,
    "calls": 16,
    "bytes": 17944,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Outer_1_Top",
+   "name": "Cliff Assembly Curve Outer 1 Top",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_1_Top.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 8,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Top_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Straight_Top_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Top",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    8.95,
+    9.95,
+    2.25
+   ],
+   "min": [
+    -3.45,
+    0,
+    -5.5
+   ],
+   "max": [
+    5.5,
+    2.25,
+    4.45
+   ],
+   "triangles": 450,
+   "trianglesPerUnit": 2,
+   "calls": 40,
+   "bytes": 45788,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Outer_2_Base",
+   "name": "Cliff Assembly Curve Outer 2 Base",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_2_Base.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_3x3_Base",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    9.25,
+    8.25,
+    3
+   ],
+   "min": [
+    -4.75,
+    -1,
+    -3.5
+   ],
+   "max": [
+    4.5,
+    2,
+    4.75
+   ],
+   "triangles": 234,
+   "trianglesPerUnit": 1,
+   "calls": 10,
+   "bytes": 22124,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Outer_2_Mid",
+   "name": "Cliff Assembly Curve Outer 2 Mid",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_2_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_3x3_Mid",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    8.5,
+    7.5,
+    1
+   ],
+   "min": [
+    -4,
+    0,
+    -3.5
+   ],
+   "max": [
+    4.5,
+    1,
+    4
+   ],
+   "triangles": 108,
+   "trianglesPerUnit": 2,
+   "calls": 10,
+   "bytes": 15260,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Outer_2_Top",
+   "name": "Cliff Assembly Curve Outer 2 Top",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_2_Top.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Top_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_3x3_Top",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    8.95,
+    7.95,
+    2.25
+   ],
+   "min": [
+    -4.45,
+    0,
+    -3.5
+   ],
+   "max": [
+    4.5,
+    2.25,
+    4.45
+   ],
+   "triangles": 338,
+   "trianglesPerUnit": 2,
+   "calls": 25,
+   "bytes": 39368,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Outer_3_Base",
+   "name": "Cliff Assembly Curve Outer 3 Base",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_3_Base.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 9,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Base",
+     "count": 2
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Base",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    8.25,
+    10.25,
+    3
+   ],
+   "min": [
+    -2.75,
+    -1,
+    -6.5
+   ],
+   "max": [
+    5.5,
+    2,
+    3.75
+   ],
+   "triangles": 352,
+   "trianglesPerUnit": 1,
+   "calls": 18,
+   "bytes": 30644,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Curve_Outer_3_Mid",
+   "name": "Cliff Assembly Curve Outer 3 Mid",
+   "file": "assemblies/Cliff_Assembly_Curve_Outer_3_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 9,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
+     "count": 2
+    },
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Mid",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    7.5,
+    9.5,
+    1
+   ],
+   "min": [
+    -2,
+    0,
+    -6.5
+   ],
+   "max": [
+    5.5,
+    1,
+    3
+   ],
+   "triangles": 160,
+   "trianglesPerUnit": 2,
+   "calls": 18,
+   "bytes": 21608,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -13200,6 +14086,55 @@
    "missingTextures": []
   },
   {
+   "id": "Cliff_Assembly_Straight_1_Base",
+   "name": "Cliff Assembly Straight 1 Base",
+   "file": "assemblies/Cliff_Assembly_Straight_1_Base.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 4
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 3
+    }
+   ],
+   "dwh": [
+    3.25,
+    10,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -4.5
+   ],
+   "max": [
+    1.5,
+    2,
+    5.5
+   ],
+   "triangles": 240,
+   "trianglesPerUnit": 2,
+   "calls": 14,
+   "bytes": 11280,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Assembly_Straight_1_Mid",
    "name": "Cliff Assembly Straight 1 Mid",
    "file": "assemblies/Cliff_Assembly_Straight_1_Mid.glb",
@@ -13242,6 +14177,172 @@
    "trianglesPerUnit": 4,
    "calls": 14,
    "bytes": 8532,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Straight_1_Top",
+   "name": "Cliff Assembly Straight 1 Top",
+   "file": "assemblies/Cliff_Assembly_Straight_1_Top.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Straight_Top_1x1",
+     "count": 4
+    },
+    {
+     "id": "Basic_Esse_Top_2x2",
+     "count": 3
+    }
+   ],
+   "dwh": [
+    2.95,
+    10,
+    2.25
+   ],
+   "min": [
+    -1.45,
+    0,
+    -4.5
+   ],
+   "max": [
+    1.5,
+    2.25,
+    5.5
+   ],
+   "triangles": 320,
+   "trianglesPerUnit": 5,
+   "calls": 35,
+   "bytes": 19024,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Straight_2_Base",
+   "name": "Cliff Assembly Straight 2 Base",
+   "file": "assemblies/Cliff_Assembly_Straight_2_Base.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Base",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Base",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5.25,
+    9,
+    3
+   ],
+   "min": [
+    -3.75,
+    -1,
+    -4.5
+   ],
+   "max": [
+    1.5,
+    2,
+    4.5
+   ],
+   "triangles": 232,
+   "trianglesPerUnit": 2,
+   "calls": 12,
+   "bytes": 20640,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Straight_2_Mid",
+   "name": "Cliff Assembly Straight 2 Mid",
+   "file": "assemblies/Cliff_Assembly_Straight_2_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Mid",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4.5,
+    9,
+    1
+   ],
+   "min": [
+    -3,
+    0,
+    -4.5
+   ],
+   "max": [
+    1.5,
+    1,
+    4.5
+   ],
+   "triangles": 104,
+   "trianglesPerUnit": 3,
+   "calls": 12,
+   "bytes": 14488,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -13431,6 +14532,70 @@
    "missingTextures": []
   },
   {
+   "id": "Cliff_Assembly_Straight_3_Top",
+   "name": "Cliff Assembly Straight 3 Top",
+   "file": "assemblies/Cliff_Assembly_Straight_3_Top.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 9,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Top_2x2",
+     "count": 4
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Wide_Top",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Wide_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Straight_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5.95,
+    15,
+    2.25
+   ],
+   "min": [
+    -1.45,
+    0,
+    -7.5
+   ],
+   "max": [
+    4.5,
+    2.25,
+    7.5
+   ],
+   "triangles": 544,
+   "trianglesPerUnit": 3,
+   "calls": 45,
+   "bytes": 45804,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Assembly_Straight_4_Base",
    "name": "Cliff Assembly Straight 4 Base",
    "file": "assemblies/Cliff_Assembly_Straight_4_Base.glb",
@@ -13488,6 +14653,284 @@
    "missingTextures": []
   },
   {
+   "id": "Cliff_Assembly_Straight_4_Mid",
+   "name": "Cliff Assembly Straight 4 Mid",
+   "file": "assemblies/Cliff_Assembly_Straight_4_Mid.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5.5,
+    10,
+    1
+   ],
+   "min": [
+    -5,
+    0,
+    -3.5
+   ],
+   "max": [
+    0.5,
+    1,
+    6.5
+   ],
+   "triangles": 124,
+   "trianglesPerUnit": 2,
+   "calls": 14,
+   "bytes": 14784,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Assembly_Straight_4_Top",
+   "name": "Cliff Assembly Straight 4 Top",
+   "file": "assemblies/Cliff_Assembly_Straight_4_Top.glb",
+   "group": "assembly-cliff",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Top_2x2",
+     "count": 3
+    },
+    {
+     "id": "Basic_Straight_Top_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Curve_Inner_2x2_Narrow_Top",
+     "count": 1
+    },
+    {
+     "id": "Basic_Curve_Outer_2x2_Narrow_Top",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5.95,
+    10,
+    2.25
+   ],
+   "min": [
+    -5.45,
+    0,
+    -3.5
+   ],
+   "max": [
+    0.5,
+    2.25,
+    6.5
+   ],
+   "triangles": 384,
+   "trianglesPerUnit": 3,
+   "calls": 35,
+   "bytes": 36608,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Bridge",
+   "name": "Cliff Bridge",
+   "file": "assemblies/Cliff_Bridge.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Path_Bridge_Edge_Top_1x2",
+     "count": 2
+    },
+    {
+     "id": "Path_Bridge_Center_Top_1x2",
+     "count": 1
+    },
+    {
+     "id": "Prop_Bridge_Rope_End_Basic_1x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    3,
+    2.737
+   ],
+   "min": [
+    -3.5,
+    0,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2.737,
+    2.5
+   ],
+   "triangles": 2292,
+   "trianglesPerUnit": 70,
+   "calls": 23,
+   "bytes": 138008,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|dirt",
+    "material|grass",
+    "material|rope",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end"
+   ],
+   "missingTextures": [
+    "Rope NM.png"
+   ]
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Narrow_Base",
+   "name": "Cliff Cave Entrance Esse Narrow Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Narrow_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Base_3x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    7,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 176,
+   "trianglesPerUnit": 4,
+   "calls": 11,
+   "bytes": 15336,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Narrow_Mid",
+   "name": "Cliff Cave Entrance Esse Narrow Mid",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Narrow_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Mid_2x3",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    1.5,
+    7,
+    1
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    1,
+    5.5
+   ],
+   "triangles": 48,
+   "trianglesPerUnit": 5,
+   "calls": 6,
+   "bytes": 5932,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Cave_Entrance_Esse_Narrow_Top",
    "name": "Cliff Cave Entrance Esse Narrow Top",
    "file": "assemblies/Cliff_Cave_Entrance_Esse_Narrow_Top.glb",
@@ -13539,6 +14982,353 @@
    "missingTextures": []
   },
   {
+   "id": "Cliff_Cave_Entrance_Esse_Wide_Base",
+   "name": "Cliff Cave Entrance Esse Wide Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Wide_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Base_3x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    8,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    6.5
+   ],
+   "triangles": 176,
+   "trianglesPerUnit": 3,
+   "calls": 11,
+   "bytes": 15328,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Wide_Mid",
+   "name": "Cliff Cave Entrance Esse Wide Mid",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Wide_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Mid_2x3",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    1.5,
+    8,
+    1
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    1,
+    6.5
+   ],
+   "triangles": 48,
+   "trianglesPerUnit": 4,
+   "calls": 6,
+   "bytes": 5932,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Esse_Wide_Top",
+   "name": "Cliff Cave Entrance Esse Wide Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Esse_Wide_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Top_3x4",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    8,
+    2
+   ],
+   "min": [
+    -1,
+    0,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    6.5
+   ],
+   "triangles": 112,
+   "trianglesPerUnit": 5,
+   "calls": 11,
+   "bytes": 12708,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Narrow_Base",
+   "name": "Cliff Cave Entrance Straight Narrow Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Narrow_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.25,
+    5,
+    3
+   ],
+   "min": [
+    -0.75,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    4.5
+   ],
+   "triangles": 136,
+   "trianglesPerUnit": 7,
+   "calls": 11,
+   "bytes": 13956,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Narrow_Mid",
+   "name": "Cliff Cave Entrance Straight Narrow Mid",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Narrow_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Mid_1x1",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    0.5,
+    5,
+    1
+   ],
+   "min": [
+    0,
+    0,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    1,
+    4.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": 13,
+   "calls": 6,
+   "bytes": 5432,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Narrow_Top",
+   "name": "Cliff Cave Entrance Straight Narrow Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Narrow_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Top_1x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.5,
+    5,
+    2
+   ],
+   "min": [
+    0,
+    0,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    4.5
+   ],
+   "triangles": 96,
+   "trianglesPerUnit": 19,
+   "calls": 11,
+   "bytes": 12176,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Wide_Base",
+   "name": "Cliff Cave Entrance Straight Wide Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Wide_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.25,
+    6,
+    3
+   ],
+   "min": [
+    -0.75,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 136,
+   "trianglesPerUnit": 6,
+   "calls": 11,
+   "bytes": 13956,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Cave_Entrance_Straight_Wide_Mid",
    "name": "Cliff Cave Entrance Straight Wide Mid",
    "file": "assemblies/Cliff_Cave_Entrance_Straight_Wide_Mid.glb",
@@ -13581,6 +15371,191 @@
     "hidden|hidden",
     "hidden|hidden-green",
     "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Straight_Wide_Top",
+   "name": "Cliff Cave Entrance Straight Wide Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Straight_Wide_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Straight_Top_1x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.5,
+    6,
+    2
+   ],
+   "min": [
+    0,
+    0,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 96,
+   "trianglesPerUnit": 16,
+   "calls": 11,
+   "bytes": 12176,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Waterfall_Narrow_Base",
+   "name": "Cliff Cave Entrance Waterfall Narrow Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Waterfall_Narrow_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 16,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 5
+    },
+    {
+     "id": "Ripple",
+     "count": 5
+    },
+    {
+     "id": "Cave_Edge_Esse_Base_3x3",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Center_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    7,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 228,
+   "trianglesPerUnit": 5,
+   "calls": 14,
+   "bytes": 32104,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Waterfall_Narrow_Mid",
+   "name": "Cliff Cave Entrance Waterfall Narrow Mid",
+   "file": "assemblies/Cliff_Cave_Entrance_Waterfall_Narrow_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Mid_2x3",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    7,
+    1.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    1,
+    5.5
+   ],
+   "triangles": 74,
+   "trianglesPerUnit": 6,
+   "calls": 9,
+   "bytes": 21152,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face",
+    "material|waterfall"
    ],
    "missingTextures": []
   },
@@ -13639,6 +15614,204 @@
    "trianglesPerUnit": 7,
    "calls": 17,
    "bytes": 28860,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Waterfall_Wide_Base",
+   "name": "Cliff Cave Entrance Waterfall Wide Base",
+   "file": "assemblies/Cliff_Cave_Entrance_Waterfall_Wide_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 19,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 6
+    },
+    {
+     "id": "Ripple",
+     "count": 6
+    },
+    {
+     "id": "Cave_Edge_Esse_Base_3x3",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Base_Center_1x1",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Base_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    8,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    6.5
+   ],
+   "triangles": 232,
+   "trianglesPerUnit": 4,
+   "calls": 15,
+   "bytes": 32424,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Waterfall_Wide_Mid",
+   "name": "Cliff Cave Entrance Waterfall Wide Mid",
+   "file": "assemblies/Cliff_Cave_Entrance_Waterfall_Wide_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Cave_Edge_Esse_Mid_2x3",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    8,
+    1.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    1,
+    6.5
+   ],
+   "triangles": 76,
+   "trianglesPerUnit": 5,
+   "calls": 10,
+   "bytes": 21456,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-green",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Cave_Entrance_Waterfall_Wide_Top",
+   "name": "Cliff Cave Entrance Waterfall Wide Top",
+   "file": "assemblies/Cliff_Cave_Entrance_Waterfall_Wide_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 11,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 4
+    },
+    {
+     "id": "Cave_Edge_Esse_Top_3x4",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Left_1x1",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 2
+    },
+    {
+     "id": "Cave_Center_Top_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    8,
+    2.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    0.5,
+    2,
+    6.5
+   ],
+   "triangles": 168,
+   "trianglesPerUnit": 6,
+   "calls": 19,
+   "bytes": 29460,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -13757,6 +15930,117 @@
    "missingTextures": []
   },
   {
+   "id": "Cliff_Waterfall_Component_Center_Base",
+   "name": "Cliff Waterfall Component Center Base",
+   "file": "assemblies/Cliff_Waterfall_Component_Center_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 1
+    },
+    {
+     "id": "Mist",
+     "count": 1
+    },
+    {
+     "id": "Ripple",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Center_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    1,
+    3
+   ],
+   "min": [
+    -1,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    0.5
+   ],
+   "triangles": 28,
+   "trianglesPerUnit": 6,
+   "calls": 3,
+   "bytes": 9408,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Component_Center_Mid",
+   "name": "Cliff Waterfall Component Center Mid",
+   "file": "assemblies/Cliff_Waterfall_Component_Center_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    1,
+    1.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    1,
+    0.5
+   ],
+   "triangles": 14,
+   "trianglesPerUnit": 7,
+   "calls": 3,
+   "bytes": 8416,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Waterfall_Component_Center_Top",
    "name": "Cliff Waterfall Component Center Top",
    "file": "assemblies/Cliff_Waterfall_Component_Center_Top.glb",
@@ -13814,6 +16098,71 @@
    ]
   },
   {
+   "id": "Cliff_Waterfall_Component_Left_Base",
+   "name": "Cliff Waterfall Component Left Base",
+   "file": "assemblies/Cliff_Waterfall_Component_Left_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 2
+    },
+    {
+     "id": "Ripple",
+     "count": 2
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 1
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Left_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    3,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    2.5
+   ],
+   "triangles": 96,
+   "trianglesPerUnit": 5,
+   "calls": 5,
+   "bytes": 15828,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cliff_Waterfall_Component_Left_Mid",
    "name": "Cliff Waterfall Component Left Mid",
    "file": "assemblies/Cliff_Waterfall_Component_Left_Mid.glb",
@@ -13860,6 +16209,312 @@
    "trianglesPerUnit": 8,
    "calls": 5,
    "bytes": 12396,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Component_Left_Top",
+   "name": "Cliff Waterfall Component Left Top",
+   "file": "assemblies/Cliff_Waterfall_Component_Left_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Top_Left_2x3",
+     "count": 1
+    },
+    {
+     "id": "Waterfall_Left_Top_Terrain_3x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.95,
+    3,
+    2.5
+   ],
+   "min": [
+    -1.45,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    2.25,
+    1.5
+   ],
+   "triangles": 215,
+   "trianglesPerUnit": 10,
+   "calls": 10,
+   "bytes": 37304,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest"
+   ],
+   "missingTextures": [
+    "uvmap image 32x16.png"
+   ]
+  },
+  {
+   "id": "Cliff_Waterfall_Component_Right_Base",
+   "name": "Cliff Waterfall Component Right Base",
+   "file": "assemblies/Cliff_Waterfall_Component_Right_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 2
+    },
+    {
+     "id": "Ripple",
+     "count": 2
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 1
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    3,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -2.5
+   ],
+   "max": [
+    0.5,
+    2,
+    0.5
+   ],
+   "triangles": 96,
+   "trianglesPerUnit": 5,
+   "calls": 5,
+   "bytes": 15820,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Component_Right_Mid",
+   "name": "Cliff Waterfall Component Right Mid",
+   "file": "assemblies/Cliff_Waterfall_Component_Right_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 1
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    3,
+    1.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -2.5
+   ],
+   "max": [
+    0.5,
+    1,
+    0.5
+   ],
+   "triangles": 44,
+   "trianglesPerUnit": 8,
+   "calls": 5,
+   "bytes": 12372,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Component_Right_Top",
+   "name": "Cliff Waterfall Component Right Top",
+   "file": "assemblies/Cliff_Waterfall_Component_Right_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 2,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Top_Right_2x3",
+     "count": 1
+    },
+    {
+     "id": "Waterfall_Left_Top_Terrain_3x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.95,
+    3,
+    2.5
+   ],
+   "min": [
+    -1.45,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    2.25,
+    1.5
+   ],
+   "triangles": 215,
+   "trianglesPerUnit": 10,
+   "calls": 10,
+   "bytes": 37328,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest"
+   ],
+   "missingTextures": [
+    "uvmap image 32x16.png"
+   ]
+  },
+  {
+   "id": "Cliff_Waterfall_Narrow_Base",
+   "name": "Cliff Waterfall Narrow Base",
+   "file": "assemblies/Cliff_Waterfall_Narrow_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 13,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 4
+    },
+    {
+     "id": "Ripple",
+     "count": 4
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    6,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    5.5
+   ],
+   "triangles": 168,
+   "trianglesPerUnit": 4,
+   "calls": 8,
+   "bytes": 22068,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -13989,6 +16644,418 @@
    ]
   },
   {
+   "id": "Cliff_Waterfall_Wide_Base",
+   "name": "Cliff Waterfall Wide Base",
+   "file": "assemblies/Cliff_Waterfall_Wide_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 16,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 5
+    },
+    {
+     "id": "Ripple",
+     "count": 5
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Center_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    7,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    6.5
+   ],
+   "triangles": 172,
+   "trianglesPerUnit": 4,
+   "calls": 9,
+   "bytes": 26892,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Wide_Mid",
+   "name": "Cliff Waterfall Wide Mid",
+   "file": "assemblies/Cliff_Waterfall_Wide_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    7,
+    1.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    1,
+    6.5
+   ],
+   "triangles": 78,
+   "trianglesPerUnit": 6,
+   "calls": 9,
+   "bytes": 22596,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Wide_Top",
+   "name": "Cliff Waterfall Wide Top",
+   "file": "assemblies/Cliff_Waterfall_Wide_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Waterfall_Left_Top_Terrain_3x3",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Top_Center_1x3",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Left_2x3",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Right_2x3",
+     "count": 1
+    },
+    {
+     "id": "Waterfall_Center_Top_Terrain_1x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.95,
+    7,
+    2.5
+   ],
+   "min": [
+    -1.45,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    2.25,
+    5.5
+   ],
+   "triangles": 492,
+   "trianglesPerUnit": 10,
+   "calls": 28,
+   "bytes": 81808,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest"
+   ],
+   "missingTextures": [
+    "uvmap image 32x16.png"
+   ]
+  },
+  {
+   "id": "Cliff_Waterfall_Widest_Base",
+   "name": "Cliff Waterfall Widest Base",
+   "file": "assemblies/Cliff_Waterfall_Widest_Base.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 19,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 6
+    },
+    {
+     "id": "Ripple",
+     "count": 6
+    },
+    {
+     "id": "Basic_Esse_Base_2x2",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Base_Center_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Base_1x2",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.25,
+    8,
+    3
+   ],
+   "min": [
+    -1.75,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    2,
+    7.5
+   ],
+   "triangles": 176,
+   "trianglesPerUnit": 3,
+   "calls": 10,
+   "bytes": 27200,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Widest_Mid",
+   "name": "Cliff Waterfall Widest Mid",
+   "file": "assemblies/Cliff_Waterfall_Widest_Mid.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Basic_Esse_Mid_2x2",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 2
+    },
+    {
+     "id": "Basic_Straight_Mid_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Left_1x1",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1.5,
+    8,
+    1.25
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    1,
+    7.5
+   ],
+   "triangles": 80,
+   "trianglesPerUnit": 5,
+   "calls": 10,
+   "bytes": 22896,
+   "materials": [
+    "hidden|hidden",
+    "material|cliff-face",
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Cliff_Waterfall_Widest_Top",
+   "name": "Cliff Waterfall Widest Top",
+   "file": "assemblies/Cliff_Waterfall_Widest_Top.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Top_Center_1x3",
+     "count": 2
+    },
+    {
+     "id": "Waterfall_Left_Top_Terrain_3x3",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Top_Left_2x3",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Right_2x3",
+     "count": 1
+    },
+    {
+     "id": "Waterfall_Center_Top_Terrain_1x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.95,
+    8,
+    2.5
+   ],
+   "min": [
+    -1.45,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    2.25,
+    6.5
+   ],
+   "triangles": 514,
+   "trianglesPerUnit": 9,
+   "calls": 31,
+   "bytes": 82420,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest"
+   ],
+   "missingTextures": [
+    "uvmap image 32x16.png"
+   ]
+  },
+  {
    "id": "Crack_Large",
    "name": "Crack Large",
    "file": "assemblies/Crack_Large.glb",
@@ -14098,6 +17165,159 @@
     "hidden|hidden-yellow",
     "material|cliff-face",
     "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Crack_Small",
+   "name": "Crack Small",
+   "file": "assemblies/Crack_Small.glb",
+   "group": "assembly-crack",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 18,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Carpet_Straight_1x1",
+     "count": 4
+    },
+    {
+     "id": "Cracked_Curve_Inner_4x4_1_Mid",
+     "count": 2
+    },
+    {
+     "id": "Cracked_Curve_Inner_4x4_1_Top",
+     "count": 2
+    },
+    {
+     "id": "Grass_Carpet_Curve_Inner_2x2",
+     "count": 2
+    },
+    {
+     "id": "Cracked_Curve_Inner_3x3_1_Mid",
+     "count": 1
+    },
+    {
+     "id": "Cracked_Curve_Inner_3x3_1_Top",
+     "count": 1
+    },
+    {
+     "id": "Cracked_Straight_2x2_3_Mid",
+     "count": 1
+    },
+    {
+     "id": "Cracked_Straight_2x2_3_Top",
+     "count": 1
+    },
+    {
+     "id": "Grass_Carpet_Center_1x1",
+     "count": 1
+    },
+    {
+     "id": "Grass_Carpet_Curve_Inner_1x1",
+     "count": 1
+    },
+    {
+     "id": "Grass_Carpet_Curve_Inner_3x3",
+     "count": 1
+    },
+    {
+     "id": "Grass_Carpet_Esse_2x2",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    7,
+    4,
+    2.25
+   ],
+   "min": [
+    -1.5,
+    -1,
+    -2.5
+   ],
+   "max": [
+    5.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 586,
+   "trianglesPerUnit": 9,
+   "calls": 63,
+   "bytes": 70768,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Bridge_End",
+   "name": "Path Bridge End",
+   "file": "assemblies/Path_Bridge_End.glb",
+   "group": "assembly-bridge",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 6,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Path_Terrain_Basic_Straight_1x1",
+     "count": 3
+    },
+    {
+     "id": "Path_Terrain_Basic_Curve_Inner_1x1",
+     "count": 2
+    },
+    {
+     "id": "Prop_Bridge_End_2x2",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    3,
+    3,
+    2.25
+   ],
+   "min": [
+    -1.5,
+    -1,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 1316,
+   "trianglesPerUnit": 65,
+   "calls": 30,
+   "bytes": 89468,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "material|dirt",
+    "material|grass",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
    ],
    "missingTextures": []
   },
@@ -14256,6 +17476,63 @@
    "missingTextures": []
   },
   {
+   "id": "River_Curve_Narrow_Large_CCW",
+   "name": "River Curve Narrow Large CCW",
+   "file": "assemblies/River_Curve_Narrow_Large_CCW.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Outer_4x4",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Curve_CW_5x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    6,
+    1.25
+   ],
+   "min": [
+    -3.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    1.25,
+    3.5
+   ],
+   "triangles": 164,
+   "trianglesPerUnit": 4,
+   "calls": 11,
+   "bytes": 31568,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "River_Curve_Narrow_Large_CW",
    "name": "River Curve Narrow Large CW",
    "file": "assemblies/River_Curve_Narrow_Large_CW.glb",
@@ -14370,6 +17647,193 @@
    "missingTextures": []
   },
   {
+   "id": "River_Curve_Narrow_Small_CW",
+   "name": "River Curve Narrow Small CW",
+   "file": "assemblies/River_Curve_Narrow_Small_CW.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Curve_Inner_4x4",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Outer_2x2",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Curve_CCW_3x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    4,
+    1.25
+   ],
+   "min": [
+    -2.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    1.25,
+    2.5
+   ],
+   "triangles": 134,
+   "trianglesPerUnit": 7,
+   "calls": 10,
+   "bytes": 28972,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Curve_Wide_CCW",
+   "name": "River Curve Wide CCW",
+   "file": "assemblies/River_Curve_Wide_CCW.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Outer_2x2",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Curve_CW_3x3",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Curve_CW_5x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    6,
+    1.25
+   ],
+   "min": [
+    -3.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    1.25,
+    3.5
+   ],
+   "triangles": 186,
+   "trianglesPerUnit": 4,
+   "calls": 14,
+   "bytes": 44764,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Curve_Wide_CW",
+   "name": "River Curve Wide CW",
+   "file": "assemblies/River_Curve_Wide_CW.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Outer_2x2",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Curve_CCW_3x3",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Curve_CCW_5x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    6,
+    1.25
+   ],
+   "min": [
+    -3.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    1.25,
+    3.5
+   ],
+   "triangles": 186,
+   "trianglesPerUnit": 4,
+   "calls": 14,
+   "bytes": 44888,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "River_Esse_Narrow_Gentle_Swerve_Left",
    "name": "River Esse Narrow Gentle Swerve Left",
    "file": "assemblies/River_Esse_Narrow_Gentle_Swerve_Left.glb",
@@ -14412,6 +17876,112 @@
    "trianglesPerUnit": 5,
    "calls": 11,
    "bytes": 21320,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Esse_Narrow_Gentle_Swerve_Right",
+   "name": "River Esse Narrow Gentle Swerve Right",
+   "file": "assemblies/River_Esse_Narrow_Gentle_Swerve_Right.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x3",
+     "count": 2
+    },
+    {
+     "id": "Terrain_Water_River_Esse_CW_3x4",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5,
+    4,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    3.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 120,
+   "trianglesPerUnit": 5,
+   "calls": 11,
+   "bytes": 21320,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Esse_Narrow_Sharp_Swerve_Left",
+   "name": "River Esse Narrow Sharp Swerve Left",
+   "file": "assemblies/River_Esse_Narrow_Sharp_Swerve_Left.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x4",
+     "count": 2
+    },
+    {
+     "id": "Terrain_Water_River_Esse_CCW_4x4",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    4.005,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -1.503
+   ],
+   "max": [
+    4.5,
+    1.25,
+    2.503
+   ],
+   "triangles": 134,
+   "trianglesPerUnit": 4,
+   "calls": 11,
+   "bytes": 21900,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -14476,6 +18046,225 @@
    "missingTextures": []
   },
   {
+   "id": "River_Esse_Wide_Gentle_Swerve_Left",
+   "name": "River Esse Wide Gentle Swerve Left",
+   "file": "assemblies/River_Esse_Wide_Gentle_Swerve_Left.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x3",
+     "count": 2
+    },
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Esse_CCW_4x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    7,
+    4,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    5.5,
+    1.25,
+    2.5
+   ],
+   "triangles": 164,
+   "trianglesPerUnit": 5,
+   "calls": 14,
+   "bytes": 26964,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Esse_Wide_Gentle_Swerve_Right",
+   "name": "River Esse Wide Gentle Swerve Right",
+   "file": "assemblies/River_Esse_Wide_Gentle_Swerve_Right.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x3",
+     "count": 2
+    },
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Water_River_Esse_CW_4x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    7,
+    4,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    5.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 164,
+   "trianglesPerUnit": 5,
+   "calls": 14,
+   "bytes": 27012,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Incline_Narrow_Gentle",
+   "name": "River Incline Narrow Gentle",
+   "file": "assemblies/River_Incline_Narrow_Gentle.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Gentle_Overlapping_Sharp_2x4",
+     "count": 2
+    },
+    {
+     "id": "Terrain_Water_River_Incline_Gentle_1x4",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    4,
+    4,
+    2.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    2.25,
+    1.5
+   ],
+   "triangles": 100,
+   "trianglesPerUnit": 3,
+   "calls": 12,
+   "bytes": 19964,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Incline_Narrow_Sharp",
+   "name": "River Incline Narrow Sharp",
+   "file": "assemblies/River_Incline_Narrow_Sharp.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Overlapping_Sharp_2x2",
+     "count": 2
+    },
+    {
+     "id": "Terrain_Water_River_Incline_Sharp_1x2",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    4,
+    2,
+    2.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    2.5,
+    2.25,
+    0.5
+   ],
+   "triangles": 96,
+   "trianglesPerUnit": 5,
+   "calls": 10,
+   "bytes": 18692,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "River_Incline_Wide_Gentle",
    "name": "River Incline Wide Gentle",
    "file": "assemblies/River_Incline_Wide_Gentle.glb",
@@ -14525,6 +18314,291 @@
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Incline_Wide_Sharp",
+   "name": "River Incline Wide Sharp",
+   "file": "assemblies/River_Incline_Wide_Sharp.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Incline_Sharp_1x2",
+     "count": 4
+    },
+    {
+     "id": "Grass_Hill_Sharp_Overlapping_Sharp_2x2",
+     "count": 2
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    2,
+    2.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    4.5,
+    2.25,
+    0.5
+   ],
+   "triangles": 128,
+   "trianglesPerUnit": 5,
+   "calls": 17,
+   "bytes": 25580,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Straight_Narrow",
+   "name": "River Straight Narrow",
+   "file": "assemblies/River_Straight_Narrow.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 4,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 2
+    },
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    4,
+    1,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -0.5
+   ],
+   "max": [
+    2.5,
+    1.25,
+    0.5
+   ],
+   "triangles": 44,
+   "trianglesPerUnit": 9,
+   "calls": 12,
+   "bytes": 18012,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Straight_Wide",
+   "name": "River Straight Wide",
+   "file": "assemblies/River_Straight_Wide.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 7,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 4
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 2
+    },
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    1,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -0.5
+   ],
+   "max": [
+    4.5,
+    1.25,
+    0.5
+   ],
+   "triangles": 60,
+   "trianglesPerUnit": 8,
+   "calls": 17,
+   "bytes": 22400,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Transition_Enter_Center",
+   "name": "River Transition Enter Center",
+   "file": "assemblies/River_Transition_Enter_Center.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 19,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 16
+    },
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x3",
+     "count": 2
+    },
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    4,
+    1.25
+   ],
+   "min": [
+    -4.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    1.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 132,
+   "trianglesPerUnit": 4,
+   "calls": 29,
+   "bytes": 28096,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "River_Transition_Enter_Left",
+   "name": "River Transition Enter Left",
+   "file": "assemblies/River_Transition_Enter_Left.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 18,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 15
+    },
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x4",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    4.003,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -2.503
+   ],
+   "max": [
+    4.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 113,
+   "trianglesPerUnit": 4,
+   "calls": 28,
+   "bytes": 33996,
+   "materials": [
+    "hidden|hidden",
     "hidden|hidden-orange",
     "hidden|hidden-pink",
     "hidden|hidden-violet",
@@ -14652,6 +18726,67 @@
    "missingTextures": []
   },
   {
+   "id": "River_Transition_Exit_Left",
+   "name": "River Transition Exit Left",
+   "file": "assemblies/River_Transition_Exit_Left.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 18,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 15
+    },
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x4",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    6,
+    4.003,
+    1.25
+   ],
+   "min": [
+    -1.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    4.5,
+    1.25,
+    2.503
+   ],
+   "triangles": 113,
+   "trianglesPerUnit": 4,
+   "calls": 28,
+   "bytes": 34000,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-violet",
+    "material|grass",
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "River_Transition_Exit_Right",
    "name": "River Transition Exit Right",
    "file": "assemblies/River_Transition_Exit_Right.glb",
@@ -14711,6 +18846,1184 @@
     "material|water-river"
    ],
    "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Curve_CCW_3x3",
+   "name": "Terrain Water River Curve CCW 3x3",
+   "file": "assemblies/Terrain_Water_River_Curve_CCW_3x3.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Curve_CCW_3x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    3,
+    3,
+    0
+   ],
+   "min": [
+    -1.5,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    -0.25,
+    1.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11920,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Curve_CCW_5x5",
+   "name": "Terrain Water River Curve CCW 5x5",
+   "file": "assemblies/Terrain_Water_River_Curve_CCW_5x5.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Curve_CCW_5x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5,
+    5,
+    0
+   ],
+   "min": [
+    -2.5,
+    -0.25,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    -0.25,
+    2.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11916,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Curve_CW_3x3",
+   "name": "Terrain Water River Curve CW 3x3",
+   "file": "assemblies/Terrain_Water_River_Curve_CW_3x3.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Curve_CW_3x3",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    3,
+    3,
+    0
+   ],
+   "min": [
+    -1.5,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    -0.25,
+    1.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11872,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Curve_CW_5x5",
+   "name": "Terrain Water River Curve CW 5x5",
+   "file": "assemblies/Terrain_Water_River_Curve_CW_5x5.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Curve_CW_5x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    5,
+    5,
+    0
+   ],
+   "min": [
+    -2.5,
+    -0.25,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    -0.25,
+    2.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11872,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Esse_CCW_3x4",
+   "name": "Terrain Water River Esse CCW 3x4",
+   "file": "assemblies/Terrain_Water_River_Esse_CCW_3x4.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Esse_CCW_3x4",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    3,
+    0
+   ],
+   "min": [
+    -2.5,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    -0.25,
+    1.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11936,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Esse_CCW_4x4",
+   "name": "Terrain Water River Esse CCW 4x4",
+   "file": "assemblies/Terrain_Water_River_Esse_CCW_4x4.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Esse_CCW_4x4",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    4,
+    0
+   ],
+   "min": [
+    -2.5,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    -0.25,
+    2.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11936,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Esse_CCW_4x5",
+   "name": "Terrain Water River Esse CCW 4x5",
+   "file": "assemblies/Terrain_Water_River_Esse_CCW_4x5.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Esse_CCW_4x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    5,
+    0
+   ],
+   "min": [
+    -2.5,
+    -0.25,
+    -2.5
+   ],
+   "max": [
+    1.5,
+    -0.25,
+    2.5
+   ],
+   "triangles": 64,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 13860,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Esse_CW_3x4",
+   "name": "Terrain Water River Esse CW 3x4",
+   "file": "assemblies/Terrain_Water_River_Esse_CW_3x4.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Esse_CW_3x4",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    3,
+    0
+   ],
+   "min": [
+    -1.5,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    2.5,
+    -0.25,
+    1.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11936,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Esse_CW_4x4",
+   "name": "Terrain Water River Esse CW 4x4",
+   "file": "assemblies/Terrain_Water_River_Esse_CW_4x4.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Esse_CW_4x4",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    4,
+    0
+   ],
+   "min": [
+    -1.5,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    2.5,
+    -0.25,
+    2.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11932,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Esse_CW_4x5",
+   "name": "Terrain Water River Esse CW 4x5",
+   "file": "assemblies/Terrain_Water_River_Esse_CW_4x5.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Esse_CW_4x5",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    5,
+    0
+   ],
+   "min": [
+    -1.5,
+    -0.25,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    -0.25,
+    2.5
+   ],
+   "triangles": 64,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 13860,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Flat_1x1",
+   "name": "Terrain Water River Flat 1x1",
+   "file": "assemblies/Terrain_Water_River_Flat_1x1.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    1,
+    1,
+    0
+   ],
+   "min": [
+    -0.5,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    -0.25,
+    0.5
+   ],
+   "triangles": 2,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 10152,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Incline_Gentle_1x4",
+   "name": "Terrain Water River Incline Gentle 1x4",
+   "file": "assemblies/Terrain_Water_River_Incline_Gentle_1x4.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Incline_Gentle_1x4",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4,
+    1,
+    1
+   ],
+   "min": [
+    -1.5,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    2.5,
+    0.75,
+    0.5
+   ],
+   "triangles": 8,
+   "trianglesPerUnit": 2,
+   "calls": 1,
+   "bytes": 10500,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Terrain_Water_River_Incline_Sharp_1x2",
+   "name": "Terrain Water River Incline Sharp 1x2",
+   "file": "assemblies/Terrain_Water_River_Incline_Sharp_1x2.glb",
+   "group": "assembly-river",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Incline_Sharp_1x2",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2,
+    1,
+    1
+   ],
+   "min": [
+    -0.5,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    1.5,
+    0.75,
+    0.5
+   ],
+   "triangles": 6,
+   "trianglesPerUnit": 3,
+   "calls": 1,
+   "bytes": 10340,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Circle_1_Lowpoly",
+   "name": "Water Circle 1 Lowpoly",
+   "file": "assemblies/Water_Circle_1_Lowpoly.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Circle_1_Lowpoly",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    40,
+    40,
+    0
+   ],
+   "min": [
+    -20,
+    0,
+    -20
+   ],
+   "max": [
+    20,
+    0,
+    20
+   ],
+   "triangles": 272,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 130448,
+   "materials": [
+    "material|water-lake"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Circle_2_Midpoly",
+   "name": "Water Circle 2 Midpoly",
+   "file": "assemblies/Water_Circle_2_Midpoly.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Circle_2_Midpoly",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    40.799,
+    40.799,
+    0
+   ],
+   "min": [
+    -20.399,
+    0,
+    -20.399
+   ],
+   "max": [
+    20.399,
+    0,
+    20.399
+   ],
+   "triangles": 1088,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 154388,
+   "materials": [
+    "material|water-lake"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Circle_3_Highpoly",
+   "name": "Water Circle 3 Highpoly",
+   "file": "assemblies/Water_Circle_3_Highpoly.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Circle_3_Highpoly",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    40.532,
+    40.532,
+    0
+   ],
+   "min": [
+    -20.266,
+    0,
+    -20.266
+   ],
+   "max": [
+    20.266,
+    0,
+    20.266
+   ],
+   "triangles": 4480,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 251468,
+   "materials": [
+    "material|water-lake"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Base_Center_1x1",
+   "name": "Water Waterfall Base Center 1x1",
+   "file": "assemblies/Water_Waterfall_Base_Center_1x1.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 1
+    },
+    {
+     "id": "Ripple",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Base_Center_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0,
+    1,
+    2
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    -1,
+    1.75,
+    0.5
+   ],
+   "triangles": 4,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 5148,
+   "materials": [
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Base_Left_1x1",
+   "name": "Water Waterfall Base Left 1x1",
+   "file": "assemblies/Water_Waterfall_Base_Left_1x1.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 2
+    },
+    {
+     "id": "Ripple",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Base_Left_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.75,
+    2,
+    2
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    -0.25,
+    1.75,
+    1.5
+   ],
+   "triangles": 24,
+   "trianglesPerUnit": 8,
+   "calls": 1,
+   "bytes": 6292,
+   "materials": [
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Base_Right_1x1",
+   "name": "Water Waterfall Base Right 1x1",
+   "file": "assemblies/Water_Waterfall_Base_Right_1x1.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 5,
+   "missingPieces": [
+    "Mist",
+    "Ripple"
+   ],
+   "pieces": [
+    {
+     "id": "Mist",
+     "count": 2
+    },
+    {
+     "id": "Ripple",
+     "count": 2
+    },
+    {
+     "id": "Water_Waterfall_Base_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.75,
+    2,
+    2
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    -0.25,
+    1.75,
+    0.5
+   ],
+   "triangles": 24,
+   "trianglesPerUnit": 8,
+   "calls": 1,
+   "bytes": 6284,
+   "materials": [
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Mid_Center_1x1",
+   "name": "Water Waterfall Mid Center 1x1",
+   "file": "assemblies/Water_Waterfall_Mid_Center_1x1.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Mid_Center_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0,
+    1,
+    1
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    -1,
+    0.75,
+    0.5
+   ],
+   "triangles": 2,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 5008,
+   "materials": [
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Mid_Left_1x1",
+   "name": "Water Waterfall Mid Left 1x1",
+   "file": "assemblies/Water_Waterfall_Mid_Left_1x1.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Mid_Left_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.75,
+    2,
+    1
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    -0.25,
+    0.75,
+    1.5
+   ],
+   "triangles": 12,
+   "trianglesPerUnit": 8,
+   "calls": 1,
+   "bytes": 5604,
+   "materials": [
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Mid_Right_1x1",
+   "name": "Water Waterfall Mid Right 1x1",
+   "file": "assemblies/Water_Waterfall_Mid_Right_1x1.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 1,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Mid_Right_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    0.75,
+    2,
+    1
+   ],
+   "min": [
+    -1,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    -0.25,
+    0.75,
+    0.5
+   ],
+   "triangles": 12,
+   "trianglesPerUnit": 8,
+   "calls": 1,
+   "bytes": 5572,
+   "materials": [
+    "material|waterfall"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Top_Center_1x3",
+   "name": "Water Waterfall Top Center 1x3",
+   "file": "assemblies/Water_Waterfall_Top_Center_1x3.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Water_Waterfall_Top_Center_1x3_Crest",
+    "Water_Waterfall_Top_Center_1x3_River"
+   ],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Top_Center_1x3",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Center_1x3_Crest",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Center_1x3_River",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.501,
+    1,
+    2.001
+   ],
+   "min": [
+    -1.001,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    1.5,
+    1.751,
+    0.5
+   ],
+   "triangles": 22,
+   "trianglesPerUnit": 4,
+   "calls": 3,
+   "bytes": 17272,
+   "materials": [
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest"
+   ],
+   "missingTextures": [
+    "uvmap image 32x16.png"
+   ]
+  },
+  {
+   "id": "Water_Waterfall_Top_Left_2x3",
+   "name": "Water Waterfall Top Left 2x3",
+   "file": "assemblies/Water_Waterfall_Top_Left_2x3.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Water_Waterfall_Top_Left_2x3_Crest",
+    "Water_Waterfall_Top_Left_2x3_River"
+   ],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Top_Left_2x3",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Left_2x3_Crest",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Left_2x3_River",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.501,
+    2,
+    2.001
+   ],
+   "min": [
+    -1.001,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    1.751,
+    0.5
+   ],
+   "triangles": 81,
+   "trianglesPerUnit": 8,
+   "calls": 3,
+   "bytes": 19956,
+   "materials": [
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest"
+   ],
+   "missingTextures": [
+    "uvmap image 32x16.png"
+   ]
+  },
+  {
+   "id": "Water_Waterfall_Top_Right_2x3",
+   "name": "Water Waterfall Top Right 2x3",
+   "file": "assemblies/Water_Waterfall_Top_Right_2x3.glb",
+   "group": "assembly-water",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 3,
+   "missingPieces": [
+    "Water_Waterfall_Top_Right_2x3_Crest",
+    "Water_Waterfall_Top_Right_2x3_River"
+   ],
+   "pieces": [
+    {
+     "id": "Water_Waterfall_Top_Right_2x3",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Right_2x3_Crest",
+     "count": 1
+    },
+    {
+     "id": "Water_Waterfall_Top_Right_2x3_River",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    2.501,
+    2,
+    2.001
+   ],
+   "min": [
+    -1.001,
+    -0.25,
+    -0.5
+   ],
+   "max": [
+    1.5,
+    1.751,
+    1.5
+   ],
+   "triangles": 81,
+   "trianglesPerUnit": 8,
+   "calls": 3,
+   "bytes": 19976,
+   "materials": [
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest"
+   ],
+   "missingTextures": [
+    "uvmap image 32x16.png"
+   ]
   }
  ]
 }

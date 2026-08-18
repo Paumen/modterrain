@@ -76,20 +76,22 @@ nine wall segments of a cliff cost one copy of the wall and nine nodes.
 
 Whatever ends up in `assemblies/` shows up in the catalog's **Assemblies**
 tab on the next `node tools/build-catalog.mjs`, with the piece list it was
-built from in the detail panel. Thirty are checked in: cliff runs,
-waterfalls and cave entrances, rivers, the two river bridges, and the large
-crack.
+built from in the detail panel. All 123 are built and checked in, 4.1 MB
+together, in five sections: 30 cliff runs, 51 waterfalls and cave entrances,
+37 rivers, 3 bridges, 2 cracks.
 
 Piece count says little about whether an assembly is worth building. The
 river tiles place three pieces — a terrain block, a water surface, a bank —
 and each is a finished tile; some of the waterfall components place two and
-amount to a block with a separate sheet of water floating above it.
+amount to a block with a separate sheet of water floating above it. Nineteen
+place exactly one: prefabs that wrap a single model so other prefabs can
+reuse it, kept here because they're part of what the pack ships.
 
 109 of the 123 build with every piece present. The remaining 14 are the
 waterfalls, which all reach for `Mist` and `Ripple` — particle effects that
 were never models — or for a crest and river surface this repo doesn't
-carry. They build without those rather than failing, and the tool lists what
-it skipped. All thirty checked in are complete.
+carry. They're built without those rather than skipped, and the detail panel
+names what's missing.
 
 **Coordinates.** The placements are Unity's: left-handed, one tile = 1.0.
 The `.glb` files went through an FBX conversion that mirrored X and scaled a
