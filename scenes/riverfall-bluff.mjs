@@ -99,8 +99,16 @@ const NORTH = 9;
 const LAYERS = [
   { y: 0, straight: 'Basic_Straight_Base_1x2', corner: 'Basic_Curve_Outer_1x1_Base' },
   { y: 2, straight: 'Basic_Straight_Mid_1x1', corner: 'Basic_Curve_Outer_1x1_Mid' },
-  { y: 3, straight: 'Basic_Straight_Top_1x1', corner: 'Basic_Curve_Outer_1x1_Top' },
+  { y: 3, straight: 'Basic_Straight_Top_1x1', corner: 'Basic_Curve_Outer_1x1_Top', crown: true },
 ];
+
+/* The trail crosses the plateau on these two rows. A path tile is half a path
+ * — grass and its violet cap on one side, the middle of the dirt track left
+ * uncapped on the other — so it is always laid as a mirrored pair that meets
+ * down the centre of the track, the way Cliff_Path_Narrow does it.
+ */
+const TRAIL_NORTH = 2;
+const TRAIL_SOUTH = 1;
 
 const GRASS_Y = 5;
 
@@ -122,7 +130,7 @@ putPrefab('Cliff_Waterfall_Wide_Top', [FALL.x, FALL.z], { turn: FALL.turn, y: 3 
 /* The river that feeds it: a one cell bed between two cell wide sloping banks,
  * cut 1.25 down into the plateau so the banks top out flush with the grass.
  */
-const RIVER_HEAD = 4;
+const RIVER_HEAD = 5;
 const RIVER_MOUTH = 6;
 const BED_Y = GRASS_Y - 1;
 
@@ -156,6 +164,8 @@ for (const layer of LAYERS) {
   put(layer.corner, [WEST, layer.y, SOUTH], { turn: 270 });
 
   for (let z = SOUTH + 1; z <= NORTH - 1; z++) {
+    // Where the trail reaches the rim its own crown pieces carry the cliff.
+    if (layer.crown && (z === TRAIL_SOUTH || z === TRAIL_NORTH)) continue;
     put(layer.straight, [WEST, layer.y, z], { turn: 0 });
     put(layer.straight, [EAST, layer.y, z], { turn: 180 });
   }
@@ -166,22 +176,27 @@ for (const layer of LAYERS) {
   }
 }
 
-/* A dirt trail: west to east along the southern grass, then a corner north to
- * the overlook beside the falls. Path tiles sit at carpet height and simply
- * replace the grass on the cells they run through — red joins path to path,
- * violet joins the grass verge to the field either side.
+/* A dirt trail straight across the plateau, rim to rim. Tiles sit at carpet
+ * height and replace the grass on the cells they run through; red joins path
+ * to path along the run, violet joins each verge to the field beside it.
  */
 const trail = new Set();
-for (let x = WEST + 1; x <= 8; x++) {
-  put('Path_Terrain_Basic_Straight_1x1', [x, GRASS_Y, 1]);
-  trail.add(`${x},1`);
+for (let x = WEST + 1; x <= EAST - 1; x++) {
+  put('Path_Terrain_Basic_Straight_1x1', [x, GRASS_Y, TRAIL_SOUTH]);
+  put('Path_Terrain_Basic_Straight_1x1', [x, GRASS_Y, TRAIL_NORTH], { flip: true });
+  trail.add(`${x},${TRAIL_SOUTH}`);
+  trail.add(`${x},${TRAIL_NORTH}`);
 }
-put('Path_Terrain_Basic_Curve_Inner_1x1', [9, GRASS_Y, 1]);
-trail.add('9,1');
-for (let z = 2; z <= NORTH - 3; z++) {
-  put('Path_Terrain_Basic_Straight_1x1', [9, GRASS_Y, z], { turn: 90 });
-  trail.add(`9,${z}`);
-}
+
+/* Both rims: the crown piece that carries the path over the cliff edge, again
+ * as a mirrored pair. Yellow caps its outer ends against the plain cliff run,
+ * pink joins the two halves, red hands the track on to the tiles inland.
+ */
+const TOP = LAYERS.at(-1).y;
+put('Path_End_Edge_Top_1x1', [WEST, TOP, TRAIL_SOUTH], { turn: 0 });
+put('Path_End_Edge_Top_1x1', [WEST, TOP, TRAIL_NORTH], { turn: 0, flip: true });
+put('Path_End_Edge_Top_1x1', [EAST, TOP, TRAIL_NORTH], { turn: 180 });
+put('Path_End_Edge_Top_1x1', [EAST, TOP, TRAIL_SOUTH], { turn: 180, flip: true });
 
 // Grass field across the top of the plateau.
 for (let x = WEST + 1; x <= EAST - 1; x++) {

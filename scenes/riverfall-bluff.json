@@ -540,82 +540,6 @@
     "pos": [
      5,
      4,
-     4
-    ],
-    "quat": [
-     0,
-     1,
-     0,
-     6.123233995736766e-17
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Flat_1x1",
-    "pos": [
-     6,
-     4,
-     4
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Hill_Sharp_Straight_1x2",
-    "pos": [
-     7,
-     4,
-     4
-    ],
-    "quat": [
-     0,
-     1,
-     0,
-     0
-    ],
-    "scale": [
-     -1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Terrain_Water_River_Flat_1x1",
-    "pos": [
-     6,
-     5,
-     4
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Hill_Sharp_Straight_1x2",
-    "pos": [
-     5,
-     4,
      5
     ],
     "quat": [
@@ -768,7 +692,7 @@
     "pos": [
      6,
      4,
-     3
+     4
     ],
     "quat": [
      0,
@@ -787,7 +711,7 @@
     "pos": [
      5,
      4,
-     3
+     4
     ],
     "quat": [
      0,
@@ -806,7 +730,7 @@
     "pos": [
      7,
      4,
-     3
+     4
     ],
     "quat": [
      0,
@@ -2155,82 +2079,6 @@
     "pos": [
      0,
      3,
-     1
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Basic_Straight_Top_1x1",
-    "pos": [
-     11,
-     3,
-     1
-    ],
-    "quat": [
-     0,
-     1,
-     0,
-     6.123233995736766e-17
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Basic_Straight_Top_1x1",
-    "pos": [
-     0,
-     3,
-     2
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Basic_Straight_Top_1x1",
-    "pos": [
-     11,
-     3,
-     2
-    ],
-    "quat": [
-     0,
-     1,
-     0,
-     6.123233995736766e-17
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Basic_Straight_Top_1x1",
-    "pos": [
-     0,
-     3,
      3
     ],
     "quat": [
@@ -2723,7 +2571,64 @@
    {
     "piece": "Path_Terrain_Basic_Straight_1x1",
     "pos": [
+     1,
+     5,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
      2,
+     5,
+     1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
+     2,
+     5,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
+     3,
      5,
      1
     ],
@@ -2744,16 +2649,16 @@
     "pos": [
      3,
      5,
-     1
+     2
     ],
     "quat": [
      0,
+     1,
      0,
-     0,
-     1
+     0
     ],
     "scale": [
-     1,
+     -1,
      1,
      1
     ]
@@ -2780,6 +2685,25 @@
    {
     "piece": "Path_Terrain_Basic_Straight_1x1",
     "pos": [
+     4,
+     5,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
      5,
      5,
      1
@@ -2792,6 +2716,25 @@
     ],
     "scale": [
      1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
+     5,
+     5,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
      1,
      1
     ]
@@ -2818,6 +2761,25 @@
    {
     "piece": "Path_Terrain_Basic_Straight_1x1",
     "pos": [
+     6,
+     5,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
      7,
      5,
      1
@@ -2830,6 +2792,25 @@
     ],
     "scale": [
      1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
+     7,
+     5,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
      1,
      1
     ]
@@ -2854,7 +2835,26 @@
     ]
    },
    {
-    "piece": "Path_Terrain_Basic_Curve_Inner_1x1",
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
+     8,
+     5,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
     "pos": [
      9,
      5,
@@ -2881,9 +2881,28 @@
     ],
     "quat": [
      0,
-     0.7071067811865475,
+     1,
      0,
-     0.7071067811865476
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_Terrain_Basic_Straight_1x1",
+    "pos": [
+     10,
+     5,
+     1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
     ],
     "scale": [
      1,
@@ -2894,94 +2913,94 @@
    {
     "piece": "Path_Terrain_Basic_Straight_1x1",
     "pos": [
-     9,
-     5,
-     3
-    ],
-    "quat": [
-     0,
-     0.7071067811865475,
-     0,
-     0.7071067811865476
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Path_Terrain_Basic_Straight_1x1",
-    "pos": [
-     9,
-     5,
-     4
-    ],
-    "quat": [
-     0,
-     0.7071067811865475,
-     0,
-     0.7071067811865476
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Path_Terrain_Basic_Straight_1x1",
-    "pos": [
-     9,
-     5,
-     5
-    ],
-    "quat": [
-     0,
-     0.7071067811865475,
-     0,
-     0.7071067811865476
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Path_Terrain_Basic_Straight_1x1",
-    "pos": [
-     9,
-     5,
-     6
-    ],
-    "quat": [
-     0,
-     0.7071067811865475,
-     0,
-     0.7071067811865476
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Carpet_Center_1x1",
-    "pos": [
-     1,
+     10,
      5,
      2
     ],
     "quat": [
      0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_End_Edge_Top_1x1",
+    "pos": [
+     0,
+     3,
+     1
+    ],
+    "quat": [
+     0,
      0,
      0,
      1
     ],
     "scale": [
      1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_End_Edge_Top_1x1",
+    "pos": [
+     0,
+     3,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_End_Edge_Top_1x1",
+    "pos": [
+     11,
+     3,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     6.123233995736766e-17
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Path_End_Edge_Top_1x1",
+    "pos": [
+     11,
+     3,
+     1
+    ],
+    "quat": [
+     0,
+     6.123233995736766e-17,
+     0,
+     -1
+    ],
+    "scale": [
+     -1,
      1,
      1
     ]
@@ -3105,25 +3124,6 @@
     "pos": [
      2,
      5,
-     2
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Carpet_Center_1x1",
-    "pos": [
-     2,
-     5,
      3
     ],
     "quat": [
@@ -3238,25 +3238,6 @@
     "pos": [
      3,
      5,
-     2
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Carpet_Center_1x1",
-    "pos": [
-     3,
-     5,
      3
     ],
     "quat": [
@@ -3352,45 +3333,83 @@
     "pos": [
      9,
      5,
+     3
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Carpet_Center_1x1",
+    "pos": [
+     9,
+     5,
+     4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Carpet_Center_1x1",
+    "pos": [
+     9,
+     5,
+     5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Carpet_Center_1x1",
+    "pos": [
+     9,
+     5,
+     6
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Carpet_Center_1x1",
+    "pos": [
+     9,
+     5,
      7
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Carpet_Center_1x1",
-    "pos": [
-     10,
-     5,
-     1
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
-    "piece": "Grass_Carpet_Center_1x1",
-    "pos": [
-     10,
-     5,
-     2
     ],
     "quat": [
      0,
