@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Modular Terrain — 3D Catalog</title>
 <meta name="description" content="Browsable catalog of 270 models from a modular terrain pack: cliffs, walls, cracked cliffs, terrain paths, grass, sand, water, and props — by part, shape, layer, and grid size, plus the pack's own assemblies rebuilt from those pieces.">
-<meta name="catalog-version" content="1aa2df3c66">
-<link rel="stylesheet" href="catalog/catalog.css?v=1aa2df3c66">
-<link rel="stylesheet" href="catalog/builder.css?v=1aa2df3c66">
+<meta name="catalog-version" content="93714ff384">
+<link rel="stylesheet" href="catalog/catalog.css?v=93714ff384">
+<link rel="stylesheet" href="catalog/builder.css?v=93714ff384">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⛰️</text></svg>">
 </head>
 <body>
@@ -33,49 +33,59 @@
 <div class="builder" id="builder" hidden></div>
 
 <template id="builder-template">
-  <div class="bar">
+  <div class="viewport"><canvas data-role="view" aria-label="Build view"></canvas></div>
+
+  <div class="hud hud-top">
     <p class="brush" data-role="brush"></p>
     <div class="controls">
-      <button type="button" data-role="rotate">Rotate</button>
-      <button type="button" data-role="mirror" aria-pressed="false">Mirror</button>
+      <button type="button" data-role="rotate" title="Rotate (R)">⟳</button>
+      <button type="button" data-role="mirror" aria-pressed="false" title="Mirror (M)">⇄</button>
       <span class="stepper">
         <button type="button" data-role="down" aria-label="Lower level">&minus;</button>
         <span class="level" data-role="level">0</span>
         <button type="button" data-role="up" aria-label="Raise level">+</button>
       </span>
-      <button type="button" data-role="clear">Clear</button>
+      <span class="spacer"></span>
+      <button type="button" data-role="undo" title="Undo" disabled>↶</button>
+      <button type="button" data-role="redo" title="Redo" disabled>↷</button>
+      <button type="button" data-role="clear" title="Clear the board">✕</button>
     </div>
   </div>
 
-  <div class="stage">
-    <div class="grid-wrap">
-      <canvas data-role="view" aria-label="Build view"></canvas>
-    </div>
-    <ul class="legend">
-      <li><i class="key mated"></i>mates</li>
-      <li><i class="key partial"></i>part</li>
-      <li><i class="key clash"></i>clashes</li>
-      <li><i class="key open"></i>open</li>
-      <li><i class="key abut"></i>abuts</li>
-    </ul>
+  <div class="hud hud-pick" data-role="pick" hidden>
+    <span class="pick-name" data-role="pick-name"></span>
+    <button type="button" data-role="pick-seams">Seams</button>
+    <button type="button" class="danger" data-role="pick-remove">Remove</button>
   </div>
 
-  <div class="sheet">
-    <div class="sheet-tabs" role="tablist">
-      <button type="button" role="tab" data-role="tab-pieces" aria-selected="true">Pieces</button>
-      <button type="button" role="tab" data-role="tab-seams" aria-selected="false">Seams</button>
-    </div>
+  <ul class="legend">
+    <li><i class="key mated"></i>mates</li>
+    <li><i class="key partial"></i>part</li>
+    <li><i class="key clash"></i>clashes</li>
+    <li><i class="key open"></i>open</li>
+  </ul>
 
-    <section class="sheet-panel palette" data-role="panel-pieces" role="tabpanel">
-      <div class="palette-controls">
-        <input type="search" data-role="search" placeholder="Search pieces" aria-label="Search pieces">
-        <select data-role="family" aria-label="Filter by family"></select>
+  <div class="drawer" data-role="drawer">
+    <div class="drawer-grip">
+      <div class="drawer-tabs" role="tablist">
+        <button type="button" role="tab" data-role="tab-pieces" aria-selected="true">Pieces</button>
+        <button type="button" role="tab" data-role="tab-seams" aria-selected="false">Seams</button>
       </div>
-      <p class="palette-count" data-role="count"></p>
-      <ul class="palette-list" data-role="list"></ul>
-    </section>
+      <button type="button" class="drawer-toggle" data-role="drawer-toggle" aria-expanded="true" aria-label="Collapse panel">▾</button>
+    </div>
 
-    <section class="sheet-panel inspect" data-role="panel-seams" role="tabpanel" hidden></section>
+    <div class="drawer-body">
+      <section class="palette" data-role="panel-pieces" role="tabpanel">
+        <div class="palette-controls">
+          <input type="search" data-role="search" placeholder="Search pieces" aria-label="Search pieces">
+          <select data-role="family" aria-label="Filter by family"></select>
+        </div>
+        <p class="palette-count" data-role="count"></p>
+        <ul class="palette-list" data-role="list"></ul>
+      </section>
+
+      <section class="inspect" data-role="panel-seams" role="tabpanel" hidden></section>
+    </div>
   </div>
 </template>
 
@@ -108,6 +118,6 @@
 { "imports": { "three": "./vendor/three/build/three.module.min.js" } }
 </script>
 <script src="vendor/model-viewer.min.js" type="module"></script>
-<script src="catalog/catalog.js?v=1aa2df3c66" type="module"></script>
+<script src="catalog/catalog.js?v=93714ff384" type="module"></script>
 </body>
 </html>

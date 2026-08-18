@@ -33,13 +33,13 @@ function loadPiece(id) {
   return cache.get(id);
 }
 
-export function createViewport(canvas, { onGround, onPick }) {
+export function createViewport(canvas, { onTap, onHover }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
-  camera.position.set(6, 7, 9);
+  camera.position.set(5, 6.2, 6.9);
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8578, 2.1));
   const sun = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -53,9 +53,21 @@ export function createViewport(canvas, { onGround, onPick }) {
 
   const pieces = new THREE.Group();
   const seams = new THREE.Group();
-  scene.add(pieces, seams);
+  const preview = new THREE.Group();
+  scene.add(pieces, seams, preview);
+
+  // The cell under the pointer, so a placement is never a guess about where
+  // the piece is going to land.
+  const marker = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.MeshBasicMaterial({ color: 0x4f7a3a, transparent: true, opacity: 0.22, depthWrite: false }),
+  );
+  marker.rotation.x = -Math.PI / 2;
+  marker.visible = false;
+  scene.add(marker);
 
   const controls = new OrbitControls(camera, canvas);
+  controls.target.set(0, 0.5, 0);
   controls.enablePan = true;
   controls.maxPolarAngle = Math.PI / 2.05;
   controls.minDistance = 2;
@@ -103,6 +115,38 @@ export function createViewport(canvas, { onGround, onPick }) {
     downAt = { x: event.clientX, y: event.clientY };
   });
 
+  /* What is under the pointer: the piece it landed on, if any, and the cell
+   * it landed in. Reading the cell from the model that was hit rather than
+   * from the ground plane is what lets a surface layer be dropped onto a
+   * cliff top — the plane behind it is a different cell entirely. */
+  function probe(event) {
+    toPointer(event);
+    ray.setFromCamera(pointer, camera);
+
+    const picked = ray.intersectObjects(pieces.children, true)[0];
+    let owner = null;
+    if (picked) {
+      let node = picked.object;
+      while (node && node.userData.placement === undefined) node = node.parent;
+      owner = node?.userData.placement ?? null;
+    }
+
+    const point = picked ? picked.point : (ray.ray.intersectPlane(plane, hit) ? hit : null);
+    return {
+      id: owner,
+      x: point ? Math.round(point.x) : null,
+      z: point ? Math.round(point.z) : null,
+    };
+  }
+
+  canvas.addEventListener('pointermove', (event) => {
+    if (downAt) return;
+    const at = probe(event);
+    onHover?.(at.x, at.z);
+  });
+
+  canvas.addEventListener('pointerleave', () => onHover?.(null, null));
+
   // A drag is the camera, not a tap: only a pointer that barely moved places
   // or selects anything.
   canvas.addEventListener('pointerup', (event) => {
@@ -111,33 +155,68 @@ export function createViewport(canvas, { onGround, onPick }) {
     downAt = null;
     if (moved > 6) return;
 
-    toPointer(event);
-    ray.setFromCamera(pointer, camera);
+    onTap(probe(event));
+  });
 
-    const picked = ray.intersectObjects(pieces.children, true)[0];
-    if (picked) {
-      let node = picked.object;
-      while (node && node.userData.placement === undefined) node = node.parent;
-      if (node) { onPick(node.userData.placement); return; }
+  /* A translucent copy of the loaded piece follows the pointer, so its size,
+   * facing and level are all answered before the tap rather than after. */
+  let ghostFor = null;
+
+  async function ghost(placement) {
+    const key = placement && `${placement.piece}|${placement.rot}|${placement.mirror}|${placement.cx}|${placement.cz}|${placement.level}`;
+    if (key === ghostFor) return;
+    ghostFor = key;
+
+    if (!placement) {
+      preview.clear();
+      marker.visible = false;
+      invalidate();
+      return;
     }
 
-    if (ray.ray.intersectPlane(plane, hit)) onGround(Math.round(hit.x), Math.round(hit.z));
-  });
+    const model = (await loadPiece(placement.piece)).clone(true);
+    if (ghostFor !== key) return;
+
+    model.traverse((node) => {
+      if (!node.isMesh || !node.visible) return;
+      node.material = node.material.clone();
+      node.material.transparent = true;
+      node.material.opacity = 0.42;
+      node.material.depthWrite = false;
+    });
+    apply(model, placement);
+
+    preview.clear();
+    preview.add(model);
+    marker.position.set(placement.cx, placement.level + 0.004, placement.cz);
+    marker.visible = true;
+    invalidate();
+  }
 
   // -------------------------------------------------------------- content
 
-/* The view follows the build until the camera is touched; after that it is
- * the user's, and a new piece never yanks it away from where they left it. */
+  // A mirrored piece is a negative scale on x, as in the pack's own
+  // placements; three.js flips the winding to match, so culling still shows
+  // the shell from the right side.
+  const apply = (model, placement) => {
+    const size = 1 / UNITS_PER_CELL;
+    model.position.set(placement.cx, placement.level, placement.cz);
+    model.rotation.y = placement.rot * (Math.PI / 2);
+    model.scale.set(placement.mirror ? -size : size, size, size);
+  };
+
+/* The view is framed once, when the board stops being empty. Re-framing on
+ * every placement slides the ground out from under the pointer between taps,
+ * so after the first piece the camera is the user's alone. */
+  let framed = false;
+
   function frame(placements) {
-    if (steered) return;
+    if (steered || framed || !placements.length) return;
+    framed = true;
     const box = new THREE.Box3();
-    if (placements.length) {
-      for (const placement of placements) {
-        box.expandByPoint(new THREE.Vector3(placement.cx - 1, placement.level, placement.cz - 1));
-        box.expandByPoint(new THREE.Vector3(placement.cx + 1, placement.level + 1, placement.cz + 1));
-      }
-    } else {
-      box.set(new THREE.Vector3(-2, 0, -2), new THREE.Vector3(2, 1, 2));
+    for (const placement of placements) {
+      box.expandByPoint(new THREE.Vector3(placement.cx - 1, placement.level, placement.cz - 1));
+      box.expandByPoint(new THREE.Vector3(placement.cx + 1, placement.level + 1, placement.cz + 1));
     }
 
     const centre = box.getCenter(new THREE.Vector3());
@@ -161,12 +240,7 @@ export function createViewport(canvas, { onGround, onPick }) {
 
     placements.forEach((placement, index) => {
       const model = loaded[index].clone(true);
-      model.position.set(placement.cx, placement.level, placement.cz);
-      model.rotation.y = placement.rot * (Math.PI / 2);
-      // A mirrored piece is a negative scale on x, as in the pack's own
-      // placements; three.js flips the winding to match, so culling still
-      // shows the shell from the right side.
-      model.scale.set(placement.mirror ? -1 / UNITS_PER_CELL : 1 / UNITS_PER_CELL, 1 / UNITS_PER_CELL, 1 / UNITS_PER_CELL);
+      apply(model, placement);
       model.userData.placement = placement.id;
 
       if (placement.id === selected) {
@@ -210,5 +284,5 @@ export function createViewport(canvas, { onGround, onPick }) {
   }
 
   resize();
-  return { sync, resize, invalidate };
+  return { sync, ghost, resize, invalidate };
 }

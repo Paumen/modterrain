@@ -1,11 +1,10 @@
 /* Socket builder — the catalog's Builder tab. Base tokens, typography and the
-   page shell come from catalog.css; only the seam verdict colours and this
-   tab's own layout live here.
+   page shell come from catalog.css; the seam verdict colours and this tab's
+   own layout live here.
 
-   The builder is a phone layout and nothing else: one column, touch-sized
-   controls, and a sheet under the grid that carries either the piece list or
-   the seam report. On a wide screen it renders the same layout centred rather
-   than growing a second design. */
+   The 3D view is the whole tab: it fills the pane and everything else floats
+   over it, so the board is as large as the screen allows rather than a window
+   inside a stack of chrome. */
 
 :root {
   --mated: #3f8f5f;
@@ -13,7 +12,12 @@
   --clash: #c9422f;
   --open: #9a958a;
   --abut: #4f7a9e;
-  --tap: 44px;
+  --tap: 40px;
+  --glass: color-mix(in srgb, #fff 78%, transparent);
+}
+
+@media (min-width: 900px) {
+  .drawer { max-height: 42%; }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +27,7 @@
     --clash: #ef7a66;
     --open: #6d6961;
     --abut: #79aad0;
+    --glass: color-mix(in srgb, #1a1a17 76%, transparent);
   }
 }
 
@@ -31,32 +36,50 @@
 .builder[hidden] { display: none; }
 
 .builder {
-  display: flex;
-  flex-direction: column;
-  width: min(100%, 460px);
-  min-height: 78svh;
-  margin: 0 auto;
-  border-inline: 1px solid var(--line);
-  background: var(--paper);
+  position: relative;
+  height: calc(100svh - var(--chrome, 64px));
+  overflow: hidden;
+  background: var(--paper-deep);
+  touch-action: none;
+  user-select: none;
 }
 
-/* ----------------------------------------------------------------- bar */
+.viewport {
+  position: absolute;
+  inset: 0;
+}
 
-.bar {
-  position: sticky;
-  top: 0;
+.viewport canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ----------------------------------------------------------------- hud */
+
+.hud {
+  position: absolute;
   z-index: 2;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  backdrop-filter: blur(8px);
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.hud-top {
+  top: 10px;
+  right: 10px;
+  left: 10px;
 }
 
 .brush {
   margin: 0 0 7px;
+  padding: 0 2px;
   overflow: hidden;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -67,27 +90,38 @@
   align-items: center;
 }
 
-.controls button,
-.sheet-tabs button,
+.controls .spacer { flex: 1; }
+
+.hud button,
+.drawer-tabs button,
+.drawer-toggle,
 .seam-fits,
 .fits-list button,
 .inspect-actions button {
+  min-width: var(--tap);
   min-height: var(--tap);
-  padding: 0 12px;
+  padding: 0 10px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--card-bg);
   color: inherit;
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.controls button:last-child { margin-left: auto; }
+.hud button:disabled { opacity: .35; cursor: default; }
 
-.controls button[aria-pressed="true"] {
+.hud button[aria-pressed="true"] {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.hud button.danger {
+  border-color: color-mix(in srgb, var(--clash) 50%, var(--line));
+  color: var(--clash);
 }
 
 .stepper {
@@ -100,56 +134,64 @@
 }
 
 .stepper button {
-  min-width: var(--tap);
-  min-height: var(--tap);
   border: 0;
   border-radius: 0;
   background: none;
-  color: inherit;
-  font: inherit;
   font-size: 17px;
-  cursor: pointer;
 }
 
 .level {
-  min-width: 30px;
+  min-width: 26px;
+  padding: 0 2px;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
   font-size: 13px;
   text-align: center;
+  white-space: nowrap;
 }
 
-/* --------------------------------------------------------------- stage */
+/* The selected piece answers for itself, right where you tapped it, instead
+   of only in a panel you have to go and open. An author `display` beats the UA
+   rule behind the hidden attribute, so anything laid out here opts back out. */
+.hud-pick[hidden],
+.palette[hidden],
+.inspect[hidden] { display: none; }
 
-.stage { padding: 10px 12px 8px; }
+.hud-pick {
+  right: 10px;
+  bottom: calc(var(--drawer, 52px) + 12px);
+  left: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
 
-/* The view takes the drag itself — orbiting and pinching are the camera, so
-   the page must not steal them. */
-.grid-wrap {
-  height: 42svh;
+.pick-name {
+  flex: 1;
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--card-bg);
-  touch-action: none;
-}
-
-.grid-wrap canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
+  font-weight: 600;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .legend {
+  position: absolute;
+  bottom: calc(var(--drawer, 52px) + 12px);
+  left: 12px;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 12px;
-  margin: 8px 0 0;
+  gap: 3px 10px;
+  margin: 0;
   padding: 0;
   color: var(--ink-soft);
   font-size: 11px;
   list-style: none;
+  pointer-events: none;
 }
+
+.hud-pick:not([hidden]) ~ .legend { display: none; }
 
 .legend li {
   display: flex;
@@ -158,7 +200,7 @@
 }
 
 .key {
-  width: 14px;
+  width: 13px;
   height: 4px;
   border-radius: 2px;
 }
@@ -169,38 +211,56 @@
 .key.open { background: var(--open); }
 .key.abut { background: var(--abut); }
 
-/* --------------------------------------------------------------- sheet */
+/* -------------------------------------------------------------- drawer */
 
-.sheet {
+.drawer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
   display: flex;
-  flex: 1;
   flex-direction: column;
-  min-height: 0;
+  max-height: 58%;
   border-top: 1px solid var(--line);
+  border-radius: 16px 16px 0 0;
   background: var(--card-bg);
+  box-shadow: 0 -6px 24px rgb(0 0 0 / 12%);
+  transition: transform .18s ease;
 }
 
-.sheet-tabs {
+.drawer.is-shut { transform: translateY(calc(100% - var(--drawer, 52px))); }
+
+.drawer-grip {
   display: flex;
-  gap: 6px;
-  padding: 8px 12px 0;
+  flex: none;
+  gap: 8px;
+  align-items: center;
+  height: 52px;
+  padding: 0 10px;
 }
 
-.sheet-tabs button {
+.drawer-tabs {
+  display: flex;
   flex: 1;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  gap: 6px;
 }
 
-.sheet-tabs button[aria-selected="true"] {
+.drawer-tabs button { flex: 1; }
+
+.drawer-tabs button[aria-selected="true"] {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
   font-weight: 600;
 }
 
-.sheet-panel {
-  max-height: 46svh;
-  padding: 10px 12px 16px;
+.drawer-toggle { flex: none; }
+.drawer.is-shut .drawer-toggle { transform: rotate(180deg); }
+
+.drawer-body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 12px 16px;
   overflow: auto;
   overscroll-behavior: contain;
 }
@@ -208,9 +268,10 @@
 /* ------------------------------------------------------------- palette */
 
 .palette-controls {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  padding-top: 2px;
 }
 
 .palette-controls input,
@@ -239,6 +300,13 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* A wide screen fits several pieces to a row; a phone gets one. */
+.palette-list {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
 }
 
 .palette-list button {

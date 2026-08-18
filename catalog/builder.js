@@ -12,6 +12,10 @@ let swatches;
 
 let host;
 let viewport;
+let drawer;
+let pick;
+let undoButton;
+let redoButton;
 let inspector;
 let sheet;
 let search;
@@ -235,6 +239,38 @@ function render() {
 
 const short = (id) => id.replace(/_/g, ' ').replace(/\s(Base|Mid|Top|Under)$/, '');
 
+// ---------------------------------------------------------------- history
+
+/* Undo keeps whole snapshots of the board. Placements are a handful of plain
+ * numbers each, so copying the lot is cheaper than describing every edit. */
+const past = [];
+let at = -1;
+
+function commit() {
+  past.length = at + 1;
+  past.push(JSON.stringify(placements));
+  at = past.length - 1;
+  syncHistory();
+}
+
+function step(to) {
+  if (to < 0 || to >= past.length) return;
+  at = to;
+  placements.length = 0;
+  placements.push(...JSON.parse(past[at]));
+  if (!placements.some((placement) => placement.id === selected)) selected = null;
+  syncHistory();
+  render();
+  showInspector();
+  showPick();
+}
+
+function syncHistory() {
+  if (!undoButton) return;
+  undoButton.disabled = at <= 0;
+  redoButton.disabled = at >= past.length - 1;
+}
+
 // ---------------------------------------------------------------- editing
 
 /* Bodies do not take clicks: laying a surface layer means clicking a cell
@@ -254,9 +290,15 @@ function addAt(x, z) {
   render();
   showInspector();
 
+  commit();
+  showPick();
+
   // Keep the piece list up while building — the seam report only takes the
-  // sheet over when the placement actually went wrong.
-  if (evaluate().some((socket) => socket.owner === id && socket.verdict === 'clash')) showSheet('seams');
+  // drawer over when the placement actually went wrong.
+  if (evaluate().some((socket) => socket.owner === id && socket.verdict === 'clash')) {
+    showSheet('seams');
+    openDrawer(true);
+  }
 }
 
 /* One column means the palette and the seam report cannot both be on screen,
@@ -274,15 +316,44 @@ function select(id) {
   selected = id;
   render();
   showInspector();
-  if (id !== null) showSheet('seams');
+  showPick();
 }
 
 function remove(id) {
   const index = placements.findIndex((placement) => placement.id === id);
-  if (index >= 0) placements.splice(index, 1);
+  if (index < 0) return;
+  placements.splice(index, 1);
   selected = null;
+  commit();
   render();
   showInspector();
+  showPick();
+}
+
+/* A selected piece gets its own bar over the view, so removing it is one tap
+ * from where it was tapped rather than a trip into the drawer. */
+function showPick() {
+  if (!pick) return;
+  const placement = placements.find((entry) => entry.id === selected);
+  pick.root.hidden = !placement;
+  if (placement) pick.name.textContent = names.get(placement.piece) ?? placement.piece;
+}
+
+function openDrawer(open) {
+  if (!drawer) return;
+  drawer.root.classList.toggle('is-shut', !open);
+  drawer.toggle.setAttribute('aria-expanded', String(open));
+  drawer.toggle.setAttribute('aria-label', open ? 'Collapse panel' : 'Expand panel');
+  measureDrawer();
+}
+
+/* Whatever floats over the view has to clear the drawer, and the drawer's
+ * visible height changes as it slides, so it is measured rather than assumed. */
+function measureDrawer() {
+  if (!drawer || !host) return;
+  const bottom = host.getBoundingClientRect().bottom;
+  const top = drawer.root.getBoundingClientRect().top;
+  host.style.setProperty('--drawer', `${Math.max(0, Math.round(bottom - top))}px`);
 }
 
 // -------------------------------------------------------------- inspector
@@ -561,19 +632,37 @@ export async function mount(container, catalog) {
   mirrorButton.addEventListener('click', () => { mirrored = !mirrored; syncToolbar(); });
   role('up').addEventListener('click', () => { level += 1; syncToolbar(); });
   role('down').addEventListener('click', () => { level -= 1; syncToolbar(); });
+
+  undoButton = role('undo');
+  redoButton = role('redo');
+  undoButton.addEventListener('click', () => step(at - 1));
+  redoButton.addEventListener('click', () => step(at + 1));
   role('clear').addEventListener('click', () => {
+    if (!placements.length) return;
     placements.length = 0;
     selected = null;
+    commit();
     render();
     showInspector();
+    showPick();
   });
+
+  pick = { root: role('pick'), name: role('pick-name') };
+  role('pick-remove').addEventListener('click', () => remove(selected));
+  role('pick-seams').addEventListener('click', () => { showSheet('seams'); openDrawer(true); });
+
+  drawer = { root: role('drawer'), toggle: role('drawer-toggle') };
+  drawer.toggle.addEventListener('click', () =>
+    openDrawer(drawer.root.classList.contains('is-shut')));
+  drawer.root.addEventListener('transitionend', measureDrawer);
+  new ResizeObserver(measureDrawer).observe(drawer.root);
 
   sheet = {
     pieces: { tab: role('tab-pieces'), panel: role('panel-pieces') },
     seams: { tab: role('tab-seams'), panel: role('panel-seams') },
   };
   for (const name of Object.keys(sheet)) {
-    sheet[name].tab.addEventListener('click', () => showSheet(name));
+    sheet[name].tab.addEventListener('click', () => { showSheet(name); openDrawer(true); });
   }
 
   search.addEventListener('input', renderPalette);
@@ -582,6 +671,8 @@ export async function mount(container, catalog) {
   // Shortcuts belong to this tab, not the whole catalog.
   document.addEventListener('keydown', (event) => {
     if (host.hidden || event.target.matches('input, select, textarea')) return;
+    const undoKey = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z';
+    if (undoKey) { event.preventDefault(); step(event.shiftKey ? at + 1 : at - 1); return; }
     if (event.key === 'Escape') { brush = null; syncToolbar(); }
     if (event.key === 'r' || event.key === 'R') { rotation = (rotation + 1) % 4; syncToolbar(); }
     if (event.key === 'm' || event.key === 'M') { mirrored = !mirrored; syncToolbar(); }
@@ -590,11 +681,28 @@ export async function mount(container, catalog) {
 
   const { createViewport } = await import('./viewport.js');
   viewport = createViewport(role('view'), {
-    onGround: (x, z) => (brush ? addAt(x, z) : select(topmostAt(x, z))),
-    onPick: (id) => (brush ? null : select(id)),
+    onTap: ({ id, x, z }) => {
+      if (brush && x !== null) return addAt(x, z);
+      select(id ?? (x === null ? null : topmostAt(x, z)));
+    },
+    onHover: (x, z) => {
+      if (!brush || x === null) return viewport.ghost(null);
+      viewport.ghost({ piece: brush, cx: x, cz: z, level, rot: rotation, mirror: mirrored });
+    },
   });
 
+  // The tab is as tall as what is left of the window, so it has to know how
+  // much of it the catalog's own header takes.
+  const chrome = () => container.style.setProperty(
+    '--chrome', `${Math.round(document.querySelector('.head')?.getBoundingClientRect().height ?? 64)}px`,
+  );
+  chrome();
+  addEventListener('resize', chrome);
+
+  measureDrawer();
+  commit();
   syncToolbar();
   render();
   showInspector();
+  showPick();
 }
