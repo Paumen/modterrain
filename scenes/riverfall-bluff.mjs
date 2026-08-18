@@ -139,7 +139,15 @@ for (let z = RIVER_HEAD; z <= RIVER_MOUTH; z++) {
   put('Grass_Flat_1x1', [6, BED_Y, z]);
   // The falls' right hand terrain is a mirrored instance, so this bank mirrors too.
   put('Grass_Hill_Sharp_Straight_1x2', [7, BED_Y, z], { turn: 0, flip: true });
-  put('Terrain_Water_River_Flat_1x1', [6, BED_Y + 1, z]);
+}
+
+/* The water surface sits half a cell above the bed, so a sheet only as wide as
+ * the bed leaves both its edges hanging in the air. It runs a cell into each
+ * bank instead — the waterline meets the slope exactly on those cell edges —
+ * and a cell into the head ramp, the same overlap River_Straight_Wide uses.
+ */
+for (let z = RIVER_HEAD - 1; z <= RIVER_MOUTH; z++) {
+  for (let x = 5; x <= 7; x++) put('Terrain_Water_River_Flat_1x1', [x, BED_Y + 1, z]);
 }
 
 /* The head of the channel: the same bank slope laid across the bed, so the

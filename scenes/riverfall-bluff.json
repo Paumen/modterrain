@@ -593,25 +593,6 @@
     ]
    },
    {
-    "piece": "Terrain_Water_River_Flat_1x1",
-    "pos": [
-     6,
-     5,
-     5
-    ],
-    "quat": [
-     0,
-     0,
-     0,
-     1
-    ],
-    "scale": [
-     1,
-     1,
-     1
-    ]
-   },
-   {
     "piece": "Grass_Hill_Sharp_Straight_1x2",
     "pos": [
      5,
@@ -671,7 +652,159 @@
    {
     "piece": "Terrain_Water_River_Flat_1x1",
     "pos": [
+     5,
+     5,
+     4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
      6,
+     5,
+     4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
+     7,
+     5,
+     4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
+     5,
+     5,
+     5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
+     6,
+     5,
+     5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
+     7,
+     5,
+     5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
+     5,
+     5,
+     6
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
+     6,
+     5,
+     6
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Water_River_Flat_1x1",
+    "pos": [
+     7,
      5,
      6
     ],
