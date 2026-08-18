@@ -1692,6 +1692,15 @@
    "id": "Basic_Curve_Inner_2x2_Narrow_Base",
    "name": "Basic Curve Inner 2x2 Narrow Base",
    "file": "models/Basic_Curve_Inner_2x2_Narrow_Base.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1715,21 +1724,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
    "name": "Basic Curve Inner 2x2 Narrow Mid",
    "file": "models/Basic_Curve_Inner_2x2_Narrow_Mid.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1753,21 +1762,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Top",
    "name": "Basic Curve Inner 2x2 Narrow Top",
    "file": "models/Basic_Curve_Inner_2x2_Narrow_Top.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1794,21 +1803,21 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Under",
    "name": "Basic Curve Inner 2x2 Narrow Under",
    "file": "models/Basic_Curve_Inner_2x2_Narrow_Under.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-under",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1832,21 +1841,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-under",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Base",
    "name": "Basic Curve Inner 2x2 Wide Base",
    "file": "models/Basic_Curve_Inner_2x2_Wide_Base.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1870,21 +1879,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Mid",
    "name": "Basic Curve Inner 2x2 Wide Mid",
    "file": "models/Basic_Curve_Inner_2x2_Wide_Mid.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1908,21 +1917,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Top",
    "name": "Basic Curve Inner 2x2 Wide Top",
    "file": "models/Basic_Curve_Inner_2x2_Wide_Top.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1949,21 +1958,21 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Under",
    "name": "Basic Curve Inner 2x2 Wide Under",
    "file": "models/Basic_Curve_Inner_2x2_Wide_Under.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-under",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -1987,21 +1996,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-under",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_3x3_Base",
    "name": "Basic Curve Inner 3x3 Base",
    "file": "models/Basic_Curve_Inner_3x3_Base.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-base",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -2025,19 +2032,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-base",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_3x3_Mid",
    "name": "Basic Curve Inner 3x3 Mid",
    "file": "models/Basic_Curve_Inner_3x3_Mid.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -2061,19 +2068,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_3x3_Top",
    "name": "Basic Curve Inner 3x3 Top",
    "file": "models/Basic_Curve_Inner_3x3_Top.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -2100,19 +2107,19 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Inner_3x3_Under",
    "name": "Basic Curve Inner 3x3 Under",
    "file": "models/Basic_Curve_Inner_3x3_Under.glb",
+   "family": "basic",
+   "shape": "curve-inner",
+   "layer": "layer-under",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -2136,19 +2143,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-inner",
-   "layer": "layer-under",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_1x1_Base",
    "name": "Basic Curve Outer 1x1 Base",
    "file": "models/Basic_Curve_Outer_1x1_Base.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-base",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.25,
     1.25,
@@ -2172,19 +2179,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-base",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_1x1_Mid",
    "name": "Basic Curve Outer 1x1 Mid",
    "file": "models/Basic_Curve_Outer_1x1_Mid.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.5,
     0.5,
@@ -2208,19 +2215,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_1x1_Top",
    "name": "Basic Curve Outer 1x1 Top",
    "file": "models/Basic_Curve_Outer_1x1_Top.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.95,
     0.95,
@@ -2246,19 +2253,19 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_1x1_Under",
    "name": "Basic Curve Outer 1x1 Under",
    "file": "models/Basic_Curve_Outer_1x1_Under.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-under",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.5,
     0.5,
@@ -2282,19 +2289,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-under",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Base",
    "name": "Basic Curve Outer 2x2 Narrow Base",
    "file": "models/Basic_Curve_Outer_2x2_Narrow_Base.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     2.25,
     2.25,
@@ -2318,21 +2327,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
    "name": "Basic Curve Outer 2x2 Narrow Mid",
    "file": "models/Basic_Curve_Outer_2x2_Narrow_Mid.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     1.5,
     1.5,
@@ -2356,21 +2365,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Top",
    "name": "Basic Curve Outer 2x2 Narrow Top",
    "file": "models/Basic_Curve_Outer_2x2_Narrow_Top.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     1.95,
     1.95,
@@ -2397,21 +2406,21 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Under",
    "name": "Basic Curve Outer 2x2 Narrow Under",
    "file": "models/Basic_Curve_Outer_2x2_Narrow_Under.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-under",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "narrow radius"
+   ],
+   "variant": null,
    "dwh": [
     1.5,
     1.5,
@@ -2435,21 +2444,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-under",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "narrow radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Base",
    "name": "Basic Curve Outer 2x2 Wide Base",
    "file": "models/Basic_Curve_Outer_2x2_Wide_Base.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     2.25,
     2.25,
@@ -2473,21 +2482,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Mid",
    "name": "Basic Curve Outer 2x2 Wide Mid",
    "file": "models/Basic_Curve_Outer_2x2_Wide_Mid.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     1.5,
     1.5,
@@ -2511,21 +2520,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Top",
    "name": "Basic Curve Outer 2x2 Wide Top",
    "file": "models/Basic_Curve_Outer_2x2_Wide_Top.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     1.95,
     1.95,
@@ -2552,21 +2561,21 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Under",
    "name": "Basic Curve Outer 2x2 Wide Under",
    "file": "models/Basic_Curve_Outer_2x2_Wide_Under.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-under",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "wide radius"
+   ],
+   "variant": null,
    "dwh": [
     1.5,
     1.5,
@@ -2590,21 +2599,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-under",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "wide radius"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_3x3_Base",
    "name": "Basic Curve Outer 3x3 Base",
    "file": "models/Basic_Curve_Outer_3x3_Base.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-base",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3.25,
     3.25,
@@ -2628,19 +2635,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-base",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_3x3_Mid",
    "name": "Basic Curve Outer 3x3 Mid",
    "file": "models/Basic_Curve_Outer_3x3_Mid.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.5,
     2.5,
@@ -2664,19 +2671,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_3x3_Top",
    "name": "Basic Curve Outer 3x3 Top",
    "file": "models/Basic_Curve_Outer_3x3_Top.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.95,
     2.95,
@@ -2703,19 +2710,19 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Curve_Outer_3x3_Under",
    "name": "Basic Curve Outer 3x3 Under",
    "file": "models/Basic_Curve_Outer_3x3_Under.glb",
+   "family": "basic",
+   "shape": "curve-outer",
+   "layer": "layer-under",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.5,
     2.5,
@@ -2739,19 +2746,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "curve-outer",
-   "layer": "layer-under",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Esse_Base_2x2",
    "name": "Basic Esse Base 2x2",
    "file": "models/Basic_Esse_Base_2x2.glb",
+   "family": "basic",
+   "shape": "esse",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.25,
     2,
@@ -2775,19 +2782,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "esse",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Esse_Mid_2x2",
    "name": "Basic Esse Mid 2x2",
    "file": "models/Basic_Esse_Mid_2x2.glb",
+   "family": "basic",
+   "shape": "esse",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.5,
     2,
@@ -2811,19 +2818,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "esse",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Esse_Top_2x2",
    "name": "Basic Esse Top 2x2",
    "file": "models/Basic_Esse_Top_2x2.glb",
+   "family": "basic",
+   "shape": "esse",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.95,
     2,
@@ -2850,19 +2857,19 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "esse",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Esse_Under_2x2",
    "name": "Basic Esse Under 2x2",
    "file": "models/Basic_Esse_Under_2x2.glb",
+   "family": "basic",
+   "shape": "esse",
+   "layer": "layer-under",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.5,
     2,
@@ -2886,19 +2893,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "esse",
-   "layer": "layer-under",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Incline_Base_2x2",
    "name": "Basic Incline Base 2x2",
    "file": "models/Basic_Incline_Base_2x2.glb",
+   "family": "basic",
+   "shape": "incline",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.25,
     2,
@@ -2922,19 +2929,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "incline",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Incline_Top_2x2",
    "name": "Basic Incline Top 2x2",
    "file": "models/Basic_Incline_Top_2x2.glb",
+   "family": "basic",
+   "shape": "incline",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.95,
     2,
@@ -2961,19 +2968,19 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "incline",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Incline_Under_1x2",
    "name": "Basic Incline Under 1x2",
    "file": "models/Basic_Incline_Under_1x2.glb",
+   "family": "basic",
+   "shape": "incline",
+   "layer": "layer-under",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.5,
     2,
@@ -2997,19 +3004,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "incline",
-   "layer": "layer-under",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Straight_Base_1x2",
    "name": "Basic Straight Base 1x2",
    "file": "models/Basic_Straight_Base_1x2.glb",
+   "family": "basic",
+   "shape": "straight",
+   "layer": "layer-base",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.25,
     1,
@@ -3033,19 +3040,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "straight",
-   "layer": "layer-base",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Straight_Mid_1x1",
    "name": "Basic Straight Mid 1x1",
    "file": "models/Basic_Straight_Mid_1x1.glb",
+   "family": "basic",
+   "shape": "straight",
+   "layer": "layer-mid",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.5,
     1,
@@ -3069,19 +3076,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Straight_Top_1x1",
    "name": "Basic Straight Top 1x1",
    "file": "models/Basic_Straight_Top_1x1.glb",
+   "family": "basic",
+   "shape": "straight",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.95,
     1,
@@ -3108,19 +3115,19 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Straight_Under_1x1",
    "name": "Basic Straight Under 1x1",
    "file": "models/Basic_Straight_Under_1x1.glb",
+   "family": "basic",
+   "shape": "straight",
+   "layer": "layer-under",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.5,
     1,
@@ -3144,19 +3151,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "straight",
-   "layer": "layer-under",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Under_Inner_Flat_1x1",
    "name": "Basic Under Inner Flat 1x1",
    "file": "models/Basic_Under_Inner_Flat_1x1.glb",
+   "family": "basic",
+   "shape": "flat",
+   "layer": "layer-under",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -3180,19 +3187,19 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "flat",
-   "layer": "layer-under",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Basic_Under_Inner_Incline_1x2",
    "name": "Basic Under Inner Incline 1x2",
    "file": "models/Basic_Under_Inner_Incline_1x2.glb",
+   "family": "basic",
+   "shape": "incline",
+   "layer": "layer-under",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     2,
@@ -3216,19 +3223,21 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "basic",
-   "shape": "incline",
-   "layer": "layer-under",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Center_Base_1x1",
    "name": "Cave Center Base 1x1",
    "file": "models/Cave_Center_Base_1x1.glb",
+   "family": "cave",
+   "shape": "standalone",
+   "layer": "layer-base",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -3253,21 +3262,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "standalone",
-   "layer": "layer-base",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "center"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Center_Top_1x1",
    "name": "Cave Center Top 1x1",
    "file": "models/Cave_Center_Top_1x1.glb",
+   "family": "cave",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     0.5,
     1,
@@ -3292,21 +3301,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "center"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Edge_Esse_Base_3x3",
    "name": "Cave Edge Esse Base 3x3",
    "file": "models/Cave_Edge_Esse_Base_3x3.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-base",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
    "dwh": [
     2.25,
     3,
@@ -3332,21 +3341,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "esse",
-   "layer": "layer-base",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Edge_Esse_Mid_2x3",
    "name": "Cave Edge Esse Mid 2x3",
    "file": "models/Cave_Edge_Esse_Mid_2x3.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-mid",
+   "size": "2 × 3",
+   "sizeGroup": "size-2",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
    "dwh": [
     1.5,
     2.004,
@@ -3371,21 +3380,21 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "esse",
-   "layer": "layer-mid",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Edge_Esse_Top_3x4",
    "name": "Cave Edge Esse Top 3x4",
    "file": "models/Cave_Edge_Esse_Top_3x4.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-top",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
    "dwh": [
     1.5,
     3,
@@ -3411,21 +3420,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "esse",
-   "layer": "layer-top",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Edge_Straight_Base_2x2",
    "name": "Cave Edge Straight Base 2x2",
    "file": "models/Cave_Edge_Straight_Base_2x2.glb",
+   "family": "cave",
+   "shape": "straight",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
    "dwh": [
     1.25,
     2,
@@ -3451,21 +3460,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "straight",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Edge_Straight_Mid_1x1",
    "name": "Cave Edge Straight Mid 1x1",
    "file": "models/Cave_Edge_Straight_Mid_1x1.glb",
+   "family": "cave",
+   "shape": "straight",
+   "layer": "layer-mid",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
    "dwh": [
     0.5,
     1.004,
@@ -3490,21 +3499,21 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cave_Edge_Straight_Top_1x3",
    "name": "Cave Edge Straight Top 1x3",
    "file": "models/Cave_Edge_Straight_Top_1x3.glb",
+   "family": "cave",
+   "shape": "straight",
+   "layer": "layer-top",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "edge"
+   ],
+   "variant": null,
    "dwh": [
     0.5,
     2,
@@ -3530,21 +3539,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Curve_Inner_4x4",
    "name": "Ceiling Curve Inner 4x4",
    "file": "models/Ceiling_Curve_Inner_4x4.glb",
+   "family": "cave",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -3569,19 +3576,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Curve_Inner_8x8",
    "name": "Ceiling Curve Inner 8x8",
    "file": "models/Ceiling_Curve_Inner_8x8.glb",
+   "family": "cave",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     8,
     8,
@@ -3606,19 +3613,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "8 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Curve_Outer_4x4",
    "name": "Ceiling Curve Outer 4x4",
    "file": "models/Ceiling_Curve_Outer_4x4.glb",
+   "family": "cave",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -3643,19 +3650,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Curve_Outer_8x8",
    "name": "Ceiling Curve Outer 8x8",
    "file": "models/Ceiling_Curve_Outer_8x8.glb",
+   "family": "cave",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     8,
     8,
@@ -3680,19 +3687,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "8 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Esse_6x8",
    "name": "Ceiling Esse 6x8",
    "file": "models/Ceiling_Esse_6x8.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "6 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     8,
@@ -3717,19 +3724,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "6 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Incline_1x3",
    "name": "Ceiling Incline 1x3",
    "file": "models/Ceiling_Incline_1x3.glb",
+   "family": "cave",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     1,
@@ -3754,19 +3761,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Incline_1x6",
    "name": "Ceiling Incline 1x6",
    "file": "models/Ceiling_Incline_1x6.glb",
+   "family": "cave",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 6",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     1,
@@ -3791,19 +3798,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 6",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Ceiling_Overlapping_4x4",
    "name": "Ceiling Overlapping 4x4",
    "file": "models/Ceiling_Overlapping_4x4.glb",
+   "family": "cave",
+   "shape": "overlapping",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -3828,19 +3835,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "overlapping",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_2x2_1_Mid",
    "name": "Cracked Curve Inner 2x2 1 Mid",
    "file": "models/Cracked_Curve_Inner_2x2_1_Mid.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     2,
     2,
@@ -3865,21 +3874,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_2x2_1_Top",
    "name": "Cracked Curve Inner 2x2 1 Top",
    "file": "models/Cracked_Curve_Inner_2x2_1_Top.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     2,
     2,
@@ -3904,21 +3913,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_3x3_1_Mid",
    "name": "Cracked Curve Inner 3x3 1 Mid",
    "file": "models/Cracked_Curve_Inner_3x3_1_Mid.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     3,
     3,
@@ -3943,21 +3952,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_3x3_1_Top",
    "name": "Cracked Curve Inner 3x3 1 Top",
    "file": "models/Cracked_Curve_Inner_3x3_1_Top.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     3,
     3,
@@ -3982,21 +3991,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_4x4_1_Mid",
    "name": "Cracked Curve Inner 4x4 1 Mid",
    "file": "models/Cracked_Curve_Inner_4x4_1_Mid.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     4,
     4,
@@ -4021,21 +4030,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_4x4_1_Top",
    "name": "Cracked Curve Inner 4x4 1 Top",
    "file": "models/Cracked_Curve_Inner_4x4_1_Top.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     4,
     4,
@@ -4060,21 +4069,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_4x4_2_Mid",
    "name": "Cracked Curve Inner 4x4 2 Mid",
    "file": "models/Cracked_Curve_Inner_4x4_2_Mid.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 2,
    "dwh": [
     4,
     4,
@@ -4099,21 +4108,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Inner_4x4_2_Top",
    "name": "Cracked Curve Inner 4x4 2 Top",
    "file": "models/Cracked_Curve_Inner_4x4_2_Top.glb",
+   "family": "cracked",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 2,
    "dwh": [
     4,
     4,
@@ -4138,21 +4147,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Outer_2x2_1_Mid",
    "name": "Cracked Curve Outer 2x2 1 Mid",
    "file": "models/Cracked_Curve_Outer_2x2_1_Mid.glb",
+   "family": "cracked",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     1,
     1,
@@ -4176,21 +4185,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Outer_2x2_1_Top",
    "name": "Cracked Curve Outer 2x2 1 Top",
    "file": "models/Cracked_Curve_Outer_2x2_1_Top.glb",
+   "family": "cracked",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     1.406,
     1.406,
@@ -4214,21 +4223,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Outer_3x3_1_Mid",
    "name": "Cracked Curve Outer 3x3 1 Mid",
    "file": "models/Cracked_Curve_Outer_3x3_1_Mid.glb",
+   "family": "cracked",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     2,
     2,
@@ -4252,21 +4261,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Outer_3x3_1_Top",
    "name": "Cracked Curve Outer 3x3 1 Top",
    "file": "models/Cracked_Curve_Outer_3x3_1_Top.glb",
+   "family": "cracked",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     2.406,
     2.406,
@@ -4290,21 +4299,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Outer_3x3_2_Mid",
    "name": "Cracked Curve Outer 3x3 2 Mid",
    "file": "models/Cracked_Curve_Outer_3x3_2_Mid.glb",
+   "family": "cracked",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 2,
    "dwh": [
     2,
     2,
@@ -4328,21 +4337,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Cracked_Curve_Outer_3x3_2_Top",
    "name": "Cracked Curve Outer 3x3 2 Top",
    "file": "models/Cracked_Curve_Outer_3x3_2_Top.glb",
+   "family": "cracked",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 2,
    "dwh": [
     2.406,
     2.406,
@@ -4366,21 +4375,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_1x2_1_Mid",
    "name": "Cracked Straight 1x2 1 Mid",
    "file": "models/Cracked_Straight_1x2_1_Mid.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-mid",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     1,
     1,
@@ -4405,21 +4414,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_1x2_1_Top",
    "name": "Cracked Straight 1x2 1 Top",
    "file": "models/Cracked_Straight_1x2_1_Top.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-top",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     1,
     1.406,
@@ -4444,21 +4453,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_2x2_1_Mid",
    "name": "Cracked Straight 2x2 1 Mid",
    "file": "models/Cracked_Straight_2x2_1_Mid.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     2,
     1.125,
@@ -4483,21 +4492,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_2x2_1_Top",
    "name": "Cracked Straight 2x2 1 Top",
    "file": "models/Cracked_Straight_2x2_1_Top.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 1,
    "dwh": [
     2,
     1.531,
@@ -4522,21 +4531,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_2x2_2_Mid",
    "name": "Cracked Straight 2x2 2 Mid",
    "file": "models/Cracked_Straight_2x2_2_Mid.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 2,
    "dwh": [
     2,
     1.188,
@@ -4561,21 +4570,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_2x2_2_Top",
    "name": "Cracked Straight 2x2 2 Top",
    "file": "models/Cracked_Straight_2x2_2_Top.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 2,
    "dwh": [
     2,
     1.594,
@@ -4600,21 +4609,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_2x2_3_Mid",
    "name": "Cracked Straight 2x2 3 Mid",
    "file": "models/Cracked_Straight_2x2_3_Mid.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 3,
    "dwh": [
     2,
     1,
@@ -4639,21 +4648,21 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 3
+   "missingTextures": []
   },
   {
    "id": "Cracked_Straight_2x2_3_Top",
    "name": "Cracked Straight 2x2 3 Top",
    "file": "models/Cracked_Straight_2x2_3_Top.glb",
+   "family": "cracked",
+   "shape": "straight",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "cracked"
+   ],
+   "variant": 3,
    "dwh": [
     2,
     1.406,
@@ -4678,21 +4687,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cracked",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "cracked"
-   ],
-   "variant": 3
+   "missingTextures": []
   },
   {
    "id": "Docks_Bumper_1_1x1",
    "name": "Docks Bumper 1 1x1",
    "file": "models/Docks_Bumper_1_1x1.glb",
+   "family": "docks",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     0.094,
     0.969,
@@ -4717,19 +4724,19 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Docks_Decking_Flat_1x1",
    "name": "Docks Decking Flat 1x1",
    "file": "models/Docks_Decking_Flat_1x1.glb",
+   "family": "docks",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.125,
     0.969,
@@ -4754,19 +4761,19 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Docks_Decking_Flat_1x2",
    "name": "Docks Decking Flat 1x2",
    "file": "models/Docks_Decking_Flat_1x2.glb",
+   "family": "docks",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.125,
     1.969,
@@ -4791,19 +4798,19 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Docks_Decking_Steps_1x2",
    "name": "Docks Decking Steps 1x2",
    "file": "models/Docks_Decking_Steps_1x2.glb",
+   "family": "docks",
+   "shape": "stairs",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.125,
     0.969,
@@ -4828,19 +4835,19 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "stairs",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Docks_Ladder_Middle_1x1",
    "name": "Docks Ladder Middle 1x1",
    "file": "models/Docks_Ladder_Middle_1x1.glb",
+   "family": "docks",
+   "shape": "stairs",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.094,
     0.563,
@@ -4865,19 +4872,19 @@
     "material|wood-light",
     "material|wood-medium"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "stairs",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Docks_Ladder_Top_1x1",
    "name": "Docks Ladder Top 1x1",
    "file": "models/Docks_Ladder_Top_1x1.glb",
+   "family": "docks",
+   "shape": "stairs",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.188,
     0.563,
@@ -4902,19 +4909,19 @@
     "material|wood-light",
     "material|wood-medium"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "stairs",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Docks_Railing_Board_1_1x1",
    "name": "Docks Railing Board 1 1x1",
    "file": "models/Docks_Railing_Board_1_1x1.glb",
+   "family": "docks",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     1.216,
     0.044,
@@ -4937,19 +4944,19 @@
    "materials": [
     "material|wood-light"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Docks_Railing_Post_Top_1x1",
    "name": "Docks Railing Post Top 1x1",
    "file": "models/Docks_Railing_Post_Top_1x1.glb",
+   "family": "docks",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.231,
     0.231,
@@ -4973,19 +4980,21 @@
     "material|wood-dark",
     "material|wood-light-end"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Docks_Railing_Post_Top_Roped_1x1",
    "name": "Docks Railing Post Top Roped 1x1",
    "file": "models/Docks_Railing_Post_Top_Roped_1x1.glb",
+   "family": "docks",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "rope"
+   ],
+   "variant": null,
    "dwh": [
     0.281,
     0.281,
@@ -5012,21 +5021,21 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
-   "family": "docks",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "rope"
-   ],
-   "variant": null
+   ]
   },
   {
    "id": "Docks_Railing_Posts_Steps_Roped_1x3",
    "name": "Docks Railing Posts Steps Roped 1x3",
    "file": "models/Docks_Railing_Posts_Steps_Roped_1x3.glb",
+   "family": "docks",
+   "shape": "stairs",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "rope"
+   ],
+   "variant": null,
    "dwh": [
     1.8,
     0.281,
@@ -5054,21 +5063,21 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
-   "family": "docks",
-   "shape": "stairs",
-   "layer": "layer-none",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "rope"
-   ],
-   "variant": null
+   ]
   },
   {
    "id": "Docks_Railing_Rope_Basic_1_1x1",
    "name": "Docks Railing Rope Basic 1 1x1",
    "file": "models/Docks_Railing_Rope_Basic_1_1x1.glb",
+   "family": "docks",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "rope"
+   ],
+   "variant": 1,
    "dwh": [
     0.894,
     0.063,
@@ -5094,7 +5103,12 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
+   ]
+  },
+  {
+   "id": "Docks_Railing_Rope_Basic_2_1x1",
+   "name": "Docks Railing Rope Basic 2 1x1",
+   "file": "models/Docks_Railing_Rope_Basic_2_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5103,12 +5117,7 @@
    "traits": [
     "rope"
    ],
-   "variant": 1
-  },
-  {
-   "id": "Docks_Railing_Rope_Basic_2_1x1",
-   "name": "Docks Railing Rope Basic 2 1x1",
-   "file": "models/Docks_Railing_Rope_Basic_2_1x1.glb",
+   "variant": 2,
    "dwh": [
     0.888,
     0.063,
@@ -5134,21 +5143,22 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
+   ]
+  },
+  {
+   "id": "Docks_Railing_Rope_Broken_1_1x1",
+   "name": "Docks Railing Rope Broken 1 1x1",
+   "file": "models/Docks_Railing_Rope_Broken_1_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
-    "rope"
+    "rope",
+    "broken"
    ],
-   "variant": 2
-  },
-  {
-   "id": "Docks_Railing_Rope_Broken_1_1x1",
-   "name": "Docks Railing Rope Broken 1 1x1",
-   "file": "models/Docks_Railing_Rope_Broken_1_1x1.glb",
+   "variant": 1,
    "dwh": [
     0.108,
     0.063,
@@ -5174,7 +5184,12 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
+   ]
+  },
+  {
+   "id": "Docks_Railing_Rope_Broken_2_1x1",
+   "name": "Docks Railing Rope Broken 2 1x1",
+   "file": "models/Docks_Railing_Rope_Broken_2_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5184,12 +5199,7 @@
     "rope",
     "broken"
    ],
-   "variant": 1
-  },
-  {
-   "id": "Docks_Railing_Rope_Broken_2_1x1",
-   "name": "Docks Railing Rope Broken 2 1x1",
-   "file": "models/Docks_Railing_Rope_Broken_2_1x1.glb",
+   "variant": 2,
    "dwh": [
     0.11,
     0.063,
@@ -5215,22 +5225,19 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
-   "family": "docks",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "rope",
-    "broken"
-   ],
-   "variant": 2
+   ]
   },
   {
    "id": "Docks_Support_Brace_1x1",
    "name": "Docks Support Brace 1x1",
    "file": "models/Docks_Support_Brace_1x1.glb",
+   "family": "docks",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.125,
     0.884,
@@ -5255,19 +5262,19 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Docks_Support_Post_Mid_1x1",
    "name": "Docks Support Post Mid 1x1",
    "file": "models/Docks_Support_Post_Mid_1x1.glb",
+   "family": "docks",
+   "shape": "standalone",
+   "layer": "layer-mid",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     0.173,
     0.173,
@@ -5291,19 +5298,19 @@
     "material|wood-dark",
     "material|wood-light-end"
    ],
-   "missingTextures": [],
-   "family": "docks",
-   "shape": "standalone",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_And_Ceiling_Flat_1x1",
    "name": "Floor And Ceiling Flat 1x1",
    "file": "models/Floor_And_Ceiling_Flat_1x1.glb",
+   "family": "cave",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -5327,19 +5334,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Curve_Inner_4x4",
    "name": "Floor Curve Inner 4x4",
    "file": "models/Floor_Curve_Inner_4x4.glb",
+   "family": "cave",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -5364,19 +5371,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Curve_Inner_8x8",
    "name": "Floor Curve Inner 8x8",
    "file": "models/Floor_Curve_Inner_8x8.glb",
+   "family": "cave",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     8,
     8,
@@ -5401,19 +5408,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "8 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Curve_Outer_4x4",
    "name": "Floor Curve Outer 4x4",
    "file": "models/Floor_Curve_Outer_4x4.glb",
+   "family": "cave",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -5438,19 +5445,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Curve_Outer_8x8",
    "name": "Floor Curve Outer 8x8",
    "file": "models/Floor_Curve_Outer_8x8.glb",
+   "family": "cave",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     8,
     8,
@@ -5475,19 +5482,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "8 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Esse_6x8",
    "name": "Floor Esse 6x8",
    "file": "models/Floor_Esse_6x8.glb",
+   "family": "cave",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "6 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     8,
@@ -5512,19 +5519,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "6 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Incline_1x3",
    "name": "Floor Incline 1x3",
    "file": "models/Floor_Incline_1x3.glb",
+   "family": "cave",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     1,
@@ -5549,19 +5556,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Incline_1x6",
    "name": "Floor Incline 1x6",
    "file": "models/Floor_Incline_1x6.glb",
+   "family": "cave",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 6",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     1,
@@ -5586,19 +5593,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 6",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Floor_Overlapping_4x4",
    "name": "Floor Overlapping 4x4",
    "file": "models/Floor_Overlapping_4x4.glb",
+   "family": "cave",
+   "shape": "overlapping",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -5623,19 +5630,22 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "cave",
-   "shape": "overlapping",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Center_1x1",
    "name": "Grass Carpet Center 1x1",
    "file": "models/Grass_Carpet_Center_1x1.glb",
+   "family": "grass-carpet",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -5660,22 +5670,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "center",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Curve_Inner_1x1",
    "name": "Grass Carpet Curve Inner 1x1",
    "file": "models/Grass_Carpet_Curve_Inner_1x1.glb",
+   "family": "grass-carpet",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -5701,21 +5710,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Curve_Inner_2x2",
    "name": "Grass Carpet Curve Inner 2x2",
    "file": "models/Grass_Carpet_Curve_Inner_2x2.glb",
+   "family": "grass-carpet",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -5741,21 +5750,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Curve_Inner_3x3",
    "name": "Grass Carpet Curve Inner 3x3",
    "file": "models/Grass_Carpet_Curve_Inner_3x3.glb",
+   "family": "grass-carpet",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -5781,21 +5790,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Curve_Outer_1x1",
    "name": "Grass Carpet Curve Outer 1x1",
    "file": "models/Grass_Carpet_Curve_Outer_1x1.glb",
+   "family": "grass-carpet",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     0.667,
     0.667,
@@ -5820,21 +5829,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Curve_Outer_2x2",
    "name": "Grass Carpet Curve Outer 2x2",
    "file": "models/Grass_Carpet_Curve_Outer_2x2.glb",
+   "family": "grass-carpet",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1.667,
     1.667,
@@ -5860,21 +5869,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Curve_Outer_3x3",
    "name": "Grass Carpet Curve Outer 3x3",
    "file": "models/Grass_Carpet_Curve_Outer_3x3.glb",
+   "family": "grass-carpet",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2.667,
     2.667,
@@ -5900,21 +5909,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Esse_2x2",
    "name": "Grass Carpet Esse 2x2",
    "file": "models/Grass_Carpet_Esse_2x2.glb",
+   "family": "grass-carpet",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1.667,
     2,
@@ -5940,21 +5949,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Esse_3x3",
    "name": "Grass Carpet Esse 3x3",
    "file": "models/Grass_Carpet_Esse_3x3.glb",
+   "family": "grass-carpet",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2.667,
     3,
@@ -5980,21 +5989,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Carpet_Straight_1x1",
    "name": "Grass Carpet Straight 1x1",
    "file": "models/Grass_Carpet_Straight_1x1.glb",
+   "family": "grass-carpet",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     0.667,
     1,
@@ -6020,21 +6029,21 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Grass_Flat_1x1",
+   "name": "Grass Flat 1x1",
+   "file": "models/Grass_Flat_1x1.glb",
    "family": "grass-carpet",
-   "shape": "straight",
+   "shape": "flat",
    "layer": "layer-none",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
     "grass"
    ],
-   "variant": null
-  },
-  {
-   "id": "Grass_Flat_1x1",
-   "name": "Grass Flat 1x1",
-   "file": "models/Grass_Flat_1x1.glb",
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -6059,21 +6068,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-carpet",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Gentle_Curve_Inner_4x4",
    "name": "Grass Hill Gentle Curve Inner 4x4",
    "file": "models/Grass_Hill_Gentle_Curve_Inner_4x4.glb",
+   "family": "grass-hill",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "gentle",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -6100,22 +6110,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "gentle",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Gentle_Curve_Inner_6x6",
    "name": "Grass Hill Gentle Curve Inner 6x6",
    "file": "models/Grass_Hill_Gentle_Curve_Inner_6x6.glb",
+   "family": "grass-hill",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "6 × 6",
+   "sizeGroup": "size-large",
+   "traits": [
+    "gentle",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     7,
     7,
@@ -6142,22 +6152,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "6 × 6",
-   "sizeGroup": "size-large",
-   "traits": [
-    "gentle",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Gentle_Curve_Outer_4x4",
    "name": "Grass Hill Gentle Curve Outer 4x4",
    "file": "models/Grass_Hill_Gentle_Curve_Outer_4x4.glb",
+   "family": "grass-hill",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "gentle",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -6184,22 +6194,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "gentle",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Gentle_Esse_4x5",
    "name": "Grass Hill Gentle Esse 4x5",
    "file": "models/Grass_Hill_Gentle_Esse_4x5.glb",
+   "family": "grass-hill",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "4 × 5",
+   "sizeGroup": "size-4",
+   "traits": [
+    "gentle",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     5,
     4,
@@ -6226,22 +6236,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [
-    "gentle",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Gentle_Overlapping_Gentle_4x4",
    "name": "Grass Hill Gentle Overlapping Gentle 4x4",
    "file": "models/Grass_Hill_Gentle_Overlapping_Gentle_4x4.glb",
+   "family": "grass-hill",
+   "shape": "overlapping",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "gentle",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -6267,22 +6277,23 @@
     "hidden|hidden-orange",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "overlapping",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "gentle",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Gentle_Overlapping_Sharp_2x4",
    "name": "Grass Hill Gentle Overlapping Sharp 2x4",
    "file": "models/Grass_Hill_Gentle_Overlapping_Sharp_2x4.glb",
+   "family": "grass-hill",
+   "shape": "overlapping",
+   "layer": "layer-none",
+   "size": "2 × 4",
+   "sizeGroup": "size-2",
+   "traits": [
+    "gentle",
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     2,
@@ -6309,23 +6320,22 @@
     "hidden|hidden-pink",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "overlapping",
-   "layer": "layer-none",
-   "size": "2 × 4",
-   "sizeGroup": "size-2",
-   "traits": [
-    "gentle",
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Gentle_Straight_1x4",
    "name": "Grass Hill Gentle Straight 1x4",
    "file": "models/Grass_Hill_Gentle_Straight_1x4.glb",
+   "family": "grass-hill",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 4",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "gentle",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     1,
@@ -6352,22 +6362,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "gentle",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Inner_4x5",
    "name": "Grass Hill Grade Transition Curve Inner 4x5",
    "file": "models/Grass_Hill_Grade_Transition_Curve_Inner_4x5.glb",
+   "family": "grass-hill",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 5",
+   "sizeGroup": "size-4",
+   "traits": [
+    "grade transition",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     5,
@@ -6395,22 +6405,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [
-    "grade transition",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Inner_6x7",
    "name": "Grass Hill Grade Transition Curve Inner 6x7",
    "file": "models/Grass_Hill_Grade_Transition_Curve_Inner_6x7.glb",
+   "family": "grass-hill",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "6 × 7",
+   "sizeGroup": "size-large",
+   "traits": [
+    "grade transition",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     6,
     7,
@@ -6438,22 +6448,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "6 × 7",
-   "sizeGroup": "size-large",
-   "traits": [
-    "grade transition",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Outer_4x5",
    "name": "Grass Hill Grade Transition Curve Outer 4x5",
    "file": "models/Grass_Hill_Grade_Transition_Curve_Outer_4x5.glb",
+   "family": "grass-hill",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "4 × 5",
+   "sizeGroup": "size-4",
+   "traits": [
+    "grade transition",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     5,
@@ -6481,22 +6491,23 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [
-    "grade transition",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Grade_Transition_Straight_Front_4x4",
    "name": "Grass Hill Grade Transition Straight Front 4x4",
    "file": "models/Grass_Hill_Grade_Transition_Straight_Front_4x4.glb",
+   "family": "grass-hill",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "grade transition",
+    "front",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -6524,23 +6535,23 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "grade transition",
-    "front",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Grade_Transition_Straight_Rear_3x4",
    "name": "Grass Hill Grade Transition Straight Rear 3x4",
    "file": "models/Grass_Hill_Grade_Transition_Straight_Rear_3x4.glb",
+   "family": "grass-hill",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [
+    "grade transition",
+    "rear",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -6568,23 +6579,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "grade transition",
-    "rear",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_2x2",
    "name": "Grass Hill Sharp Curve Inner 2x2",
    "file": "models/Grass_Hill_Sharp_Curve_Inner_2x2.glb",
+   "family": "grass-hill",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -6610,22 +6620,22 @@
     "hidden|hidden-pink",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_4x4",
    "name": "Grass Hill Sharp Curve Inner 4x4",
    "file": "models/Grass_Hill_Sharp_Curve_Inner_4x4.glb",
+   "family": "grass-hill",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -6652,22 +6662,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
    "name": "Grass Hill Sharp Curve Inner 6x6",
    "file": "models/Grass_Hill_Sharp_Curve_Inner_6x6.glb",
+   "family": "grass-hill",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "6 × 6",
+   "sizeGroup": "size-large",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     6,
     6,
@@ -6694,22 +6704,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "6 × 6",
-   "sizeGroup": "size-large",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Outer_2x2",
    "name": "Grass Hill Sharp Curve Outer 2x2",
    "file": "models/Grass_Hill_Sharp_Curve_Outer_2x2.glb",
+   "family": "grass-hill",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -6735,22 +6745,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Outer_4x4",
    "name": "Grass Hill Sharp Curve Outer 4x4",
    "file": "models/Grass_Hill_Sharp_Curve_Outer_4x4.glb",
+   "family": "grass-hill",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -6777,22 +6787,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Esse_4x3",
    "name": "Grass Hill Sharp Esse 4x3",
    "file": "models/Grass_Hill_Sharp_Esse_4x3.glb",
+   "family": "grass-hill",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "4 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     3,
     4,
@@ -6819,22 +6829,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "4 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Esse_4x4",
    "name": "Grass Hill Sharp Esse 4x4",
    "file": "models/Grass_Hill_Sharp_Esse_4x4.glb",
+   "family": "grass-hill",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4.003,
@@ -6861,22 +6871,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Overlapping_Sharp_2x2",
    "name": "Grass Hill Sharp Overlapping Sharp 2x2",
    "file": "models/Grass_Hill_Sharp_Overlapping_Sharp_2x2.glb",
+   "family": "grass-hill",
+   "shape": "overlapping",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -6902,22 +6912,22 @@
     "hidden|hidden-pink",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "overlapping",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Grass_Hill_Sharp_Straight_1x2",
    "name": "Grass Hill Sharp Straight 1x2",
    "file": "models/Grass_Hill_Sharp_Straight_1x2.glb",
+   "family": "grass-hill",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "sharp",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2,
     1,
@@ -6944,22 +6954,19 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-hill",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "sharp",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Curve_Inner_2x2_1",
    "name": "Iceberg Curve Inner 2x2 1",
    "file": "models/Iceberg_Curve_Inner_2x2_1.glb",
+   "family": "iceberg",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     2,
     2,
@@ -6984,19 +6991,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Curve_Inner_3x3_1",
    "name": "Iceberg Curve Inner 3x3 1",
    "file": "models/Iceberg_Curve_Inner_3x3_1.glb",
+   "family": "iceberg",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     3,
     3,
@@ -7021,19 +7028,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Curve_Inner_4x4_1",
    "name": "Iceberg Curve Inner 4x4 1",
    "file": "models/Iceberg_Curve_Inner_4x4_1.glb",
+   "family": "iceberg",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     4,
     4,
@@ -7058,19 +7065,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Iceberg_Curve_Inner_4x4_2",
+   "name": "Iceberg Curve Inner 4x4 2",
+   "file": "models/Iceberg_Curve_Inner_4x4_2.glb",
    "family": "iceberg",
    "shape": "curve-inner",
    "layer": "layer-none",
    "size": "4 × 4",
    "sizeGroup": "size-4",
    "traits": [],
-   "variant": 1
-  },
-  {
-   "id": "Iceberg_Curve_Inner_4x4_2",
-   "name": "Iceberg Curve Inner 4x4 2",
-   "file": "models/Iceberg_Curve_Inner_4x4_2.glb",
+   "variant": 2,
    "dwh": [
     4,
     4,
@@ -7095,19 +7102,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Curve_Outer_2x2_1",
    "name": "Iceberg Curve Outer 2x2 1",
    "file": "models/Iceberg_Curve_Outer_2x2_1.glb",
+   "family": "iceberg",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     1.406,
     1.406,
@@ -7131,19 +7138,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Curve_Outer_3x3_1",
    "name": "Iceberg Curve Outer 3x3 1",
    "file": "models/Iceberg_Curve_Outer_3x3_1.glb",
+   "family": "iceberg",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     2.406,
     2.406,
@@ -7167,19 +7174,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Iceberg_Curve_Outer_3x3_2",
+   "name": "Iceberg Curve Outer 3x3 2",
+   "file": "models/Iceberg_Curve_Outer_3x3_2.glb",
    "family": "iceberg",
    "shape": "curve-outer",
    "layer": "layer-none",
    "size": "3 × 3",
    "sizeGroup": "size-3",
    "traits": [],
-   "variant": 1
-  },
-  {
-   "id": "Iceberg_Curve_Outer_3x3_2",
-   "name": "Iceberg Curve Outer 3x3 2",
-   "file": "models/Iceberg_Curve_Outer_3x3_2.glb",
+   "variant": 2,
    "dwh": [
     2.406,
     2.406,
@@ -7203,19 +7210,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": 2
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Flat_1x1",
    "name": "Iceberg Flat 1x1",
    "file": "models/Iceberg_Flat_1x1.glb",
+   "family": "iceberg",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -7239,19 +7246,19 @@
     "hidden|hidden",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Straight_1x2_1",
    "name": "Iceberg Straight 1x2 1",
    "file": "models/Iceberg_Straight_1x2_1.glb",
+   "family": "iceberg",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     1,
     1.406,
@@ -7276,19 +7283,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": 1
+   "missingTextures": []
   },
   {
    "id": "Iceberg_Straight_2x2_1",
    "name": "Iceberg Straight 2x2 1",
    "file": "models/Iceberg_Straight_2x2_1.glb",
+   "family": "iceberg",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": 1,
    "dwh": [
     2,
     1.531,
@@ -7313,19 +7320,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Iceberg_Straight_2x2_2",
+   "name": "Iceberg Straight 2x2 2",
+   "file": "models/Iceberg_Straight_2x2_2.glb",
    "family": "iceberg",
    "shape": "straight",
    "layer": "layer-none",
    "size": "2 × 2",
    "sizeGroup": "size-2",
    "traits": [],
-   "variant": 1
-  },
-  {
-   "id": "Iceberg_Straight_2x2_2",
-   "name": "Iceberg Straight 2x2 2",
-   "file": "models/Iceberg_Straight_2x2_2.glb",
+   "variant": 2,
    "dwh": [
     2,
     1.511,
@@ -7350,19 +7357,19 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Iceberg_Straight_2x2_3",
+   "name": "Iceberg Straight 2x2 3",
+   "file": "models/Iceberg_Straight_2x2_3.glb",
    "family": "iceberg",
    "shape": "straight",
    "layer": "layer-none",
    "size": "2 × 2",
    "sizeGroup": "size-2",
    "traits": [],
-   "variant": 2
-  },
-  {
-   "id": "Iceberg_Straight_2x2_3",
-   "name": "Iceberg Straight 2x2 3",
-   "file": "models/Iceberg_Straight_2x2_3.glb",
+   "variant": 3,
    "dwh": [
     2,
     1.406,
@@ -7387,19 +7394,21 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": [],
-   "family": "iceberg",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": 3
+   "missingTextures": []
   },
   {
    "id": "Path_Bridge_Center_Top_1x2",
    "name": "Path Bridge Center Top 1x2",
    "file": "models/Path_Bridge_Center_Top_1x2.glb",
+   "family": "path-bridge",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     1.95,
     1,
@@ -7425,21 +7434,21 @@
     "material|cliff-face",
     "material|dirt"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Bridge_Edge_Top_1x2",
+   "name": "Path Bridge Edge Top 1x2",
+   "file": "models/Path_Bridge_Edge_Top_1x2.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-top",
    "size": "1 × 2",
    "sizeGroup": "size-narrow",
    "traits": [
-    "center"
+    "edge"
    ],
-   "variant": null
-  },
-  {
-   "id": "Path_Bridge_Edge_Top_1x2",
-   "name": "Path Bridge Edge Top 1x2",
-   "file": "models/Path_Bridge_Edge_Top_1x2.glb",
+   "variant": null,
    "dwh": [
     1.95,
     1,
@@ -7468,21 +7477,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-bridge",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_End_Center_Top_1x1",
    "name": "Path End Center Top 1x1",
    "file": "models/Path_End_Center_Top_1x1.glb",
+   "family": "path-bridge",
+   "shape": "end",
+   "layer": "layer-top",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     0.95,
     1,
@@ -7508,21 +7517,21 @@
     "material|cliff-face",
     "material|dirt"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_End_Edge_Top_1x1",
+   "name": "Path End Edge Top 1x1",
+   "file": "models/Path_End_Edge_Top_1x1.glb",
    "family": "path-bridge",
    "shape": "end",
    "layer": "layer-top",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
-    "center"
+    "edge"
    ],
-   "variant": null
-  },
-  {
-   "id": "Path_End_Edge_Top_1x1",
-   "name": "Path End Edge Top 1x1",
-   "file": "models/Path_End_Edge_Top_1x1.glb",
+   "variant": null,
    "dwh": [
     0.95,
     1,
@@ -7551,21 +7560,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-bridge",
-   "shape": "end",
-   "layer": "layer-top",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_45_Degrees_Curve_Inner_3x3",
    "name": "Path Terrain 45 Degrees Curve Inner 3x3",
    "file": "models/Path_Terrain_45_Degrees_Curve_Inner_3x3.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "45 degrees"
+   ],
+   "variant": 45,
    "dwh": [
     2.646,
     3,
@@ -7592,21 +7601,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_45_Degrees_Curve_Outer_3x5",
    "name": "Path Terrain 45 Degrees Curve Outer 3x5",
    "file": "models/Path_Terrain_45_Degrees_Curve_Outer_3x5.glb",
+   "family": "path-terrain",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "3 × 5",
+   "sizeGroup": "size-3",
+   "traits": [
+    "45 degrees"
+   ],
+   "variant": 45,
    "dwh": [
     5,
     2.646,
@@ -7633,21 +7642,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "3 × 5",
-   "sizeGroup": "size-3",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_45_Degrees_Straight_2x2",
    "name": "Path Terrain 45 Degrees Straight 2x2",
    "file": "models/Path_Terrain_45_Degrees_Straight_2x2.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "45 degrees"
+   ],
+   "variant": 45,
    "dwh": [
     2.646,
     2.646,
@@ -7674,21 +7683,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "45 degrees"
-   ],
-   "variant": 45
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_1x1",
    "name": "Path Terrain Basic Curve Inner 1x1",
    "file": "models/Path_Terrain_Basic_Curve_Inner_1x1.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -7715,19 +7722,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_2x2",
    "name": "Path Terrain Basic Curve Inner 2x2",
    "file": "models/Path_Terrain_Basic_Curve_Inner_2x2.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -7754,19 +7761,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_3x3",
    "name": "Path Terrain Basic Curve Inner 3x3",
    "file": "models/Path_Terrain_Basic_Curve_Inner_3x3.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -7793,19 +7800,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_4x4",
    "name": "Path Terrain Basic Curve Inner 4x4",
    "file": "models/Path_Terrain_Basic_Curve_Inner_4x4.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -7832,19 +7839,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_5x5",
    "name": "Path Terrain Basic Curve Inner 5x5",
    "file": "models/Path_Terrain_Basic_Curve_Inner_5x5.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -7871,19 +7878,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Outer_1x1",
    "name": "Path Terrain Basic Curve Outer 1x1",
    "file": "models/Path_Terrain_Basic_Curve_Outer_1x1.glb",
+   "family": "path-terrain",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -7909,19 +7916,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Outer_2x2",
    "name": "Path Terrain Basic Curve Outer 2x2",
    "file": "models/Path_Terrain_Basic_Curve_Outer_2x2.glb",
+   "family": "path-terrain",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -7948,19 +7955,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Curve_Outer_3x3",
    "name": "Path Terrain Basic Curve Outer 3x3",
    "file": "models/Path_Terrain_Basic_Curve_Outer_3x3.glb",
+   "family": "path-terrain",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -7987,19 +7994,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Esse_2x3",
    "name": "Path Terrain Basic Esse 2x3",
    "file": "models/Path_Terrain_Basic_Esse_2x3.glb",
+   "family": "path-terrain",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "2 × 3",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     2,
@@ -8026,19 +8033,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Basic_Straight_1x1",
    "name": "Path Terrain Basic Straight 1x1",
    "file": "models/Path_Terrain_Basic_Straight_1x1.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -8065,19 +8072,22 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Concave_1x2",
    "name": "Path Terrain Deformed Straight Concave 1x2",
    "file": "models/Path_Terrain_Deformed_Straight_Concave_1x2.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "concave",
+    "deformed"
+   ],
+   "variant": null,
    "dwh": [
     1,
     2,
@@ -8104,22 +8114,22 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "concave",
-    "deformed"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Concave_2x2",
    "name": "Path Terrain Deformed Straight Concave 2x2",
    "file": "models/Path_Terrain_Deformed_Straight_Concave_2x2.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "concave",
+    "deformed"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -8146,22 +8156,22 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "concave",
-    "deformed"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Convex_1x1",
    "name": "Path Terrain Deformed Straight Convex 1x1",
    "file": "models/Path_Terrain_Deformed_Straight_Convex_1x1.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "convex",
+    "deformed"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1.061,
@@ -8188,22 +8198,22 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "convex",
-    "deformed"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Convex_2x2",
    "name": "Path Terrain Deformed Straight Convex 2x2",
    "file": "models/Path_Terrain_Deformed_Straight_Convex_2x2.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "convex",
+    "deformed"
+   ],
+   "variant": null,
    "dwh": [
     2,
     1.25,
@@ -8230,22 +8240,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "convex",
-    "deformed"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Dirt_Flat_1x1",
    "name": "Path Terrain Dirt Flat 1x1",
    "file": "models/Path_Terrain_Dirt_Flat_1x1.glb",
+   "family": "path-terrain",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "dirt path"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -8269,21 +8278,22 @@
     "hidden|hidden",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "dirt path"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Incline_Gentle_Center_1x4",
    "name": "Path Terrain Incline Gentle Center 1x4",
    "file": "models/Path_Terrain_Incline_Gentle_Center_1x4.glb",
+   "family": "path-terrain",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 4",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "gentle",
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     4,
     1,
@@ -8307,7 +8317,12 @@
     "hidden|hidden",
     "material|dirt"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Terrain_Incline_Gentle_Edge_1x4",
+   "name": "Path Terrain Incline Gentle Edge 1x4",
+   "file": "models/Path_Terrain_Incline_Gentle_Edge_1x4.glb",
    "family": "path-terrain",
    "shape": "incline",
    "layer": "layer-none",
@@ -8315,14 +8330,9 @@
    "sizeGroup": "size-narrow",
    "traits": [
     "gentle",
-    "center"
+    "edge"
    ],
-   "variant": null
-  },
-  {
-   "id": "Path_Terrain_Incline_Gentle_Edge_1x4",
-   "name": "Path Terrain Incline Gentle Edge 1x4",
-   "file": "models/Path_Terrain_Incline_Gentle_Edge_1x4.glb",
+   "variant": null,
    "dwh": [
     4,
     1,
@@ -8349,22 +8359,22 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "gentle",
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Incline_Sharp_Center_1x2",
    "name": "Path Terrain Incline Sharp Center 1x2",
    "file": "models/Path_Terrain_Incline_Sharp_Center_1x2.glb",
+   "family": "path-terrain",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "sharp",
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     2,
     1,
@@ -8388,7 +8398,12 @@
     "hidden|hidden",
     "material|dirt"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Terrain_Incline_Sharp_Edge_1x2",
+   "name": "Path Terrain Incline Sharp Edge 1x2",
+   "file": "models/Path_Terrain_Incline_Sharp_Edge_1x2.glb",
    "family": "path-terrain",
    "shape": "incline",
    "layer": "layer-none",
@@ -8396,14 +8411,9 @@
    "sizeGroup": "size-narrow",
    "traits": [
     "sharp",
-    "center"
+    "edge"
    ],
-   "variant": null
-  },
-  {
-   "id": "Path_Terrain_Incline_Sharp_Edge_1x2",
-   "name": "Path Terrain Incline Sharp Edge 1x2",
-   "file": "models/Path_Terrain_Incline_Sharp_Edge_1x2.glb",
+   "variant": null,
    "dwh": [
     2,
     1,
@@ -8430,22 +8440,22 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "sharp",
-    "edge"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Transition_Grass_Center_1x1",
    "name": "Path Terrain Transition Grass Center 1x1",
    "file": "models/Path_Terrain_Transition_Grass_Center_1x1.glb",
+   "family": "path-terrain",
+   "shape": "transition",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -8471,22 +8481,21 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "transition",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "center",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Transition_Grass_Side_Curve_1x1",
    "name": "Path Terrain Transition Grass Side Curve 1x1",
    "file": "models/Path_Terrain_Transition_Grass_Side_Curve_1x1.glb",
+   "family": "path-terrain",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -8514,21 +8523,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Terrain_Transition_Grass_Side_Straight_1x1",
+   "name": "Path Terrain Transition Grass Side Straight 1x1",
+   "file": "models/Path_Terrain_Transition_Grass_Side_Straight_1x1.glb",
    "family": "path-terrain",
-   "shape": "curve",
+   "shape": "straight",
    "layer": "layer-none",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
     "grass"
    ],
-   "variant": null
-  },
-  {
-   "id": "Path_Terrain_Transition_Grass_Side_Straight_1x1",
-   "name": "Path Terrain Transition Grass Side Straight 1x1",
-   "file": "models/Path_Terrain_Transition_Grass_Side_Straight_1x1.glb",
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -8556,21 +8565,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Y_Curve_Inner_1x1",
    "name": "Path Terrain Y Curve Inner 1x1",
    "file": "models/Path_Terrain_Y_Curve_Inner_1x1.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "Y-junction"
+   ],
+   "variant": null,
    "dwh": [
     1.309,
     1,
@@ -8596,21 +8605,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "Y-junction"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Y_Curve_Inner_1x2",
    "name": "Path Terrain Y Curve Inner 1x2",
    "file": "models/Path_Terrain_Y_Curve_Inner_1x2.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "Y-junction"
+   ],
+   "variant": null,
    "dwh": [
     1.798,
     2,
@@ -8637,21 +8646,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "Y-junction"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Path_Terrain_Y_Curve_Inner_2x3",
    "name": "Path Terrain Y Curve Inner 2x3",
    "file": "models/Path_Terrain_Y_Curve_Inner_2x3.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "2 × 3",
+   "sizeGroup": "size-2",
+   "traits": [
+    "Y-junction"
+   ],
+   "variant": null,
    "dwh": [
     2.428,
     3,
@@ -8678,21 +8687,21 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [
-    "Y-junction"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Prop_Bridge_Center_1x2",
    "name": "Prop Bridge Center 1x2",
    "file": "models/Prop_Bridge_Center_1x2.glb",
+   "family": "path-bridge",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1.969,
@@ -8719,21 +8728,19 @@
     "material|wood-light-end",
     "material|wood-medium"
    ],
-   "missingTextures": [],
-   "family": "path-bridge",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "center"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Prop_Bridge_End_2x2",
    "name": "Prop Bridge End 2x2",
    "file": "models/Prop_Bridge_End_2x2.glb",
+   "family": "path-bridge",
+   "shape": "end",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.346,
     1.969,
@@ -8760,19 +8767,21 @@
     "material|wood-light-end",
     "material|wood-medium"
    ],
-   "missingTextures": [],
-   "family": "path-bridge",
-   "shape": "end",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Prop_Bridge_Rope_End_Basic_1x3",
    "name": "Prop Bridge Rope End Basic 1x3",
    "file": "models/Prop_Bridge_Rope_End_Basic_1x3.glb",
+   "family": "path-bridge",
+   "shape": "end",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "rope"
+   ],
+   "variant": null,
    "dwh": [
     3.119,
     1.524,
@@ -8801,21 +8810,21 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
-   "family": "path-bridge",
-   "shape": "end",
-   "layer": "layer-none",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "rope"
-   ],
-   "variant": null
+   ]
   },
   {
    "id": "Prop_Bridge_Rope_Middle_Basic_1x1",
    "name": "Prop Bridge Rope Middle Basic 1x1",
    "file": "models/Prop_Bridge_Rope_Middle_Basic_1x1.glb",
+   "family": "path-bridge",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "rope"
+   ],
+   "variant": null,
    "dwh": [
     1,
     0.948,
@@ -8844,21 +8853,22 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
+   ]
+  },
+  {
+   "id": "Prop_Bridge_Rope_Middle_Cracked_1_1x1",
+   "name": "Prop Bridge Rope Middle Cracked 1 1x1",
+   "file": "models/Prop_Bridge_Rope_Middle_Cracked_1_1x1.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-none",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
-    "rope"
+    "rope",
+    "cracked"
    ],
-   "variant": null
-  },
-  {
-   "id": "Prop_Bridge_Rope_Middle_Cracked_1_1x1",
-   "name": "Prop Bridge Rope Middle Cracked 1 1x1",
-   "file": "models/Prop_Bridge_Rope_Middle_Cracked_1_1x1.glb",
+   "variant": 1,
    "dwh": [
     1,
     0.948,
@@ -8887,7 +8897,12 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
+   ]
+  },
+  {
+   "id": "Prop_Bridge_Rope_Middle_Cracked_2_1x1",
+   "name": "Prop Bridge Rope Middle Cracked 2 1x1",
+   "file": "models/Prop_Bridge_Rope_Middle_Cracked_2_1x1.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-none",
@@ -8897,12 +8912,7 @@
     "rope",
     "cracked"
    ],
-   "variant": 1
-  },
-  {
-   "id": "Prop_Bridge_Rope_Middle_Cracked_2_1x1",
-   "name": "Prop Bridge Rope Middle Cracked 2 1x1",
-   "file": "models/Prop_Bridge_Rope_Middle_Cracked_2_1x1.glb",
+   "variant": 2,
    "dwh": [
     1,
     0.948,
@@ -8931,22 +8941,19 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ],
-   "family": "path-bridge",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "rope",
-    "cracked"
-   ],
-   "variant": 2
+   ]
   },
   {
    "id": "Terrain_Sand_Flat_1x1",
    "name": "Terrain Sand Flat 1x1",
    "file": "models/Terrain_Sand_Flat_1x1.glb",
+   "family": "sand",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -8971,19 +8978,21 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Both_12x12",
    "name": "Terrain Sand Incline Curve Both 12x12",
    "file": "models/Terrain_Sand_Incline_Curve_Both_12x12.glb",
+   "family": "sand",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "12 × 12",
+   "sizeGroup": "size-large",
+   "traits": [
+    "both sides"
+   ],
+   "variant": null,
    "dwh": [
     12,
     12,
@@ -9008,21 +9017,21 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "12 × 12",
-   "sizeGroup": "size-large",
-   "traits": [
-    "both sides"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Both_8x8",
    "name": "Terrain Sand Incline Curve Both 8x8",
    "file": "models/Terrain_Sand_Incline_Curve_Both_8x8.glb",
+   "family": "sand",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [
+    "both sides"
+   ],
+   "variant": null,
    "dwh": [
     8,
     8,
@@ -9047,21 +9056,19 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "8 × 8",
-   "sizeGroup": "size-large",
-   "traits": [
-    "both sides"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Inner_4x4",
    "name": "Terrain Sand Incline Curve Inner 4x4",
    "file": "models/Terrain_Sand_Incline_Curve_Inner_4x4.glb",
+   "family": "sand",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -9087,19 +9094,19 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Inner_8x8",
    "name": "Terrain Sand Incline Curve Inner 8x8",
    "file": "models/Terrain_Sand_Incline_Curve_Inner_8x8.glb",
+   "family": "sand",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     8,
     8,
@@ -9125,19 +9132,19 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "8 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_12x12",
    "name": "Terrain Sand Incline Curve Outer 12x12",
    "file": "models/Terrain_Sand_Incline_Curve_Outer_12x12.glb",
+   "family": "sand",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "12 × 12",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     12,
     12,
@@ -9163,19 +9170,19 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "12 × 12",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_4x4",
    "name": "Terrain Sand Incline Curve Outer 4x4",
    "file": "models/Terrain_Sand_Incline_Curve_Outer_4x4.glb",
+   "family": "sand",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -9200,19 +9207,19 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_8x8",
    "name": "Terrain Sand Incline Curve Outer 8x8",
    "file": "models/Terrain_Sand_Incline_Curve_Outer_8x8.glb",
+   "family": "sand",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     8,
     8,
@@ -9238,19 +9245,19 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "8 × 8",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Esse_6x6",
    "name": "Terrain Sand Incline Esse 6x6",
    "file": "models/Terrain_Sand_Incline_Esse_6x6.glb",
+   "family": "sand",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "6 × 6",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     6,
@@ -9276,19 +9283,21 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "6 × 6",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Esse_Both_6x10",
    "name": "Terrain Sand Incline Esse Both 6x10",
    "file": "models/Terrain_Sand_Incline_Esse_Both_6x10.glb",
+   "family": "sand",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "6 × 10",
+   "sizeGroup": "size-large",
+   "traits": [
+    "both sides"
+   ],
+   "variant": null,
    "dwh": [
     10,
     6,
@@ -9313,21 +9322,19 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "6 × 10",
-   "sizeGroup": "size-large",
-   "traits": [
-    "both sides"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Overlapping_4x4",
    "name": "Terrain Sand Incline Overlapping 4x4",
    "file": "models/Terrain_Sand_Incline_Overlapping_4x4.glb",
+   "family": "sand",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -9353,19 +9360,19 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Sand_Incline_Straight_1x4",
    "name": "Terrain Sand Incline Straight 1x4",
    "file": "models/Terrain_Sand_Incline_Straight_1x4.glb",
+   "family": "sand",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 4",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     1,
@@ -9391,19 +9398,21 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": [],
-   "family": "sand",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Curve_CCW_3x3",
    "name": "Terrain Water River Curve CCW 3x3",
    "file": "models/Terrain_Water_River_Curve_CCW_3x3.glb",
+   "family": "river",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "counter-clockwise"
+   ],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -9426,21 +9435,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "counter-clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Curve_CCW_5x5",
    "name": "Terrain Water River Curve CCW 5x5",
    "file": "models/Terrain_Water_River_Curve_CCW_5x5.glb",
+   "family": "river",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [
+    "counter-clockwise"
+   ],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -9463,44 +9472,12 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "counter-clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Curve_CW_3x3",
    "name": "Terrain Water River Curve CW 3x3",
    "file": "models/Terrain_Water_River_Curve_CW_3x3.glb",
-   "dwh": [
-    3,
-    3,
-    0
-   ],
-   "min": [
-    -1.5,
-    -0.25,
-    -1.5
-   ],
-   "max": [
-    1.5,
-    -0.25,
-    1.5
-   ],
-   "triangles": 32,
-   "trianglesPerUnit": null,
-   "calls": 1,
-   "bytes": 11852,
-   "materials": [
-    "material|water-river"
-   ],
-   "missingTextures": [],
    "family": "river",
    "shape": "curve",
    "layer": "layer-none",
@@ -9509,12 +9486,44 @@
    "traits": [
     "clockwise"
    ],
-   "variant": null
+   "variant": null,
+   "dwh": [
+    3,
+    3,
+    0
+   ],
+   "min": [
+    -1.5,
+    -0.25,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    -0.25,
+    1.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": null,
+   "calls": 1,
+   "bytes": 11852,
+   "materials": [
+    "material|water-river"
+   ],
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Curve_CW_5x5",
    "name": "Terrain Water River Curve CW 5x5",
    "file": "models/Terrain_Water_River_Curve_CW_5x5.glb",
+   "family": "river",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [
+    "clockwise"
+   ],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -9537,21 +9546,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "curve",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Esse_CCW_3x4",
    "name": "Terrain Water River Esse CCW 3x4",
    "file": "models/Terrain_Water_River_Esse_CCW_3x4.glb",
+   "family": "river",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [
+    "counter-clockwise"
+   ],
+   "variant": null,
    "dwh": [
     4,
     3,
@@ -9574,21 +9583,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "counter-clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Esse_CCW_4x4",
    "name": "Terrain Water River Esse CCW 4x4",
    "file": "models/Terrain_Water_River_Esse_CCW_4x4.glb",
+   "family": "river",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "counter-clockwise"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -9611,21 +9620,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "counter-clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Esse_CCW_4x5",
    "name": "Terrain Water River Esse CCW 4x5",
    "file": "models/Terrain_Water_River_Esse_CCW_4x5.glb",
+   "family": "river",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "4 × 5",
+   "sizeGroup": "size-4",
+   "traits": [
+    "counter-clockwise"
+   ],
+   "variant": null,
    "dwh": [
     4,
     5,
@@ -9648,21 +9657,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [
-    "counter-clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Esse_CW_3x4",
    "name": "Terrain Water River Esse CW 3x4",
    "file": "models/Terrain_Water_River_Esse_CW_3x4.glb",
+   "family": "river",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [
+    "clockwise"
+   ],
+   "variant": null,
    "dwh": [
     4,
     3,
@@ -9685,21 +9694,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [
-    "clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Esse_CW_4x4",
    "name": "Terrain Water River Esse CW 4x4",
    "file": "models/Terrain_Water_River_Esse_CW_4x4.glb",
+   "family": "river",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "clockwise"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -9722,21 +9731,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Esse_CW_4x5",
    "name": "Terrain Water River Esse CW 4x5",
    "file": "models/Terrain_Water_River_Esse_CW_4x5.glb",
+   "family": "river",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "4 × 5",
+   "sizeGroup": "size-4",
+   "traits": [
+    "clockwise"
+   ],
+   "variant": null,
    "dwh": [
     4,
     5,
@@ -9759,21 +9768,19 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "4 × 5",
-   "sizeGroup": "size-4",
-   "traits": [
-    "clockwise"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Flat_1x1",
    "name": "Terrain Water River Flat 1x1",
    "file": "models/Terrain_Water_River_Flat_1x1.glb",
+   "family": "river",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -9796,19 +9803,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "flat",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Incline_Gentle_1x4",
    "name": "Terrain Water River Incline Gentle 1x4",
    "file": "models/Terrain_Water_River_Incline_Gentle_1x4.glb",
+   "family": "river",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 4",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "gentle"
+   ],
+   "variant": null,
    "dwh": [
     4,
     1,
@@ -9831,21 +9840,21 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 4",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "gentle"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Terrain_Water_River_Incline_Sharp_1x2",
    "name": "Terrain Water River Incline Sharp 1x2",
    "file": "models/Terrain_Water_River_Incline_Sharp_1x2.glb",
+   "family": "river",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "sharp"
+   ],
+   "variant": null,
    "dwh": [
     2,
     1,
@@ -9868,21 +9877,23 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": [],
-   "family": "river",
-   "shape": "incline",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "sharp"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Inner_Inside_1x2",
    "name": "Tiered Grass 45 Degrees Curve Inner Inside 1x2",
    "file": "models/Tiered_Grass_45_Degrees_Curve_Inner_Inside_1x2.glb",
+   "family": "grass-tier",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "45 degrees",
+    "inside",
+    "grass"
+   ],
+   "variant": 45,
    "dwh": [
     2,
     1,
@@ -9907,7 +9918,12 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2",
+   "name": "Tiered Grass 45 Degrees Curve Inner Outside 1x2",
+   "file": "models/Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -9915,15 +9931,10 @@
    "sizeGroup": "size-narrow",
    "traits": [
     "45 degrees",
-    "inside",
+    "outside",
     "grass"
    ],
-   "variant": 45
-  },
-  {
-   "id": "Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2",
-   "name": "Tiered Grass 45 Degrees Curve Inner Outside 1x2",
-   "file": "models/Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2.glb",
+   "variant": 45,
    "dwh": [
     1.876,
     1,
@@ -9948,23 +9959,23 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "45 degrees",
-    "outside",
-    "grass"
-   ],
-   "variant": 45
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Outer_Inside_2x4",
    "name": "Tiered Grass 45 Degrees Curve Outer Inside 2x4",
    "file": "models/Tiered_Grass_45_Degrees_Curve_Outer_Inside_2x4.glb",
+   "family": "grass-tier",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "2 × 4",
+   "sizeGroup": "size-2",
+   "traits": [
+    "45 degrees",
+    "inside",
+    "grass"
+   ],
+   "variant": 45,
    "dwh": [
     4,
     2,
@@ -9989,7 +10000,12 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4",
+   "name": "Tiered Grass 45 Degrees Curve Outer Outside 2x4",
+   "file": "models/Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -9997,15 +10013,10 @@
    "sizeGroup": "size-2",
    "traits": [
     "45 degrees",
-    "inside",
+    "outside",
     "grass"
    ],
-   "variant": 45
-  },
-  {
-   "id": "Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4",
-   "name": "Tiered Grass 45 Degrees Curve Outer Outside 2x4",
-   "file": "models/Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4.glb",
+   "variant": 45,
    "dwh": [
     4,
     1.882,
@@ -10030,23 +10041,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "2 × 4",
-   "sizeGroup": "size-2",
-   "traits": [
-    "45 degrees",
-    "outside",
-    "grass"
-   ],
-   "variant": 45
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_45_Degrees_Straight_1x1",
    "name": "Tiered Grass 45 Degrees Straight 1x1",
    "file": "models/Tiered_Grass_45_Degrees_Straight_1x1.glb",
+   "family": "grass-tier",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "45 degrees",
+    "grass"
+   ],
+   "variant": 45,
    "dwh": [
     1,
     1,
@@ -10071,22 +10081,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "straight",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "45 degrees",
-    "grass"
-   ],
-   "variant": 45
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Inner_1x1",
    "name": "Tiered Grass Curve Inner 1x1",
    "file": "models/Tiered_Grass_Curve_Inner_1x1.glb",
+   "family": "grass-tier",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -10111,21 +10120,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Inner_2x2",
    "name": "Tiered Grass Curve Inner 2x2",
    "file": "models/Tiered_Grass_Curve_Inner_2x2.glb",
+   "family": "grass-tier",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -10150,21 +10159,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Inner_3x3",
    "name": "Tiered Grass Curve Inner 3x3",
    "file": "models/Tiered_Grass_Curve_Inner_3x3.glb",
+   "family": "grass-tier",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -10189,21 +10198,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Inner_4x4",
    "name": "Tiered Grass Curve Inner 4x4",
    "file": "models/Tiered_Grass_Curve_Inner_4x4.glb",
+   "family": "grass-tier",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -10228,21 +10237,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Inner_5x5",
    "name": "Tiered Grass Curve Inner 5x5",
    "file": "models/Tiered_Grass_Curve_Inner_5x5.glb",
+   "family": "grass-tier",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -10267,21 +10276,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-inner",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Outer_1x1",
    "name": "Tiered Grass Curve Outer 1x1",
    "file": "models/Tiered_Grass_Curve_Outer_1x1.glb",
+   "family": "grass-tier",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     1,
     1,
@@ -10306,21 +10315,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Outer_2x2",
    "name": "Tiered Grass Curve Outer 2x2",
    "file": "models/Tiered_Grass_Curve_Outer_2x2.glb",
+   "family": "grass-tier",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -10345,21 +10354,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Outer_3x3",
    "name": "Tiered Grass Curve Outer 3x3",
    "file": "models/Tiered_Grass_Curve_Outer_3x3.glb",
+   "family": "grass-tier",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -10384,21 +10393,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Outer_4x4",
    "name": "Tiered Grass Curve Outer 4x4",
    "file": "models/Tiered_Grass_Curve_Outer_4x4.glb",
+   "family": "grass-tier",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -10423,21 +10432,21 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Curve_Outer_5x5",
    "name": "Tiered Grass Curve Outer 5x5",
    "file": "models/Tiered_Grass_Curve_Outer_5x5.glb",
+   "family": "grass-tier",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -10462,21 +10471,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "curve-outer",
-   "layer": "layer-none",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Grass_Esse_Inside_1x3",
    "name": "Tiered Grass Esse Inside 1x3",
    "file": "models/Tiered_Grass_Esse_Inside_1x3.glb",
+   "family": "grass-tier",
+   "shape": "esse",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "inside",
+    "grass"
+   ],
+   "variant": null,
    "dwh": [
     3,
     1,
@@ -10501,22 +10511,22 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Grass_Esse_Outside_1x3",
+   "name": "Tiered Grass Esse Outside 1x3",
+   "file": "models/Tiered_Grass_Esse_Outside_1x3.glb",
    "family": "grass-tier",
    "shape": "esse",
    "layer": "layer-none",
    "size": "1 × 3",
    "sizeGroup": "size-narrow",
    "traits": [
-    "inside",
+    "outside",
     "grass"
    ],
-   "variant": null
-  },
-  {
-   "id": "Tiered_Grass_Esse_Outside_1x3",
-   "name": "Tiered Grass Esse Outside 1x3",
-   "file": "models/Tiered_Grass_Esse_Outside_1x3.glb",
+   "variant": null,
    "dwh": [
     3,
     1,
@@ -10541,22 +10551,19 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "grass-tier",
-   "shape": "esse",
-   "layer": "layer-none",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "outside",
-    "grass"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Tiered_Walkway_Step_Top_Path_Transition_1x2",
    "name": "Tiered Walkway Step Top Path Transition 1x2",
    "file": "models/Tiered_Walkway_Step_Top_Path_Transition_1x2.glb",
+   "family": "path-terrain",
+   "shape": "transition",
+   "layer": "layer-top",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2,
     1,
@@ -10584,19 +10591,19 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "path-terrain",
-   "shape": "transition",
-   "layer": "layer-top",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_3x3_Base",
    "name": "Wall Curve Inner 3x3 Base",
    "file": "models/Wall_Curve_Inner_3x3_Base.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-base",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -10622,19 +10629,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-base",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_3x3_Mid",
    "name": "Wall Curve Inner 3x3 Mid",
    "file": "models/Wall_Curve_Inner_3x3_Mid.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -10660,19 +10667,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_3x3_Top",
    "name": "Wall Curve Inner 3x3 Top",
    "file": "models/Wall_Curve_Inner_3x3_Top.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -10698,19 +10705,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_5x5_Base",
    "name": "Wall Curve Inner 5x5 Base",
    "file": "models/Wall_Curve_Inner_5x5_Base.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-base",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -10736,19 +10743,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-base",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_5x5_Mid",
    "name": "Wall Curve Inner 5x5 Mid",
    "file": "models/Wall_Curve_Inner_5x5_Mid.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -10774,19 +10781,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_5x5_Top",
    "name": "Wall Curve Inner 5x5 Top",
    "file": "models/Wall_Curve_Inner_5x5_Top.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     5,
     5,
@@ -10812,19 +10819,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "5 × 5",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_6x6_Base",
    "name": "Wall Curve Inner 6x6 Base",
    "file": "models/Wall_Curve_Inner_6x6_Base.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-base",
+   "size": "6 × 6",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     6,
@@ -10850,19 +10857,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-base",
-   "size": "6 × 6",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_6x6_Mid",
    "name": "Wall Curve Inner 6x6 Mid",
    "file": "models/Wall_Curve_Inner_6x6_Mid.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "6 × 6",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     6,
@@ -10888,19 +10895,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "6 × 6",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_6x6_Top",
    "name": "Wall Curve Inner 6x6 Top",
    "file": "models/Wall_Curve_Inner_6x6_Top.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "6 × 6",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     6,
@@ -10926,19 +10933,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "6 × 6",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_7x7_Base",
    "name": "Wall Curve Inner 7x7 Base",
    "file": "models/Wall_Curve_Inner_7x7_Base.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-base",
+   "size": "7 × 7",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     7,
     7,
@@ -10964,19 +10971,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-base",
-   "size": "7 × 7",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_7x7_Mid",
    "name": "Wall Curve Inner 7x7 Mid",
    "file": "models/Wall_Curve_Inner_7x7_Mid.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-mid",
+   "size": "7 × 7",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     7,
     7,
@@ -11002,19 +11009,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-mid",
-   "size": "7 × 7",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Inner_7x7_Top",
    "name": "Wall Curve Inner 7x7 Top",
    "file": "models/Wall_Curve_Inner_7x7_Top.glb",
+   "family": "wall",
+   "shape": "curve-inner",
+   "layer": "layer-top",
+   "size": "7 × 7",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
    "dwh": [
     7,
     7,
@@ -11040,19 +11047,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-inner",
-   "layer": "layer-top",
-   "size": "7 × 7",
-   "sizeGroup": "size-large",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_2x2_Base",
    "name": "Wall Curve Outer 2x2 Base",
    "file": "models/Wall_Curve_Outer_2x2_Base.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.75,
     1.75,
@@ -11078,19 +11085,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-base",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_2x2_Mid",
    "name": "Wall Curve Outer 2x2 Mid",
    "file": "models/Wall_Curve_Outer_2x2_Mid.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1.004,
     1.004,
@@ -11115,19 +11122,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_2x2_Top",
    "name": "Wall Curve Outer 2x2 Top",
    "file": "models/Wall_Curve_Outer_2x2_Top.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -11153,19 +11160,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_3x3_Base",
    "name": "Wall Curve Outer 3x3 Base",
    "file": "models/Wall_Curve_Outer_3x3_Base.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-base",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.75,
     2.75,
@@ -11191,19 +11198,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-base",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_3x3_Mid",
    "name": "Wall Curve Outer 3x3 Mid",
    "file": "models/Wall_Curve_Outer_3x3_Mid.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     2.004,
     2.004,
@@ -11229,19 +11236,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_3x3_Top",
    "name": "Wall Curve Outer 3x3 Top",
    "file": "models/Wall_Curve_Outer_3x3_Top.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3,
     3,
@@ -11267,19 +11274,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_4x4_Base",
    "name": "Wall Curve Outer 4x4 Base",
    "file": "models/Wall_Curve_Outer_4x4_Base.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-base",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3.75,
     3.75,
@@ -11305,19 +11312,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-base",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_4x4_Mid",
    "name": "Wall Curve Outer 4x4 Mid",
    "file": "models/Wall_Curve_Outer_4x4_Mid.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-mid",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     3.004,
     3.004,
@@ -11343,19 +11350,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-mid",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Curve_Outer_4x4_Top",
    "name": "Wall Curve Outer 4x4 Top",
    "file": "models/Wall_Curve_Outer_4x4_Top.glb",
+   "family": "wall",
+   "shape": "curve-outer",
+   "layer": "layer-top",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     4,
@@ -11381,19 +11388,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "curve-outer",
-   "layer": "layer-top",
-   "size": "4 × 4",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Esse_3x4_Base",
    "name": "Wall Esse 3x4 Base",
    "file": "models/Wall_Esse_3x4_Base.glb",
+   "family": "wall",
+   "shape": "esse",
+   "layer": "layer-base",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     2.75,
@@ -11419,19 +11426,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "esse",
-   "layer": "layer-base",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Esse_3x4_Mid",
    "name": "Wall Esse 3x4 Mid",
    "file": "models/Wall_Esse_3x4_Mid.glb",
+   "family": "wall",
+   "shape": "esse",
+   "layer": "layer-mid",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     2.004,
@@ -11457,19 +11464,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "esse",
-   "layer": "layer-mid",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Esse_3x4_Top",
    "name": "Wall Esse 3x4 Top",
    "file": "models/Wall_Esse_3x4_Top.glb",
+   "family": "wall",
+   "shape": "esse",
+   "layer": "layer-top",
+   "size": "3 × 4",
+   "sizeGroup": "size-3",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     3,
@@ -11495,19 +11502,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "esse",
-   "layer": "layer-top",
-   "size": "3 × 4",
-   "sizeGroup": "size-3",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Esse_4x6_Base",
    "name": "Wall Esse 4x6 Base",
    "file": "models/Wall_Esse_4x6_Base.glb",
+   "family": "wall",
+   "shape": "esse",
+   "layer": "layer-base",
+   "size": "4 × 6",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     3.75,
@@ -11533,19 +11540,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "esse",
-   "layer": "layer-base",
-   "size": "4 × 6",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Esse_4x6_Mid",
    "name": "Wall Esse 4x6 Mid",
    "file": "models/Wall_Esse_4x6_Mid.glb",
+   "family": "wall",
+   "shape": "esse",
+   "layer": "layer-mid",
+   "size": "4 × 6",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     3.004,
@@ -11571,19 +11578,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "esse",
-   "layer": "layer-mid",
-   "size": "4 × 6",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Esse_4x6_Top",
    "name": "Wall Esse 4x6 Top",
    "file": "models/Wall_Esse_4x6_Top.glb",
+   "family": "wall",
+   "shape": "esse",
+   "layer": "layer-top",
+   "size": "4 × 6",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     4,
@@ -11609,19 +11616,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "esse",
-   "layer": "layer-top",
-   "size": "4 × 6",
-   "sizeGroup": "size-4",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Incline_2x4_Base",
    "name": "Wall Incline 2x4 Base",
    "file": "models/Wall_Incline_2x4_Base.glb",
+   "family": "wall",
+   "shape": "incline",
+   "layer": "layer-base",
+   "size": "2 × 4",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     2,
@@ -11648,19 +11655,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "incline",
-   "layer": "layer-base",
-   "size": "2 × 4",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Incline_2x4_Top",
    "name": "Wall Incline 2x4 Top",
    "file": "models/Wall_Incline_2x4_Top.glb",
+   "family": "wall",
+   "shape": "incline",
+   "layer": "layer-top",
+   "size": "2 × 4",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     4,
     2,
@@ -11687,19 +11694,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "incline",
-   "layer": "layer-top",
-   "size": "2 × 4",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Incline_2x6_Base",
    "name": "Wall Incline 2x6 Base",
    "file": "models/Wall_Incline_2x6_Base.glb",
+   "family": "wall",
+   "shape": "incline",
+   "layer": "layer-base",
+   "size": "2 × 6",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     2,
@@ -11726,19 +11733,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "incline",
-   "layer": "layer-base",
-   "size": "2 × 6",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Incline_2x6_Top",
    "name": "Wall Incline 2x6 Top",
    "file": "models/Wall_Incline_2x6_Top.glb",
+   "family": "wall",
+   "shape": "incline",
+   "layer": "layer-top",
+   "size": "2 × 6",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
    "dwh": [
     6,
     2,
@@ -11765,19 +11772,19 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "incline",
-   "layer": "layer-top",
-   "size": "2 × 6",
-   "sizeGroup": "size-2",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Straight_Basic_1x2_Base",
    "name": "Wall Straight Basic 1x2 Base",
    "file": "models/Wall_Straight_Basic_1x2_Base.glb",
+   "family": "wall",
+   "shape": "straight",
+   "layer": "layer-base",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1.75,
@@ -11803,19 +11810,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "straight",
-   "layer": "layer-base",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Straight_Basic_1x2_Mid",
    "name": "Wall Straight Basic 1x2 Mid",
    "file": "models/Wall_Straight_Basic_1x2_Mid.glb",
+   "family": "wall",
+   "shape": "straight",
+   "layer": "layer-mid",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     1.004,
@@ -11841,19 +11848,19 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "straight",
-   "layer": "layer-mid",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Straight_Basic_1x2_Top",
    "name": "Wall Straight Basic 1x2 Top",
    "file": "models/Wall_Straight_Basic_1x2_Top.glb",
+   "family": "wall",
+   "shape": "straight",
+   "layer": "layer-top",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
    "dwh": [
     1,
     2,
@@ -11879,19 +11886,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "1 × 2",
-   "sizeGroup": "size-narrow",
-   "traits": [],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Straight_Deformed_Concave_2x2_Base",
    "name": "Wall Straight Deformed Concave 2x2 Base",
    "file": "models/Wall_Straight_Deformed_Concave_2x2_Base.glb",
+   "family": "wall",
+   "shape": "straight",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "concave",
+    "deformed"
+   ],
+   "variant": null,
    "dwh": [
     2,
     1.75,
@@ -11917,22 +11927,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Wall_Straight_Deformed_Concave_2x2_Mid",
+   "name": "Wall Straight Deformed Concave 2x2 Mid",
+   "file": "models/Wall_Straight_Deformed_Concave_2x2_Mid.glb",
    "family": "wall",
    "shape": "straight",
-   "layer": "layer-base",
+   "layer": "layer-mid",
    "size": "2 × 2",
    "sizeGroup": "size-2",
    "traits": [
     "concave",
     "deformed"
    ],
-   "variant": null
-  },
-  {
-   "id": "Wall_Straight_Deformed_Concave_2x2_Mid",
-   "name": "Wall Straight Deformed Concave 2x2 Mid",
-   "file": "models/Wall_Straight_Deformed_Concave_2x2_Mid.glb",
+   "variant": null,
    "dwh": [
     2,
     1.004,
@@ -11958,22 +11968,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Wall_Straight_Deformed_Concave_2x2_Top",
+   "name": "Wall Straight Deformed Concave 2x2 Top",
+   "file": "models/Wall_Straight_Deformed_Concave_2x2_Top.glb",
    "family": "wall",
    "shape": "straight",
-   "layer": "layer-mid",
+   "layer": "layer-top",
    "size": "2 × 2",
    "sizeGroup": "size-2",
    "traits": [
     "concave",
     "deformed"
    ],
-   "variant": null
-  },
-  {
-   "id": "Wall_Straight_Deformed_Concave_2x2_Top",
-   "name": "Wall Straight Deformed Concave 2x2 Top",
-   "file": "models/Wall_Straight_Deformed_Concave_2x2_Top.glb",
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -11999,22 +12009,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "concave",
-    "deformed"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Straight_Deformed_Convex_2x2_Base",
    "name": "Wall Straight Deformed Convex 2x2 Base",
    "file": "models/Wall_Straight_Deformed_Convex_2x2_Base.glb",
+   "family": "wall",
+   "shape": "straight",
+   "layer": "layer-base",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "convex",
+    "deformed"
+   ],
+   "variant": null,
    "dwh": [
     2,
     2,
@@ -12040,22 +12050,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Wall_Straight_Deformed_Convex_2x2_Mid",
+   "name": "Wall Straight Deformed Convex 2x2 Mid",
+   "file": "models/Wall_Straight_Deformed_Convex_2x2_Mid.glb",
    "family": "wall",
    "shape": "straight",
-   "layer": "layer-base",
+   "layer": "layer-mid",
    "size": "2 × 2",
    "sizeGroup": "size-2",
    "traits": [
     "convex",
     "deformed"
    ],
-   "variant": null
-  },
-  {
-   "id": "Wall_Straight_Deformed_Convex_2x2_Mid",
-   "name": "Wall Straight Deformed Convex 2x2 Mid",
-   "file": "models/Wall_Straight_Deformed_Convex_2x2_Mid.glb",
+   "variant": null,
    "dwh": [
     2,
     1.293,
@@ -12081,22 +12091,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Wall_Straight_Deformed_Convex_2x2_Top",
+   "name": "Wall Straight Deformed Convex 2x2 Top",
+   "file": "models/Wall_Straight_Deformed_Convex_2x2_Top.glb",
    "family": "wall",
    "shape": "straight",
-   "layer": "layer-mid",
+   "layer": "layer-top",
    "size": "2 × 2",
    "sizeGroup": "size-2",
    "traits": [
     "convex",
     "deformed"
    ],
-   "variant": null
-  },
-  {
-   "id": "Wall_Straight_Deformed_Convex_2x2_Top",
-   "name": "Wall Straight Deformed Convex 2x2 Top",
-   "file": "models/Wall_Straight_Deformed_Convex_2x2_Top.glb",
+   "variant": null,
    "dwh": [
     2,
     2.237,
@@ -12122,22 +12132,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "2 × 2",
-   "sizeGroup": "size-2",
-   "traits": [
-    "convex",
-    "deformed"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Wall_Straight_Deformed_Convex_3x3_Base",
    "name": "Wall Straight Deformed Convex 3x3 Base",
    "file": "models/Wall_Straight_Deformed_Convex_3x3_Base.glb",
+   "family": "wall",
+   "shape": "straight",
+   "layer": "layer-base",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "convex",
+    "deformed"
+   ],
+   "variant": null,
    "dwh": [
     3,
     2.633,
@@ -12163,22 +12173,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Wall_Straight_Deformed_Convex_3x3_Mid",
+   "name": "Wall Straight Deformed Convex 3x3 Mid",
+   "file": "models/Wall_Straight_Deformed_Convex_3x3_Mid.glb",
    "family": "wall",
    "shape": "straight",
-   "layer": "layer-base",
+   "layer": "layer-mid",
    "size": "3 × 3",
    "sizeGroup": "size-3",
    "traits": [
     "convex",
     "deformed"
    ],
-   "variant": null
-  },
-  {
-   "id": "Wall_Straight_Deformed_Convex_3x3_Mid",
-   "name": "Wall Straight Deformed Convex 3x3 Mid",
-   "file": "models/Wall_Straight_Deformed_Convex_3x3_Mid.glb",
+   "variant": null,
    "dwh": [
     3,
     1.929,
@@ -12204,22 +12214,22 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Wall_Straight_Deformed_Convex_3x3_Top",
+   "name": "Wall Straight Deformed Convex 3x3 Top",
+   "file": "models/Wall_Straight_Deformed_Convex_3x3_Top.glb",
    "family": "wall",
    "shape": "straight",
-   "layer": "layer-mid",
+   "layer": "layer-top",
    "size": "3 × 3",
    "sizeGroup": "size-3",
    "traits": [
     "convex",
     "deformed"
    ],
-   "variant": null
-  },
-  {
-   "id": "Wall_Straight_Deformed_Convex_3x3_Top",
-   "name": "Wall Straight Deformed Convex 3x3 Top",
-   "file": "models/Wall_Straight_Deformed_Convex_3x3_Top.glb",
+   "variant": null,
    "dwh": [
     3,
     2.869,
@@ -12245,22 +12255,21 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": [],
-   "family": "wall",
-   "shape": "straight",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "convex",
-    "deformed"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Water_Circle_1_Lowpoly",
    "name": "Water Circle 1 Lowpoly",
    "file": "models/Water_Circle_1_Lowpoly.glb",
+   "family": "water",
+   "shape": "standalone",
+   "layer": "layer-none",
+   "size": null,
+   "sizeGroup": "size-none",
+   "traits": [
+    "lowpoly"
+   ],
+   "variant": 1,
    "dwh": [
     40,
     40,
@@ -12283,21 +12292,21 @@
    "materials": [
     "material|water-lake"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Circle_2_Midpoly",
+   "name": "Water Circle 2 Midpoly",
+   "file": "models/Water_Circle_2_Midpoly.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-none",
    "size": null,
    "sizeGroup": "size-none",
    "traits": [
-    "lowpoly"
+    "midpoly"
    ],
-   "variant": 1
-  },
-  {
-   "id": "Water_Circle_2_Midpoly",
-   "name": "Water Circle 2 Midpoly",
-   "file": "models/Water_Circle_2_Midpoly.glb",
+   "variant": 2,
    "dwh": [
     40.799,
     40.799,
@@ -12320,21 +12329,21 @@
    "materials": [
     "material|water-lake"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Circle_3_Highpoly",
+   "name": "Water Circle 3 Highpoly",
+   "file": "models/Water_Circle_3_Highpoly.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-none",
    "size": null,
    "sizeGroup": "size-none",
    "traits": [
-    "midpoly"
+    "highpoly"
    ],
-   "variant": 2
-  },
-  {
-   "id": "Water_Circle_3_Highpoly",
-   "name": "Water Circle 3 Highpoly",
-   "file": "models/Water_Circle_3_Highpoly.glb",
+   "variant": 3,
    "dwh": [
     40.532,
     40.532,
@@ -12357,21 +12366,21 @@
    "materials": [
     "material|water-lake"
    ],
-   "missingTextures": [],
-   "family": "water",
-   "shape": "standalone",
-   "layer": "layer-none",
-   "size": null,
-   "sizeGroup": "size-none",
-   "traits": [
-    "highpoly"
-   ],
-   "variant": 3
+   "missingTextures": []
   },
   {
    "id": "Water_Waterfall_Base_Center_1x1",
    "name": "Water Waterfall Base Center 1x1",
    "file": "models/Water_Waterfall_Base_Center_1x1.glb",
+   "family": "water",
+   "shape": "standalone",
+   "layer": "layer-base",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     0,
     1,
@@ -12394,21 +12403,21 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Base_Left_1x1",
+   "name": "Water Waterfall Base Left 1x1",
+   "file": "models/Water_Waterfall_Base_Left_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-base",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
-    "center"
+    "left"
    ],
-   "variant": null
-  },
-  {
-   "id": "Water_Waterfall_Base_Left_1x1",
-   "name": "Water Waterfall Base Left 1x1",
-   "file": "models/Water_Waterfall_Base_Left_1x1.glb",
+   "variant": null,
    "dwh": [
     0.75,
     2,
@@ -12431,21 +12440,21 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Base_Right_1x1",
+   "name": "Water Waterfall Base Right 1x1",
+   "file": "models/Water_Waterfall_Base_Right_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-base",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
-    "left"
+    "right"
    ],
-   "variant": null
-  },
-  {
-   "id": "Water_Waterfall_Base_Right_1x1",
-   "name": "Water Waterfall Base Right 1x1",
-   "file": "models/Water_Waterfall_Base_Right_1x1.glb",
+   "variant": null,
    "dwh": [
     0.75,
     2,
@@ -12468,21 +12477,21 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": [],
-   "family": "water",
-   "shape": "standalone",
-   "layer": "layer-base",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "right"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Water_Waterfall_Mid_Center_1x1",
    "name": "Water Waterfall Mid Center 1x1",
    "file": "models/Water_Waterfall_Mid_Center_1x1.glb",
+   "family": "water",
+   "shape": "standalone",
+   "layer": "layer-mid",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     0,
     1,
@@ -12505,21 +12514,21 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Mid_Left_1x1",
+   "name": "Water Waterfall Mid Left 1x1",
+   "file": "models/Water_Waterfall_Mid_Left_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-mid",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
-    "center"
+    "left"
    ],
-   "variant": null
-  },
-  {
-   "id": "Water_Waterfall_Mid_Left_1x1",
-   "name": "Water Waterfall Mid Left 1x1",
-   "file": "models/Water_Waterfall_Mid_Left_1x1.glb",
+   "variant": null,
    "dwh": [
     0.75,
     2,
@@ -12542,21 +12551,21 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Water_Waterfall_Mid_Right_1x1",
+   "name": "Water Waterfall Mid Right 1x1",
+   "file": "models/Water_Waterfall_Mid_Right_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-mid",
    "size": "1 × 1",
    "sizeGroup": "size-1x1",
    "traits": [
-    "left"
+    "right"
    ],
-   "variant": null
-  },
-  {
-   "id": "Water_Waterfall_Mid_Right_1x1",
-   "name": "Water Waterfall Mid Right 1x1",
-   "file": "models/Water_Waterfall_Mid_Right_1x1.glb",
+   "variant": null,
    "dwh": [
     0.75,
     2,
@@ -12579,21 +12588,21 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": [],
-   "family": "water",
-   "shape": "standalone",
-   "layer": "layer-mid",
-   "size": "1 × 1",
-   "sizeGroup": "size-1x1",
-   "traits": [
-    "right"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Water_Waterfall_Top_Center_1x3",
    "name": "Water Waterfall Top Center 1x3",
    "file": "models/Water_Waterfall_Top_Center_1x3.glb",
+   "family": "water",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     2.501,
     1,
@@ -12620,21 +12629,21 @@
    ],
    "missingTextures": [
     "uvmap image 32x16.png"
-   ],
-   "family": "water",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "center"
-   ],
-   "variant": null
+   ]
   },
   {
    "id": "Water_Waterfall_Top_Left_2x3",
    "name": "Water Waterfall Top Left 2x3",
    "file": "models/Water_Waterfall_Top_Left_2x3.glb",
+   "family": "water",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "2 × 3",
+   "sizeGroup": "size-2",
+   "traits": [
+    "left"
+   ],
+   "variant": null,
    "dwh": [
     2.501,
     2,
@@ -12661,21 +12670,21 @@
    ],
    "missingTextures": [
     "uvmap image 32x16.png"
-   ],
+   ]
+  },
+  {
+   "id": "Water_Waterfall_Top_Right_2x3",
+   "name": "Water Waterfall Top Right 2x3",
+   "file": "models/Water_Waterfall_Top_Right_2x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",
    "size": "2 × 3",
    "sizeGroup": "size-2",
    "traits": [
-    "left"
+    "right"
    ],
-   "variant": null
-  },
-  {
-   "id": "Water_Waterfall_Top_Right_2x3",
-   "name": "Water Waterfall Top Right 2x3",
-   "file": "models/Water_Waterfall_Top_Right_2x3.glb",
+   "variant": null,
    "dwh": [
     2.501,
     2,
@@ -12702,21 +12711,21 @@
    ],
    "missingTextures": [
     "uvmap image 32x16.png"
-   ],
-   "family": "water",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "2 × 3",
-   "sizeGroup": "size-2",
-   "traits": [
-    "right"
-   ],
-   "variant": null
+   ]
   },
   {
    "id": "Waterfall_Center_Top_Terrain_1x3",
    "name": "Waterfall Center Top Terrain 1x3",
    "file": "models/Waterfall_Center_Top_Terrain_1x3.glb",
+   "family": "water",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [
+    "center"
+   ],
+   "variant": null,
    "dwh": [
     1.692,
     1,
@@ -12743,21 +12752,21 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "water",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "1 × 3",
-   "sizeGroup": "size-narrow",
-   "traits": [
-    "center"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Waterfall_Left_Top_Terrain_3x3",
    "name": "Waterfall Left Top Terrain 3x3",
    "file": "models/Waterfall_Left_Top_Terrain_3x3.glb",
+   "family": "water",
+   "shape": "standalone",
+   "layer": "layer-top",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "left"
+   ],
+   "variant": null,
    "dwh": [
     2.95,
     3,
@@ -12786,21 +12795,21 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
+   "missingTextures": []
+  },
+  {
+   "id": "Waterfall_Right_Top_Terrain_3x3",
+   "name": "Waterfall Right Top Terrain 3x3",
+   "file": "models/Waterfall_Right_Top_Terrain_3x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",
    "size": "3 × 3",
    "sizeGroup": "size-3",
    "traits": [
-    "left"
+    "right"
    ],
-   "variant": null
-  },
-  {
-   "id": "Waterfall_Right_Top_Terrain_3x3",
-   "name": "Waterfall Right Top Terrain 3x3",
-   "file": "models/Waterfall_Right_Top_Terrain_3x3.glb",
+   "variant": null,
    "dwh": [
     2.95,
     3,
@@ -12829,49 +12838,12 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": [],
-   "family": "water",
-   "shape": "standalone",
-   "layer": "layer-top",
-   "size": "3 × 3",
-   "sizeGroup": "size-3",
-   "traits": [
-    "right"
-   ],
-   "variant": null
+   "missingTextures": []
   },
   {
    "id": "Crack_Large",
    "name": "Crack Large",
    "file": "assemblies/Crack_Large.glb",
-   "dwh": [
-    7,
-    8,
-    2.25
-   ],
-   "min": [
-    -3.5,
-    -1,
-    -3.5
-   ],
-   "max": [
-    3.5,
-    1.25,
-    4.5
-   ],
-   "triangles": 942,
-   "trianglesPerUnit": 7,
-   "calls": 109,
-   "bytes": 100164,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-violet",
-    "hidden|hidden-yellow",
-    "material|cliff-face",
-    "material|grass"
-   ],
-   "missingTextures": [],
    "group": "assembly-crack",
    "family": null,
    "shape": null,
@@ -12951,46 +12923,40 @@
      "id": "Grass_Carpet_Esse_3x3",
      "count": 1
     }
-   ]
+   ],
+   "dwh": [
+    7,
+    8,
+    2.25
+   ],
+   "min": [
+    -3.5,
+    -1,
+    -3.5
+   ],
+   "max": [
+    3.5,
+    1.25,
+    4.5
+   ],
+   "triangles": 942,
+   "trianglesPerUnit": 7,
+   "calls": 109,
+   "bytes": 100164,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|grass"
+   ],
+   "missingTextures": []
   },
   {
    "id": "Path_Bridge_River_Wide",
    "name": "Path Bridge River Wide",
    "file": "assemblies/Path_Bridge_River_Wide.glb",
-   "dwh": [
-    10,
-    3,
-    2.25
-   ],
-   "min": [
-    -4.5,
-    -1,
-    -1.5
-   ],
-   "max": [
-    5.5,
-    1.25,
-    1.5
-   ],
-   "triangles": 5292,
-   "trianglesPerUnit": 78,
-   "calls": 105,
-   "bytes": 168572,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-orange",
-    "hidden|hidden-pink",
-    "hidden|hidden-red",
-    "hidden|hidden-violet",
-    "material|dirt",
-    "material|grass",
-    "material|water-river",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end",
-    "material|wood-medium"
-   ],
-   "missingTextures": [],
    "group": "assembly-path",
    "family": null,
    "shape": null,
@@ -13030,7 +12996,41 @@
      "id": "Grass_Flat_1x1",
      "count": 1
     }
-   ]
+   ],
+   "dwh": [
+    10,
+    3,
+    2.25
+   ],
+   "min": [
+    -4.5,
+    -1,
+    -1.5
+   ],
+   "max": [
+    5.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 5292,
+   "trianglesPerUnit": 78,
+   "calls": 105,
+   "bytes": 168572,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "material|dirt",
+    "material|grass",
+    "material|water-river",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": []
   }
  ]
 }

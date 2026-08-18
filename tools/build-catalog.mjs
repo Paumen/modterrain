@@ -177,7 +177,7 @@ const unknownMaterials = new Set();
  * across both collections, so a swatch's count covers everything the catalog
  * shows and the filter bar keeps working across tabs.
  */
-function describe(dir, prefix, file) {
+function describe(dir, prefix, file, classify) {
   const id = file.replace(/\.glb$/, '');
   const glb = readGlb(join(dir, file));
   const measured = measureScene(glb);
@@ -219,6 +219,10 @@ function describe(dir, prefix, file) {
     id,
     name: readableName(id),
     file: `${prefix}/${file}`,
+    // A record's classification is inserted here by the caller — the field
+    // order below is the order catalog.json is written in, and a piece has
+    // its facets between its name and its measurements.
+    ...classify(id),
     dwh: measured.dwh,
     // This pack is deliberately not centered on the origin: each piece's
     // origin IS its grid cell. Where it sits around that — whether it
@@ -235,21 +239,18 @@ function describe(dir, prefix, file) {
   };
 }
 
-const models = files.map((file) => {
-  const described = describe(MODELS_DIR, 'models', file);
-  const size = determineSize(described.id);
-
+const models = files.map((file) => describe(MODELS_DIR, 'models', file, (id) => {
+  const size = determineSize(id);
   return {
-    ...described,
-    family: determineFamily(described.id).id,
-    shape: determineShape(described.id).id,
-    layer: determineLayer(described.id).id,
+    family: determineFamily(id).id,
+    shape: determineShape(id).id,
+    layer: determineLayer(id).id,
     size: size?.label ?? null,
     sizeGroup: determineSizeGroup(size).id,
-    traits: determineTraits(described.id),
-    variant: determineVariant(described.id),
+    traits: determineTraits(id),
+    variant: determineVariant(id),
   };
-});
+}));
 
 const modelIds = new Set(models.map((model) => model.id));
 
@@ -267,9 +268,8 @@ const assemblyFiles = existsSync(ASSEMBLIES_DIR)
   ? readdirSync(ASSEMBLIES_DIR).filter((name) => name.endsWith('.glb')).sort()
   : [];
 
-const assemblies = assemblyFiles.map((file) => {
-  const described = describe(ASSEMBLIES_DIR, 'assemblies', file);
-  const placed = placements[described.id] ?? [];
+const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assemblies', file, (id) => {
+  const placed = placements[id] ?? [];
 
   // Distinct pieces with how often each occurs, most-used first — the same
   // wall segment nine times is one entry, which is how the assembly is
@@ -277,12 +277,11 @@ const assemblies = assemblyFiles.map((file) => {
   const counts = new Map();
   for (const { piece } of placed) counts.set(piece, (counts.get(piece) ?? 0) + 1);
   const pieces = [...counts]
-    .map(([id, count]) => ({ id, count }))
+    .map(([piece, count]) => ({ id: piece, count }))
     .sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
 
   return {
-    ...described,
-    group: determineAssemblyGroup(described.id).id,
+    group: determineAssemblyGroup(id).id,
     family: null,
     shape: null,
     layer: null,
@@ -294,10 +293,10 @@ const assemblies = assemblyFiles.map((file) => {
     // Pieces this repo doesn't carry: named by the prefab, absent from the
     // built .glb. Zero for everything checked in, but the catalog says so
     // rather than quietly showing a partial assembly as a whole one.
-    missingPieces: [...new Set(pieces.filter((p) => !modelIds.has(p.id)).map((p) => p.id))],
+    missingPieces: pieces.filter((p) => !modelIds.has(p.id)).map((p) => p.id),
     pieces,
   };
-});
+}));
 
 /* -- checking the grid size --------------------------------------------
  * The whole catalog measures in grid cells of UNITS_PER_CELL, and that
