@@ -24,14 +24,37 @@ const VERDICT = {
 const loader = new GLTFLoader();
 const cache = new Map();
 
+const SOCKET = /^Hidden[ _]?/;
+let socketColor = () => null;
+
+/* The pack's socket colours are pale by design — under lighting they all read
+ * as off-white, which defeats the point of looking at them. They are deepened
+ * for display only. A grey stays grey, so the uncoloured `Hidden` faces do not
+ * pick up a tint they never had. */
+function display(hex) {
+  const color = new THREE.Color(hex);
+  const hsl = color.getHSL({ h: 0, s: 0, l: 0 });
+  return color.setHSL(hsl.h, Math.min(1, hsl.s * 2.4), Math.max(0.32, hsl.l * 0.72));
+}
+
+/* The `Hidden` faces are the sockets, and they are also what closes each
+ * shell: the visible surfaces alone are one-sided, so a piece with its
+ * sockets stripped out reads as a sheet of paper. They are kept, painted in
+ * the colour that names them — which is the thing this tab is about. */
 function loadPiece(id, piece) {
   if (!cache.has(id)) {
     cache.set(id, loader.loadAsync(`${piece.dir}/${id}.glb`).then((gltf) => {
       const root = gltf.scene;
-      // Sockets are construction data, not something to look at. Scenes spell
-      // the names with an underscore.
       root.traverse((node) => {
-        if (node.isMesh && /^Hidden[ _]?/.test(node.material?.name ?? '')) node.visible = false;
+        const name = node.isMesh ? (node.material?.name ?? '') : '';
+        if (!SOCKET.test(name)) return;
+
+        node.userData.socket = true;
+        node.material = new THREE.MeshStandardMaterial({
+          color: display(socketColor(name.replace('_', ' ')) ?? '#f8f8f8'),
+          roughness: 0.85,
+          metalness: 0,
+        });
       });
       return root;
     }));
@@ -39,7 +62,8 @@ function loadPiece(id, piece) {
   return cache.get(id);
 }
 
-export function createViewport(canvas, { onTap, onHover }) {
+export function createViewport(canvas, { onTap, onHover, colorOf }) {
+  socketColor = colorOf ?? socketColor;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
@@ -216,7 +240,8 @@ export function createViewport(canvas, { onTap, onHover }) {
     if (ghostFor !== key) return;
 
     model.traverse((node) => {
-      if (!node.isMesh || !node.visible) return;
+      if (!node.isMesh) return;
+      if (node.userData.socket && !showSockets) { node.visible = false; return; }
       node.material = node.material.clone();
       node.material.transparent = true;
       node.material.opacity = 0.42;
@@ -282,6 +307,17 @@ export function createViewport(canvas, { onTap, onHover }) {
     invalidate();
   }
 
+  // Sockets can be taken back out of the view once they have been read; the
+  // pieces go back to being shells when they are.
+  let showSockets = true;
+
+  function setSockets(show) {
+    showSockets = show;
+    pieces.traverse((node) => { if (node.userData.socket) node.visible = show; });
+    preview.traverse((node) => { if (node.userData.socket) node.visible = show; });
+    invalidate();
+  }
+
   // The pick lands on the plane you are building on, not on the ground: at
   // level 2 the ground behind a cliff is a different cell entirely.
   function setLevel(level) {
@@ -343,6 +379,7 @@ export function createViewport(canvas, { onTap, onHover }) {
       const model = loaded[index].clone(true);
       apply(model, placement);
       model.userData.placement = placement.id;
+      if (!showSockets) model.traverse((node) => { if (node.userData.socket) node.visible = false; });
 
       if (placement.id === selected) {
         model.traverse((node) => {
@@ -434,5 +471,5 @@ export function createViewport(canvas, { onTap, onHover }) {
   }
 
   resize();
-  return { sync, ghost, setView, setLevel, orbit, zoom, exportGlb, resize, invalidate };
+  return { sync, ghost, setView, setLevel, setSockets, orbit, zoom, exportGlb, resize, invalidate };
 }

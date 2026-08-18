@@ -767,6 +767,13 @@ export async function mount(container, catalog) {
     try { load(await file.text()); } catch (error) { alert(`Could not open that build: ${error.message}`); }
   });
 
+  const socketsButton = role('sockets');
+  socketsButton.addEventListener('click', () => {
+    const show = socketsButton.getAttribute('aria-pressed') !== 'true';
+    socketsButton.setAttribute('aria-pressed', String(show));
+    viewport.setSockets(show);
+  });
+
   role('orbit-left').addEventListener('click', () => viewport.orbit(-Math.PI / 8));
   role('orbit-right').addEventListener('click', () => viewport.orbit(Math.PI / 8));
   role('zoom-in').addEventListener('click', () => viewport.zoom(0.8));
@@ -839,6 +846,7 @@ export async function mount(container, catalog) {
 
   const { createViewport } = await import('./viewport.js');
   viewport = createViewport(role('view'), {
+    colorOf: (name) => swatches.get(name),
     onTap: ({ id, x, z }) => {
       if (brush && x !== null) return aim(x, z);
       select(id ?? (x === null ? null : topmostAt(x, z)));
