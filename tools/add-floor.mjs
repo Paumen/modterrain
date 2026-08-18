@@ -103,11 +103,13 @@ function addFloor(glb) {
 
   const imageBufferView = pushBufferView(GRID_PNG);
   const imageIndex = json.images.push({ mimeType: 'image/png', bufferView: imageBufferView }) - 1;
-  // No mipmap filter: thumbnails render this plane small, and mip
-  // minification thins the grid lines toward invisible. Plain LINEAR keeps
-  // full-resolution sampling at any distance (fine for a static, unlit,
-  // non-interactive thumbnail — no motion to alias against).
-  const samplerIndex = json.samplers.push({ wrapS: 10497, wrapT: 10497, magFilter: 9729, minFilter: 9729 }) - 1;
+  // minFilter LINEAR, no mipmap: thumbnails render this plane small, and mip
+  // minification thins the grid lines toward invisible; full-resolution
+  // sampling at any distance keeps them present.
+  // magFilter NEAREST: the detail panel views this plane large (auto-rotate,
+  // camera-controls), where LINEAR magnification blurs a thin line into a
+  // soft smear. NEAREST keeps the line edge crisp there.
+  const samplerIndex = json.samplers.push({ wrapS: 10497, wrapT: 10497, magFilter: 9728, minFilter: 9729 }) - 1;
   const textureIndex = json.textures.push({ source: imageIndex, sampler: samplerIndex }) - 1;
   const materialIndex = json.materials.push({
     name: 'Floor Grid',

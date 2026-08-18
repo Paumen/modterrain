@@ -263,7 +263,7 @@ function showDetail(model) {
   download.setAttribute('download', `${model.id}.glb`);
 
   const viewer = document.createElement('model-viewer');
-  viewer.src = model.file;
+  viewer.src = (currentView === 'parts' && model.floorFile) || model.file;
   viewer.alt = `3D model ${model.name}`;
   viewer.setAttribute('camera-controls', '');
   viewer.setAttribute('camera-orbit', '35deg 68deg auto');
