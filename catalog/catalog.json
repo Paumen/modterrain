@@ -2312,7 +2312,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Narrow_Base.glb"
   },
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
@@ -2350,7 +2351,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Narrow_Mid.glb"
   },
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Top",
@@ -2391,7 +2393,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Narrow_Top.glb"
   },
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Under",
@@ -2429,7 +2432,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Narrow_Under.glb"
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Base",
@@ -2467,7 +2471,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Wide_Base.glb"
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Mid",
@@ -2505,7 +2510,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Wide_Mid.glb"
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Top",
@@ -2546,7 +2552,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Wide_Top.glb"
   },
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Under",
@@ -2584,7 +2591,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_2x2_Wide_Under.glb"
   },
   {
    "id": "Basic_Curve_Inner_3x3_Base",
@@ -2620,7 +2628,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_3x3_Base.glb"
   },
   {
    "id": "Basic_Curve_Inner_3x3_Mid",
@@ -2656,7 +2665,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_3x3_Mid.glb"
   },
   {
    "id": "Basic_Curve_Inner_3x3_Top",
@@ -2695,7 +2705,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_3x3_Top.glb"
   },
   {
    "id": "Basic_Curve_Inner_3x3_Under",
@@ -2731,7 +2742,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Inner_3x3_Under.glb"
   },
   {
    "id": "Basic_Curve_Outer_1x1_Base",
@@ -2767,7 +2779,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_1x1_Base.glb"
   },
   {
    "id": "Basic_Curve_Outer_1x1_Mid",
@@ -2803,7 +2816,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_1x1_Mid.glb"
   },
   {
    "id": "Basic_Curve_Outer_1x1_Top",
@@ -2841,7 +2855,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_1x1_Top.glb"
   },
   {
    "id": "Basic_Curve_Outer_1x1_Under",
@@ -2877,7 +2892,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_1x1_Under.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Base",
@@ -2915,7 +2931,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Narrow_Base.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
@@ -2953,7 +2970,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Narrow_Mid.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Top",
@@ -2994,7 +3012,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Narrow_Top.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Under",
@@ -3032,7 +3051,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Narrow_Under.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Base",
@@ -3070,7 +3090,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Wide_Base.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Mid",
@@ -3108,7 +3129,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Wide_Mid.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Top",
@@ -3149,7 +3171,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Wide_Top.glb"
   },
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Under",
@@ -3187,7 +3210,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_2x2_Wide_Under.glb"
   },
   {
    "id": "Basic_Curve_Outer_3x3_Base",
@@ -3223,7 +3247,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_3x3_Base.glb"
   },
   {
    "id": "Basic_Curve_Outer_3x3_Mid",
@@ -3259,7 +3284,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_3x3_Mid.glb"
   },
   {
    "id": "Basic_Curve_Outer_3x3_Top",
@@ -3298,7 +3324,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_3x3_Top.glb"
   },
   {
    "id": "Basic_Curve_Outer_3x3_Under",
@@ -3334,7 +3361,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Curve_Outer_3x3_Under.glb"
   },
   {
    "id": "Basic_Esse_Base_2x2",
@@ -3370,7 +3398,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Esse_Base_2x2.glb"
   },
   {
    "id": "Basic_Esse_Mid_2x2",
@@ -3406,7 +3435,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Esse_Mid_2x2.glb"
   },
   {
    "id": "Basic_Esse_Top_2x2",
@@ -3445,7 +3475,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Esse_Top_2x2.glb"
   },
   {
    "id": "Basic_Esse_Under_2x2",
@@ -3481,7 +3512,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Esse_Under_2x2.glb"
   },
   {
    "id": "Basic_Incline_Base_2x2",
@@ -3517,7 +3549,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Incline_Base_2x2.glb"
   },
   {
    "id": "Basic_Incline_Top_2x2",
@@ -3556,7 +3589,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Incline_Top_2x2.glb"
   },
   {
    "id": "Basic_Incline_Under_1x2",
@@ -3592,7 +3626,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Incline_Under_1x2.glb"
   },
   {
    "id": "Basic_Straight_Base_1x2",
@@ -3628,7 +3663,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Straight_Base_1x2.glb"
   },
   {
    "id": "Basic_Straight_Mid_1x1",
@@ -3664,7 +3700,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Straight_Mid_1x1.glb"
   },
   {
    "id": "Basic_Straight_Top_1x1",
@@ -3703,7 +3740,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Straight_Top_1x1.glb"
   },
   {
    "id": "Basic_Straight_Under_1x1",
@@ -3739,7 +3777,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Straight_Under_1x1.glb"
   },
   {
    "id": "Basic_Under_Inner_Flat_1x1",
@@ -3775,7 +3814,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Under_Inner_Flat_1x1.glb"
   },
   {
    "id": "Basic_Under_Inner_Incline_1x2",
@@ -3811,7 +3851,8 @@
     "hidden|hidden",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Basic_Under_Inner_Incline_1x2.glb"
   },
   {
    "id": "Cave_Center_Base_1x1",
@@ -3850,7 +3891,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Center_Base_1x1.glb"
   },
   {
    "id": "Cave_Center_Top_1x1",
@@ -3889,7 +3931,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Center_Top_1x1.glb"
   },
   {
    "id": "Cave_Edge_Esse_Base_3x3",
@@ -3929,7 +3972,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Edge_Esse_Base_3x3.glb"
   },
   {
    "id": "Cave_Edge_Esse_Mid_2x3",
@@ -3968,7 +4012,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Edge_Esse_Mid_2x3.glb"
   },
   {
    "id": "Cave_Edge_Esse_Top_3x4",
@@ -4008,7 +4053,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Edge_Esse_Top_3x4.glb"
   },
   {
    "id": "Cave_Edge_Straight_Base_2x2",
@@ -4048,7 +4094,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Edge_Straight_Base_2x2.glb"
   },
   {
    "id": "Cave_Edge_Straight_Mid_1x1",
@@ -4087,7 +4134,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Edge_Straight_Mid_1x1.glb"
   },
   {
    "id": "Cave_Edge_Straight_Top_1x3",
@@ -4127,7 +4175,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cave_Edge_Straight_Top_1x3.glb"
   },
   {
    "id": "Cracked_Curve_Inner_2x2_1_Mid",
@@ -4166,7 +4215,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_2x2_1_Mid.glb"
   },
   {
    "id": "Cracked_Curve_Inner_2x2_1_Top",
@@ -4205,7 +4255,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_2x2_1_Top.glb"
   },
   {
    "id": "Cracked_Curve_Inner_3x3_1_Mid",
@@ -4244,7 +4295,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_3x3_1_Mid.glb"
   },
   {
    "id": "Cracked_Curve_Inner_3x3_1_Top",
@@ -4283,7 +4335,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_3x3_1_Top.glb"
   },
   {
    "id": "Cracked_Curve_Inner_4x4_1_Mid",
@@ -4322,7 +4375,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_4x4_1_Mid.glb"
   },
   {
    "id": "Cracked_Curve_Inner_4x4_1_Top",
@@ -4361,7 +4415,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_4x4_1_Top.glb"
   },
   {
    "id": "Cracked_Curve_Inner_4x4_2_Mid",
@@ -4400,7 +4455,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_4x4_2_Mid.glb"
   },
   {
    "id": "Cracked_Curve_Inner_4x4_2_Top",
@@ -4439,7 +4495,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Inner_4x4_2_Top.glb"
   },
   {
    "id": "Cracked_Curve_Outer_2x2_1_Mid",
@@ -4477,7 +4534,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Outer_2x2_1_Mid.glb"
   },
   {
    "id": "Cracked_Curve_Outer_2x2_1_Top",
@@ -4515,7 +4573,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Outer_2x2_1_Top.glb"
   },
   {
    "id": "Cracked_Curve_Outer_3x3_1_Mid",
@@ -4553,7 +4612,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Outer_3x3_1_Mid.glb"
   },
   {
    "id": "Cracked_Curve_Outer_3x3_1_Top",
@@ -4591,7 +4651,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Outer_3x3_1_Top.glb"
   },
   {
    "id": "Cracked_Curve_Outer_3x3_2_Mid",
@@ -4629,7 +4690,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Outer_3x3_2_Mid.glb"
   },
   {
    "id": "Cracked_Curve_Outer_3x3_2_Top",
@@ -4667,7 +4729,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Curve_Outer_3x3_2_Top.glb"
   },
   {
    "id": "Cracked_Straight_1x2_1_Mid",
@@ -4706,7 +4769,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_1x2_1_Mid.glb"
   },
   {
    "id": "Cracked_Straight_1x2_1_Top",
@@ -4745,7 +4809,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_1x2_1_Top.glb"
   },
   {
    "id": "Cracked_Straight_2x2_1_Mid",
@@ -4784,7 +4849,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_2x2_1_Mid.glb"
   },
   {
    "id": "Cracked_Straight_2x2_1_Top",
@@ -4823,7 +4889,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_2x2_1_Top.glb"
   },
   {
    "id": "Cracked_Straight_2x2_2_Mid",
@@ -4862,7 +4929,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_2x2_2_Mid.glb"
   },
   {
    "id": "Cracked_Straight_2x2_2_Top",
@@ -4901,7 +4969,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_2x2_2_Top.glb"
   },
   {
    "id": "Cracked_Straight_2x2_3_Mid",
@@ -4940,7 +5009,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_2x2_3_Mid.glb"
   },
   {
    "id": "Cracked_Straight_2x2_3_Top",
@@ -4979,7 +5049,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Cracked_Straight_2x2_3_Top.glb"
   },
   {
    "id": "Docks_Bumper_1_1x1",
@@ -5016,7 +5087,8 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Bumper_1_1x1.glb"
   },
   {
    "id": "Docks_Decking_Flat_1x1",
@@ -5053,7 +5125,8 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Decking_Flat_1x1.glb"
   },
   {
    "id": "Docks_Decking_Flat_1x2",
@@ -5090,7 +5163,8 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Decking_Flat_1x2.glb"
   },
   {
    "id": "Docks_Decking_Steps_1x2",
@@ -5127,7 +5201,8 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Decking_Steps_1x2.glb"
   },
   {
    "id": "Docks_Ladder_Middle_1x1",
@@ -5164,7 +5239,8 @@
     "material|wood-light",
     "material|wood-medium"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Ladder_Middle_1x1.glb"
   },
   {
    "id": "Docks_Ladder_Top_1x1",
@@ -5201,7 +5277,8 @@
     "material|wood-light",
     "material|wood-medium"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Ladder_Top_1x1.glb"
   },
   {
    "id": "Docks_Railing_Board_1_1x1",
@@ -5236,7 +5313,8 @@
    "materials": [
     "material|wood-light"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Railing_Board_1_1x1.glb"
   },
   {
    "id": "Docks_Railing_Post_Top_1x1",
@@ -5272,7 +5350,8 @@
     "material|wood-dark",
     "material|wood-light-end"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Railing_Post_Top_1x1.glb"
   },
   {
    "id": "Docks_Railing_Post_Top_Roped_1x1",
@@ -5313,7 +5392,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Docks_Railing_Post_Top_Roped_1x1.glb"
   },
   {
    "id": "Docks_Railing_Posts_Steps_Roped_1x3",
@@ -5355,7 +5435,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Docks_Railing_Posts_Steps_Roped_1x3.glb"
   },
   {
    "id": "Docks_Railing_Rope_Basic_1_1x1",
@@ -5395,7 +5476,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Docks_Railing_Rope_Basic_1_1x1.glb"
   },
   {
    "id": "Docks_Railing_Rope_Basic_2_1x1",
@@ -5435,7 +5517,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Docks_Railing_Rope_Basic_2_1x1.glb"
   },
   {
    "id": "Docks_Railing_Rope_Broken_1_1x1",
@@ -5476,7 +5559,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Docks_Railing_Rope_Broken_1_1x1.glb"
   },
   {
    "id": "Docks_Railing_Rope_Broken_2_1x1",
@@ -5517,7 +5601,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Docks_Railing_Rope_Broken_2_1x1.glb"
   },
   {
    "id": "Docks_Support_Brace_1x1",
@@ -5554,7 +5639,8 @@
     "material|wood-light",
     "material|wood-light-end"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Support_Brace_1x1.glb"
   },
   {
    "id": "Docks_Support_Post_Mid_1x1",
@@ -5590,7 +5676,8 @@
     "material|wood-dark",
     "material|wood-light-end"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Docks_Support_Post_Mid_1x1.glb"
   },
   {
    "id": "Grass_Carpet_Center_1x1",
@@ -5630,7 +5717,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Center_1x1.glb"
   },
   {
    "id": "Grass_Carpet_Curve_Inner_1x1",
@@ -5670,7 +5758,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Curve_Inner_1x1.glb"
   },
   {
    "id": "Grass_Carpet_Curve_Inner_2x2",
@@ -5710,7 +5799,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Curve_Inner_2x2.glb"
   },
   {
    "id": "Grass_Carpet_Curve_Inner_3x3",
@@ -5750,7 +5840,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Curve_Inner_3x3.glb"
   },
   {
    "id": "Grass_Carpet_Curve_Outer_1x1",
@@ -5789,7 +5880,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Curve_Outer_1x1.glb"
   },
   {
    "id": "Grass_Carpet_Curve_Outer_2x2",
@@ -5829,7 +5921,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Curve_Outer_2x2.glb"
   },
   {
    "id": "Grass_Carpet_Curve_Outer_3x3",
@@ -5869,7 +5962,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Curve_Outer_3x3.glb"
   },
   {
    "id": "Grass_Carpet_Esse_2x2",
@@ -5909,7 +6003,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Esse_2x2.glb"
   },
   {
    "id": "Grass_Carpet_Esse_3x3",
@@ -5949,7 +6044,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Esse_3x3.glb"
   },
   {
    "id": "Grass_Carpet_Straight_1x1",
@@ -5989,7 +6085,8 @@
     "hidden|hidden-yellow",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Carpet_Straight_1x1.glb"
   },
   {
    "id": "Grass_Flat_1x1",
@@ -6028,7 +6125,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Flat_1x1.glb"
   },
   {
    "id": "Grass_Hill_Gentle_Curve_Inner_4x4",
@@ -6070,7 +6168,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Gentle_Curve_Inner_4x4.glb"
   },
   {
    "id": "Grass_Hill_Gentle_Curve_Inner_6x6",
@@ -6112,7 +6211,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Gentle_Curve_Inner_6x6.glb"
   },
   {
    "id": "Grass_Hill_Gentle_Curve_Outer_4x4",
@@ -6154,7 +6254,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Gentle_Curve_Outer_4x4.glb"
   },
   {
    "id": "Grass_Hill_Gentle_Esse_4x5",
@@ -6196,7 +6297,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Gentle_Esse_4x5.glb"
   },
   {
    "id": "Grass_Hill_Gentle_Overlapping_Gentle_4x4",
@@ -6237,7 +6339,8 @@
     "hidden|hidden-orange",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Gentle_Overlapping_Gentle_4x4.glb"
   },
   {
    "id": "Grass_Hill_Gentle_Overlapping_Sharp_2x4",
@@ -6280,7 +6383,8 @@
     "hidden|hidden-pink",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Gentle_Overlapping_Sharp_2x4.glb"
   },
   {
    "id": "Grass_Hill_Gentle_Straight_1x4",
@@ -6322,7 +6426,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Gentle_Straight_1x4.glb"
   },
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Inner_4x5",
@@ -6365,7 +6470,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Grade_Transition_Curve_Inner_4x5.glb"
   },
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Inner_6x7",
@@ -6408,7 +6514,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Grade_Transition_Curve_Inner_6x7.glb"
   },
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Outer_4x5",
@@ -6451,7 +6558,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Grade_Transition_Curve_Outer_4x5.glb"
   },
   {
    "id": "Grass_Hill_Grade_Transition_Straight_Front_4x4",
@@ -6495,7 +6603,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Grade_Transition_Straight_Front_4x4.glb"
   },
   {
    "id": "Grass_Hill_Grade_Transition_Straight_Rear_3x4",
@@ -6539,7 +6648,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Grade_Transition_Straight_Rear_3x4.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_2x2",
@@ -6580,7 +6690,8 @@
     "hidden|hidden-pink",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Curve_Inner_2x2.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_4x4",
@@ -6622,7 +6733,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Curve_Inner_4x4.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
@@ -6664,7 +6776,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Curve_Inner_6x6.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Outer_2x2",
@@ -6705,7 +6818,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Curve_Outer_2x2.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Curve_Outer_4x4",
@@ -6747,7 +6861,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Curve_Outer_4x4.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Esse_4x3",
@@ -6789,7 +6904,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Esse_4x3.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Esse_4x4",
@@ -6831,7 +6947,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Esse_4x4.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Overlapping_Sharp_2x2",
@@ -6872,7 +6989,8 @@
     "hidden|hidden-pink",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Overlapping_Sharp_2x2.glb"
   },
   {
    "id": "Grass_Hill_Sharp_Straight_1x2",
@@ -6914,7 +7032,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Grass_Hill_Sharp_Straight_1x2.glb"
   },
   {
    "id": "Iceberg_Curve_Inner_2x2_1",
@@ -6951,7 +7070,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Curve_Inner_2x2_1.glb"
   },
   {
    "id": "Iceberg_Curve_Inner_3x3_1",
@@ -6988,7 +7108,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Curve_Inner_3x3_1.glb"
   },
   {
    "id": "Iceberg_Curve_Inner_4x4_1",
@@ -7025,7 +7146,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Curve_Inner_4x4_1.glb"
   },
   {
    "id": "Iceberg_Curve_Inner_4x4_2",
@@ -7062,7 +7184,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Curve_Inner_4x4_2.glb"
   },
   {
    "id": "Iceberg_Curve_Outer_2x2_1",
@@ -7098,7 +7221,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Curve_Outer_2x2_1.glb"
   },
   {
    "id": "Iceberg_Curve_Outer_3x3_1",
@@ -7134,7 +7258,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Curve_Outer_3x3_1.glb"
   },
   {
    "id": "Iceberg_Curve_Outer_3x3_2",
@@ -7170,7 +7295,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Curve_Outer_3x3_2.glb"
   },
   {
    "id": "Iceberg_Flat_1x1",
@@ -7206,7 +7332,8 @@
     "hidden|hidden",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Flat_1x1.glb"
   },
   {
    "id": "Iceberg_Straight_1x2_1",
@@ -7243,7 +7370,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Straight_1x2_1.glb"
   },
   {
    "id": "Iceberg_Straight_2x2_1",
@@ -7280,7 +7408,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Straight_2x2_1.glb"
   },
   {
    "id": "Iceberg_Straight_2x2_2",
@@ -7317,7 +7446,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Straight_2x2_2.glb"
   },
   {
    "id": "Iceberg_Straight_2x2_3",
@@ -7354,7 +7484,8 @@
     "hidden|hidden-pink",
     "material|ice"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Iceberg_Straight_2x2_3.glb"
   },
   {
    "id": "Path_Bridge_Center_Top_1x2",
@@ -7394,7 +7525,8 @@
     "material|cliff-face",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Bridge_Center_Top_1x2.glb"
   },
   {
    "id": "Path_Bridge_Edge_Top_1x2",
@@ -7437,7 +7569,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Bridge_Edge_Top_1x2.glb"
   },
   {
    "id": "Path_End_Center_Top_1x1",
@@ -7477,7 +7610,8 @@
     "material|cliff-face",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_End_Center_Top_1x1.glb"
   },
   {
    "id": "Path_End_Edge_Top_1x1",
@@ -7520,7 +7654,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_End_Edge_Top_1x1.glb"
   },
   {
    "id": "Path_Terrain_45_Degrees_Curve_Inner_3x3",
@@ -7561,7 +7696,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_45_Degrees_Curve_Inner_3x3.glb"
   },
   {
    "id": "Path_Terrain_45_Degrees_Curve_Outer_3x5",
@@ -7602,7 +7738,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_45_Degrees_Curve_Outer_3x5.glb"
   },
   {
    "id": "Path_Terrain_45_Degrees_Straight_2x2",
@@ -7643,7 +7780,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_45_Degrees_Straight_2x2.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_1x1",
@@ -7682,7 +7820,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Inner_1x1.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_2x2",
@@ -7721,7 +7860,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Inner_2x2.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_3x3",
@@ -7760,7 +7900,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Inner_3x3.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_4x4",
@@ -7799,7 +7940,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Inner_4x4.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Inner_5x5",
@@ -7838,7 +7980,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Inner_5x5.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Outer_1x1",
@@ -7876,7 +8019,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Outer_1x1.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Outer_2x2",
@@ -7915,7 +8059,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Outer_2x2.glb"
   },
   {
    "id": "Path_Terrain_Basic_Curve_Outer_3x3",
@@ -7954,7 +8099,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Curve_Outer_3x3.glb"
   },
   {
    "id": "Path_Terrain_Basic_Esse_2x3",
@@ -7993,7 +8139,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Esse_2x3.glb"
   },
   {
    "id": "Path_Terrain_Basic_Straight_1x1",
@@ -8032,7 +8179,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Basic_Straight_1x1.glb"
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Concave_1x2",
@@ -8074,7 +8222,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Deformed_Straight_Concave_1x2.glb"
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Concave_2x2",
@@ -8116,7 +8265,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Deformed_Straight_Concave_2x2.glb"
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Convex_1x1",
@@ -8158,7 +8308,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Deformed_Straight_Convex_1x1.glb"
   },
   {
    "id": "Path_Terrain_Deformed_Straight_Convex_2x2",
@@ -8200,7 +8351,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Deformed_Straight_Convex_2x2.glb"
   },
   {
    "id": "Path_Terrain_Dirt_Flat_1x1",
@@ -8238,7 +8390,8 @@
     "hidden|hidden",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Dirt_Flat_1x1.glb"
   },
   {
    "id": "Path_Terrain_Incline_Gentle_Center_1x4",
@@ -8277,7 +8430,8 @@
     "hidden|hidden",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Incline_Gentle_Center_1x4.glb"
   },
   {
    "id": "Path_Terrain_Incline_Gentle_Edge_1x4",
@@ -8319,7 +8473,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Incline_Gentle_Edge_1x4.glb"
   },
   {
    "id": "Path_Terrain_Incline_Sharp_Center_1x2",
@@ -8358,7 +8513,8 @@
     "hidden|hidden",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Incline_Sharp_Center_1x2.glb"
   },
   {
    "id": "Path_Terrain_Incline_Sharp_Edge_1x2",
@@ -8400,7 +8556,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Incline_Sharp_Edge_1x2.glb"
   },
   {
    "id": "Path_Terrain_Transition_Grass_Center_1x1",
@@ -8441,7 +8598,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Transition_Grass_Center_1x1.glb"
   },
   {
    "id": "Path_Terrain_Transition_Grass_Side_Curve_1x1",
@@ -8483,7 +8641,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Transition_Grass_Side_Curve_1x1.glb"
   },
   {
    "id": "Path_Terrain_Transition_Grass_Side_Straight_1x1",
@@ -8525,7 +8684,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Transition_Grass_Side_Straight_1x1.glb"
   },
   {
    "id": "Path_Terrain_Y_Curve_Inner_1x1",
@@ -8565,7 +8725,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Y_Curve_Inner_1x1.glb"
   },
   {
    "id": "Path_Terrain_Y_Curve_Inner_1x2",
@@ -8606,7 +8767,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Y_Curve_Inner_1x2.glb"
   },
   {
    "id": "Path_Terrain_Y_Curve_Inner_2x3",
@@ -8647,7 +8809,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Path_Terrain_Y_Curve_Inner_2x3.glb"
   },
   {
    "id": "Prop_Bridge_Center_1x2",
@@ -8688,7 +8851,8 @@
     "material|wood-light-end",
     "material|wood-medium"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Prop_Bridge_Center_1x2.glb"
   },
   {
    "id": "Prop_Bridge_End_2x2",
@@ -8727,7 +8891,8 @@
     "material|wood-light-end",
     "material|wood-medium"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Prop_Bridge_End_2x2.glb"
   },
   {
    "id": "Prop_Bridge_Rope_End_Basic_1x3",
@@ -8770,7 +8935,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Prop_Bridge_Rope_End_Basic_1x3.glb"
   },
   {
    "id": "Prop_Bridge_Rope_Middle_Basic_1x1",
@@ -8813,7 +8979,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Prop_Bridge_Rope_Middle_Basic_1x1.glb"
   },
   {
    "id": "Prop_Bridge_Rope_Middle_Cracked_1_1x1",
@@ -8857,7 +9024,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Prop_Bridge_Rope_Middle_Cracked_1_1x1.glb"
   },
   {
    "id": "Prop_Bridge_Rope_Middle_Cracked_2_1x1",
@@ -8901,7 +9069,8 @@
    ],
    "missingTextures": [
     "Rope NM.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Prop_Bridge_Rope_Middle_Cracked_2_1x1.glb"
   },
   {
    "id": "Terrain_Sand_Flat_1x1",
@@ -8938,7 +9107,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Flat_1x1.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Both_12x12",
@@ -8977,7 +9147,8 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Curve_Both_12x12.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Both_8x8",
@@ -9016,7 +9187,8 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Curve_Both_8x8.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Inner_4x4",
@@ -9054,7 +9226,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Curve_Inner_4x4.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Inner_8x8",
@@ -9092,7 +9265,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Curve_Inner_8x8.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_12x12",
@@ -9130,7 +9304,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Curve_Outer_12x12.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_4x4",
@@ -9167,7 +9342,8 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Curve_Outer_4x4.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_8x8",
@@ -9205,7 +9381,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Curve_Outer_8x8.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Esse_6x6",
@@ -9243,7 +9420,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Esse_6x6.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Esse_Both_6x10",
@@ -9282,7 +9460,8 @@
     "hidden|hidden-red",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Esse_Both_6x10.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Overlapping_4x4",
@@ -9320,7 +9499,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Overlapping_4x4.glb"
   },
   {
    "id": "Terrain_Sand_Incline_Straight_1x4",
@@ -9358,7 +9538,8 @@
     "hidden|hidden-violet",
     "material|dirt"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Sand_Incline_Straight_1x4.glb"
   },
   {
    "id": "Terrain_Water_River_Curve_CCW_3x3",
@@ -9395,7 +9576,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Curve_CCW_3x3.glb"
   },
   {
    "id": "Terrain_Water_River_Curve_CCW_5x5",
@@ -9432,7 +9614,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Curve_CCW_5x5.glb"
   },
   {
    "id": "Terrain_Water_River_Curve_CW_3x3",
@@ -9469,7 +9652,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Curve_CW_3x3.glb"
   },
   {
    "id": "Terrain_Water_River_Curve_CW_5x5",
@@ -9506,7 +9690,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Curve_CW_5x5.glb"
   },
   {
    "id": "Terrain_Water_River_Esse_CCW_3x4",
@@ -9543,7 +9728,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Esse_CCW_3x4.glb"
   },
   {
    "id": "Terrain_Water_River_Esse_CCW_4x4",
@@ -9580,7 +9766,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Esse_CCW_4x4.glb"
   },
   {
    "id": "Terrain_Water_River_Esse_CCW_4x5",
@@ -9617,7 +9804,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Esse_CCW_4x5.glb"
   },
   {
    "id": "Terrain_Water_River_Esse_CW_3x4",
@@ -9654,7 +9842,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Esse_CW_3x4.glb"
   },
   {
    "id": "Terrain_Water_River_Esse_CW_4x4",
@@ -9691,7 +9880,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Esse_CW_4x4.glb"
   },
   {
    "id": "Terrain_Water_River_Esse_CW_4x5",
@@ -9728,7 +9918,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Esse_CW_4x5.glb"
   },
   {
    "id": "Terrain_Water_River_Flat_1x1",
@@ -9763,7 +9954,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Flat_1x1.glb"
   },
   {
    "id": "Terrain_Water_River_Incline_Gentle_1x4",
@@ -9800,7 +9992,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Incline_Gentle_1x4.glb"
   },
   {
    "id": "Terrain_Water_River_Incline_Sharp_1x2",
@@ -9837,7 +10030,8 @@
    "materials": [
     "material|water-river"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Terrain_Water_River_Incline_Sharp_1x2.glb"
   },
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Inner_Inside_1x2",
@@ -9878,7 +10072,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_45_Degrees_Curve_Inner_Inside_1x2.glb"
   },
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2",
@@ -9919,7 +10114,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2.glb"
   },
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Outer_Inside_2x4",
@@ -9960,7 +10156,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_45_Degrees_Curve_Outer_Inside_2x4.glb"
   },
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4",
@@ -10001,7 +10198,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4.glb"
   },
   {
    "id": "Tiered_Grass_45_Degrees_Straight_1x1",
@@ -10041,7 +10239,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_45_Degrees_Straight_1x1.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Inner_1x1",
@@ -10080,7 +10279,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Inner_1x1.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Inner_2x2",
@@ -10119,7 +10319,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Inner_2x2.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Inner_3x3",
@@ -10158,7 +10359,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Inner_3x3.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Inner_4x4",
@@ -10197,7 +10399,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Inner_4x4.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Inner_5x5",
@@ -10236,7 +10439,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Inner_5x5.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Outer_1x1",
@@ -10275,7 +10479,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Outer_1x1.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Outer_2x2",
@@ -10314,7 +10519,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Outer_2x2.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Outer_3x3",
@@ -10353,7 +10559,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Outer_3x3.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Outer_4x4",
@@ -10392,7 +10599,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Outer_4x4.glb"
   },
   {
    "id": "Tiered_Grass_Curve_Outer_5x5",
@@ -10431,7 +10639,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Curve_Outer_5x5.glb"
   },
   {
    "id": "Tiered_Grass_Esse_Inside_1x3",
@@ -10471,7 +10680,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Esse_Inside_1x3.glb"
   },
   {
    "id": "Tiered_Grass_Esse_Outside_1x3",
@@ -10511,7 +10721,8 @@
     "hidden|hidden-violet",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Grass_Esse_Outside_1x3.glb"
   },
   {
    "id": "Tiered_Walkway_Step_Top_Path_Transition_1x2",
@@ -10551,7 +10762,8 @@
     "material|dirt",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Tiered_Walkway_Step_Top_Path_Transition_1x2.glb"
   },
   {
    "id": "Wall_Curve_Inner_3x3_Base",
@@ -10589,7 +10801,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_3x3_Base.glb"
   },
   {
    "id": "Wall_Curve_Inner_3x3_Mid",
@@ -10627,7 +10840,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_3x3_Mid.glb"
   },
   {
    "id": "Wall_Curve_Inner_3x3_Top",
@@ -10665,7 +10879,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_3x3_Top.glb"
   },
   {
    "id": "Wall_Curve_Inner_5x5_Base",
@@ -10703,7 +10918,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_5x5_Base.glb"
   },
   {
    "id": "Wall_Curve_Inner_5x5_Mid",
@@ -10741,7 +10957,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_5x5_Mid.glb"
   },
   {
    "id": "Wall_Curve_Inner_5x5_Top",
@@ -10779,7 +10996,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_5x5_Top.glb"
   },
   {
    "id": "Wall_Curve_Inner_6x6_Base",
@@ -10817,7 +11035,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_6x6_Base.glb"
   },
   {
    "id": "Wall_Curve_Inner_6x6_Mid",
@@ -10855,7 +11074,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_6x6_Mid.glb"
   },
   {
    "id": "Wall_Curve_Inner_6x6_Top",
@@ -10893,7 +11113,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_6x6_Top.glb"
   },
   {
    "id": "Wall_Curve_Inner_7x7_Base",
@@ -10931,7 +11152,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_7x7_Base.glb"
   },
   {
    "id": "Wall_Curve_Inner_7x7_Mid",
@@ -10969,7 +11191,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_7x7_Mid.glb"
   },
   {
    "id": "Wall_Curve_Inner_7x7_Top",
@@ -11007,7 +11230,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Inner_7x7_Top.glb"
   },
   {
    "id": "Wall_Curve_Outer_2x2_Base",
@@ -11045,7 +11269,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_2x2_Base.glb"
   },
   {
    "id": "Wall_Curve_Outer_2x2_Mid",
@@ -11082,7 +11307,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_2x2_Mid.glb"
   },
   {
    "id": "Wall_Curve_Outer_2x2_Top",
@@ -11120,7 +11346,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_2x2_Top.glb"
   },
   {
    "id": "Wall_Curve_Outer_3x3_Base",
@@ -11158,7 +11385,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_3x3_Base.glb"
   },
   {
    "id": "Wall_Curve_Outer_3x3_Mid",
@@ -11196,7 +11424,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_3x3_Mid.glb"
   },
   {
    "id": "Wall_Curve_Outer_3x3_Top",
@@ -11234,7 +11463,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_3x3_Top.glb"
   },
   {
    "id": "Wall_Curve_Outer_4x4_Base",
@@ -11272,7 +11502,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_4x4_Base.glb"
   },
   {
    "id": "Wall_Curve_Outer_4x4_Mid",
@@ -11310,7 +11541,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_4x4_Mid.glb"
   },
   {
    "id": "Wall_Curve_Outer_4x4_Top",
@@ -11348,7 +11580,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Curve_Outer_4x4_Top.glb"
   },
   {
    "id": "Wall_Esse_3x4_Base",
@@ -11386,7 +11619,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Esse_3x4_Base.glb"
   },
   {
    "id": "Wall_Esse_3x4_Mid",
@@ -11424,7 +11658,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Esse_3x4_Mid.glb"
   },
   {
    "id": "Wall_Esse_3x4_Top",
@@ -11462,7 +11697,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Esse_3x4_Top.glb"
   },
   {
    "id": "Wall_Esse_4x6_Base",
@@ -11500,7 +11736,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Esse_4x6_Base.glb"
   },
   {
    "id": "Wall_Esse_4x6_Mid",
@@ -11538,7 +11775,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Esse_4x6_Mid.glb"
   },
   {
    "id": "Wall_Esse_4x6_Top",
@@ -11576,7 +11814,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Esse_4x6_Top.glb"
   },
   {
    "id": "Wall_Incline_2x4_Base",
@@ -11615,7 +11854,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Incline_2x4_Base.glb"
   },
   {
    "id": "Wall_Incline_2x4_Top",
@@ -11654,7 +11894,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Incline_2x4_Top.glb"
   },
   {
    "id": "Wall_Incline_2x6_Base",
@@ -11693,7 +11934,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Incline_2x6_Base.glb"
   },
   {
    "id": "Wall_Incline_2x6_Top",
@@ -11732,7 +11974,8 @@
     "hidden|hidden-yellow",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Incline_2x6_Top.glb"
   },
   {
    "id": "Wall_Straight_Basic_1x2_Base",
@@ -11770,7 +12013,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Basic_1x2_Base.glb"
   },
   {
    "id": "Wall_Straight_Basic_1x2_Mid",
@@ -11808,7 +12052,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Basic_1x2_Mid.glb"
   },
   {
    "id": "Wall_Straight_Basic_1x2_Top",
@@ -11846,7 +12091,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Basic_1x2_Top.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Concave_2x2_Base",
@@ -11887,7 +12133,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Concave_2x2_Base.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Concave_2x2_Mid",
@@ -11928,7 +12175,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Concave_2x2_Mid.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Concave_2x2_Top",
@@ -11969,7 +12217,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Concave_2x2_Top.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Convex_2x2_Base",
@@ -12010,7 +12259,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Convex_2x2_Base.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Convex_2x2_Mid",
@@ -12051,7 +12301,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Convex_2x2_Mid.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Convex_2x2_Top",
@@ -12092,7 +12343,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Convex_2x2_Top.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Convex_3x3_Base",
@@ -12133,7 +12385,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Convex_3x3_Base.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Convex_3x3_Mid",
@@ -12174,7 +12427,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Convex_3x3_Mid.glb"
   },
   {
    "id": "Wall_Straight_Deformed_Convex_3x3_Top",
@@ -12215,7 +12469,8 @@
     "hidden|hidden-green",
     "material|cliff-face"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Wall_Straight_Deformed_Convex_3x3_Top.glb"
   },
   {
    "id": "Water_Circle_1_Lowpoly",
@@ -12252,7 +12507,8 @@
    "materials": [
     "material|water-lake"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Water_Circle_1_Lowpoly.glb"
   },
   {
    "id": "Water_Circle_2_Midpoly",
@@ -12289,7 +12545,8 @@
    "materials": [
     "material|water-lake"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Water_Circle_2_Midpoly.glb"
   },
   {
    "id": "Water_Circle_3_Highpoly",
@@ -12326,7 +12583,8 @@
    "materials": [
     "material|water-lake"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Water_Circle_3_Highpoly.glb"
   },
   {
    "id": "Water_Waterfall_Base_Center_1x1",
@@ -12363,7 +12621,8 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": null
   },
   {
    "id": "Water_Waterfall_Base_Left_1x1",
@@ -12400,7 +12659,8 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Water_Waterfall_Base_Left_1x1.glb"
   },
   {
    "id": "Water_Waterfall_Base_Right_1x1",
@@ -12437,7 +12697,8 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Water_Waterfall_Base_Right_1x1.glb"
   },
   {
    "id": "Water_Waterfall_Mid_Center_1x1",
@@ -12474,7 +12735,8 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": null
   },
   {
    "id": "Water_Waterfall_Mid_Left_1x1",
@@ -12511,7 +12773,8 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Water_Waterfall_Mid_Left_1x1.glb"
   },
   {
    "id": "Water_Waterfall_Mid_Right_1x1",
@@ -12548,7 +12811,8 @@
    "materials": [
     "material|waterfall"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Water_Waterfall_Mid_Right_1x1.glb"
   },
   {
    "id": "Water_Waterfall_Top_Center_1x3",
@@ -12589,7 +12853,8 @@
    ],
    "missingTextures": [
     "uvmap image 32x16.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Water_Waterfall_Top_Center_1x3.glb"
   },
   {
    "id": "Water_Waterfall_Top_Left_2x3",
@@ -12630,7 +12895,8 @@
    ],
    "missingTextures": [
     "uvmap image 32x16.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Water_Waterfall_Top_Left_2x3.glb"
   },
   {
    "id": "Water_Waterfall_Top_Right_2x3",
@@ -12671,7 +12937,8 @@
    ],
    "missingTextures": [
     "uvmap image 32x16.png"
-   ]
+   ],
+   "floorFile": "thumbnails/Water_Waterfall_Top_Right_2x3.glb"
   },
   {
    "id": "Waterfall_Center_Top_Terrain_1x3",
@@ -12712,7 +12979,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Waterfall_Center_Top_Terrain_1x3.glb"
   },
   {
    "id": "Waterfall_Left_Top_Terrain_3x3",
@@ -12755,7 +13023,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Waterfall_Left_Top_Terrain_3x3.glb"
   },
   {
    "id": "Waterfall_Right_Top_Terrain_3x3",
@@ -12798,7 +13067,8 @@
     "material|cliff-face",
     "material|grass"
    ],
-   "missingTextures": []
+   "missingTextures": [],
+   "floorFile": "thumbnails/Waterfall_Right_Top_Terrain_3x3.glb"
   },
   {
    "id": "Cliff_Assembly_Curve_Inner_1_Base",
