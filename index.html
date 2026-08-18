@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Modular Terrain — 3D Catalog</title>
 <meta name="description" content="Browsable catalog of 270 models from a modular terrain pack: cliffs, walls, cracked cliffs, terrain paths, grass, sand, water, and props — by part, shape, layer, and grid size, plus the pack's own assemblies rebuilt from those pieces.">
-<meta name="catalog-version" content="d4fd861066">
-<link rel="stylesheet" href="catalog/catalog.css?v=d4fd861066">
-<link rel="stylesheet" href="catalog/builder.css?v=d4fd861066">
+<meta name="catalog-version" content="de8078d083">
+<link rel="stylesheet" href="catalog/catalog.css?v=de8078d083">
+<link rel="stylesheet" href="catalog/builder.css?v=de8078d083">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⛰️</text></svg>">
 </head>
 <body>
@@ -15,7 +15,7 @@
 <header class="head">
   <div class="head-title">
     <div class="head-title-row">
-      <h1>Modular Terrain — 3D Catalog</h1>
+      <h1 class="offscreen">Modular Terrain — 3D Catalog</h1>
       <button class="filter-clear" id="filter-clear" hidden>Clear filters</button>
     </div>
     <p class="head-sub" id="summary" hidden></p>
@@ -37,31 +37,28 @@
 
   <div class="hud hud-top">
     <p class="brush" data-role="brush"></p>
-    <div class="controls">
-      <button type="button" data-role="rotate" title="Rotate (R)">⟳</button>
-      <button type="button" data-role="mirror" aria-pressed="false" title="Mirror (M)">⇄</button>
-      <span class="stepper">
-        <button type="button" data-role="down" aria-label="Lower level">&minus;</button>
-        <span class="level" data-role="level">0</span>
-        <button type="button" data-role="up" aria-label="Raise level">+</button>
-      </span>
-      <span class="spacer"></span>
-      <button type="button" data-role="undo" title="Undo" disabled>↶</button>
-      <button type="button" data-role="redo" title="Redo" disabled>↷</button>
-      <button type="button" data-role="clear" title="Clear the board">✕</button>
-    </div>
+    <button type="button" data-role="rotate" title="Rotate (R)">⟳</button>
+    <button type="button" data-role="mirror" aria-pressed="false" title="Mirror (M)">⇄</button>
+    <span class="stepper">
+      <button type="button" data-role="down" aria-label="Lower level">&minus;</button>
+      <span class="level" data-role="level">0</span>
+      <button type="button" data-role="up" aria-label="Raise level">+</button>
+    </span>
+    <button type="button" data-role="remove" title="Remove the selected piece" disabled>🗑</button>
+    <button type="button" data-role="undo" title="Undo" disabled>↶</button>
+    <button type="button" data-role="redo" title="Redo" disabled>↷</button>
+    <button type="button" data-role="clear" title="Clear the board">✕</button>
   </div>
 
   <div class="hud hud-views">
     <button type="button" data-role="view-top" title="Top view">Top</button>
     <button type="button" data-role="view-iso" title="Angled view">Iso</button>
     <button type="button" data-role="view-front" title="Front view">Front</button>
-  </div>
-
-  <div class="hud hud-pick" data-role="pick" hidden>
-    <span class="pick-name" data-role="pick-name"></span>
-    <button type="button" data-role="pick-seams">Seams</button>
-    <button type="button" class="danger" data-role="pick-remove">Remove</button>
+    <span class="hud-split"></span>
+    <button type="button" data-role="orbit-left" aria-label="Turn left">↺</button>
+    <button type="button" data-role="orbit-right" aria-label="Turn right">↻</button>
+    <button type="button" data-role="zoom-in" aria-label="Zoom in">＋</button>
+    <button type="button" data-role="zoom-out" aria-label="Zoom out">－</button>
   </div>
 
   <ul class="legend">
@@ -72,21 +69,14 @@
   </ul>
 
   <div class="drawer" data-role="drawer">
-    <div class="drawer-grip">
-      <div class="drawer-tabs" role="tablist">
-        <button type="button" role="tab" data-role="tab-pieces" aria-selected="true">Pieces</button>
-        <button type="button" role="tab" data-role="tab-seams" aria-selected="false">Seams</button>
-      </div>
-      <button type="button" class="drawer-toggle" data-role="drawer-toggle" aria-expanded="true" aria-label="Collapse panel">▾</button>
+    <div class="drawer-tabs" role="tablist">
+      <button type="button" role="tab" data-role="tab-pieces" aria-selected="true">Pieces</button>
+      <button type="button" role="tab" data-role="tab-seams" aria-selected="false">Seams</button>
     </div>
 
     <div class="drawer-body">
       <section class="palette" data-role="panel-pieces" role="tabpanel">
-        <div class="palette-controls">
-          <input type="search" data-role="search" placeholder="Search pieces" aria-label="Search pieces">
-          <select data-role="family" aria-label="Filter by family"></select>
-        </div>
-        <p class="palette-count" data-role="count"></p>
+        <select data-role="family" aria-label="Filter pieces"></select>
         <ul class="palette-list" data-role="list"></ul>
       </section>
 
@@ -124,6 +114,6 @@
 { "imports": { "three": "./vendor/three/build/three.module.min.js" } }
 </script>
 <script src="vendor/model-viewer.min.js" type="module"></script>
-<script src="catalog/catalog.js?v=d4fd861066" type="module"></script>
+<script src="catalog/catalog.js?v=de8078d083" type="module"></script>
 </body>
 </html>

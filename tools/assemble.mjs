@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { readGlb, writeGlb, measureScene, UNITS_PER_CELL } from './glb.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
-const MODELS = join(ROOT, 'models');
+const ATOMS = join(ROOT, 'atoms');
 const PLACEMENTS = join(ROOT, 'assemblies', 'placements.json');
 
 /* Placements are Unity left-handed; the GLBs were mirrored in X by the FBX →
@@ -169,7 +169,7 @@ function cloneNode(out, piece, index) {
   return at;
 }
 
-export function assemble(placements, { mirror = true, models = MODELS } = {}) {
+export function assemble(placements, { mirror = true, models = ATOMS } = {}) {
   const out = createMerged();
   const pieces = new Map();
   const missing = [];
@@ -230,7 +230,7 @@ function main(argv) {
   }
 
   mkdirSync(outDir, { recursive: true });
-  const available = new Set(readdirSync(MODELS).filter((file) => file.endsWith('.glb')).map((file) => file.slice(0, -4)));
+  const available = new Set(readdirSync(ATOMS).filter((file) => file.endsWith('.glb')).map((file) => file.slice(0, -4)));
 
   for (const name of wanted) {
     const placements = assemblies[name];
@@ -254,7 +254,7 @@ function main(argv) {
     const measured = measureScene(built);
     const size = measured.dwh.map((value) => Math.round(value * 10) / 10).join(' × ');
     console.log(`  ${name}: ${built.placed}/${placements.length} pieces, ${size} cells, ${measured.triangles} tris, ${(built.bin.length / 1024).toFixed(0)} KB`);
-    if (built.missing.length) console.log(`    not in models/: ${built.missing.join(', ')}`);
+    if (built.missing.length) console.log(`    not in atoms/: ${built.missing.join(', ')}`);
   }
 }
 

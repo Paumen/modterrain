@@ -5,7 +5,7 @@ import { readGlb, writeGlb, embedImage } from './glb.mjs';
 import { TEXTURE_BY_MATERIAL } from './textures.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const MODELS_DIR = join(ROOT, 'models');
+const ATOMS_DIR = join(ROOT, 'atoms');
 const TEXTURES_DIR = join(ROOT, 'textures');
 
 const pngCache = new Map();
@@ -14,14 +14,14 @@ const pngFor = (file) => {
   return pngCache.get(file);
 };
 
-const files = readdirSync(MODELS_DIR).filter((name) => name.endsWith('.glb')).sort();
+const files = readdirSync(ATOMS_DIR).filter((name) => name.endsWith('.glb')).sort();
 
 let patchedFiles = 0;
 let embeddedImages = 0;
 const perMaterial = new Map();
 
 for (const file of files) {
-  const path = join(MODELS_DIR, file);
+  const path = join(ATOMS_DIR, file);
   let glb = readGlb(path);
   let changed = false;
   const embeddedThisFile = new Set();

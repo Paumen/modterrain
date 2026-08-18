@@ -23,14 +23,14 @@ const VERDICT = {
 const loader = new GLTFLoader();
 const cache = new Map();
 
-function loadPiece(id) {
+function loadPiece(id, piece) {
   if (!cache.has(id)) {
-    cache.set(id, loader.loadAsync(`models/${id}.glb`).then((gltf) => {
+    cache.set(id, loader.loadAsync(`${piece.dir}/${id}.glb`).then((gltf) => {
       const root = gltf.scene;
-      root.scale.setScalar(1 / UNITS_PER_CELL);
-      // Sockets are construction data, not something to look at.
+      // Sockets are construction data, not something to look at. Scenes spell
+      // the names with an underscore.
       root.traverse((node) => {
-        if (node.isMesh && node.material?.name?.startsWith('Hidden')) node.visible = false;
+        if (node.isMesh && /^Hidden[ _]?/.test(node.material?.name ?? '')) node.visible = false;
       });
       return root;
     }));
@@ -141,6 +141,10 @@ export function createViewport(canvas, { onTap, onHover }) {
 
   canvas.addEventListener('pointerdown', (event) => {
     downAt = { x: event.clientX, y: event.clientY };
+    // No hover on a touch screen: the preview has to appear on the press, so
+    // the press itself shows where the piece is about to land.
+    const at = probe(event);
+    onHover?.(at.x, at.z);
   });
 
   /* What is under the pointer: the piece it landed on, if any, and the cell
@@ -169,8 +173,11 @@ export function createViewport(canvas, { onTap, onHover }) {
   }
 
   canvas.addEventListener('pointermove', (event) => {
-    if (downAt) return;
     const at = probe(event);
+    if (downAt && Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y) > 6) {
+      onHover?.(null, null);
+      return;
+    }
     onHover?.(at.x, at.z);
   });
 
@@ -203,7 +210,7 @@ export function createViewport(canvas, { onTap, onHover }) {
       return;
     }
 
-    const model = (await loadPiece(placement.piece)).clone(true);
+    const model = (await loadPiece(placement.piece, placement)).clone(true);
     if (ghostFor !== key) return;
 
     model.traverse((node) => {
@@ -248,6 +255,31 @@ export function createViewport(canvas, { onTap, onHover }) {
     invalidate();
   }
 
+  /* Turning and zooming from buttons as well as from the drag, because on a
+   * touch screen the drag is also how a piece gets placed. */
+  function orbit(radians) {
+    const offset = camera.position.clone().sub(controls.target);
+    const angle = Math.atan2(offset.x, offset.z) + radians;
+    const flat = Math.hypot(offset.x, offset.z);
+    camera.position.set(
+      controls.target.x + flat * Math.sin(angle),
+      camera.position.y,
+      controls.target.z + flat * Math.cos(angle),
+    );
+    controls.update();
+    steered = true;
+    invalidate();
+  }
+
+  function zoom(factor) {
+    const offset = camera.position.clone().sub(controls.target);
+    const distance = Math.min(Math.max(offset.length() * factor, controls.minDistance), controls.maxDistance);
+    camera.position.copy(controls.target).add(offset.setLength(distance));
+    controls.update();
+    steered = true;
+    invalidate();
+  }
+
   // The pick lands on the plane you are building on, not on the ground: at
   // level 2 the ground behind a cliff is a different cell entirely.
   function setLevel(level) {
@@ -263,7 +295,7 @@ export function createViewport(canvas, { onTap, onHover }) {
   // placements; three.js flips the winding to match, so culling still shows
   // the shell from the right side.
   const apply = (model, placement) => {
-    const size = 1 / UNITS_PER_CELL;
+    const size = (placement.scale ?? 1) / UNITS_PER_CELL;
     model.position.set(placement.cx, placement.level, placement.cz);
     model.rotation.y = placement.rot * (Math.PI / 2);
     model.scale.set(placement.mirror ? -size : size, size, size);
@@ -302,7 +334,7 @@ export function createViewport(canvas, { onTap, onHover }) {
   }
 
   async function sync(placements, sockets, selected) {
-    const loaded = await Promise.all(placements.map((placement) => loadPiece(placement.piece)));
+    const loaded = await Promise.all(placements.map((placement) => loadPiece(placement.piece, placement)));
     pieces.clear();
 
     placements.forEach((placement, index) => {
@@ -351,5 +383,5 @@ export function createViewport(canvas, { onTap, onHover }) {
   }
 
   resize();
-  return { sync, ghost, setView, setLevel, resize, invalidate };
+  return { sync, ghost, setView, setLevel, orbit, zoom, resize, invalidate };
 }

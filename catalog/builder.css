@@ -69,28 +69,26 @@
 }
 
 .hud-top {
-  top: 10px;
-  right: 10px;
-  left: 10px;
+  top: 8px;
+  right: 8px;
+  left: 8px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px;
 }
 
 .brush {
-  margin: 0 0 7px;
-  padding: 0 2px;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0 4px;
   overflow: hidden;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.controls {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.controls .spacer { flex: 1; }
 
 .hud button,
 .drawer-tabs button,
@@ -98,9 +96,9 @@
 .seam-fits,
 .fits-list button,
 .inspect-actions button {
-  min-width: var(--tap);
-  min-height: var(--tap);
-  padding: 0 10px;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0 8px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--card-bg);
@@ -134,10 +132,11 @@
 }
 
 .stepper button {
+  min-width: 30px;
   border: 0;
   border-radius: 0;
   background: none;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 .level {
@@ -153,48 +152,35 @@
 /* Standing viewpoints, tucked under the control bar so they never land on
    the drawer. */
 .hud-views {
-  top: 96px;
-  right: 10px;
+  top: 60px;
+  right: 8px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 5px;
+  gap: 4px;
+  padding: 4px;
 }
 
 .hud-views button {
-  min-width: 46px;
-  padding: 0 6px;
+  min-width: 44px;
+  min-height: 30px;
+  padding: 0 4px;
   font-size: 11px;
 }
 
-/* The selected piece answers for itself, right where you tapped it, instead
-   of only in a panel you have to go and open. An author `display` beats the UA
-   rule behind the hidden attribute, so anything laid out here opts back out. */
-.hud-pick[hidden],
+.hud-split {
+  height: 1px;
+  margin: 1px 3px;
+  background: var(--line);
+}
+
+/* An author `display` beats the UA rule behind the hidden attribute, so
+   anything laid out here opts back out. */
 .palette[hidden],
 .inspect[hidden] { display: none; }
 
-.hud-pick {
-  right: 10px;
-  bottom: calc(var(--drawer, 52px) + 12px);
-  left: 10px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.pick-name {
-  flex: 1;
-  overflow: hidden;
-  font-weight: 600;
-  font-size: 13px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .legend {
   position: absolute;
-  bottom: calc(var(--drawer, 52px) + 12px);
+  bottom: calc(var(--drawer, 46px) + 10px);
   left: 12px;
   z-index: 1;
   display: flex;
@@ -207,8 +193,6 @@
   list-style: none;
   pointer-events: none;
 }
-
-.hud-pick:not([hidden]) ~ .legend { display: none; }
 
 .legend li {
   display: flex;
@@ -246,21 +230,14 @@
   transition: transform .18s ease;
 }
 
-.drawer.is-shut { transform: translateY(calc(100% - var(--drawer, 52px))); }
-
-.drawer-grip {
-  display: flex;
-  flex: none;
-  gap: 8px;
-  align-items: center;
-  height: 52px;
-  padding: 0 10px;
-}
+.drawer.is-shut { transform: translateY(calc(100% - 46px)); }
 
 .drawer-tabs {
   display: flex;
-  flex: 1;
+  flex: none;
   gap: 6px;
+  height: 46px;
+  padding: 6px 10px 0;
 }
 
 .drawer-tabs button { flex: 1; }
@@ -270,9 +247,6 @@
   background: color-mix(in srgb, var(--accent) 16%, transparent);
   font-weight: 600;
 }
-
-.drawer-toggle { flex: none; }
-.drawer.is-shut .drawer-toggle { transform: rotate(180deg); }
 
 .drawer-body {
   flex: 1;
@@ -284,17 +258,10 @@
 
 /* ------------------------------------------------------------- palette */
 
-.palette-controls {
-  display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-  padding-top: 2px;
-}
-
-.palette-controls input,
-.palette-controls select {
+.palette select {
   width: 100%;
   min-height: var(--tap);
+  margin-bottom: 8px;
   padding: 7px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -302,12 +269,6 @@
   color: inherit;
   font: inherit;
   font-size: 13px;
-}
-
-.palette-count {
-  margin: 10px 0 6px;
-  color: var(--ink-soft);
-  font-size: 12px;
 }
 
 .palette-list,
@@ -371,6 +332,7 @@
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
+  --progress-bar-height: 2px;
 }
 
 .tile-colors {
@@ -393,7 +355,8 @@
   -webkit-line-clamp: 2;
 }
 
-.swatch {
+/* Not `.swatch`: the catalog's filter buttons already own that name. */
+.socket-dot {
   width: 9px;
   height: 9px;
   border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
@@ -432,11 +395,15 @@
 }
 
 .seam-item {
-  margin-bottom: 6px;
-  padding: 8px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  align-items: center;
+  margin-bottom: 4px;
+  padding: 5px 8px;
   border: 1px solid var(--line);
   border-left: 3px solid var(--open);
-  border-radius: 8px;
+  border-radius: 7px;
   background: var(--card-bg);
 }
 
@@ -447,9 +414,11 @@
 
 .seam-head {
   display: flex;
-  gap: 7px;
+  flex: 1;
+  gap: 6px;
   align-items: center;
-  font-size: 13px;
+  min-width: 120px;
+  font-size: 12px;
 }
 
 .seam-where {
@@ -473,9 +442,9 @@
 .seam-verdict.clash { background: color-mix(in srgb, var(--clash) 24%, transparent); color: var(--ink); }
 
 .seam-note {
-  margin: 6px 0 0;
+  margin: 0;
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .seam-note.fine { color: var(--mated); }
@@ -483,8 +452,10 @@
 .seam-note.wants { color: var(--clash); }
 
 .seam-fits {
-  margin-top: 7px;
-  font-size: 12px;
+  min-width: 0;
+  min-height: 26px;
+  padding: 0 8px;
+  font-size: 11px;
 }
 
 .fits-list {

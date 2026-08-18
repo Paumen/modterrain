@@ -1,7 +1,7 @@
 import { readdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readGlb, readAccessor } from './glb.mjs';
+import { readGlb, readAccessor, UNITS_PER_CELL } from './glb.mjs';
 import { socketFaces } from './sockets.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
@@ -199,6 +199,19 @@ function readSockets(faces, { requireGrid = true } = {}) {
 
 // ---------------------------------------------------------------- models
 
+/* Scenes name materials `Hidden_Blue` where everything else uses a space, and
+ * are authored at one unit per cell. Both are fixed on the way in so a scene
+ * reads like any other placeable. */
+function normalise(glb, scale) {
+  for (const material of glb.json.materials ?? []) {
+    if (material.name?.startsWith('Hidden_')) material.name = material.name.replace('_', ' ');
+  }
+  if (scale === 1) return;
+  const scene = glb.json.scenes[glb.json.scene ?? 0];
+  glb.json.nodes.push({ matrix: [scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, 1], children: [...scene.nodes] });
+  scene.nodes = [glb.json.nodes.length - 1];
+}
+
 const catalog = JSON.parse(readFileSync(join(ROOT, 'catalog', 'catalog.json'), 'utf8'));
 const meta = new Map(catalog.models.map((entry) => [entry.id, entry]));
 
@@ -219,10 +232,22 @@ const shapes = new ShapePool();
 const pieces = {};
 const totals = { grid: 0, caps: 0, diagonal: 0, offGrid: 0 };
 
-for (const file of readdirSync(join(ROOT, 'models')).filter((n) => n.endsWith('.glb')).sort()) {
+/* Assemblies are placeable too, and so are whole scenes. Scenes are authored
+ * at one unit per cell where everything else uses a hundred, so they are
+ * scaled on the way in and carry the factor for the viewport to apply. */
+const SOURCES = [
+  { dir: 'atoms', scale: 1 },
+  { dir: 'assemblies', scale: 1 },
+  { dir: 'scenes', scale: UNITS_PER_CELL },
+];
+
+for (const { dir, scale } of SOURCES) {
+for (const file of readdirSync(join(ROOT, dir)).filter((n) => n.endsWith('.glb')).sort()) {
   const id = file.replace(/\.glb$/, '');
   const entry = meta.get(id);
-  const { sockets, skipped } = readSockets(socketFaces(readGlb(join(ROOT, 'models', file))));
+  const glb = readGlb(join(ROOT, dir, file));
+  if (scale !== 1) normalise(glb, scale);
+  const { sockets, skipped } = readSockets(socketFaces(glb));
   totals.diagonal += skipped.diagonal;
   totals.offGrid += skipped.offGrid;
 
@@ -249,21 +274,32 @@ for (const file of readdirSync(join(ROOT, 'models')).filter((n) => n.endsWith('.
     totals.grid++;
   }
 
+  // catalog.json measures scenes in their own units, so its bounds for them
+  // are a hundredth of the truth; the same factor that fixes the geometry
+  // fixes the numbers.
+  const grow = (v) => (Array.isArray(v) ? v.map((n) => Math.round(n * scale * 512) / 512) : v);
+  const min = grow(entry?.min);
+  const max = grow(entry?.max);
+
   pieces[id] = {
+    dir,
+    scale,
+    group: entry?.group ?? null,
     family: entry?.family ?? null,
     layer: entry?.layer ?? null,
     size: entry?.size ?? null,
-    dwh: entry?.dwh ?? null,
-    min: entry?.min ?? null,
-    max: entry?.max ?? null,
+    dwh: grow(entry?.dwh),
+    min,
+    max,
     triangles: entry?.triangles ?? null,
-    cells: cells(entry?.min, entry?.max),
+    cells: cells(min, max),
     sockets: grid,
     caps,
     // Curved and off-grid faces have no neighbouring cell to be checked
     // against; the builder reports them rather than calling the piece clean.
     unchecked: skipped.diagonal + skipped.offGrid,
   };
+}
 }
 
 // ---------------------------------------------------------------- scenes
@@ -279,14 +315,7 @@ const instanceOf = (name) => {
 
 for (const file of readdirSync(join(ROOT, 'scenes')).filter((n) => n.endsWith('.glb')).sort()) {
   const glb = readGlb(join(ROOT, 'scenes', file));
-  // Scenes name materials `Hidden_Blue` and are authored at one unit per cell;
-  // normalise both so they read like the models.
-  for (const material of glb.json.materials ?? []) {
-    if (material.name?.startsWith('Hidden_')) material.name = material.name.replace('_', ' ');
-  }
-  const scene = glb.json.scenes[glb.json.scene ?? 0];
-  glb.json.nodes.push({ matrix: [100, 0, 0, 0, 0, 100, 0, 0, 0, 0, 100, 0, 0, 0, 0, 1], children: [...scene.nodes] });
-  scene.nodes = [glb.json.nodes.length - 1];
+  normalise(glb, UNITS_PER_CELL);
 
   const faces = socketFaces(glb);
   const partners = new Map();

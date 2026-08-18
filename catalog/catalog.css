@@ -28,6 +28,15 @@
 
 * { box-sizing: border-box; }
 
+.offscreen {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 body {
   margin: 0;
   background: var(--paper);
@@ -149,11 +158,11 @@ a { color: var(--accent); }
 .swatch {
   position: relative;
   flex: none;
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: 1px solid rgba(0, 0, 0, .18);
-  border-radius: 7px;
+  border-radius: 8px;
   background: var(--swatch-color);
   cursor: pointer;
 }
@@ -170,8 +179,8 @@ a { color: var(--accent); }
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 6px;
-  height: 11px;
+  width: 7px;
+  height: 13px;
   border: solid var(--check, #fff);
   border-width: 0 2px 2px 0;
   transform: translateY(-1px) rotate(45deg);
@@ -182,14 +191,14 @@ a { color: var(--accent); }
   align-items: center;
   gap: 6px;
   width: auto;
-  height: 26px;
-  padding: 0 11px 0 8px;
+  height: 34px;
+  padding: 0 12px 0 9px;
   border-radius: 999px;
   border-color: var(--line);
   background: var(--card-bg);
   color: var(--ink-soft);
   font: inherit;
-  font-size: 11.5px;
+  font-size: 10.5px;
   white-space: nowrap;
 }
 
@@ -244,55 +253,56 @@ a { color: var(--accent); }
 
   .filter-group-swatches::-webkit-scrollbar { display: none; }
   .filter-group-label { display: none; }
-  .swatch { width: 22px; height: 22px; border-radius: 6px; }
-  .swatch.chip { height: 22px; padding: 0 9px 0 7px; font-size: 11px; }
+  .swatch { width: 30px; height: 30px; }
+  .swatch.chip { height: 30px; padding: 0 10px 0 8px; }
 }
 
 main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
-.section { padding-top: 16px; scroll-margin-top: 72px; }
+.section { padding-top: 10px; scroll-margin-top: 60px; }
 .section[hidden] { display: none; }
 
+/* The heading and the rule that used to sit under it are one slim bar. */
 .section-head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 12px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid var(--section-color, var(--line));
-  margin-bottom: 10px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 3px 8px;
+  border-left: 3px solid var(--section-color, var(--line));
+  border-radius: 3px;
+  background: var(--paper-deep);
 }
 
 .section-head h2 {
   margin: 0;
-  font-size: 17px;
-  letter-spacing: -.01em;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .01em;
 }
 
 .section-head .count {
-  padding: 2px 9px;
-  border-radius: 999px;
-  background: var(--paper-deep);
-  border: 1px solid var(--line);
-  font-size: 12px;
+  margin-left: auto;
   color: var(--ink-soft);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
 }
 
+/* One raster for atoms, assemblies and scenes, the same the builder's piece
+   list uses, so the whole catalog reads as a single wall of tiles. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  gap: 10px;
+  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
 }
 
-.section[data-facet="assembly"] .grid {
-  grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+@media (min-width: 700px) {
+  .grid {
+    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  }
 }
 
-.section[data-facet="scene"] .grid {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-}
-
-.section[data-facet="scene"] .card-viewer { aspect-ratio: 16 / 9; }
 
 .card-holder { position: relative; display: flex; }
 .card-holder[hidden] { display: none; }
@@ -377,6 +387,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
+  --progress-bar-height: 2px;
 }
 
 .card-text {
@@ -475,6 +486,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   width: 100%;
   height: 100%;
   --progress-bar-color: var(--accent);
+  --progress-bar-height: 2px;
 }
 
 .detail-info {
@@ -632,24 +644,21 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 
 @media (max-width: 560px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
-    gap: 6px;
-  }
-
-  .section[data-facet="assembly"] .grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-
   .card-text { padding: 5px 6px 6px; gap: 1px; }
 
   .card-name {
-    font-size: 10.5px;
+    display: -webkit-box;
     min-height: 0;
-    white-space: nowrap;
+    height: 2.5em;
     overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 10px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
+
+  /* The tick has to leave the tile something to show. */
+  .card-pick { top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 6px; }
 
   .card-meta { font-size: 9.5px; }
   .card-bytes { display: none; }

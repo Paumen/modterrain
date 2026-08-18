@@ -55,13 +55,13 @@
  },
  "views": [
   {
-   "id": "parts",
-   "label": "Parts",
+   "id": "atoms",
+   "label": "Atoms",
    "facet": "family",
    "count": 270,
    "sections": [
     {
-     "id": "parts-basic",
+     "id": "atoms-basic",
      "name": "Cliffs",
      "color": "#9a8f80",
      "models": [
@@ -109,7 +109,7 @@
      ]
     },
     {
-     "id": "parts-wall",
+     "id": "atoms-wall",
      "name": "Walls",
      "color": "#6f7b8c",
      "models": [
@@ -159,7 +159,7 @@
      ]
     },
     {
-     "id": "parts-cracked",
+     "id": "atoms-cracked",
      "name": "Cracked Cliffs",
      "color": "#a8705a",
      "models": [
@@ -188,7 +188,7 @@
      ]
     },
     {
-     "id": "parts-grass-tier",
+     "id": "atoms-grass-tier",
      "name": "Grass Steps",
      "color": "#5f9e4a",
      "models": [
@@ -212,7 +212,7 @@
      ]
     },
     {
-     "id": "parts-path-terrain",
+     "id": "atoms-path-terrain",
      "name": "Terrain Paths",
      "color": "#d98f4f",
      "models": [
@@ -248,7 +248,7 @@
      ]
     },
     {
-     "id": "parts-path-bridge",
+     "id": "atoms-path-bridge",
      "name": "Bridges & Ends",
      "color": "#8a5a2f",
      "models": [
@@ -265,7 +265,7 @@
      ]
     },
     {
-     "id": "parts-grass-carpet",
+     "id": "atoms-grass-carpet",
      "name": "Grass Carpet",
      "color": "#79c04a",
      "models": [
@@ -283,7 +283,7 @@
      ]
     },
     {
-     "id": "parts-grass-hill",
+     "id": "atoms-grass-hill",
      "name": "Grass Hills",
      "color": "#3f8f5f",
      "models": [
@@ -311,7 +311,7 @@
      ]
     },
     {
-     "id": "parts-sand",
+     "id": "atoms-sand",
      "name": "Sand",
      "color": "#e0c27a",
      "models": [
@@ -330,7 +330,7 @@
      ]
     },
     {
-     "id": "parts-river",
+     "id": "atoms-river",
      "name": "River",
      "color": "#3aa7d6",
      "models": [
@@ -350,7 +350,7 @@
      ]
     },
     {
-     "id": "parts-water",
+     "id": "atoms-water",
      "name": "Water & Waterfalls",
      "color": "#2fc7e8",
      "models": [
@@ -372,7 +372,7 @@
      ]
     },
     {
-     "id": "parts-iceberg",
+     "id": "atoms-iceberg",
      "name": "Icebergs",
      "color": "#8fc7ff",
      "models": [
@@ -391,7 +391,7 @@
      ]
     },
     {
-     "id": "parts-docks",
+     "id": "atoms-docks",
      "name": "Docks",
      "color": "#c08447",
      "models": [
@@ -414,7 +414,7 @@
      ]
     },
     {
-     "id": "parts-cave",
+     "id": "atoms-cave",
      "name": "Cave Edges",
      "color": "#7a6a86",
      "models": [
@@ -1106,333 +1106,6 @@
    ]
   },
   {
-   "id": "sizes",
-   "label": "Sizes",
-   "facet": "size",
-   "count": 270,
-   "sections": [
-    {
-     "id": "sizes-size-1x1",
-     "name": "1 × 1",
-     "color": "#4f9ed4",
-     "models": [
-      12,
-      13,
-      14,
-      15,
-      36,
-      37,
-      38,
-      39,
-      41,
-      42,
-      47,
-      71,
-      72,
-      75,
-      76,
-      77,
-      78,
-      79,
-      81,
-      82,
-      83,
-      84,
-      85,
-      86,
-      87,
-      88,
-      91,
-      96,
-      97,
-      126,
-      133,
-      134,
-      138,
-      143,
-      147,
-      150,
-      152,
-      157,
-      158,
-      159,
-      160,
-      166,
-      167,
-      168,
-      169,
-      191,
-      198,
-      199,
-      204,
-      258,
-      259,
-      260,
-      261,
-      262,
-      263
-     ]
-    },
-    {
-     "id": "sizes-size-narrow",
-     "name": "Narrow (1 × n)",
-     "color": "#5aa9c6",
-     "models": [
-      34,
-      35,
-      40,
-      48,
-      63,
-      64,
-      73,
-      74,
-      80,
-      104,
-      118,
-      127,
-      131,
-      132,
-      148,
-      153,
-      154,
-      155,
-      156,
-      161,
-      163,
-      165,
-      180,
-      192,
-      193,
-      194,
-      195,
-      209,
-      210,
-      211,
-      243,
-      244,
-      245,
-      264,
-      267
-     ]
-    },
-    {
-     "id": "sizes-size-2",
-     "name": "2 × 2 and 2 × n",
-     "color": "#6aa84f",
-     "models": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      28,
-      29,
-      30,
-      31,
-      32,
-      33,
-      44,
-      46,
-      49,
-      50,
-      57,
-      58,
-      65,
-      66,
-      67,
-      68,
-      69,
-      70,
-      89,
-      92,
-      94,
-      103,
-      110,
-      113,
-      117,
-      119,
-      123,
-      128,
-      129,
-      130,
-      137,
-      139,
-      144,
-      146,
-      149,
-      151,
-      162,
-      164,
-      196,
-      197,
-      200,
-      205,
-      224,
-      225,
-      226,
-      239,
-      240,
-      241,
-      242,
-      246,
-      247,
-      248,
-      249,
-      250,
-      251,
-      265,
-      266
-     ]
-    },
-    {
-     "id": "sizes-size-3",
-     "name": "3 × 3 and 3 × n",
-     "color": "#c9a227",
-     "models": [
-      8,
-      9,
-      10,
-      11,
-      24,
-      25,
-      26,
-      27,
-      43,
-      45,
-      51,
-      52,
-      59,
-      60,
-      61,
-      62,
-      90,
-      93,
-      95,
-      109,
-      115,
-      120,
-      124,
-      125,
-      135,
-      136,
-      140,
-      145,
-      181,
-      183,
-      185,
-      188,
-      201,
-      206,
-      212,
-      213,
-      214,
-      227,
-      228,
-      229,
-      233,
-      234,
-      235,
-      252,
-      253,
-      254,
-      268,
-      269
-     ]
-    },
-    {
-     "id": "sizes-size-4",
-     "name": "4 × 4 and 4 × n",
-     "color": "#e08b3e",
-     "models": [
-      53,
-      54,
-      55,
-      56,
-      98,
-      100,
-      101,
-      102,
-      105,
-      107,
-      108,
-      111,
-      114,
-      116,
-      121,
-      122,
-      141,
-      172,
-      175,
-      179,
-      186,
-      187,
-      189,
-      190,
-      202,
-      207,
-      230,
-      231,
-      232,
-      236,
-      237,
-      238
-     ]
-    },
-    {
-     "id": "sizes-size-large",
-     "name": "5 × 5 and larger",
-     "color": "#d4694f",
-     "models": [
-      99,
-      106,
-      112,
-      142,
-      170,
-      171,
-      173,
-      174,
-      176,
-      177,
-      178,
-      182,
-      184,
-      203,
-      208,
-      215,
-      216,
-      217,
-      218,
-      219,
-      220,
-      221,
-      222,
-      223
-     ]
-    },
-    {
-     "id": "sizes-size-none",
-     "name": "No Grid Size",
-     "color": "#9a9a9a",
-     "models": [
-      255,
-      256,
-      257
-     ]
-    }
-   ]
-  },
-  {
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
@@ -1605,609 +1278,696 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#e0ddd7",
-     "count": 192
+     "count": 192,
+     "short": "Cliff Face"
     },
     {
      "key": "material|grass",
      "name": "Grass",
      "source": "Grass",
      "hex": "#a7de76",
-     "count": 141
+     "count": 141,
+     "short": "Grass"
     },
     {
      "key": "material|dirt",
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#f6edd3",
-     "count": 55
+     "count": 55,
+     "short": "Dirt"
     },
     {
      "key": "material|water-river",
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 51
+     "count": 51,
+     "short": "River"
     },
     {
      "key": "material|waterfall",
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 35
+     "count": 35,
+     "short": "Waterfall"
     },
     {
      "key": "material|wood-dark",
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 24
+     "count": 24,
+     "short": "Dark"
     },
     {
      "key": "material|wood-light-end",
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 23
+     "count": 23,
+     "short": "Light End"
     },
     {
      "key": "material|wood-light",
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 22
+     "count": 22,
+     "short": "Light"
     },
     {
      "key": "material|ice",
      "name": "Ice",
      "source": "Ice",
      "hex": "#6aa1fb",
-     "count": 13
+     "count": 13,
+     "short": "Ice"
     },
     {
      "key": "material|rope",
      "name": "Rope",
      "source": "Rope",
      "hex": "#7f725a",
-     "count": 13
+     "count": 13,
+     "short": "Rope"
     },
     {
      "key": "material|waterfall-crest",
      "name": "Waterfall Crest",
      "source": "Waterfall Crest",
      "hex": "#6ee6ff",
-     "count": 11
+     "count": 11,
+     "short": "Waterfall Crest"
     },
     {
      "key": "material|wood-medium",
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 11
+     "count": 11,
+     "short": "Medium"
     },
     {
      "key": "material|candlewax",
      "name": "Candlewax",
      "source": "Candlewax",
      "hex": "#fff5e6",
-     "count": 3
+     "count": 3,
+     "short": "Candlewax"
     },
     {
      "key": "material|cliff",
      "name": "Cliff",
      "source": "Cliff",
      "hex": "#dad5cc",
-     "count": 3
+     "count": 3,
+     "short": "Cliff"
     },
     {
      "key": "material|metal-iron",
      "name": "Metal Iron",
      "source": "Metal Iron",
      "hex": "#726c68",
-     "count": 3
+     "count": 3,
+     "short": "Iron"
     },
     {
      "key": "material|water-lake",
      "name": "Water Lake",
      "source": "Water Lake",
      "hex": "#009bc3",
-     "count": 3
+     "count": 3,
+     "short": "Lake"
     },
     {
      "key": "material|bark-branch",
      "name": "Bark Branch",
      "source": "Bark Branch",
      "hex": "#9d7f58",
-     "count": 2
+     "count": 2,
+     "short": "Branch"
     },
     {
      "key": "material|bark-cedar",
      "name": "Bark Cedar",
      "source": "Bark Cedar",
      "hex": "#76624b",
-     "count": 2
+     "count": 2,
+     "short": "Cedar"
     },
     {
      "key": "material|bark-firewood",
      "name": "Bark Firewood",
      "source": "Bark Firewood",
      "hex": "#9d7f58",
-     "count": 2
+     "count": 2,
+     "short": "Firewood"
     },
     {
      "key": "material|bark-log",
      "name": "Bark Log",
      "source": "Bark Log",
      "hex": "#9d7f58",
-     "count": 2
+     "count": 2,
+     "short": "Log"
     },
     {
      "key": "material|bark-palm",
      "name": "Bark Palm",
      "source": "Bark Palm",
      "hex": "#d2bb9c",
-     "count": 2
+     "count": 2,
+     "short": "Palm"
     },
     {
      "key": "material|bark-pine",
      "name": "Bark Pine",
      "source": "Bark Pine",
      "hex": "#76624b",
-     "count": 2
+     "count": 2,
+     "short": "Pine"
     },
     {
      "key": "material|cattail-grass",
      "name": "Cattail Grass",
      "source": "Cattail Grass",
      "hex": "#dbe1b9",
-     "count": 2
+     "count": 2,
+     "short": "Cattail Grass"
     },
     {
      "key": "material|cave-pool",
      "name": "Cave Pool",
      "source": "Cave Pool",
      "hex": "#22cde3",
-     "count": 2
+     "count": 2,
+     "short": "Cave Pool"
     },
     {
      "key": "material|coconut",
      "name": "Coconut",
      "source": "Coconut",
      "hex": "#87755a",
-     "count": 2
+     "count": 2,
+     "short": "Coconut"
     },
     {
      "key": "material|flower-stem",
      "name": "Flower Stem",
      "source": "Flower Stem",
      "hex": "#88ce97",
-     "count": 2
+     "count": 2,
+     "short": "Stem"
     },
     {
      "key": "material|flower-sunflower",
      "name": "Flower Sunflower",
      "source": "Flower Sunflower",
      "hex": "#f9eed0",
-     "count": 2
+     "count": 2,
+     "short": "Sunflower"
     },
     {
      "key": "material|leaf",
      "name": "Leaf",
      "source": "Leaf",
      "hex": "#99de95",
-     "count": 2
+     "count": 2,
+     "short": "Leaf"
     },
     {
      "key": "material|leaf-palm",
      "name": "Leaf Palm",
      "source": "Leaf Palm",
      "hex": "#8ec996",
-     "count": 2
+     "count": 2,
+     "short": "Leaf Palm"
     },
     {
      "key": "material|metal-iron-light",
      "name": "Metal Iron Light",
      "source": "Metal Iron Light",
      "hex": "#948e87",
-     "count": 2
+     "count": 2,
+     "short": "Iron Light"
     },
     {
      "key": "material|mushroom-brown",
      "name": "Mushroom Brown",
      "source": "Mushroom Brown",
      "hex": "#edd7c2",
-     "count": 2
+     "count": 2,
+     "short": "Brown"
     },
     {
      "key": "material|mushroom-dark-red",
      "name": "Mushroom Dark Red",
      "source": "Mushroom Dark Red",
      "hex": "#ebd8cf",
-     "count": 2
+     "count": 2,
+     "short": "Dark Red"
     },
     {
      "key": "material|mushroom-gray",
      "name": "Mushroom Gray",
      "source": "Mushroom Gray",
      "hex": "#ecded0",
-     "count": 2
+     "count": 2,
+     "short": "Gray"
     },
     {
      "key": "material|mushroom-red-spotted",
      "name": "Mushroom Red Spotted",
      "source": "Mushroom Red Spotted",
      "hex": "#f5dad1",
-     "count": 2
+     "count": 2,
+     "short": "Red Spotted"
     },
     {
      "key": "material|mushroom-stem",
      "name": "Mushroom Stem",
      "source": "Mushroom Stem",
      "hex": "#fcf1e5",
-     "count": 2
+     "count": 2,
+     "short": "Mushroom Stem"
     },
     {
      "key": "material|rock",
      "name": "Rock",
      "source": "Rock",
      "hex": "#bebebe",
-     "count": 2
+     "count": 2,
+     "short": "Rock"
     },
     {
      "key": "material|shell-inner",
      "name": "Shell Inner",
      "source": "Shell Inner",
      "hex": "#eee3dd",
-     "count": 2
+     "count": 2,
+     "short": "Inner"
     },
     {
      "key": "material|shell-layered",
      "name": "Shell Layered",
      "source": "Shell Layered",
      "hex": "#e5d2c6",
-     "count": 2
+     "count": 2,
+     "short": "Layered"
     },
     {
      "key": "material|shell-salmon",
      "name": "Shell Salmon",
      "source": "Shell Salmon",
      "hex": "#efd3bc",
-     "count": 2
+     "count": 2,
+     "short": "Salmon"
     },
     {
      "key": "material|shell-slate",
      "name": "Shell Slate",
      "source": "Shell Slate",
      "hex": "#cdd8dd",
-     "count": 2
+     "count": 2,
+     "short": "Slate"
     },
     {
      "key": "material|starfish",
      "name": "Starfish",
      "source": "Starfish",
      "hex": "#caa996",
-     "count": 2
+     "count": 2,
+     "short": "Starfish"
     },
     {
      "key": "material|starfish-bleached",
      "name": "Starfish Bleached",
      "source": "Starfish Bleached",
      "hex": "#d6d0c8",
-     "count": 2
+     "count": 2,
+     "short": "Starfish Bleached"
     },
     {
      "key": "material|water-ocean",
      "name": "Water Ocean",
      "source": "Water Ocean",
      "hex": "#22cde3",
-     "count": 2
+     "count": 2,
+     "short": "Ocean"
     },
     {
      "key": "material|",
      "name": "",
      "source": "",
      "hex": "#ffffff",
-     "count": 1
+     "count": 1,
+     "short": ""
     },
     {
      "key": "material|bark-birch",
      "name": "Bark Birch",
      "source": "Bark Birch",
      "hex": "#d7d7d2",
-     "count": 1
+     "count": 1,
+     "short": "Birch"
     },
     {
      "key": "material|bark-oak",
      "name": "Bark Oak",
      "source": "Bark Oak",
      "hex": "#988a78",
-     "count": 1
+     "count": 1,
+     "short": "Oak"
     },
     {
      "key": "material|bark-stump",
      "name": "Bark Stump",
      "source": "Bark Stump",
      "hex": "#9d7f58",
-     "count": 1
+     "count": 1,
+     "short": "Stump"
     },
     {
      "key": "material|carved-stone-1",
      "name": "Carved Stone 1",
      "source": "Carved Stone 1",
      "hex": "#baae9f",
-     "count": 1
+     "count": 1,
+     "short": "Stone 1"
     },
     {
      "key": "material|carved-stone-2",
      "name": "Carved Stone 2",
      "source": "Carved Stone 2",
      "hex": "#c7bfb3",
-     "count": 1
+     "count": 1,
+     "short": "Stone 2"
     },
     {
      "key": "material|carved-stone-3",
      "name": "Carved Stone 3",
      "source": "Carved Stone 3",
      "hex": "#d6d2cb",
-     "count": 1
+     "count": 1,
+     "short": "Stone 3"
     },
     {
      "key": "material|carved-stone-walkway",
      "name": "Carved Stone Walkway",
      "source": "Carved Stone Walkway",
      "hex": "#bfbab4",
-     "count": 1
+     "count": 1,
+     "short": "Walkway"
     },
     {
      "key": "material|cattail",
      "name": "Cattail",
      "source": "Cattail",
      "hex": "#af9070",
-     "count": 1
+     "count": 1,
+     "short": "Cattail"
     },
     {
      "key": "material|cattail-stem",
      "name": "Cattail Stem",
      "source": "Cattail Stem",
      "hex": "#c3c29c",
-     "count": 1
+     "count": 1,
+     "short": "Cattail Stem"
     },
     {
      "key": "material|cave-waterfall",
      "name": "Cave Waterfall",
      "source": "Cave Waterfall",
      "hex": "#51cde2",
-     "count": 1
+     "count": 1,
+     "short": "Cave Waterfall"
     },
     {
      "key": "material|flower-5-point-blue",
      "name": "Flower 5 Point Blue",
      "source": "Flower 5 Point Blue",
      "hex": "#f0f8ff",
-     "count": 1
+     "count": 1,
+     "short": "Blue"
     },
     {
      "key": "material|flower-5-point-pink",
      "name": "Flower 5 Point Pink",
      "source": "Flower 5 Point Pink",
      "hex": "#fbf2f2",
-     "count": 1
+     "count": 1,
+     "short": "Pink"
     },
     {
      "key": "material|flower-5-point-violet",
      "name": "Flower 5 Point Violet",
      "source": "Flower 5 Point Violet",
      "hex": "#fef4fd",
-     "count": 1
+     "count": 1,
+     "short": "Violet"
     },
     {
      "key": "material|flower-daisy-white",
      "name": "Flower Daisy White",
      "source": "Flower Daisy White",
      "hex": "#d5d5d5",
-     "count": 1
+     "count": 1,
+     "short": "Daisy White"
     },
     {
      "key": "material|flower-stamen",
      "name": "Flower Stamen",
      "source": "Flower Stamen",
      "hex": "#faf5ee",
-     "count": 1
+     "count": 1,
+     "short": "Stamen"
     },
     {
      "key": "material|grass-autumn",
      "name": "Grass Autumn",
      "source": "Grass Autumn",
      "hex": "#c8d4a4",
-     "count": 1
+     "count": 1,
+     "short": "Grass Autumn"
     },
     {
      "key": "material|leaves-autumn-cedar",
      "name": "Leaves Autumn Cedar",
      "source": "Leaves Autumn Cedar",
      "hex": "#e9db60",
-     "count": 1
+     "count": 1,
+     "short": "Autumn Cedar"
     },
     {
      "key": "material|leaves-autumn-orange",
      "name": "Leaves Autumn Orange",
      "source": "Leaves Autumn Orange",
      "hex": "#e5ae45",
-     "count": 1
+     "count": 1,
+     "short": "Orange"
     },
     {
      "key": "material|leaves-autumn-red",
      "name": "Leaves Autumn Red",
      "source": "Leaves Autumn Red",
      "hex": "#d9976c",
-     "count": 1
+     "count": 1,
+     "short": "Red"
     },
     {
      "key": "material|leaves-autumn-yellow",
      "name": "Leaves Autumn Yellow",
      "source": "Leaves Autumn Yellow",
      "hex": "#d6b638",
-     "count": 1
+     "count": 1,
+     "short": "Yellow"
     },
     {
      "key": "material|leaves-cedar",
      "name": "Leaves Cedar",
      "source": "Leaves Cedar",
      "hex": "#659f47",
-     "count": 1
+     "count": 1,
+     "short": "Leaves Cedar"
     },
     {
      "key": "material|leaves-oak",
      "name": "Leaves Oak",
      "source": "Leaves Oak",
      "hex": "#bde99b",
-     "count": 1
+     "count": 1,
+     "short": "Leaves Oak"
     },
     {
      "key": "material|leaves-pine",
      "name": "Leaves Pine",
      "source": "Leaves Pine",
      "hex": "#569f94",
-     "count": 1
+     "count": 1,
+     "short": "Leaves Pine"
     },
     {
      "key": "material|mountain",
      "name": "Mountain",
      "source": "Mountain",
      "hex": "#bebebe",
-     "count": 1
+     "count": 1,
+     "short": "Mountain"
     },
     {
      "key": "material|sign-16x9",
      "name": "Sign 16:9",
      "source": "Sign 16x9",
      "hex": "#6d8551",
-     "count": 1
+     "count": 1,
+     "short": "Sign 16:9"
     },
     {
      "key": "material|sign-4x3",
      "name": "Sign 4:3",
      "source": "Sign 4x3",
      "hex": "#a4b2a9",
-     "count": 1
+     "count": 1,
+     "short": "Sign 4:3"
     },
     {
      "key": "material|sign-8x3",
      "name": "Sign 8:3",
      "source": "Sign 8x3",
      "hex": "#cacbb7",
-     "count": 1
+     "count": 1,
+     "short": "Sign 8:3"
     },
     {
      "key": "material|snow-bark",
      "name": "Snow Bark",
      "source": "Snow Bark",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Bark"
     },
     {
      "key": "material|snow-dirt",
      "name": "Snow Dirt",
      "source": "Snow Dirt",
      "hex": "#eeefe9",
-     "count": 1
+     "count": 1,
+     "short": "Snow Dirt"
     },
     {
      "key": "material|snow-grass",
      "name": "Snow Grass",
      "source": "Snow Grass",
      "hex": "#e9f3f5",
-     "count": 1
+     "count": 1,
+     "short": "Snow Grass"
     },
     {
      "key": "material|snow-leaves-pine",
      "name": "Snow Leaves Pine",
      "source": "Snow Leaves Pine",
      "hex": "#e2e6e9",
-     "count": 1
+     "count": 1,
+     "short": "Snow Leaves Pine"
     },
     {
      "key": "material|snow-metal-iron",
      "name": "Snow Metal Iron",
      "source": "Snow Metal Iron",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Metal Iron"
     },
     {
      "key": "material|snow-metal-iron-dark",
      "name": "Snow Metal Iron Dark",
      "source": "Snow Metal Iron Dark",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Iron Dark"
     },
     {
      "key": "material|snow-metal-iron-light",
      "name": "Snow Metal Iron Light",
      "source": "Snow Metal Iron Light",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Metal Iron Light"
     },
     {
      "key": "material|snow-rock",
      "name": "Snow Rock",
      "source": "Snow Rock",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Snow Rock"
     },
     {
      "key": "material|snow-tarp-blue",
      "name": "Snow Tarp Blue",
      "source": "Snow Tarp Blue",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Snow Tarp Blue"
     },
     {
      "key": "material|snow-wood-dark",
      "name": "Snow Wood Dark",
      "source": "Snow Wood Dark",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Wood Dark"
     },
     {
      "key": "material|snow-wood-light",
      "name": "Snow Wood Light",
      "source": "Snow Wood Light",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Wood Light"
     },
     {
      "key": "material|snow-wood-light-end",
      "name": "Snow Wood Light End",
      "source": "Snow Wood Light End",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Wood Light End"
     },
     {
      "key": "material|snow-wood-medium",
      "name": "Snow Wood Medium",
      "source": "Snow Wood Medium",
      "hex": "#c6c8c4",
-     "count": 1
+     "count": 1,
+     "short": "Wood Medium"
     },
     {
      "key": "material|tarp-blue",
      "name": "Tarp Blue",
      "source": "Tarp Blue",
      "hex": "#5c8b9c",
-     "count": 1
+     "count": 1,
+     "short": "Tarp Blue"
     },
     {
      "key": "material|tarp-green",
      "name": "Tarp Green",
      "source": "Tarp Green",
      "hex": "#1c7d4b",
-     "count": 1
+     "count": 1,
+     "short": "Tarp Green"
     },
     {
      "key": "material|winter-water-river",
      "name": "Winter Water River",
      "source": "Winter Water River",
      "hex": "#60c8de",
-     "count": 1
+     "count": 1,
+     "short": "Winter Water River"
     }
    ]
   },
@@ -2221,56 +1981,64 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 328
+     "count": 328,
+     "short": "Hidden"
     },
     {
      "key": "hidden|hidden-violet",
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 110
+     "count": 110,
+     "short": "Violet"
     },
     {
      "key": "hidden|hidden-yellow",
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 90
+     "count": 90,
+     "short": "Yellow"
     },
     {
      "key": "hidden|hidden-orange",
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 82
+     "count": 82,
+     "short": "Orange"
     },
     {
      "key": "hidden|hidden-blue",
      "name": "Hidden Blue",
      "source": "Hidden Blue",
      "hex": "#d8efff",
-     "count": 71
+     "count": 71,
+     "short": "Blue"
     },
     {
      "key": "hidden|hidden-pink",
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 70
+     "count": 70,
+     "short": "Pink"
     },
     {
      "key": "hidden|hidden-green",
      "name": "Hidden Green",
      "source": "Hidden Green",
      "hex": "#dcfdc8",
-     "count": 69
+     "count": 69,
+     "short": "Green"
     },
     {
      "key": "hidden|hidden-red",
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 46
+     "count": 46,
+     "short": "Red"
     }
    ]
   }
@@ -2279,7 +2047,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Base",
    "name": "Basic Curve Inner 2x2 Narrow Base",
-   "file": "models/Basic_Curve_Inner_2x2_Narrow_Base.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Narrow_Base.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-base",
@@ -2318,7 +2086,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Mid",
    "name": "Basic Curve Inner 2x2 Narrow Mid",
-   "file": "models/Basic_Curve_Inner_2x2_Narrow_Mid.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Narrow_Mid.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -2357,7 +2125,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Top",
    "name": "Basic Curve Inner 2x2 Narrow Top",
-   "file": "models/Basic_Curve_Inner_2x2_Narrow_Top.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Narrow_Top.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -2399,7 +2167,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Narrow_Under",
    "name": "Basic Curve Inner 2x2 Narrow Under",
-   "file": "models/Basic_Curve_Inner_2x2_Narrow_Under.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Narrow_Under.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-under",
@@ -2438,7 +2206,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Base",
    "name": "Basic Curve Inner 2x2 Wide Base",
-   "file": "models/Basic_Curve_Inner_2x2_Wide_Base.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Wide_Base.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-base",
@@ -2477,7 +2245,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Mid",
    "name": "Basic Curve Inner 2x2 Wide Mid",
-   "file": "models/Basic_Curve_Inner_2x2_Wide_Mid.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Wide_Mid.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -2516,7 +2284,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Top",
    "name": "Basic Curve Inner 2x2 Wide Top",
-   "file": "models/Basic_Curve_Inner_2x2_Wide_Top.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Wide_Top.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -2558,7 +2326,7 @@
   {
    "id": "Basic_Curve_Inner_2x2_Wide_Under",
    "name": "Basic Curve Inner 2x2 Wide Under",
-   "file": "models/Basic_Curve_Inner_2x2_Wide_Under.glb",
+   "file": "atoms/Basic_Curve_Inner_2x2_Wide_Under.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-under",
@@ -2597,7 +2365,7 @@
   {
    "id": "Basic_Curve_Inner_3x3_Base",
    "name": "Basic Curve Inner 3x3 Base",
-   "file": "models/Basic_Curve_Inner_3x3_Base.glb",
+   "file": "atoms/Basic_Curve_Inner_3x3_Base.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-base",
@@ -2634,7 +2402,7 @@
   {
    "id": "Basic_Curve_Inner_3x3_Mid",
    "name": "Basic Curve Inner 3x3 Mid",
-   "file": "models/Basic_Curve_Inner_3x3_Mid.glb",
+   "file": "atoms/Basic_Curve_Inner_3x3_Mid.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -2671,7 +2439,7 @@
   {
    "id": "Basic_Curve_Inner_3x3_Top",
    "name": "Basic Curve Inner 3x3 Top",
-   "file": "models/Basic_Curve_Inner_3x3_Top.glb",
+   "file": "atoms/Basic_Curve_Inner_3x3_Top.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -2711,7 +2479,7 @@
   {
    "id": "Basic_Curve_Inner_3x3_Under",
    "name": "Basic Curve Inner 3x3 Under",
-   "file": "models/Basic_Curve_Inner_3x3_Under.glb",
+   "file": "atoms/Basic_Curve_Inner_3x3_Under.glb",
    "family": "basic",
    "shape": "curve-inner",
    "layer": "layer-under",
@@ -2748,7 +2516,7 @@
   {
    "id": "Basic_Curve_Outer_1x1_Base",
    "name": "Basic Curve Outer 1x1 Base",
-   "file": "models/Basic_Curve_Outer_1x1_Base.glb",
+   "file": "atoms/Basic_Curve_Outer_1x1_Base.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-base",
@@ -2785,7 +2553,7 @@
   {
    "id": "Basic_Curve_Outer_1x1_Mid",
    "name": "Basic Curve Outer 1x1 Mid",
-   "file": "models/Basic_Curve_Outer_1x1_Mid.glb",
+   "file": "atoms/Basic_Curve_Outer_1x1_Mid.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -2822,7 +2590,7 @@
   {
    "id": "Basic_Curve_Outer_1x1_Top",
    "name": "Basic Curve Outer 1x1 Top",
-   "file": "models/Basic_Curve_Outer_1x1_Top.glb",
+   "file": "atoms/Basic_Curve_Outer_1x1_Top.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -2861,7 +2629,7 @@
   {
    "id": "Basic_Curve_Outer_1x1_Under",
    "name": "Basic Curve Outer 1x1 Under",
-   "file": "models/Basic_Curve_Outer_1x1_Under.glb",
+   "file": "atoms/Basic_Curve_Outer_1x1_Under.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-under",
@@ -2898,7 +2666,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Base",
    "name": "Basic Curve Outer 2x2 Narrow Base",
-   "file": "models/Basic_Curve_Outer_2x2_Narrow_Base.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Narrow_Base.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-base",
@@ -2937,7 +2705,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
    "name": "Basic Curve Outer 2x2 Narrow Mid",
-   "file": "models/Basic_Curve_Outer_2x2_Narrow_Mid.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Narrow_Mid.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -2976,7 +2744,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Top",
    "name": "Basic Curve Outer 2x2 Narrow Top",
-   "file": "models/Basic_Curve_Outer_2x2_Narrow_Top.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Narrow_Top.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -3018,7 +2786,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Narrow_Under",
    "name": "Basic Curve Outer 2x2 Narrow Under",
-   "file": "models/Basic_Curve_Outer_2x2_Narrow_Under.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Narrow_Under.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-under",
@@ -3057,7 +2825,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Base",
    "name": "Basic Curve Outer 2x2 Wide Base",
-   "file": "models/Basic_Curve_Outer_2x2_Wide_Base.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Wide_Base.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-base",
@@ -3096,7 +2864,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Mid",
    "name": "Basic Curve Outer 2x2 Wide Mid",
-   "file": "models/Basic_Curve_Outer_2x2_Wide_Mid.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Wide_Mid.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -3135,7 +2903,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Top",
    "name": "Basic Curve Outer 2x2 Wide Top",
-   "file": "models/Basic_Curve_Outer_2x2_Wide_Top.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Wide_Top.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -3177,7 +2945,7 @@
   {
    "id": "Basic_Curve_Outer_2x2_Wide_Under",
    "name": "Basic Curve Outer 2x2 Wide Under",
-   "file": "models/Basic_Curve_Outer_2x2_Wide_Under.glb",
+   "file": "atoms/Basic_Curve_Outer_2x2_Wide_Under.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-under",
@@ -3216,7 +2984,7 @@
   {
    "id": "Basic_Curve_Outer_3x3_Base",
    "name": "Basic Curve Outer 3x3 Base",
-   "file": "models/Basic_Curve_Outer_3x3_Base.glb",
+   "file": "atoms/Basic_Curve_Outer_3x3_Base.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-base",
@@ -3253,7 +3021,7 @@
   {
    "id": "Basic_Curve_Outer_3x3_Mid",
    "name": "Basic Curve Outer 3x3 Mid",
-   "file": "models/Basic_Curve_Outer_3x3_Mid.glb",
+   "file": "atoms/Basic_Curve_Outer_3x3_Mid.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -3290,7 +3058,7 @@
   {
    "id": "Basic_Curve_Outer_3x3_Top",
    "name": "Basic Curve Outer 3x3 Top",
-   "file": "models/Basic_Curve_Outer_3x3_Top.glb",
+   "file": "atoms/Basic_Curve_Outer_3x3_Top.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -3330,7 +3098,7 @@
   {
    "id": "Basic_Curve_Outer_3x3_Under",
    "name": "Basic Curve Outer 3x3 Under",
-   "file": "models/Basic_Curve_Outer_3x3_Under.glb",
+   "file": "atoms/Basic_Curve_Outer_3x3_Under.glb",
    "family": "basic",
    "shape": "curve-outer",
    "layer": "layer-under",
@@ -3367,7 +3135,7 @@
   {
    "id": "Basic_Esse_Base_2x2",
    "name": "Basic Esse Base 2x2",
-   "file": "models/Basic_Esse_Base_2x2.glb",
+   "file": "atoms/Basic_Esse_Base_2x2.glb",
    "family": "basic",
    "shape": "esse",
    "layer": "layer-base",
@@ -3404,7 +3172,7 @@
   {
    "id": "Basic_Esse_Mid_2x2",
    "name": "Basic Esse Mid 2x2",
-   "file": "models/Basic_Esse_Mid_2x2.glb",
+   "file": "atoms/Basic_Esse_Mid_2x2.glb",
    "family": "basic",
    "shape": "esse",
    "layer": "layer-mid",
@@ -3441,7 +3209,7 @@
   {
    "id": "Basic_Esse_Top_2x2",
    "name": "Basic Esse Top 2x2",
-   "file": "models/Basic_Esse_Top_2x2.glb",
+   "file": "atoms/Basic_Esse_Top_2x2.glb",
    "family": "basic",
    "shape": "esse",
    "layer": "layer-top",
@@ -3481,7 +3249,7 @@
   {
    "id": "Basic_Esse_Under_2x2",
    "name": "Basic Esse Under 2x2",
-   "file": "models/Basic_Esse_Under_2x2.glb",
+   "file": "atoms/Basic_Esse_Under_2x2.glb",
    "family": "basic",
    "shape": "esse",
    "layer": "layer-under",
@@ -3518,7 +3286,7 @@
   {
    "id": "Basic_Incline_Base_2x2",
    "name": "Basic Incline Base 2x2",
-   "file": "models/Basic_Incline_Base_2x2.glb",
+   "file": "atoms/Basic_Incline_Base_2x2.glb",
    "family": "basic",
    "shape": "incline",
    "layer": "layer-base",
@@ -3555,7 +3323,7 @@
   {
    "id": "Basic_Incline_Top_2x2",
    "name": "Basic Incline Top 2x2",
-   "file": "models/Basic_Incline_Top_2x2.glb",
+   "file": "atoms/Basic_Incline_Top_2x2.glb",
    "family": "basic",
    "shape": "incline",
    "layer": "layer-top",
@@ -3595,7 +3363,7 @@
   {
    "id": "Basic_Incline_Under_1x2",
    "name": "Basic Incline Under 1x2",
-   "file": "models/Basic_Incline_Under_1x2.glb",
+   "file": "atoms/Basic_Incline_Under_1x2.glb",
    "family": "basic",
    "shape": "incline",
    "layer": "layer-under",
@@ -3632,7 +3400,7 @@
   {
    "id": "Basic_Straight_Base_1x2",
    "name": "Basic Straight Base 1x2",
-   "file": "models/Basic_Straight_Base_1x2.glb",
+   "file": "atoms/Basic_Straight_Base_1x2.glb",
    "family": "basic",
    "shape": "straight",
    "layer": "layer-base",
@@ -3669,7 +3437,7 @@
   {
    "id": "Basic_Straight_Mid_1x1",
    "name": "Basic Straight Mid 1x1",
-   "file": "models/Basic_Straight_Mid_1x1.glb",
+   "file": "atoms/Basic_Straight_Mid_1x1.glb",
    "family": "basic",
    "shape": "straight",
    "layer": "layer-mid",
@@ -3706,7 +3474,7 @@
   {
    "id": "Basic_Straight_Top_1x1",
    "name": "Basic Straight Top 1x1",
-   "file": "models/Basic_Straight_Top_1x1.glb",
+   "file": "atoms/Basic_Straight_Top_1x1.glb",
    "family": "basic",
    "shape": "straight",
    "layer": "layer-top",
@@ -3746,7 +3514,7 @@
   {
    "id": "Basic_Straight_Under_1x1",
    "name": "Basic Straight Under 1x1",
-   "file": "models/Basic_Straight_Under_1x1.glb",
+   "file": "atoms/Basic_Straight_Under_1x1.glb",
    "family": "basic",
    "shape": "straight",
    "layer": "layer-under",
@@ -3783,7 +3551,7 @@
   {
    "id": "Basic_Under_Inner_Flat_1x1",
    "name": "Basic Under Inner Flat 1x1",
-   "file": "models/Basic_Under_Inner_Flat_1x1.glb",
+   "file": "atoms/Basic_Under_Inner_Flat_1x1.glb",
    "family": "basic",
    "shape": "flat",
    "layer": "layer-under",
@@ -3820,7 +3588,7 @@
   {
    "id": "Basic_Under_Inner_Incline_1x2",
    "name": "Basic Under Inner Incline 1x2",
-   "file": "models/Basic_Under_Inner_Incline_1x2.glb",
+   "file": "atoms/Basic_Under_Inner_Incline_1x2.glb",
    "family": "basic",
    "shape": "incline",
    "layer": "layer-under",
@@ -3857,7 +3625,7 @@
   {
    "id": "Cave_Center_Base_1x1",
    "name": "Cave Center Base 1x1",
-   "file": "models/Cave_Center_Base_1x1.glb",
+   "file": "atoms/Cave_Center_Base_1x1.glb",
    "family": "cave",
    "shape": "standalone",
    "layer": "layer-base",
@@ -3897,7 +3665,7 @@
   {
    "id": "Cave_Center_Top_1x1",
    "name": "Cave Center Top 1x1",
-   "file": "models/Cave_Center_Top_1x1.glb",
+   "file": "atoms/Cave_Center_Top_1x1.glb",
    "family": "cave",
    "shape": "standalone",
    "layer": "layer-top",
@@ -3937,7 +3705,7 @@
   {
    "id": "Cave_Edge_Esse_Base_3x3",
    "name": "Cave Edge Esse Base 3x3",
-   "file": "models/Cave_Edge_Esse_Base_3x3.glb",
+   "file": "atoms/Cave_Edge_Esse_Base_3x3.glb",
    "family": "cave",
    "shape": "esse",
    "layer": "layer-base",
@@ -3978,7 +3746,7 @@
   {
    "id": "Cave_Edge_Esse_Mid_2x3",
    "name": "Cave Edge Esse Mid 2x3",
-   "file": "models/Cave_Edge_Esse_Mid_2x3.glb",
+   "file": "atoms/Cave_Edge_Esse_Mid_2x3.glb",
    "family": "cave",
    "shape": "esse",
    "layer": "layer-mid",
@@ -4018,7 +3786,7 @@
   {
    "id": "Cave_Edge_Esse_Top_3x4",
    "name": "Cave Edge Esse Top 3x4",
-   "file": "models/Cave_Edge_Esse_Top_3x4.glb",
+   "file": "atoms/Cave_Edge_Esse_Top_3x4.glb",
    "family": "cave",
    "shape": "esse",
    "layer": "layer-top",
@@ -4059,7 +3827,7 @@
   {
    "id": "Cave_Edge_Straight_Base_2x2",
    "name": "Cave Edge Straight Base 2x2",
-   "file": "models/Cave_Edge_Straight_Base_2x2.glb",
+   "file": "atoms/Cave_Edge_Straight_Base_2x2.glb",
    "family": "cave",
    "shape": "straight",
    "layer": "layer-base",
@@ -4100,7 +3868,7 @@
   {
    "id": "Cave_Edge_Straight_Mid_1x1",
    "name": "Cave Edge Straight Mid 1x1",
-   "file": "models/Cave_Edge_Straight_Mid_1x1.glb",
+   "file": "atoms/Cave_Edge_Straight_Mid_1x1.glb",
    "family": "cave",
    "shape": "straight",
    "layer": "layer-mid",
@@ -4140,7 +3908,7 @@
   {
    "id": "Cave_Edge_Straight_Top_1x3",
    "name": "Cave Edge Straight Top 1x3",
-   "file": "models/Cave_Edge_Straight_Top_1x3.glb",
+   "file": "atoms/Cave_Edge_Straight_Top_1x3.glb",
    "family": "cave",
    "shape": "straight",
    "layer": "layer-top",
@@ -4181,7 +3949,7 @@
   {
    "id": "Cracked_Curve_Inner_2x2_1_Mid",
    "name": "Cracked Curve Inner 2x2 1 Mid",
-   "file": "models/Cracked_Curve_Inner_2x2_1_Mid.glb",
+   "file": "atoms/Cracked_Curve_Inner_2x2_1_Mid.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -4221,7 +3989,7 @@
   {
    "id": "Cracked_Curve_Inner_2x2_1_Top",
    "name": "Cracked Curve Inner 2x2 1 Top",
-   "file": "models/Cracked_Curve_Inner_2x2_1_Top.glb",
+   "file": "atoms/Cracked_Curve_Inner_2x2_1_Top.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -4261,7 +4029,7 @@
   {
    "id": "Cracked_Curve_Inner_3x3_1_Mid",
    "name": "Cracked Curve Inner 3x3 1 Mid",
-   "file": "models/Cracked_Curve_Inner_3x3_1_Mid.glb",
+   "file": "atoms/Cracked_Curve_Inner_3x3_1_Mid.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -4301,7 +4069,7 @@
   {
    "id": "Cracked_Curve_Inner_3x3_1_Top",
    "name": "Cracked Curve Inner 3x3 1 Top",
-   "file": "models/Cracked_Curve_Inner_3x3_1_Top.glb",
+   "file": "atoms/Cracked_Curve_Inner_3x3_1_Top.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -4341,7 +4109,7 @@
   {
    "id": "Cracked_Curve_Inner_4x4_1_Mid",
    "name": "Cracked Curve Inner 4x4 1 Mid",
-   "file": "models/Cracked_Curve_Inner_4x4_1_Mid.glb",
+   "file": "atoms/Cracked_Curve_Inner_4x4_1_Mid.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -4381,7 +4149,7 @@
   {
    "id": "Cracked_Curve_Inner_4x4_1_Top",
    "name": "Cracked Curve Inner 4x4 1 Top",
-   "file": "models/Cracked_Curve_Inner_4x4_1_Top.glb",
+   "file": "atoms/Cracked_Curve_Inner_4x4_1_Top.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -4421,7 +4189,7 @@
   {
    "id": "Cracked_Curve_Inner_4x4_2_Mid",
    "name": "Cracked Curve Inner 4x4 2 Mid",
-   "file": "models/Cracked_Curve_Inner_4x4_2_Mid.glb",
+   "file": "atoms/Cracked_Curve_Inner_4x4_2_Mid.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -4461,7 +4229,7 @@
   {
    "id": "Cracked_Curve_Inner_4x4_2_Top",
    "name": "Cracked Curve Inner 4x4 2 Top",
-   "file": "models/Cracked_Curve_Inner_4x4_2_Top.glb",
+   "file": "atoms/Cracked_Curve_Inner_4x4_2_Top.glb",
    "family": "cracked",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -4501,7 +4269,7 @@
   {
    "id": "Cracked_Curve_Outer_2x2_1_Mid",
    "name": "Cracked Curve Outer 2x2 1 Mid",
-   "file": "models/Cracked_Curve_Outer_2x2_1_Mid.glb",
+   "file": "atoms/Cracked_Curve_Outer_2x2_1_Mid.glb",
    "family": "cracked",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -4540,7 +4308,7 @@
   {
    "id": "Cracked_Curve_Outer_2x2_1_Top",
    "name": "Cracked Curve Outer 2x2 1 Top",
-   "file": "models/Cracked_Curve_Outer_2x2_1_Top.glb",
+   "file": "atoms/Cracked_Curve_Outer_2x2_1_Top.glb",
    "family": "cracked",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -4579,7 +4347,7 @@
   {
    "id": "Cracked_Curve_Outer_3x3_1_Mid",
    "name": "Cracked Curve Outer 3x3 1 Mid",
-   "file": "models/Cracked_Curve_Outer_3x3_1_Mid.glb",
+   "file": "atoms/Cracked_Curve_Outer_3x3_1_Mid.glb",
    "family": "cracked",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -4618,7 +4386,7 @@
   {
    "id": "Cracked_Curve_Outer_3x3_1_Top",
    "name": "Cracked Curve Outer 3x3 1 Top",
-   "file": "models/Cracked_Curve_Outer_3x3_1_Top.glb",
+   "file": "atoms/Cracked_Curve_Outer_3x3_1_Top.glb",
    "family": "cracked",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -4657,7 +4425,7 @@
   {
    "id": "Cracked_Curve_Outer_3x3_2_Mid",
    "name": "Cracked Curve Outer 3x3 2 Mid",
-   "file": "models/Cracked_Curve_Outer_3x3_2_Mid.glb",
+   "file": "atoms/Cracked_Curve_Outer_3x3_2_Mid.glb",
    "family": "cracked",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -4696,7 +4464,7 @@
   {
    "id": "Cracked_Curve_Outer_3x3_2_Top",
    "name": "Cracked Curve Outer 3x3 2 Top",
-   "file": "models/Cracked_Curve_Outer_3x3_2_Top.glb",
+   "file": "atoms/Cracked_Curve_Outer_3x3_2_Top.glb",
    "family": "cracked",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -4735,7 +4503,7 @@
   {
    "id": "Cracked_Straight_1x2_1_Mid",
    "name": "Cracked Straight 1x2 1 Mid",
-   "file": "models/Cracked_Straight_1x2_1_Mid.glb",
+   "file": "atoms/Cracked_Straight_1x2_1_Mid.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-mid",
@@ -4775,7 +4543,7 @@
   {
    "id": "Cracked_Straight_1x2_1_Top",
    "name": "Cracked Straight 1x2 1 Top",
-   "file": "models/Cracked_Straight_1x2_1_Top.glb",
+   "file": "atoms/Cracked_Straight_1x2_1_Top.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-top",
@@ -4815,7 +4583,7 @@
   {
    "id": "Cracked_Straight_2x2_1_Mid",
    "name": "Cracked Straight 2x2 1 Mid",
-   "file": "models/Cracked_Straight_2x2_1_Mid.glb",
+   "file": "atoms/Cracked_Straight_2x2_1_Mid.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-mid",
@@ -4855,7 +4623,7 @@
   {
    "id": "Cracked_Straight_2x2_1_Top",
    "name": "Cracked Straight 2x2 1 Top",
-   "file": "models/Cracked_Straight_2x2_1_Top.glb",
+   "file": "atoms/Cracked_Straight_2x2_1_Top.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-top",
@@ -4895,7 +4663,7 @@
   {
    "id": "Cracked_Straight_2x2_2_Mid",
    "name": "Cracked Straight 2x2 2 Mid",
-   "file": "models/Cracked_Straight_2x2_2_Mid.glb",
+   "file": "atoms/Cracked_Straight_2x2_2_Mid.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-mid",
@@ -4935,7 +4703,7 @@
   {
    "id": "Cracked_Straight_2x2_2_Top",
    "name": "Cracked Straight 2x2 2 Top",
-   "file": "models/Cracked_Straight_2x2_2_Top.glb",
+   "file": "atoms/Cracked_Straight_2x2_2_Top.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-top",
@@ -4975,7 +4743,7 @@
   {
    "id": "Cracked_Straight_2x2_3_Mid",
    "name": "Cracked Straight 2x2 3 Mid",
-   "file": "models/Cracked_Straight_2x2_3_Mid.glb",
+   "file": "atoms/Cracked_Straight_2x2_3_Mid.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-mid",
@@ -5015,7 +4783,7 @@
   {
    "id": "Cracked_Straight_2x2_3_Top",
    "name": "Cracked Straight 2x2 3 Top",
-   "file": "models/Cracked_Straight_2x2_3_Top.glb",
+   "file": "atoms/Cracked_Straight_2x2_3_Top.glb",
    "family": "cracked",
    "shape": "straight",
    "layer": "layer-top",
@@ -5055,7 +4823,7 @@
   {
    "id": "Docks_Bumper_1_1x1",
    "name": "Docks Bumper 1 1x1",
-   "file": "models/Docks_Bumper_1_1x1.glb",
+   "file": "atoms/Docks_Bumper_1_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5093,7 +4861,7 @@
   {
    "id": "Docks_Decking_Flat_1x1",
    "name": "Docks Decking Flat 1x1",
-   "file": "models/Docks_Decking_Flat_1x1.glb",
+   "file": "atoms/Docks_Decking_Flat_1x1.glb",
    "family": "docks",
    "shape": "flat",
    "layer": "layer-none",
@@ -5131,7 +4899,7 @@
   {
    "id": "Docks_Decking_Flat_1x2",
    "name": "Docks Decking Flat 1x2",
-   "file": "models/Docks_Decking_Flat_1x2.glb",
+   "file": "atoms/Docks_Decking_Flat_1x2.glb",
    "family": "docks",
    "shape": "flat",
    "layer": "layer-none",
@@ -5169,7 +4937,7 @@
   {
    "id": "Docks_Decking_Steps_1x2",
    "name": "Docks Decking Steps 1x2",
-   "file": "models/Docks_Decking_Steps_1x2.glb",
+   "file": "atoms/Docks_Decking_Steps_1x2.glb",
    "family": "docks",
    "shape": "stairs",
    "layer": "layer-none",
@@ -5207,7 +4975,7 @@
   {
    "id": "Docks_Ladder_Middle_1x1",
    "name": "Docks Ladder Middle 1x1",
-   "file": "models/Docks_Ladder_Middle_1x1.glb",
+   "file": "atoms/Docks_Ladder_Middle_1x1.glb",
    "family": "docks",
    "shape": "stairs",
    "layer": "layer-none",
@@ -5245,7 +5013,7 @@
   {
    "id": "Docks_Ladder_Top_1x1",
    "name": "Docks Ladder Top 1x1",
-   "file": "models/Docks_Ladder_Top_1x1.glb",
+   "file": "atoms/Docks_Ladder_Top_1x1.glb",
    "family": "docks",
    "shape": "stairs",
    "layer": "layer-top",
@@ -5283,7 +5051,7 @@
   {
    "id": "Docks_Railing_Board_1_1x1",
    "name": "Docks Railing Board 1 1x1",
-   "file": "models/Docks_Railing_Board_1_1x1.glb",
+   "file": "atoms/Docks_Railing_Board_1_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5319,7 +5087,7 @@
   {
    "id": "Docks_Railing_Post_Top_1x1",
    "name": "Docks Railing Post Top 1x1",
-   "file": "models/Docks_Railing_Post_Top_1x1.glb",
+   "file": "atoms/Docks_Railing_Post_Top_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-top",
@@ -5356,7 +5124,7 @@
   {
    "id": "Docks_Railing_Post_Top_Roped_1x1",
    "name": "Docks Railing Post Top Roped 1x1",
-   "file": "models/Docks_Railing_Post_Top_Roped_1x1.glb",
+   "file": "atoms/Docks_Railing_Post_Top_Roped_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-top",
@@ -5398,7 +5166,7 @@
   {
    "id": "Docks_Railing_Posts_Steps_Roped_1x3",
    "name": "Docks Railing Posts Steps Roped 1x3",
-   "file": "models/Docks_Railing_Posts_Steps_Roped_1x3.glb",
+   "file": "atoms/Docks_Railing_Posts_Steps_Roped_1x3.glb",
    "family": "docks",
    "shape": "stairs",
    "layer": "layer-none",
@@ -5441,7 +5209,7 @@
   {
    "id": "Docks_Railing_Rope_Basic_1_1x1",
    "name": "Docks Railing Rope Basic 1 1x1",
-   "file": "models/Docks_Railing_Rope_Basic_1_1x1.glb",
+   "file": "atoms/Docks_Railing_Rope_Basic_1_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5482,7 +5250,7 @@
   {
    "id": "Docks_Railing_Rope_Basic_2_1x1",
    "name": "Docks Railing Rope Basic 2 1x1",
-   "file": "models/Docks_Railing_Rope_Basic_2_1x1.glb",
+   "file": "atoms/Docks_Railing_Rope_Basic_2_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5523,7 +5291,7 @@
   {
    "id": "Docks_Railing_Rope_Broken_1_1x1",
    "name": "Docks Railing Rope Broken 1 1x1",
-   "file": "models/Docks_Railing_Rope_Broken_1_1x1.glb",
+   "file": "atoms/Docks_Railing_Rope_Broken_1_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5565,7 +5333,7 @@
   {
    "id": "Docks_Railing_Rope_Broken_2_1x1",
    "name": "Docks Railing Rope Broken 2 1x1",
-   "file": "models/Docks_Railing_Rope_Broken_2_1x1.glb",
+   "file": "atoms/Docks_Railing_Rope_Broken_2_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5607,7 +5375,7 @@
   {
    "id": "Docks_Support_Brace_1x1",
    "name": "Docks Support Brace 1x1",
-   "file": "models/Docks_Support_Brace_1x1.glb",
+   "file": "atoms/Docks_Support_Brace_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5645,7 +5413,7 @@
   {
    "id": "Docks_Support_Post_Mid_1x1",
    "name": "Docks Support Post Mid 1x1",
-   "file": "models/Docks_Support_Post_Mid_1x1.glb",
+   "file": "atoms/Docks_Support_Post_Mid_1x1.glb",
    "family": "docks",
    "shape": "standalone",
    "layer": "layer-mid",
@@ -5682,7 +5450,7 @@
   {
    "id": "Grass_Carpet_Center_1x1",
    "name": "Grass Carpet Center 1x1",
-   "file": "models/Grass_Carpet_Center_1x1.glb",
+   "file": "atoms/Grass_Carpet_Center_1x1.glb",
    "family": "grass-carpet",
    "shape": "standalone",
    "layer": "layer-none",
@@ -5723,7 +5491,7 @@
   {
    "id": "Grass_Carpet_Curve_Inner_1x1",
    "name": "Grass Carpet Curve Inner 1x1",
-   "file": "models/Grass_Carpet_Curve_Inner_1x1.glb",
+   "file": "atoms/Grass_Carpet_Curve_Inner_1x1.glb",
    "family": "grass-carpet",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -5764,7 +5532,7 @@
   {
    "id": "Grass_Carpet_Curve_Inner_2x2",
    "name": "Grass Carpet Curve Inner 2x2",
-   "file": "models/Grass_Carpet_Curve_Inner_2x2.glb",
+   "file": "atoms/Grass_Carpet_Curve_Inner_2x2.glb",
    "family": "grass-carpet",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -5805,7 +5573,7 @@
   {
    "id": "Grass_Carpet_Curve_Inner_3x3",
    "name": "Grass Carpet Curve Inner 3x3",
-   "file": "models/Grass_Carpet_Curve_Inner_3x3.glb",
+   "file": "atoms/Grass_Carpet_Curve_Inner_3x3.glb",
    "family": "grass-carpet",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -5846,7 +5614,7 @@
   {
    "id": "Grass_Carpet_Curve_Outer_1x1",
    "name": "Grass Carpet Curve Outer 1x1",
-   "file": "models/Grass_Carpet_Curve_Outer_1x1.glb",
+   "file": "atoms/Grass_Carpet_Curve_Outer_1x1.glb",
    "family": "grass-carpet",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -5886,7 +5654,7 @@
   {
    "id": "Grass_Carpet_Curve_Outer_2x2",
    "name": "Grass Carpet Curve Outer 2x2",
-   "file": "models/Grass_Carpet_Curve_Outer_2x2.glb",
+   "file": "atoms/Grass_Carpet_Curve_Outer_2x2.glb",
    "family": "grass-carpet",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -5927,7 +5695,7 @@
   {
    "id": "Grass_Carpet_Curve_Outer_3x3",
    "name": "Grass Carpet Curve Outer 3x3",
-   "file": "models/Grass_Carpet_Curve_Outer_3x3.glb",
+   "file": "atoms/Grass_Carpet_Curve_Outer_3x3.glb",
    "family": "grass-carpet",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -5968,7 +5736,7 @@
   {
    "id": "Grass_Carpet_Esse_2x2",
    "name": "Grass Carpet Esse 2x2",
-   "file": "models/Grass_Carpet_Esse_2x2.glb",
+   "file": "atoms/Grass_Carpet_Esse_2x2.glb",
    "family": "grass-carpet",
    "shape": "esse",
    "layer": "layer-none",
@@ -6009,7 +5777,7 @@
   {
    "id": "Grass_Carpet_Esse_3x3",
    "name": "Grass Carpet Esse 3x3",
-   "file": "models/Grass_Carpet_Esse_3x3.glb",
+   "file": "atoms/Grass_Carpet_Esse_3x3.glb",
    "family": "grass-carpet",
    "shape": "esse",
    "layer": "layer-none",
@@ -6050,7 +5818,7 @@
   {
    "id": "Grass_Carpet_Straight_1x1",
    "name": "Grass Carpet Straight 1x1",
-   "file": "models/Grass_Carpet_Straight_1x1.glb",
+   "file": "atoms/Grass_Carpet_Straight_1x1.glb",
    "family": "grass-carpet",
    "shape": "straight",
    "layer": "layer-none",
@@ -6091,7 +5859,7 @@
   {
    "id": "Grass_Flat_1x1",
    "name": "Grass Flat 1x1",
-   "file": "models/Grass_Flat_1x1.glb",
+   "file": "atoms/Grass_Flat_1x1.glb",
    "family": "grass-carpet",
    "shape": "flat",
    "layer": "layer-none",
@@ -6131,7 +5899,7 @@
   {
    "id": "Grass_Hill_Gentle_Curve_Inner_4x4",
    "name": "Grass Hill Gentle Curve Inner 4x4",
-   "file": "models/Grass_Hill_Gentle_Curve_Inner_4x4.glb",
+   "file": "atoms/Grass_Hill_Gentle_Curve_Inner_4x4.glb",
    "family": "grass-hill",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -6174,7 +5942,7 @@
   {
    "id": "Grass_Hill_Gentle_Curve_Inner_6x6",
    "name": "Grass Hill Gentle Curve Inner 6x6",
-   "file": "models/Grass_Hill_Gentle_Curve_Inner_6x6.glb",
+   "file": "atoms/Grass_Hill_Gentle_Curve_Inner_6x6.glb",
    "family": "grass-hill",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -6217,7 +5985,7 @@
   {
    "id": "Grass_Hill_Gentle_Curve_Outer_4x4",
    "name": "Grass Hill Gentle Curve Outer 4x4",
-   "file": "models/Grass_Hill_Gentle_Curve_Outer_4x4.glb",
+   "file": "atoms/Grass_Hill_Gentle_Curve_Outer_4x4.glb",
    "family": "grass-hill",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -6260,7 +6028,7 @@
   {
    "id": "Grass_Hill_Gentle_Esse_4x5",
    "name": "Grass Hill Gentle Esse 4x5",
-   "file": "models/Grass_Hill_Gentle_Esse_4x5.glb",
+   "file": "atoms/Grass_Hill_Gentle_Esse_4x5.glb",
    "family": "grass-hill",
    "shape": "esse",
    "layer": "layer-none",
@@ -6303,7 +6071,7 @@
   {
    "id": "Grass_Hill_Gentle_Overlapping_Gentle_4x4",
    "name": "Grass Hill Gentle Overlapping Gentle 4x4",
-   "file": "models/Grass_Hill_Gentle_Overlapping_Gentle_4x4.glb",
+   "file": "atoms/Grass_Hill_Gentle_Overlapping_Gentle_4x4.glb",
    "family": "grass-hill",
    "shape": "overlapping",
    "layer": "layer-none",
@@ -6345,7 +6113,7 @@
   {
    "id": "Grass_Hill_Gentle_Overlapping_Sharp_2x4",
    "name": "Grass Hill Gentle Overlapping Sharp 2x4",
-   "file": "models/Grass_Hill_Gentle_Overlapping_Sharp_2x4.glb",
+   "file": "atoms/Grass_Hill_Gentle_Overlapping_Sharp_2x4.glb",
    "family": "grass-hill",
    "shape": "overlapping",
    "layer": "layer-none",
@@ -6389,7 +6157,7 @@
   {
    "id": "Grass_Hill_Gentle_Straight_1x4",
    "name": "Grass Hill Gentle Straight 1x4",
-   "file": "models/Grass_Hill_Gentle_Straight_1x4.glb",
+   "file": "atoms/Grass_Hill_Gentle_Straight_1x4.glb",
    "family": "grass-hill",
    "shape": "straight",
    "layer": "layer-none",
@@ -6432,7 +6200,7 @@
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Inner_4x5",
    "name": "Grass Hill Grade Transition Curve Inner 4x5",
-   "file": "models/Grass_Hill_Grade_Transition_Curve_Inner_4x5.glb",
+   "file": "atoms/Grass_Hill_Grade_Transition_Curve_Inner_4x5.glb",
    "family": "grass-hill",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -6476,7 +6244,7 @@
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Inner_6x7",
    "name": "Grass Hill Grade Transition Curve Inner 6x7",
-   "file": "models/Grass_Hill_Grade_Transition_Curve_Inner_6x7.glb",
+   "file": "atoms/Grass_Hill_Grade_Transition_Curve_Inner_6x7.glb",
    "family": "grass-hill",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -6520,7 +6288,7 @@
   {
    "id": "Grass_Hill_Grade_Transition_Curve_Outer_4x5",
    "name": "Grass Hill Grade Transition Curve Outer 4x5",
-   "file": "models/Grass_Hill_Grade_Transition_Curve_Outer_4x5.glb",
+   "file": "atoms/Grass_Hill_Grade_Transition_Curve_Outer_4x5.glb",
    "family": "grass-hill",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -6564,7 +6332,7 @@
   {
    "id": "Grass_Hill_Grade_Transition_Straight_Front_4x4",
    "name": "Grass Hill Grade Transition Straight Front 4x4",
-   "file": "models/Grass_Hill_Grade_Transition_Straight_Front_4x4.glb",
+   "file": "atoms/Grass_Hill_Grade_Transition_Straight_Front_4x4.glb",
    "family": "grass-hill",
    "shape": "straight",
    "layer": "layer-none",
@@ -6609,7 +6377,7 @@
   {
    "id": "Grass_Hill_Grade_Transition_Straight_Rear_3x4",
    "name": "Grass Hill Grade Transition Straight Rear 3x4",
-   "file": "models/Grass_Hill_Grade_Transition_Straight_Rear_3x4.glb",
+   "file": "atoms/Grass_Hill_Grade_Transition_Straight_Rear_3x4.glb",
    "family": "grass-hill",
    "shape": "straight",
    "layer": "layer-none",
@@ -6654,7 +6422,7 @@
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_2x2",
    "name": "Grass Hill Sharp Curve Inner 2x2",
-   "file": "models/Grass_Hill_Sharp_Curve_Inner_2x2.glb",
+   "file": "atoms/Grass_Hill_Sharp_Curve_Inner_2x2.glb",
    "family": "grass-hill",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -6696,7 +6464,7 @@
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_4x4",
    "name": "Grass Hill Sharp Curve Inner 4x4",
-   "file": "models/Grass_Hill_Sharp_Curve_Inner_4x4.glb",
+   "file": "atoms/Grass_Hill_Sharp_Curve_Inner_4x4.glb",
    "family": "grass-hill",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -6739,7 +6507,7 @@
   {
    "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
    "name": "Grass Hill Sharp Curve Inner 6x6",
-   "file": "models/Grass_Hill_Sharp_Curve_Inner_6x6.glb",
+   "file": "atoms/Grass_Hill_Sharp_Curve_Inner_6x6.glb",
    "family": "grass-hill",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -6782,7 +6550,7 @@
   {
    "id": "Grass_Hill_Sharp_Curve_Outer_2x2",
    "name": "Grass Hill Sharp Curve Outer 2x2",
-   "file": "models/Grass_Hill_Sharp_Curve_Outer_2x2.glb",
+   "file": "atoms/Grass_Hill_Sharp_Curve_Outer_2x2.glb",
    "family": "grass-hill",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -6824,7 +6592,7 @@
   {
    "id": "Grass_Hill_Sharp_Curve_Outer_4x4",
    "name": "Grass Hill Sharp Curve Outer 4x4",
-   "file": "models/Grass_Hill_Sharp_Curve_Outer_4x4.glb",
+   "file": "atoms/Grass_Hill_Sharp_Curve_Outer_4x4.glb",
    "family": "grass-hill",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -6867,7 +6635,7 @@
   {
    "id": "Grass_Hill_Sharp_Esse_4x3",
    "name": "Grass Hill Sharp Esse 4x3",
-   "file": "models/Grass_Hill_Sharp_Esse_4x3.glb",
+   "file": "atoms/Grass_Hill_Sharp_Esse_4x3.glb",
    "family": "grass-hill",
    "shape": "esse",
    "layer": "layer-none",
@@ -6910,7 +6678,7 @@
   {
    "id": "Grass_Hill_Sharp_Esse_4x4",
    "name": "Grass Hill Sharp Esse 4x4",
-   "file": "models/Grass_Hill_Sharp_Esse_4x4.glb",
+   "file": "atoms/Grass_Hill_Sharp_Esse_4x4.glb",
    "family": "grass-hill",
    "shape": "esse",
    "layer": "layer-none",
@@ -6953,7 +6721,7 @@
   {
    "id": "Grass_Hill_Sharp_Overlapping_Sharp_2x2",
    "name": "Grass Hill Sharp Overlapping Sharp 2x2",
-   "file": "models/Grass_Hill_Sharp_Overlapping_Sharp_2x2.glb",
+   "file": "atoms/Grass_Hill_Sharp_Overlapping_Sharp_2x2.glb",
    "family": "grass-hill",
    "shape": "overlapping",
    "layer": "layer-none",
@@ -6995,7 +6763,7 @@
   {
    "id": "Grass_Hill_Sharp_Straight_1x2",
    "name": "Grass Hill Sharp Straight 1x2",
-   "file": "models/Grass_Hill_Sharp_Straight_1x2.glb",
+   "file": "atoms/Grass_Hill_Sharp_Straight_1x2.glb",
    "family": "grass-hill",
    "shape": "straight",
    "layer": "layer-none",
@@ -7038,7 +6806,7 @@
   {
    "id": "Iceberg_Curve_Inner_2x2_1",
    "name": "Iceberg Curve Inner 2x2 1",
-   "file": "models/Iceberg_Curve_Inner_2x2_1.glb",
+   "file": "atoms/Iceberg_Curve_Inner_2x2_1.glb",
    "family": "iceberg",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7076,7 +6844,7 @@
   {
    "id": "Iceberg_Curve_Inner_3x3_1",
    "name": "Iceberg Curve Inner 3x3 1",
-   "file": "models/Iceberg_Curve_Inner_3x3_1.glb",
+   "file": "atoms/Iceberg_Curve_Inner_3x3_1.glb",
    "family": "iceberg",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7114,7 +6882,7 @@
   {
    "id": "Iceberg_Curve_Inner_4x4_1",
    "name": "Iceberg Curve Inner 4x4 1",
-   "file": "models/Iceberg_Curve_Inner_4x4_1.glb",
+   "file": "atoms/Iceberg_Curve_Inner_4x4_1.glb",
    "family": "iceberg",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7152,7 +6920,7 @@
   {
    "id": "Iceberg_Curve_Inner_4x4_2",
    "name": "Iceberg Curve Inner 4x4 2",
-   "file": "models/Iceberg_Curve_Inner_4x4_2.glb",
+   "file": "atoms/Iceberg_Curve_Inner_4x4_2.glb",
    "family": "iceberg",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7190,7 +6958,7 @@
   {
    "id": "Iceberg_Curve_Outer_2x2_1",
    "name": "Iceberg Curve Outer 2x2 1",
-   "file": "models/Iceberg_Curve_Outer_2x2_1.glb",
+   "file": "atoms/Iceberg_Curve_Outer_2x2_1.glb",
    "family": "iceberg",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -7227,7 +6995,7 @@
   {
    "id": "Iceberg_Curve_Outer_3x3_1",
    "name": "Iceberg Curve Outer 3x3 1",
-   "file": "models/Iceberg_Curve_Outer_3x3_1.glb",
+   "file": "atoms/Iceberg_Curve_Outer_3x3_1.glb",
    "family": "iceberg",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -7264,7 +7032,7 @@
   {
    "id": "Iceberg_Curve_Outer_3x3_2",
    "name": "Iceberg Curve Outer 3x3 2",
-   "file": "models/Iceberg_Curve_Outer_3x3_2.glb",
+   "file": "atoms/Iceberg_Curve_Outer_3x3_2.glb",
    "family": "iceberg",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -7301,7 +7069,7 @@
   {
    "id": "Iceberg_Flat_1x1",
    "name": "Iceberg Flat 1x1",
-   "file": "models/Iceberg_Flat_1x1.glb",
+   "file": "atoms/Iceberg_Flat_1x1.glb",
    "family": "iceberg",
    "shape": "flat",
    "layer": "layer-none",
@@ -7338,7 +7106,7 @@
   {
    "id": "Iceberg_Straight_1x2_1",
    "name": "Iceberg Straight 1x2 1",
-   "file": "models/Iceberg_Straight_1x2_1.glb",
+   "file": "atoms/Iceberg_Straight_1x2_1.glb",
    "family": "iceberg",
    "shape": "straight",
    "layer": "layer-none",
@@ -7376,7 +7144,7 @@
   {
    "id": "Iceberg_Straight_2x2_1",
    "name": "Iceberg Straight 2x2 1",
-   "file": "models/Iceberg_Straight_2x2_1.glb",
+   "file": "atoms/Iceberg_Straight_2x2_1.glb",
    "family": "iceberg",
    "shape": "straight",
    "layer": "layer-none",
@@ -7414,7 +7182,7 @@
   {
    "id": "Iceberg_Straight_2x2_2",
    "name": "Iceberg Straight 2x2 2",
-   "file": "models/Iceberg_Straight_2x2_2.glb",
+   "file": "atoms/Iceberg_Straight_2x2_2.glb",
    "family": "iceberg",
    "shape": "straight",
    "layer": "layer-none",
@@ -7452,7 +7220,7 @@
   {
    "id": "Iceberg_Straight_2x2_3",
    "name": "Iceberg Straight 2x2 3",
-   "file": "models/Iceberg_Straight_2x2_3.glb",
+   "file": "atoms/Iceberg_Straight_2x2_3.glb",
    "family": "iceberg",
    "shape": "straight",
    "layer": "layer-none",
@@ -7490,7 +7258,7 @@
   {
    "id": "Path_Bridge_Center_Top_1x2",
    "name": "Path Bridge Center Top 1x2",
-   "file": "models/Path_Bridge_Center_Top_1x2.glb",
+   "file": "atoms/Path_Bridge_Center_Top_1x2.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-top",
@@ -7531,7 +7299,7 @@
   {
    "id": "Path_Bridge_Edge_Top_1x2",
    "name": "Path Bridge Edge Top 1x2",
-   "file": "models/Path_Bridge_Edge_Top_1x2.glb",
+   "file": "atoms/Path_Bridge_Edge_Top_1x2.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-top",
@@ -7575,7 +7343,7 @@
   {
    "id": "Path_End_Center_Top_1x1",
    "name": "Path End Center Top 1x1",
-   "file": "models/Path_End_Center_Top_1x1.glb",
+   "file": "atoms/Path_End_Center_Top_1x1.glb",
    "family": "path-bridge",
    "shape": "end",
    "layer": "layer-top",
@@ -7616,7 +7384,7 @@
   {
    "id": "Path_End_Edge_Top_1x1",
    "name": "Path End Edge Top 1x1",
-   "file": "models/Path_End_Edge_Top_1x1.glb",
+   "file": "atoms/Path_End_Edge_Top_1x1.glb",
    "family": "path-bridge",
    "shape": "end",
    "layer": "layer-top",
@@ -7660,7 +7428,7 @@
   {
    "id": "Path_Terrain_45_Degrees_Curve_Inner_3x3",
    "name": "Path Terrain 45 Degrees Curve Inner 3x3",
-   "file": "models/Path_Terrain_45_Degrees_Curve_Inner_3x3.glb",
+   "file": "atoms/Path_Terrain_45_Degrees_Curve_Inner_3x3.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7702,7 +7470,7 @@
   {
    "id": "Path_Terrain_45_Degrees_Curve_Outer_3x5",
    "name": "Path Terrain 45 Degrees Curve Outer 3x5",
-   "file": "models/Path_Terrain_45_Degrees_Curve_Outer_3x5.glb",
+   "file": "atoms/Path_Terrain_45_Degrees_Curve_Outer_3x5.glb",
    "family": "path-terrain",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -7744,7 +7512,7 @@
   {
    "id": "Path_Terrain_45_Degrees_Straight_2x2",
    "name": "Path Terrain 45 Degrees Straight 2x2",
-   "file": "models/Path_Terrain_45_Degrees_Straight_2x2.glb",
+   "file": "atoms/Path_Terrain_45_Degrees_Straight_2x2.glb",
    "family": "path-terrain",
    "shape": "straight",
    "layer": "layer-none",
@@ -7786,7 +7554,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Inner_1x1",
    "name": "Path Terrain Basic Curve Inner 1x1",
-   "file": "models/Path_Terrain_Basic_Curve_Inner_1x1.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Inner_1x1.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7826,7 +7594,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Inner_2x2",
    "name": "Path Terrain Basic Curve Inner 2x2",
-   "file": "models/Path_Terrain_Basic_Curve_Inner_2x2.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Inner_2x2.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7866,7 +7634,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Inner_3x3",
    "name": "Path Terrain Basic Curve Inner 3x3",
-   "file": "models/Path_Terrain_Basic_Curve_Inner_3x3.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Inner_3x3.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7906,7 +7674,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Inner_4x4",
    "name": "Path Terrain Basic Curve Inner 4x4",
-   "file": "models/Path_Terrain_Basic_Curve_Inner_4x4.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Inner_4x4.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7946,7 +7714,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Inner_5x5",
    "name": "Path Terrain Basic Curve Inner 5x5",
-   "file": "models/Path_Terrain_Basic_Curve_Inner_5x5.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Inner_5x5.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -7986,7 +7754,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Outer_1x1",
    "name": "Path Terrain Basic Curve Outer 1x1",
-   "file": "models/Path_Terrain_Basic_Curve_Outer_1x1.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Outer_1x1.glb",
    "family": "path-terrain",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -8025,7 +7793,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Outer_2x2",
    "name": "Path Terrain Basic Curve Outer 2x2",
-   "file": "models/Path_Terrain_Basic_Curve_Outer_2x2.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Outer_2x2.glb",
    "family": "path-terrain",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -8065,7 +7833,7 @@
   {
    "id": "Path_Terrain_Basic_Curve_Outer_3x3",
    "name": "Path Terrain Basic Curve Outer 3x3",
-   "file": "models/Path_Terrain_Basic_Curve_Outer_3x3.glb",
+   "file": "atoms/Path_Terrain_Basic_Curve_Outer_3x3.glb",
    "family": "path-terrain",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -8105,7 +7873,7 @@
   {
    "id": "Path_Terrain_Basic_Esse_2x3",
    "name": "Path Terrain Basic Esse 2x3",
-   "file": "models/Path_Terrain_Basic_Esse_2x3.glb",
+   "file": "atoms/Path_Terrain_Basic_Esse_2x3.glb",
    "family": "path-terrain",
    "shape": "esse",
    "layer": "layer-none",
@@ -8145,7 +7913,7 @@
   {
    "id": "Path_Terrain_Basic_Straight_1x1",
    "name": "Path Terrain Basic Straight 1x1",
-   "file": "models/Path_Terrain_Basic_Straight_1x1.glb",
+   "file": "atoms/Path_Terrain_Basic_Straight_1x1.glb",
    "family": "path-terrain",
    "shape": "straight",
    "layer": "layer-none",
@@ -8185,7 +7953,7 @@
   {
    "id": "Path_Terrain_Deformed_Straight_Concave_1x2",
    "name": "Path Terrain Deformed Straight Concave 1x2",
-   "file": "models/Path_Terrain_Deformed_Straight_Concave_1x2.glb",
+   "file": "atoms/Path_Terrain_Deformed_Straight_Concave_1x2.glb",
    "family": "path-terrain",
    "shape": "straight",
    "layer": "layer-none",
@@ -8228,7 +7996,7 @@
   {
    "id": "Path_Terrain_Deformed_Straight_Concave_2x2",
    "name": "Path Terrain Deformed Straight Concave 2x2",
-   "file": "models/Path_Terrain_Deformed_Straight_Concave_2x2.glb",
+   "file": "atoms/Path_Terrain_Deformed_Straight_Concave_2x2.glb",
    "family": "path-terrain",
    "shape": "straight",
    "layer": "layer-none",
@@ -8271,7 +8039,7 @@
   {
    "id": "Path_Terrain_Deformed_Straight_Convex_1x1",
    "name": "Path Terrain Deformed Straight Convex 1x1",
-   "file": "models/Path_Terrain_Deformed_Straight_Convex_1x1.glb",
+   "file": "atoms/Path_Terrain_Deformed_Straight_Convex_1x1.glb",
    "family": "path-terrain",
    "shape": "straight",
    "layer": "layer-none",
@@ -8314,7 +8082,7 @@
   {
    "id": "Path_Terrain_Deformed_Straight_Convex_2x2",
    "name": "Path Terrain Deformed Straight Convex 2x2",
-   "file": "models/Path_Terrain_Deformed_Straight_Convex_2x2.glb",
+   "file": "atoms/Path_Terrain_Deformed_Straight_Convex_2x2.glb",
    "family": "path-terrain",
    "shape": "straight",
    "layer": "layer-none",
@@ -8357,7 +8125,7 @@
   {
    "id": "Path_Terrain_Dirt_Flat_1x1",
    "name": "Path Terrain Dirt Flat 1x1",
-   "file": "models/Path_Terrain_Dirt_Flat_1x1.glb",
+   "file": "atoms/Path_Terrain_Dirt_Flat_1x1.glb",
    "family": "path-terrain",
    "shape": "flat",
    "layer": "layer-none",
@@ -8396,7 +8164,7 @@
   {
    "id": "Path_Terrain_Incline_Gentle_Center_1x4",
    "name": "Path Terrain Incline Gentle Center 1x4",
-   "file": "models/Path_Terrain_Incline_Gentle_Center_1x4.glb",
+   "file": "atoms/Path_Terrain_Incline_Gentle_Center_1x4.glb",
    "family": "path-terrain",
    "shape": "incline",
    "layer": "layer-none",
@@ -8436,7 +8204,7 @@
   {
    "id": "Path_Terrain_Incline_Gentle_Edge_1x4",
    "name": "Path Terrain Incline Gentle Edge 1x4",
-   "file": "models/Path_Terrain_Incline_Gentle_Edge_1x4.glb",
+   "file": "atoms/Path_Terrain_Incline_Gentle_Edge_1x4.glb",
    "family": "path-terrain",
    "shape": "incline",
    "layer": "layer-none",
@@ -8479,7 +8247,7 @@
   {
    "id": "Path_Terrain_Incline_Sharp_Center_1x2",
    "name": "Path Terrain Incline Sharp Center 1x2",
-   "file": "models/Path_Terrain_Incline_Sharp_Center_1x2.glb",
+   "file": "atoms/Path_Terrain_Incline_Sharp_Center_1x2.glb",
    "family": "path-terrain",
    "shape": "incline",
    "layer": "layer-none",
@@ -8519,7 +8287,7 @@
   {
    "id": "Path_Terrain_Incline_Sharp_Edge_1x2",
    "name": "Path Terrain Incline Sharp Edge 1x2",
-   "file": "models/Path_Terrain_Incline_Sharp_Edge_1x2.glb",
+   "file": "atoms/Path_Terrain_Incline_Sharp_Edge_1x2.glb",
    "family": "path-terrain",
    "shape": "incline",
    "layer": "layer-none",
@@ -8562,7 +8330,7 @@
   {
    "id": "Path_Terrain_Transition_Grass_Center_1x1",
    "name": "Path Terrain Transition Grass Center 1x1",
-   "file": "models/Path_Terrain_Transition_Grass_Center_1x1.glb",
+   "file": "atoms/Path_Terrain_Transition_Grass_Center_1x1.glb",
    "family": "path-terrain",
    "shape": "transition",
    "layer": "layer-none",
@@ -8604,7 +8372,7 @@
   {
    "id": "Path_Terrain_Transition_Grass_Side_Curve_1x1",
    "name": "Path Terrain Transition Grass Side Curve 1x1",
-   "file": "models/Path_Terrain_Transition_Grass_Side_Curve_1x1.glb",
+   "file": "atoms/Path_Terrain_Transition_Grass_Side_Curve_1x1.glb",
    "family": "path-terrain",
    "shape": "curve",
    "layer": "layer-none",
@@ -8647,7 +8415,7 @@
   {
    "id": "Path_Terrain_Transition_Grass_Side_Straight_1x1",
    "name": "Path Terrain Transition Grass Side Straight 1x1",
-   "file": "models/Path_Terrain_Transition_Grass_Side_Straight_1x1.glb",
+   "file": "atoms/Path_Terrain_Transition_Grass_Side_Straight_1x1.glb",
    "family": "path-terrain",
    "shape": "straight",
    "layer": "layer-none",
@@ -8690,7 +8458,7 @@
   {
    "id": "Path_Terrain_Y_Curve_Inner_1x1",
    "name": "Path Terrain Y Curve Inner 1x1",
-   "file": "models/Path_Terrain_Y_Curve_Inner_1x1.glb",
+   "file": "atoms/Path_Terrain_Y_Curve_Inner_1x1.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -8731,7 +8499,7 @@
   {
    "id": "Path_Terrain_Y_Curve_Inner_1x2",
    "name": "Path Terrain Y Curve Inner 1x2",
-   "file": "models/Path_Terrain_Y_Curve_Inner_1x2.glb",
+   "file": "atoms/Path_Terrain_Y_Curve_Inner_1x2.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -8773,7 +8541,7 @@
   {
    "id": "Path_Terrain_Y_Curve_Inner_2x3",
    "name": "Path Terrain Y Curve Inner 2x3",
-   "file": "models/Path_Terrain_Y_Curve_Inner_2x3.glb",
+   "file": "atoms/Path_Terrain_Y_Curve_Inner_2x3.glb",
    "family": "path-terrain",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -8815,7 +8583,7 @@
   {
    "id": "Prop_Bridge_Center_1x2",
    "name": "Prop Bridge Center 1x2",
-   "file": "models/Prop_Bridge_Center_1x2.glb",
+   "file": "atoms/Prop_Bridge_Center_1x2.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-none",
@@ -8857,7 +8625,7 @@
   {
    "id": "Prop_Bridge_End_2x2",
    "name": "Prop Bridge End 2x2",
-   "file": "models/Prop_Bridge_End_2x2.glb",
+   "file": "atoms/Prop_Bridge_End_2x2.glb",
    "family": "path-bridge",
    "shape": "end",
    "layer": "layer-none",
@@ -8897,7 +8665,7 @@
   {
    "id": "Prop_Bridge_Rope_End_Basic_1x3",
    "name": "Prop Bridge Rope End Basic 1x3",
-   "file": "models/Prop_Bridge_Rope_End_Basic_1x3.glb",
+   "file": "atoms/Prop_Bridge_Rope_End_Basic_1x3.glb",
    "family": "path-bridge",
    "shape": "end",
    "layer": "layer-none",
@@ -8941,7 +8709,7 @@
   {
    "id": "Prop_Bridge_Rope_Middle_Basic_1x1",
    "name": "Prop Bridge Rope Middle Basic 1x1",
-   "file": "models/Prop_Bridge_Rope_Middle_Basic_1x1.glb",
+   "file": "atoms/Prop_Bridge_Rope_Middle_Basic_1x1.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-none",
@@ -8985,7 +8753,7 @@
   {
    "id": "Prop_Bridge_Rope_Middle_Cracked_1_1x1",
    "name": "Prop Bridge Rope Middle Cracked 1 1x1",
-   "file": "models/Prop_Bridge_Rope_Middle_Cracked_1_1x1.glb",
+   "file": "atoms/Prop_Bridge_Rope_Middle_Cracked_1_1x1.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-none",
@@ -9030,7 +8798,7 @@
   {
    "id": "Prop_Bridge_Rope_Middle_Cracked_2_1x1",
    "name": "Prop Bridge Rope Middle Cracked 2 1x1",
-   "file": "models/Prop_Bridge_Rope_Middle_Cracked_2_1x1.glb",
+   "file": "atoms/Prop_Bridge_Rope_Middle_Cracked_2_1x1.glb",
    "family": "path-bridge",
    "shape": "standalone",
    "layer": "layer-none",
@@ -9075,7 +8843,7 @@
   {
    "id": "Terrain_Sand_Flat_1x1",
    "name": "Terrain Sand Flat 1x1",
-   "file": "models/Terrain_Sand_Flat_1x1.glb",
+   "file": "atoms/Terrain_Sand_Flat_1x1.glb",
    "family": "sand",
    "shape": "flat",
    "layer": "layer-none",
@@ -9113,7 +8881,7 @@
   {
    "id": "Terrain_Sand_Incline_Curve_Both_12x12",
    "name": "Terrain Sand Incline Curve Both 12x12",
-   "file": "models/Terrain_Sand_Incline_Curve_Both_12x12.glb",
+   "file": "atoms/Terrain_Sand_Incline_Curve_Both_12x12.glb",
    "family": "sand",
    "shape": "curve",
    "layer": "layer-none",
@@ -9153,7 +8921,7 @@
   {
    "id": "Terrain_Sand_Incline_Curve_Both_8x8",
    "name": "Terrain Sand Incline Curve Both 8x8",
-   "file": "models/Terrain_Sand_Incline_Curve_Both_8x8.glb",
+   "file": "atoms/Terrain_Sand_Incline_Curve_Both_8x8.glb",
    "family": "sand",
    "shape": "curve",
    "layer": "layer-none",
@@ -9193,7 +8961,7 @@
   {
    "id": "Terrain_Sand_Incline_Curve_Inner_4x4",
    "name": "Terrain Sand Incline Curve Inner 4x4",
-   "file": "models/Terrain_Sand_Incline_Curve_Inner_4x4.glb",
+   "file": "atoms/Terrain_Sand_Incline_Curve_Inner_4x4.glb",
    "family": "sand",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -9232,7 +9000,7 @@
   {
    "id": "Terrain_Sand_Incline_Curve_Inner_8x8",
    "name": "Terrain Sand Incline Curve Inner 8x8",
-   "file": "models/Terrain_Sand_Incline_Curve_Inner_8x8.glb",
+   "file": "atoms/Terrain_Sand_Incline_Curve_Inner_8x8.glb",
    "family": "sand",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -9271,7 +9039,7 @@
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_12x12",
    "name": "Terrain Sand Incline Curve Outer 12x12",
-   "file": "models/Terrain_Sand_Incline_Curve_Outer_12x12.glb",
+   "file": "atoms/Terrain_Sand_Incline_Curve_Outer_12x12.glb",
    "family": "sand",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -9310,7 +9078,7 @@
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_4x4",
    "name": "Terrain Sand Incline Curve Outer 4x4",
-   "file": "models/Terrain_Sand_Incline_Curve_Outer_4x4.glb",
+   "file": "atoms/Terrain_Sand_Incline_Curve_Outer_4x4.glb",
    "family": "sand",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -9348,7 +9116,7 @@
   {
    "id": "Terrain_Sand_Incline_Curve_Outer_8x8",
    "name": "Terrain Sand Incline Curve Outer 8x8",
-   "file": "models/Terrain_Sand_Incline_Curve_Outer_8x8.glb",
+   "file": "atoms/Terrain_Sand_Incline_Curve_Outer_8x8.glb",
    "family": "sand",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -9387,7 +9155,7 @@
   {
    "id": "Terrain_Sand_Incline_Esse_6x6",
    "name": "Terrain Sand Incline Esse 6x6",
-   "file": "models/Terrain_Sand_Incline_Esse_6x6.glb",
+   "file": "atoms/Terrain_Sand_Incline_Esse_6x6.glb",
    "family": "sand",
    "shape": "esse",
    "layer": "layer-none",
@@ -9426,7 +9194,7 @@
   {
    "id": "Terrain_Sand_Incline_Esse_Both_6x10",
    "name": "Terrain Sand Incline Esse Both 6x10",
-   "file": "models/Terrain_Sand_Incline_Esse_Both_6x10.glb",
+   "file": "atoms/Terrain_Sand_Incline_Esse_Both_6x10.glb",
    "family": "sand",
    "shape": "esse",
    "layer": "layer-none",
@@ -9466,7 +9234,7 @@
   {
    "id": "Terrain_Sand_Incline_Overlapping_4x4",
    "name": "Terrain Sand Incline Overlapping 4x4",
-   "file": "models/Terrain_Sand_Incline_Overlapping_4x4.glb",
+   "file": "atoms/Terrain_Sand_Incline_Overlapping_4x4.glb",
    "family": "sand",
    "shape": "incline",
    "layer": "layer-none",
@@ -9505,7 +9273,7 @@
   {
    "id": "Terrain_Sand_Incline_Straight_1x4",
    "name": "Terrain Sand Incline Straight 1x4",
-   "file": "models/Terrain_Sand_Incline_Straight_1x4.glb",
+   "file": "atoms/Terrain_Sand_Incline_Straight_1x4.glb",
    "family": "sand",
    "shape": "incline",
    "layer": "layer-none",
@@ -9544,7 +9312,7 @@
   {
    "id": "Terrain_Water_River_Curve_CCW_3x3",
    "name": "Terrain Water River Curve CCW 3x3",
-   "file": "models/Terrain_Water_River_Curve_CCW_3x3.glb",
+   "file": "atoms/Terrain_Water_River_Curve_CCW_3x3.glb",
    "family": "river",
    "shape": "curve",
    "layer": "layer-none",
@@ -9582,7 +9350,7 @@
   {
    "id": "Terrain_Water_River_Curve_CCW_5x5",
    "name": "Terrain Water River Curve CCW 5x5",
-   "file": "models/Terrain_Water_River_Curve_CCW_5x5.glb",
+   "file": "atoms/Terrain_Water_River_Curve_CCW_5x5.glb",
    "family": "river",
    "shape": "curve",
    "layer": "layer-none",
@@ -9620,7 +9388,7 @@
   {
    "id": "Terrain_Water_River_Curve_CW_3x3",
    "name": "Terrain Water River Curve CW 3x3",
-   "file": "models/Terrain_Water_River_Curve_CW_3x3.glb",
+   "file": "atoms/Terrain_Water_River_Curve_CW_3x3.glb",
    "family": "river",
    "shape": "curve",
    "layer": "layer-none",
@@ -9658,7 +9426,7 @@
   {
    "id": "Terrain_Water_River_Curve_CW_5x5",
    "name": "Terrain Water River Curve CW 5x5",
-   "file": "models/Terrain_Water_River_Curve_CW_5x5.glb",
+   "file": "atoms/Terrain_Water_River_Curve_CW_5x5.glb",
    "family": "river",
    "shape": "curve",
    "layer": "layer-none",
@@ -9696,7 +9464,7 @@
   {
    "id": "Terrain_Water_River_Esse_CCW_3x4",
    "name": "Terrain Water River Esse CCW 3x4",
-   "file": "models/Terrain_Water_River_Esse_CCW_3x4.glb",
+   "file": "atoms/Terrain_Water_River_Esse_CCW_3x4.glb",
    "family": "river",
    "shape": "esse",
    "layer": "layer-none",
@@ -9734,7 +9502,7 @@
   {
    "id": "Terrain_Water_River_Esse_CCW_4x4",
    "name": "Terrain Water River Esse CCW 4x4",
-   "file": "models/Terrain_Water_River_Esse_CCW_4x4.glb",
+   "file": "atoms/Terrain_Water_River_Esse_CCW_4x4.glb",
    "family": "river",
    "shape": "esse",
    "layer": "layer-none",
@@ -9772,7 +9540,7 @@
   {
    "id": "Terrain_Water_River_Esse_CCW_4x5",
    "name": "Terrain Water River Esse CCW 4x5",
-   "file": "models/Terrain_Water_River_Esse_CCW_4x5.glb",
+   "file": "atoms/Terrain_Water_River_Esse_CCW_4x5.glb",
    "family": "river",
    "shape": "esse",
    "layer": "layer-none",
@@ -9810,7 +9578,7 @@
   {
    "id": "Terrain_Water_River_Esse_CW_3x4",
    "name": "Terrain Water River Esse CW 3x4",
-   "file": "models/Terrain_Water_River_Esse_CW_3x4.glb",
+   "file": "atoms/Terrain_Water_River_Esse_CW_3x4.glb",
    "family": "river",
    "shape": "esse",
    "layer": "layer-none",
@@ -9848,7 +9616,7 @@
   {
    "id": "Terrain_Water_River_Esse_CW_4x4",
    "name": "Terrain Water River Esse CW 4x4",
-   "file": "models/Terrain_Water_River_Esse_CW_4x4.glb",
+   "file": "atoms/Terrain_Water_River_Esse_CW_4x4.glb",
    "family": "river",
    "shape": "esse",
    "layer": "layer-none",
@@ -9886,7 +9654,7 @@
   {
    "id": "Terrain_Water_River_Esse_CW_4x5",
    "name": "Terrain Water River Esse CW 4x5",
-   "file": "models/Terrain_Water_River_Esse_CW_4x5.glb",
+   "file": "atoms/Terrain_Water_River_Esse_CW_4x5.glb",
    "family": "river",
    "shape": "esse",
    "layer": "layer-none",
@@ -9924,7 +9692,7 @@
   {
    "id": "Terrain_Water_River_Flat_1x1",
    "name": "Terrain Water River Flat 1x1",
-   "file": "models/Terrain_Water_River_Flat_1x1.glb",
+   "file": "atoms/Terrain_Water_River_Flat_1x1.glb",
    "family": "river",
    "shape": "flat",
    "layer": "layer-none",
@@ -9960,7 +9728,7 @@
   {
    "id": "Terrain_Water_River_Incline_Gentle_1x4",
    "name": "Terrain Water River Incline Gentle 1x4",
-   "file": "models/Terrain_Water_River_Incline_Gentle_1x4.glb",
+   "file": "atoms/Terrain_Water_River_Incline_Gentle_1x4.glb",
    "family": "river",
    "shape": "incline",
    "layer": "layer-none",
@@ -9998,7 +9766,7 @@
   {
    "id": "Terrain_Water_River_Incline_Sharp_1x2",
    "name": "Terrain Water River Incline Sharp 1x2",
-   "file": "models/Terrain_Water_River_Incline_Sharp_1x2.glb",
+   "file": "atoms/Terrain_Water_River_Incline_Sharp_1x2.glb",
    "family": "river",
    "shape": "incline",
    "layer": "layer-none",
@@ -10036,7 +9804,7 @@
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Inner_Inside_1x2",
    "name": "Tiered Grass 45 Degrees Curve Inner Inside 1x2",
-   "file": "models/Tiered_Grass_45_Degrees_Curve_Inner_Inside_1x2.glb",
+   "file": "atoms/Tiered_Grass_45_Degrees_Curve_Inner_Inside_1x2.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -10078,7 +9846,7 @@
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2",
    "name": "Tiered Grass 45 Degrees Curve Inner Outside 1x2",
-   "file": "models/Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2.glb",
+   "file": "atoms/Tiered_Grass_45_Degrees_Curve_Inner_Outside_1x2.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -10120,7 +9888,7 @@
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Outer_Inside_2x4",
    "name": "Tiered Grass 45 Degrees Curve Outer Inside 2x4",
-   "file": "models/Tiered_Grass_45_Degrees_Curve_Outer_Inside_2x4.glb",
+   "file": "atoms/Tiered_Grass_45_Degrees_Curve_Outer_Inside_2x4.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -10162,7 +9930,7 @@
   {
    "id": "Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4",
    "name": "Tiered Grass 45 Degrees Curve Outer Outside 2x4",
-   "file": "models/Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4.glb",
+   "file": "atoms/Tiered_Grass_45_Degrees_Curve_Outer_Outside_2x4.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -10204,7 +9972,7 @@
   {
    "id": "Tiered_Grass_45_Degrees_Straight_1x1",
    "name": "Tiered Grass 45 Degrees Straight 1x1",
-   "file": "models/Tiered_Grass_45_Degrees_Straight_1x1.glb",
+   "file": "atoms/Tiered_Grass_45_Degrees_Straight_1x1.glb",
    "family": "grass-tier",
    "shape": "straight",
    "layer": "layer-none",
@@ -10245,7 +10013,7 @@
   {
    "id": "Tiered_Grass_Curve_Inner_1x1",
    "name": "Tiered Grass Curve Inner 1x1",
-   "file": "models/Tiered_Grass_Curve_Inner_1x1.glb",
+   "file": "atoms/Tiered_Grass_Curve_Inner_1x1.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -10285,7 +10053,7 @@
   {
    "id": "Tiered_Grass_Curve_Inner_2x2",
    "name": "Tiered Grass Curve Inner 2x2",
-   "file": "models/Tiered_Grass_Curve_Inner_2x2.glb",
+   "file": "atoms/Tiered_Grass_Curve_Inner_2x2.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -10325,7 +10093,7 @@
   {
    "id": "Tiered_Grass_Curve_Inner_3x3",
    "name": "Tiered Grass Curve Inner 3x3",
-   "file": "models/Tiered_Grass_Curve_Inner_3x3.glb",
+   "file": "atoms/Tiered_Grass_Curve_Inner_3x3.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -10365,7 +10133,7 @@
   {
    "id": "Tiered_Grass_Curve_Inner_4x4",
    "name": "Tiered Grass Curve Inner 4x4",
-   "file": "models/Tiered_Grass_Curve_Inner_4x4.glb",
+   "file": "atoms/Tiered_Grass_Curve_Inner_4x4.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -10405,7 +10173,7 @@
   {
    "id": "Tiered_Grass_Curve_Inner_5x5",
    "name": "Tiered Grass Curve Inner 5x5",
-   "file": "models/Tiered_Grass_Curve_Inner_5x5.glb",
+   "file": "atoms/Tiered_Grass_Curve_Inner_5x5.glb",
    "family": "grass-tier",
    "shape": "curve-inner",
    "layer": "layer-none",
@@ -10445,7 +10213,7 @@
   {
    "id": "Tiered_Grass_Curve_Outer_1x1",
    "name": "Tiered Grass Curve Outer 1x1",
-   "file": "models/Tiered_Grass_Curve_Outer_1x1.glb",
+   "file": "atoms/Tiered_Grass_Curve_Outer_1x1.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -10485,7 +10253,7 @@
   {
    "id": "Tiered_Grass_Curve_Outer_2x2",
    "name": "Tiered Grass Curve Outer 2x2",
-   "file": "models/Tiered_Grass_Curve_Outer_2x2.glb",
+   "file": "atoms/Tiered_Grass_Curve_Outer_2x2.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -10525,7 +10293,7 @@
   {
    "id": "Tiered_Grass_Curve_Outer_3x3",
    "name": "Tiered Grass Curve Outer 3x3",
-   "file": "models/Tiered_Grass_Curve_Outer_3x3.glb",
+   "file": "atoms/Tiered_Grass_Curve_Outer_3x3.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -10565,7 +10333,7 @@
   {
    "id": "Tiered_Grass_Curve_Outer_4x4",
    "name": "Tiered Grass Curve Outer 4x4",
-   "file": "models/Tiered_Grass_Curve_Outer_4x4.glb",
+   "file": "atoms/Tiered_Grass_Curve_Outer_4x4.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -10605,7 +10373,7 @@
   {
    "id": "Tiered_Grass_Curve_Outer_5x5",
    "name": "Tiered Grass Curve Outer 5x5",
-   "file": "models/Tiered_Grass_Curve_Outer_5x5.glb",
+   "file": "atoms/Tiered_Grass_Curve_Outer_5x5.glb",
    "family": "grass-tier",
    "shape": "curve-outer",
    "layer": "layer-none",
@@ -10645,7 +10413,7 @@
   {
    "id": "Tiered_Grass_Esse_Inside_1x3",
    "name": "Tiered Grass Esse Inside 1x3",
-   "file": "models/Tiered_Grass_Esse_Inside_1x3.glb",
+   "file": "atoms/Tiered_Grass_Esse_Inside_1x3.glb",
    "family": "grass-tier",
    "shape": "esse",
    "layer": "layer-none",
@@ -10686,7 +10454,7 @@
   {
    "id": "Tiered_Grass_Esse_Outside_1x3",
    "name": "Tiered Grass Esse Outside 1x3",
-   "file": "models/Tiered_Grass_Esse_Outside_1x3.glb",
+   "file": "atoms/Tiered_Grass_Esse_Outside_1x3.glb",
    "family": "grass-tier",
    "shape": "esse",
    "layer": "layer-none",
@@ -10727,7 +10495,7 @@
   {
    "id": "Tiered_Walkway_Step_Top_Path_Transition_1x2",
    "name": "Tiered Walkway Step Top Path Transition 1x2",
-   "file": "models/Tiered_Walkway_Step_Top_Path_Transition_1x2.glb",
+   "file": "atoms/Tiered_Walkway_Step_Top_Path_Transition_1x2.glb",
    "family": "path-terrain",
    "shape": "transition",
    "layer": "layer-top",
@@ -10768,7 +10536,7 @@
   {
    "id": "Wall_Curve_Inner_3x3_Base",
    "name": "Wall Curve Inner 3x3 Base",
-   "file": "models/Wall_Curve_Inner_3x3_Base.glb",
+   "file": "atoms/Wall_Curve_Inner_3x3_Base.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-base",
@@ -10807,7 +10575,7 @@
   {
    "id": "Wall_Curve_Inner_3x3_Mid",
    "name": "Wall Curve Inner 3x3 Mid",
-   "file": "models/Wall_Curve_Inner_3x3_Mid.glb",
+   "file": "atoms/Wall_Curve_Inner_3x3_Mid.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -10846,7 +10614,7 @@
   {
    "id": "Wall_Curve_Inner_3x3_Top",
    "name": "Wall Curve Inner 3x3 Top",
-   "file": "models/Wall_Curve_Inner_3x3_Top.glb",
+   "file": "atoms/Wall_Curve_Inner_3x3_Top.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -10885,7 +10653,7 @@
   {
    "id": "Wall_Curve_Inner_5x5_Base",
    "name": "Wall Curve Inner 5x5 Base",
-   "file": "models/Wall_Curve_Inner_5x5_Base.glb",
+   "file": "atoms/Wall_Curve_Inner_5x5_Base.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-base",
@@ -10924,7 +10692,7 @@
   {
    "id": "Wall_Curve_Inner_5x5_Mid",
    "name": "Wall Curve Inner 5x5 Mid",
-   "file": "models/Wall_Curve_Inner_5x5_Mid.glb",
+   "file": "atoms/Wall_Curve_Inner_5x5_Mid.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -10963,7 +10731,7 @@
   {
    "id": "Wall_Curve_Inner_5x5_Top",
    "name": "Wall Curve Inner 5x5 Top",
-   "file": "models/Wall_Curve_Inner_5x5_Top.glb",
+   "file": "atoms/Wall_Curve_Inner_5x5_Top.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -11002,7 +10770,7 @@
   {
    "id": "Wall_Curve_Inner_6x6_Base",
    "name": "Wall Curve Inner 6x6 Base",
-   "file": "models/Wall_Curve_Inner_6x6_Base.glb",
+   "file": "atoms/Wall_Curve_Inner_6x6_Base.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-base",
@@ -11041,7 +10809,7 @@
   {
    "id": "Wall_Curve_Inner_6x6_Mid",
    "name": "Wall Curve Inner 6x6 Mid",
-   "file": "models/Wall_Curve_Inner_6x6_Mid.glb",
+   "file": "atoms/Wall_Curve_Inner_6x6_Mid.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -11080,7 +10848,7 @@
   {
    "id": "Wall_Curve_Inner_6x6_Top",
    "name": "Wall Curve Inner 6x6 Top",
-   "file": "models/Wall_Curve_Inner_6x6_Top.glb",
+   "file": "atoms/Wall_Curve_Inner_6x6_Top.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -11119,7 +10887,7 @@
   {
    "id": "Wall_Curve_Inner_7x7_Base",
    "name": "Wall Curve Inner 7x7 Base",
-   "file": "models/Wall_Curve_Inner_7x7_Base.glb",
+   "file": "atoms/Wall_Curve_Inner_7x7_Base.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-base",
@@ -11158,7 +10926,7 @@
   {
    "id": "Wall_Curve_Inner_7x7_Mid",
    "name": "Wall Curve Inner 7x7 Mid",
-   "file": "models/Wall_Curve_Inner_7x7_Mid.glb",
+   "file": "atoms/Wall_Curve_Inner_7x7_Mid.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-mid",
@@ -11197,7 +10965,7 @@
   {
    "id": "Wall_Curve_Inner_7x7_Top",
    "name": "Wall Curve Inner 7x7 Top",
-   "file": "models/Wall_Curve_Inner_7x7_Top.glb",
+   "file": "atoms/Wall_Curve_Inner_7x7_Top.glb",
    "family": "wall",
    "shape": "curve-inner",
    "layer": "layer-top",
@@ -11236,7 +11004,7 @@
   {
    "id": "Wall_Curve_Outer_2x2_Base",
    "name": "Wall Curve Outer 2x2 Base",
-   "file": "models/Wall_Curve_Outer_2x2_Base.glb",
+   "file": "atoms/Wall_Curve_Outer_2x2_Base.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-base",
@@ -11275,7 +11043,7 @@
   {
    "id": "Wall_Curve_Outer_2x2_Mid",
    "name": "Wall Curve Outer 2x2 Mid",
-   "file": "models/Wall_Curve_Outer_2x2_Mid.glb",
+   "file": "atoms/Wall_Curve_Outer_2x2_Mid.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -11313,7 +11081,7 @@
   {
    "id": "Wall_Curve_Outer_2x2_Top",
    "name": "Wall Curve Outer 2x2 Top",
-   "file": "models/Wall_Curve_Outer_2x2_Top.glb",
+   "file": "atoms/Wall_Curve_Outer_2x2_Top.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -11352,7 +11120,7 @@
   {
    "id": "Wall_Curve_Outer_3x3_Base",
    "name": "Wall Curve Outer 3x3 Base",
-   "file": "models/Wall_Curve_Outer_3x3_Base.glb",
+   "file": "atoms/Wall_Curve_Outer_3x3_Base.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-base",
@@ -11391,7 +11159,7 @@
   {
    "id": "Wall_Curve_Outer_3x3_Mid",
    "name": "Wall Curve Outer 3x3 Mid",
-   "file": "models/Wall_Curve_Outer_3x3_Mid.glb",
+   "file": "atoms/Wall_Curve_Outer_3x3_Mid.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -11430,7 +11198,7 @@
   {
    "id": "Wall_Curve_Outer_3x3_Top",
    "name": "Wall Curve Outer 3x3 Top",
-   "file": "models/Wall_Curve_Outer_3x3_Top.glb",
+   "file": "atoms/Wall_Curve_Outer_3x3_Top.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -11469,7 +11237,7 @@
   {
    "id": "Wall_Curve_Outer_4x4_Base",
    "name": "Wall Curve Outer 4x4 Base",
-   "file": "models/Wall_Curve_Outer_4x4_Base.glb",
+   "file": "atoms/Wall_Curve_Outer_4x4_Base.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-base",
@@ -11508,7 +11276,7 @@
   {
    "id": "Wall_Curve_Outer_4x4_Mid",
    "name": "Wall Curve Outer 4x4 Mid",
-   "file": "models/Wall_Curve_Outer_4x4_Mid.glb",
+   "file": "atoms/Wall_Curve_Outer_4x4_Mid.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-mid",
@@ -11547,7 +11315,7 @@
   {
    "id": "Wall_Curve_Outer_4x4_Top",
    "name": "Wall Curve Outer 4x4 Top",
-   "file": "models/Wall_Curve_Outer_4x4_Top.glb",
+   "file": "atoms/Wall_Curve_Outer_4x4_Top.glb",
    "family": "wall",
    "shape": "curve-outer",
    "layer": "layer-top",
@@ -11586,7 +11354,7 @@
   {
    "id": "Wall_Esse_3x4_Base",
    "name": "Wall Esse 3x4 Base",
-   "file": "models/Wall_Esse_3x4_Base.glb",
+   "file": "atoms/Wall_Esse_3x4_Base.glb",
    "family": "wall",
    "shape": "esse",
    "layer": "layer-base",
@@ -11625,7 +11393,7 @@
   {
    "id": "Wall_Esse_3x4_Mid",
    "name": "Wall Esse 3x4 Mid",
-   "file": "models/Wall_Esse_3x4_Mid.glb",
+   "file": "atoms/Wall_Esse_3x4_Mid.glb",
    "family": "wall",
    "shape": "esse",
    "layer": "layer-mid",
@@ -11664,7 +11432,7 @@
   {
    "id": "Wall_Esse_3x4_Top",
    "name": "Wall Esse 3x4 Top",
-   "file": "models/Wall_Esse_3x4_Top.glb",
+   "file": "atoms/Wall_Esse_3x4_Top.glb",
    "family": "wall",
    "shape": "esse",
    "layer": "layer-top",
@@ -11703,7 +11471,7 @@
   {
    "id": "Wall_Esse_4x6_Base",
    "name": "Wall Esse 4x6 Base",
-   "file": "models/Wall_Esse_4x6_Base.glb",
+   "file": "atoms/Wall_Esse_4x6_Base.glb",
    "family": "wall",
    "shape": "esse",
    "layer": "layer-base",
@@ -11742,7 +11510,7 @@
   {
    "id": "Wall_Esse_4x6_Mid",
    "name": "Wall Esse 4x6 Mid",
-   "file": "models/Wall_Esse_4x6_Mid.glb",
+   "file": "atoms/Wall_Esse_4x6_Mid.glb",
    "family": "wall",
    "shape": "esse",
    "layer": "layer-mid",
@@ -11781,7 +11549,7 @@
   {
    "id": "Wall_Esse_4x6_Top",
    "name": "Wall Esse 4x6 Top",
-   "file": "models/Wall_Esse_4x6_Top.glb",
+   "file": "atoms/Wall_Esse_4x6_Top.glb",
    "family": "wall",
    "shape": "esse",
    "layer": "layer-top",
@@ -11820,7 +11588,7 @@
   {
    "id": "Wall_Incline_2x4_Base",
    "name": "Wall Incline 2x4 Base",
-   "file": "models/Wall_Incline_2x4_Base.glb",
+   "file": "atoms/Wall_Incline_2x4_Base.glb",
    "family": "wall",
    "shape": "incline",
    "layer": "layer-base",
@@ -11860,7 +11628,7 @@
   {
    "id": "Wall_Incline_2x4_Top",
    "name": "Wall Incline 2x4 Top",
-   "file": "models/Wall_Incline_2x4_Top.glb",
+   "file": "atoms/Wall_Incline_2x4_Top.glb",
    "family": "wall",
    "shape": "incline",
    "layer": "layer-top",
@@ -11900,7 +11668,7 @@
   {
    "id": "Wall_Incline_2x6_Base",
    "name": "Wall Incline 2x6 Base",
-   "file": "models/Wall_Incline_2x6_Base.glb",
+   "file": "atoms/Wall_Incline_2x6_Base.glb",
    "family": "wall",
    "shape": "incline",
    "layer": "layer-base",
@@ -11940,7 +11708,7 @@
   {
    "id": "Wall_Incline_2x6_Top",
    "name": "Wall Incline 2x6 Top",
-   "file": "models/Wall_Incline_2x6_Top.glb",
+   "file": "atoms/Wall_Incline_2x6_Top.glb",
    "family": "wall",
    "shape": "incline",
    "layer": "layer-top",
@@ -11980,7 +11748,7 @@
   {
    "id": "Wall_Straight_Basic_1x2_Base",
    "name": "Wall Straight Basic 1x2 Base",
-   "file": "models/Wall_Straight_Basic_1x2_Base.glb",
+   "file": "atoms/Wall_Straight_Basic_1x2_Base.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-base",
@@ -12019,7 +11787,7 @@
   {
    "id": "Wall_Straight_Basic_1x2_Mid",
    "name": "Wall Straight Basic 1x2 Mid",
-   "file": "models/Wall_Straight_Basic_1x2_Mid.glb",
+   "file": "atoms/Wall_Straight_Basic_1x2_Mid.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-mid",
@@ -12058,7 +11826,7 @@
   {
    "id": "Wall_Straight_Basic_1x2_Top",
    "name": "Wall Straight Basic 1x2 Top",
-   "file": "models/Wall_Straight_Basic_1x2_Top.glb",
+   "file": "atoms/Wall_Straight_Basic_1x2_Top.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-top",
@@ -12097,7 +11865,7 @@
   {
    "id": "Wall_Straight_Deformed_Concave_2x2_Base",
    "name": "Wall Straight Deformed Concave 2x2 Base",
-   "file": "models/Wall_Straight_Deformed_Concave_2x2_Base.glb",
+   "file": "atoms/Wall_Straight_Deformed_Concave_2x2_Base.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-base",
@@ -12139,7 +11907,7 @@
   {
    "id": "Wall_Straight_Deformed_Concave_2x2_Mid",
    "name": "Wall Straight Deformed Concave 2x2 Mid",
-   "file": "models/Wall_Straight_Deformed_Concave_2x2_Mid.glb",
+   "file": "atoms/Wall_Straight_Deformed_Concave_2x2_Mid.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-mid",
@@ -12181,7 +11949,7 @@
   {
    "id": "Wall_Straight_Deformed_Concave_2x2_Top",
    "name": "Wall Straight Deformed Concave 2x2 Top",
-   "file": "models/Wall_Straight_Deformed_Concave_2x2_Top.glb",
+   "file": "atoms/Wall_Straight_Deformed_Concave_2x2_Top.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-top",
@@ -12223,7 +11991,7 @@
   {
    "id": "Wall_Straight_Deformed_Convex_2x2_Base",
    "name": "Wall Straight Deformed Convex 2x2 Base",
-   "file": "models/Wall_Straight_Deformed_Convex_2x2_Base.glb",
+   "file": "atoms/Wall_Straight_Deformed_Convex_2x2_Base.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-base",
@@ -12265,7 +12033,7 @@
   {
    "id": "Wall_Straight_Deformed_Convex_2x2_Mid",
    "name": "Wall Straight Deformed Convex 2x2 Mid",
-   "file": "models/Wall_Straight_Deformed_Convex_2x2_Mid.glb",
+   "file": "atoms/Wall_Straight_Deformed_Convex_2x2_Mid.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-mid",
@@ -12307,7 +12075,7 @@
   {
    "id": "Wall_Straight_Deformed_Convex_2x2_Top",
    "name": "Wall Straight Deformed Convex 2x2 Top",
-   "file": "models/Wall_Straight_Deformed_Convex_2x2_Top.glb",
+   "file": "atoms/Wall_Straight_Deformed_Convex_2x2_Top.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-top",
@@ -12349,7 +12117,7 @@
   {
    "id": "Wall_Straight_Deformed_Convex_3x3_Base",
    "name": "Wall Straight Deformed Convex 3x3 Base",
-   "file": "models/Wall_Straight_Deformed_Convex_3x3_Base.glb",
+   "file": "atoms/Wall_Straight_Deformed_Convex_3x3_Base.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-base",
@@ -12391,7 +12159,7 @@
   {
    "id": "Wall_Straight_Deformed_Convex_3x3_Mid",
    "name": "Wall Straight Deformed Convex 3x3 Mid",
-   "file": "models/Wall_Straight_Deformed_Convex_3x3_Mid.glb",
+   "file": "atoms/Wall_Straight_Deformed_Convex_3x3_Mid.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-mid",
@@ -12433,7 +12201,7 @@
   {
    "id": "Wall_Straight_Deformed_Convex_3x3_Top",
    "name": "Wall Straight Deformed Convex 3x3 Top",
-   "file": "models/Wall_Straight_Deformed_Convex_3x3_Top.glb",
+   "file": "atoms/Wall_Straight_Deformed_Convex_3x3_Top.glb",
    "family": "wall",
    "shape": "straight",
    "layer": "layer-top",
@@ -12475,7 +12243,7 @@
   {
    "id": "Water_Circle_1_Lowpoly",
    "name": "Water Circle 1 Lowpoly",
-   "file": "models/Water_Circle_1_Lowpoly.glb",
+   "file": "atoms/Water_Circle_1_Lowpoly.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-none",
@@ -12513,7 +12281,7 @@
   {
    "id": "Water_Circle_2_Midpoly",
    "name": "Water Circle 2 Midpoly",
-   "file": "models/Water_Circle_2_Midpoly.glb",
+   "file": "atoms/Water_Circle_2_Midpoly.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-none",
@@ -12551,7 +12319,7 @@
   {
    "id": "Water_Circle_3_Highpoly",
    "name": "Water Circle 3 Highpoly",
-   "file": "models/Water_Circle_3_Highpoly.glb",
+   "file": "atoms/Water_Circle_3_Highpoly.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-none",
@@ -12589,7 +12357,7 @@
   {
    "id": "Water_Waterfall_Base_Center_1x1",
    "name": "Water Waterfall Base Center 1x1",
-   "file": "models/Water_Waterfall_Base_Center_1x1.glb",
+   "file": "atoms/Water_Waterfall_Base_Center_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-base",
@@ -12627,7 +12395,7 @@
   {
    "id": "Water_Waterfall_Base_Left_1x1",
    "name": "Water Waterfall Base Left 1x1",
-   "file": "models/Water_Waterfall_Base_Left_1x1.glb",
+   "file": "atoms/Water_Waterfall_Base_Left_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-base",
@@ -12665,7 +12433,7 @@
   {
    "id": "Water_Waterfall_Base_Right_1x1",
    "name": "Water Waterfall Base Right 1x1",
-   "file": "models/Water_Waterfall_Base_Right_1x1.glb",
+   "file": "atoms/Water_Waterfall_Base_Right_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-base",
@@ -12703,7 +12471,7 @@
   {
    "id": "Water_Waterfall_Mid_Center_1x1",
    "name": "Water Waterfall Mid Center 1x1",
-   "file": "models/Water_Waterfall_Mid_Center_1x1.glb",
+   "file": "atoms/Water_Waterfall_Mid_Center_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-mid",
@@ -12741,7 +12509,7 @@
   {
    "id": "Water_Waterfall_Mid_Left_1x1",
    "name": "Water Waterfall Mid Left 1x1",
-   "file": "models/Water_Waterfall_Mid_Left_1x1.glb",
+   "file": "atoms/Water_Waterfall_Mid_Left_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-mid",
@@ -12779,7 +12547,7 @@
   {
    "id": "Water_Waterfall_Mid_Right_1x1",
    "name": "Water Waterfall Mid Right 1x1",
-   "file": "models/Water_Waterfall_Mid_Right_1x1.glb",
+   "file": "atoms/Water_Waterfall_Mid_Right_1x1.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-mid",
@@ -12817,7 +12585,7 @@
   {
    "id": "Water_Waterfall_Top_Center_1x3",
    "name": "Water Waterfall Top Center 1x3",
-   "file": "models/Water_Waterfall_Top_Center_1x3.glb",
+   "file": "atoms/Water_Waterfall_Top_Center_1x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",
@@ -12859,7 +12627,7 @@
   {
    "id": "Water_Waterfall_Top_Left_2x3",
    "name": "Water Waterfall Top Left 2x3",
-   "file": "models/Water_Waterfall_Top_Left_2x3.glb",
+   "file": "atoms/Water_Waterfall_Top_Left_2x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",
@@ -12901,7 +12669,7 @@
   {
    "id": "Water_Waterfall_Top_Right_2x3",
    "name": "Water Waterfall Top Right 2x3",
-   "file": "models/Water_Waterfall_Top_Right_2x3.glb",
+   "file": "atoms/Water_Waterfall_Top_Right_2x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",
@@ -12943,7 +12711,7 @@
   {
    "id": "Waterfall_Center_Top_Terrain_1x3",
    "name": "Waterfall Center Top Terrain 1x3",
-   "file": "models/Waterfall_Center_Top_Terrain_1x3.glb",
+   "file": "atoms/Waterfall_Center_Top_Terrain_1x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",
@@ -12985,7 +12753,7 @@
   {
    "id": "Waterfall_Left_Top_Terrain_3x3",
    "name": "Waterfall Left Top Terrain 3x3",
-   "file": "models/Waterfall_Left_Top_Terrain_3x3.glb",
+   "file": "atoms/Waterfall_Left_Top_Terrain_3x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",
@@ -13029,7 +12797,7 @@
   {
    "id": "Waterfall_Right_Top_Terrain_3x3",
    "name": "Waterfall Right Top Terrain 3x3",
-   "file": "models/Waterfall_Right_Top_Terrain_3x3.glb",
+   "file": "atoms/Waterfall_Right_Top_Terrain_3x3.glb",
    "family": "water",
    "shape": "standalone",
    "layer": "layer-top",

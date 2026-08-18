@@ -91,7 +91,7 @@ const TRAITS = [
 ];
 
 // No Water_/Terrain_Water_ clause below: every assembly that matched one was a
-// single-piece rebuild of a models/ file, not a real multi-piece prefab, and got
+// single-piece rebuild of an atoms/ file, not a real multi-piece prefab, and got
 // dropped from assemblies/. Don't re-add the clause without re-adding assemblies
 // that need it.
 export const ASSEMBLY_GROUPS = [
@@ -108,10 +108,9 @@ export const SCENE_GROUPS = [
 ];
 
 export const TABS = [
-  { id: 'parts', label: 'Parts', facet: 'family' },
+  { id: 'atoms', label: 'Atoms', facet: 'family' },
   { id: 'shapes', label: 'Shapes', facet: 'shape' },
   { id: 'layers', label: 'Layers', facet: 'layer' },
-  { id: 'sizes', label: 'Sizes', facet: 'size' },
   { id: 'assemblies', label: 'Assemblies', facet: 'assembly', source: 'assemblies' },
   { id: 'scenes', label: 'Scenes', facet: 'scene', source: 'scenes' },
 ];

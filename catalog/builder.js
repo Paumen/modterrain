@@ -15,18 +15,16 @@ let swatches;
 let host;
 let viewport;
 let drawer;
-let pick;
 let undoButton;
 let redoButton;
 let inspector;
 let sheet;
-let search;
 let familySelect;
 let paletteList;
-let paletteCount;
 let brushLabel;
 let levelLabel;
 let mirrorButton;
+let removeButton;
 
 const placements = [];
 let nextId = 1;
@@ -287,7 +285,8 @@ function topmostAt(x, z) {
 function addAt(x, z) {
   if (!brush) return;
   const id = nextId++;
-  placements.push({ id, piece: brush, cx: x, cz: z, level, rot: rotation, mirror: mirrored });
+  const piece = sockets.pieces[brush];
+  placements.push({ id, piece: brush, dir: piece.dir, scale: piece.scale, cx: x, cz: z, level, rot: rotation, mirror: mirrored });
   selected = id;
   render();
   showInspector();
@@ -332,20 +331,13 @@ function remove(id) {
   showPick();
 }
 
-/* A selected piece gets its own bar over the view, so removing it is one tap
- * from where it was tapped rather than a trip into the drawer. */
 function showPick() {
-  if (!pick) return;
-  const placement = placements.find((entry) => entry.id === selected);
-  pick.root.hidden = !placement;
-  if (placement) pick.name.textContent = names.get(placement.piece) ?? placement.piece;
+  if (removeButton) removeButton.disabled = !placements.some((entry) => entry.id === selected);
 }
 
 function openDrawer(open) {
   if (!drawer) return;
   drawer.root.classList.toggle('is-shut', !open);
-  drawer.toggle.setAttribute('aria-expanded', String(open));
-  drawer.toggle.setAttribute('aria-label', open ? 'Collapse panel' : 'Expand panel');
   measureDrawer();
 }
 
@@ -364,12 +356,12 @@ const pct = (value) => `${Math.round(value * 100)}%`;
 
 function openAdvice(shapeId) {
   const shape = sockets.shapes[shapeId];
-  const seen = shape.open + shape.mated;
-  if (!seen) return { tone: 'unknown', text: 'never seen in the shipped scenes — no evidence either way' };
+  const seen = (shape?.open ?? 0) + (shape?.mated ?? 0);
+  if (!seen) return { tone: 'unknown', text: 'never seen in the scenes' };
   const share = shape.open / seen;
-  if (share >= 0.6) return { tone: 'fine', text: `left open in ${pct(share)} of ${seen} uses — normally exposed on purpose` };
-  if (share >= 0.2) return { tone: 'mixed', text: `left open in ${pct(share)} of ${seen} uses — either way is used` };
-  return { tone: 'wants', text: `left open in only ${pct(share)} of ${seen} uses — this edge usually wants a neighbour` };
+  if (share >= 0.6) return { tone: 'fine', text: `usually left open (${pct(share)} of ${seen})` };
+  if (share >= 0.2) return { tone: 'mixed', text: `open either way (${pct(share)} of ${seen})` };
+  return { tone: 'wants', text: `usually wants a neighbour (open ${pct(share)} of ${seen})` };
 }
 
 /* Which pieces would mate into an open seam: every piece, in each of its
@@ -447,31 +439,28 @@ function showInspector() {
   const mine = evaluate().filter((socket) => socket.owner === placement.id);
   inspector.append(element('h3', null, `Seams (${mine.length})`));
 
+  /* One line a seam: the colour, where it is, and how it came out. The detail
+   * only appears where there is something to say about it. */
   const list = element('ul', 'seam-list');
   for (const socket of mine) {
-    const item = element('li', `seam-item ${socket.verdict === 'open' && socket.abuts ? 'abut' : socket.verdict}`);
+    const tone = socket.verdict === 'open' && socket.abuts ? 'abut' : socket.verdict;
+    const item = element('li', `seam-item ${tone}`);
+
     const head = element('div', 'seam-head');
     head.append(swatch(socket.color));
-    head.append(element('strong', null, socket.color.replace('Hidden ', '') || 'Hidden'));
-    head.append(element('span', 'seam-where', `${socket.axis === 'x' ? 'x' : 'z'} = ${socket.at}`));
-    head.append(element('span', `seam-verdict ${socket.verdict}`, verdictLabel(socket)));
+    head.append(element('span', 'seam-where', `${socket.axis} ${socket.at}`));
+    head.append(element('span', `seam-verdict ${tone}`, verdictLabel(socket)));
     item.append(head);
 
     if (socket.verdict === 'clash') {
-      for (const partner of socket.partners) {
-        const other = placementById(partner.socket.owner);
-        item.append(element('p', 'seam-note',
-          `meets ${short(other.piece)} — ${partner.socket.color.replace('Hidden ', '')}`
-          + `${partner.socket.color === socket.color ? ' (same colour, different profile)' : ''}`
-          + ` — ${pct(partner.conflict / partner.overlap)} of the shared span disagrees`));
-      }
+      const other = placementById(socket.partners[0].socket.owner);
+      item.append(element('p', 'seam-note', `against ${short(other.piece)}`));
     } else if (socket.verdict === 'partial') {
-      item.append(element('p', 'seam-note', `${pct(socket.covered)} of this seam mates; the rest has no neighbour`));
+      item.append(element('p', 'seam-note', `${pct(socket.covered)} of it mates`));
     } else if (socket.verdict === 'open') {
       const advice = openAdvice(socket.shape);
       item.append(element('p', `seam-note ${advice.tone}`, advice.text));
-      if (socket.abuts) item.append(element('p', 'seam-note', 'a piece sits in the next cell but presents no socket here'));
-      const button = element('button', 'seam-fits', 'What fits here?');
+      const button = element('button', 'seam-fits', 'What fits?');
       button.addEventListener('click', () => showCandidates(item, socket, button));
       item.append(button);
     }
@@ -503,8 +492,7 @@ function showInspector() {
       const button = element('button', null, `${families.get(entry.family) ?? entry.family} · ${entry.count}×`);
       button.addEventListener('click', () => {
         level = top;
-        familySelect.value = entry.family;
-        search.value = '';
+        familySelect.value = `atoms:${entry.family}`;
         syncToolbar();
       });
       item.append(button);
@@ -519,12 +507,12 @@ function showInspector() {
 function verdictLabel(socket) {
   if (socket.verdict === 'mated') return 'mates';
   if (socket.verdict === 'partial') return 'part';
-  if (socket.verdict === 'clash') return 'will not fit';
-  return socket.abuts ? 'open, abuts' : 'open';
+  if (socket.verdict === 'clash') return 'clashes';
+  return socket.abuts ? 'abuts' : 'open';
 }
 
 function swatch(color) {
-  const node = element('i', 'swatch');
+  const node = element('i', 'socket-dot');
   node.style.background = swatches.get(color) ?? '#f8f8f8';
   return node;
 }
@@ -558,13 +546,10 @@ function showCandidates(item, socket, button) {
 // ---------------------------------------------------------------- palette
 
 function renderPalette() {
-  const term = search.value.trim().toLowerCase();
-  const family = familySelect.value;
-  const matches = Object.entries(sockets.pieces).filter(([id, piece]) =>
-    (!family || piece.family === family)
-    && (!term || id.toLowerCase().includes(term) || (names.get(id) ?? '').toLowerCase().includes(term)));
+  const [dir, family] = familySelect.value.split(':');
+  const matches = Object.entries(sockets.pieces).filter(([, piece]) =>
+    (!dir || piece.dir === dir) && (!family || piece.family === family));
 
-  paletteCount.textContent = `${matches.length} piece${matches.length === 1 ? '' : 's'}`;
   paletteList.replaceChildren();
 
   /* The same lazy 3D preview the catalog grid uses: you pick a piece by
@@ -576,7 +561,7 @@ function renderPalette() {
     button.title = name;
 
     const box = element('span', 'tile-view');
-    box.dataset.src = `models/${id}.glb`;
+    box.dataset.src = `${piece.dir}/${id}.glb`;
     box.dataset.alt = `3D model ${name}`;
     button.append(box);
 
@@ -630,18 +615,19 @@ export async function mount(container, catalog) {
   const role = (name) => container.querySelector(`[data-role="${name}"]`);
 
   inspector = role('panel-seams');
-  search = role('search');
   familySelect = role('family');
   paletteList = role('list');
-  paletteCount = role('count');
   brushLabel = role('brush');
   levelLabel = role('level');
   mirrorButton = role('mirror');
 
-  familySelect.append(new Option('All families', ''));
-  for (const id of [...new Set(Object.values(sockets.pieces).map((piece) => piece.family))].filter(Boolean).sort()) {
-    familySelect.append(new Option(families.get(id) ?? id, id));
+  familySelect.append(new Option('Everything', ''));
+  for (const id of [...new Set(Object.values(sockets.pieces)
+    .filter((piece) => piece.dir === 'atoms').map((piece) => piece.family))].filter(Boolean).sort()) {
+    familySelect.append(new Option(families.get(id) ?? id, `atoms:${id}`));
   }
+  familySelect.append(new Option('Assemblies', 'assemblies:'));
+  familySelect.append(new Option('Scenes', 'scenes:'));
 
   role('rotate').addEventListener('click', () => { rotation = (rotation + 1) % 4; syncToolbar(); });
   mirrorButton.addEventListener('click', () => { mirrored = !mirrored; syncToolbar(); });
@@ -665,14 +651,15 @@ export async function mount(container, catalog) {
   for (const name of ['top', 'iso', 'front']) {
     role(`view-${name}`).addEventListener('click', () => viewport.setView(name));
   }
+  role('orbit-left').addEventListener('click', () => viewport.orbit(-Math.PI / 8));
+  role('orbit-right').addEventListener('click', () => viewport.orbit(Math.PI / 8));
+  role('zoom-in').addEventListener('click', () => viewport.zoom(0.8));
+  role('zoom-out').addEventListener('click', () => viewport.zoom(1.25));
 
-  pick = { root: role('pick'), name: role('pick-name') };
-  role('pick-remove').addEventListener('click', () => remove(selected));
-  role('pick-seams').addEventListener('click', () => { showSheet('seams'); openDrawer(true); });
+  removeButton = role('remove');
+  removeButton.addEventListener('click', () => remove(selected));
 
-  drawer = { root: role('drawer'), toggle: role('drawer-toggle') };
-  drawer.toggle.addEventListener('click', () =>
-    openDrawer(drawer.root.classList.contains('is-shut')));
+  drawer = { root: role('drawer') };
   drawer.root.addEventListener('transitionend', measureDrawer);
   new ResizeObserver(measureDrawer).observe(drawer.root);
 
@@ -681,10 +668,14 @@ export async function mount(container, catalog) {
     seams: { tab: role('tab-seams'), panel: role('panel-seams') },
   };
   for (const name of Object.keys(sheet)) {
-    sheet[name].tab.addEventListener('click', () => { showSheet(name); openDrawer(true); });
+    sheet[name].tab.addEventListener('click', () => {
+      const shut = drawer.root.classList.contains('is-shut');
+      const already = sheet[name].tab.getAttribute('aria-selected') === 'true';
+      showSheet(name);
+      openDrawer(shut || !already);
+    });
   }
 
-  search.addEventListener('input', renderPalette);
   familySelect.addEventListener('change', renderPalette);
 
   // Shortcuts belong to this tab, not the whole catalog.
@@ -706,7 +697,10 @@ export async function mount(container, catalog) {
     },
     onHover: (x, z) => {
       if (!brush || x === null) return viewport.ghost(null);
-      viewport.ghost({ piece: brush, cx: x, cz: z, level, rot: rotation, mirror: mirrored });
+      const piece = sockets.pieces[brush];
+      viewport.ghost({
+        piece: brush, dir: piece.dir, scale: piece.scale, cx: x, cz: z, level, rot: rotation, mirror: mirrored,
+      });
     },
   });
 
