@@ -1,7 +1,7 @@
 {
  "generated": "node tools/build-catalog.mjs",
  "total": 270,
- "assemblies": 123,
+ "assemblies": 125,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1434,7 +1434,7 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 123,
+   "count": 125,
    "sections": [
     {
      "id": "assemblies-assembly-cliff",
@@ -1517,8 +1517,6 @@
       336,
       337,
       338,
-      381,
-      382,
       383,
       384,
       385,
@@ -1528,7 +1526,9 @@
       389,
       390,
       391,
-      392
+      392,
+      393,
+      394
      ]
     },
     {
@@ -1545,9 +1545,9 @@
      "name": "Bridges",
      "color": "#8a5a2f",
      "models": [
-      341,
-      342,
-      343
+      343,
+      344,
+      345
      ]
     },
     {
@@ -1555,8 +1555,6 @@
      "name": "Rivers",
      "color": "#3aa7d6",
      "models": [
-      344,
-      345,
       346,
       347,
       348,
@@ -1591,7 +1589,18 @@
       377,
       378,
       379,
-      380
+      380,
+      381,
+      382
+     ]
+    },
+    {
+     "id": "assemblies-assembly-structure",
+     "name": "Other",
+     "color": "#b98c5a",
+     "models": [
+      341,
+      342
      ]
     }
    ]
@@ -1615,7 +1624,7 @@
      "name": "Grass",
      "source": "Grass",
      "hex": "#a7de76",
-     "count": 137
+     "count": 138
     },
     {
      "key": "material|water-river",
@@ -1629,7 +1638,7 @@
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#f6edd3",
-     "count": 51
+     "count": 52
     },
     {
      "key": "material|waterfall",
@@ -1643,27 +1652,34 @@
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 20
+     "count": 21
     },
     {
      "key": "material|wood-light-end",
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 19
+     "count": 20
     },
     {
      "key": "material|wood-light",
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 18
+     "count": 19
     },
     {
      "key": "material|ice",
      "name": "Ice",
      "source": "Ice",
      "hex": "#6aa1fb",
+     "count": 12
+    },
+    {
+     "key": "material|rope",
+     "name": "Rope",
+     "source": "Rope",
+     "hex": "#7f725a",
      "count": 12
     },
     {
@@ -1674,25 +1690,18 @@
      "count": 12
     },
     {
-     "key": "material|rope",
-     "name": "Rope",
-     "source": "Rope",
-     "hex": "#7f725a",
-     "count": 11
-    },
-    {
      "key": "material|wood-medium",
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 7
+     "count": 8
     },
     {
      "key": "material|water-lake",
      "name": "Water Lake",
      "source": "Water Lake",
      "hex": "#009bc3",
-     "count": 6
+     "count": 7
     }
    ]
   },
@@ -1706,14 +1715,14 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 323
+     "count": 325
     },
     {
      "key": "hidden|hidden-violet",
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 106
+     "count": 107
     },
     {
      "key": "hidden|hidden-yellow",
@@ -1727,14 +1736,14 @@
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 78
+     "count": 79
     },
     {
      "key": "hidden|hidden-blue",
      "name": "Hidden Blue",
      "source": "Hidden Blue",
      "hex": "#d8efff",
-     "count": 67
+     "count": 68
     },
     {
      "key": "hidden|hidden-green",
@@ -1748,14 +1757,14 @@
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 66
+     "count": 67
     },
     {
      "key": "hidden|hidden-red",
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 42
+     "count": 43
     }
    ]
   }
@@ -16635,6 +16644,239 @@
     "hidden|hidden-yellow",
     "material|cliff-face",
     "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Docks",
+   "name": "Docks",
+   "file": "assemblies/Docks.glb",
+   "group": "assembly-structure",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 126,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Docks_Support_Post_Mid_1x1",
+     "count": 37
+    },
+    {
+     "id": "Docks_Railing_Post_Top_Roped_1x1",
+     "count": 23
+    },
+    {
+     "id": "Docks_Bumper_1_1x1",
+     "count": 17
+    },
+    {
+     "id": "Docks_Decking_Flat_1x1",
+     "count": 10
+    },
+    {
+     "id": "Docks_Railing_Rope_Basic_1_1x1",
+     "count": 10
+    },
+    {
+     "id": "Docks_Railing_Rope_Basic_2_1x1",
+     "count": 8
+    },
+    {
+     "id": "Docks_Support_Brace_1x1",
+     "count": 8
+    },
+    {
+     "id": "Docks_Decking_Flat_1x2",
+     "count": 5
+    },
+    {
+     "id": "Docks_Railing_Posts_Steps_Roped_1x3",
+     "count": 2
+    },
+    {
+     "id": "Docks_Decking_Steps_1x2",
+     "count": 1
+    },
+    {
+     "id": "Docks_Ladder_Middle_1x1",
+     "count": 1
+    },
+    {
+     "id": "Docks_Ladder_Top_1x1",
+     "count": 1
+    },
+    {
+     "id": "Docks_Railing_Board_1_1x1",
+     "count": 1
+    },
+    {
+     "id": "Docks_Railing_Rope_Broken_1_1x1",
+     "count": 1
+    },
+    {
+     "id": "Docks_Railing_Rope_Broken_2_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    4.281,
+    6.281,
+    2.62
+   ],
+   "min": [
+    -2.641,
+    -1.058,
+    -1.641
+   ],
+   "max": [
+    1.641,
+    1.563,
+    4.641
+   ],
+   "triangles": 13910,
+   "trianglesPerUnit": 197,
+   "calls": 321,
+   "bytes": 357716,
+   "materials": [
+    "hidden|hidden",
+    "material|rope",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": [
+    "Rope NM.png"
+   ]
+  },
+  {
+   "id": "Island",
+   "name": "Island",
+   "file": "assemblies/Island.glb",
+   "group": "assembly-structure",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 47,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 7
+    },
+    {
+     "id": "Terrain_Sand_Incline_Esse_6x6",
+     "count": 7
+    },
+    {
+     "id": "Terrain_Sand_Incline_Curve_Outer_4x4",
+     "count": 6
+    },
+    {
+     "id": "Terrain_Sand_Incline_Straight_1x4",
+     "count": 4
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 3
+    },
+    {
+     "id": "Terrain_Sand_Flat_1x1",
+     "count": 3
+    },
+    {
+     "id": "Grass_Hill_Gentle_Curve_Outer_4x4",
+     "count": 2
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Outer_2x2",
+     "count": 2
+    },
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x3",
+     "count": 2
+    },
+    {
+     "id": "Terrain_Sand_Incline_Curve_Outer_8x8",
+     "count": 2
+    },
+    {
+     "id": "Grass_Hill_Gentle_Curve_Inner_4x4",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Gentle_Esse_4x5",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Grade_Transition_Straight_Front_4x4",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Grade_Transition_Straight_Rear_3x4",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Curve_Outer_4x4",
+     "count": 1
+    },
+    {
+     "id": "Grass_Hill_Sharp_Esse_4x4",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Sand_Incline_Curve_Inner_8x8",
+     "count": 1
+    },
+    {
+     "id": "Terrain_Sand_Incline_Curve_Outer_12x12",
+     "count": 1
+    },
+    {
+     "id": "Water_Circle_3_Highpoly",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    81.065,
+    81.065,
+    1.5
+   ],
+   "min": [
+    -38.532,
+    -0.25,
+    -40.532
+   ],
+   "max": [
+    42.532,
+    1.25,
+    40.532
+   ],
+   "triangles": 5959,
+   "trianglesPerUnit": 1,
+   "calls": 184,
+   "bytes": 391356,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "material|dirt",
+    "material|grass",
+    "material|water-lake"
    ],
    "missingTextures": []
   },
