@@ -582,44 +582,6 @@ function syncToolbar() {
   renderPalette();
 }
 
-const MARKUP = `
-<aside class="palette">
-  <div class="palette-controls">
-    <input type="search" data-role="search" placeholder="Search pieces" aria-label="Search pieces">
-    <select data-role="family" aria-label="Filter by family"></select>
-  </div>
-  <p class="palette-count" data-role="count"></p>
-  <ul class="palette-list" data-role="list"></ul>
-</aside>
-
-<section class="board">
-  <div class="toolbar">
-    <span class="brush" data-role="brush"></span>
-    <span class="toolbar-group">
-      <button type="button" data-role="rotate" title="Rotate (R)">Rotate <kbd>R</kbd></button>
-      <button type="button" data-role="mirror" aria-pressed="false" title="Mirror (M)">Mirror <kbd>M</kbd></button>
-    </span>
-    <span class="toolbar-group">
-      <button type="button" data-role="down" title="Lower level">−</button>
-      <span class="level" data-role="level">level 0</span>
-      <button type="button" data-role="up" title="Raise level">+</button>
-    </span>
-    <button type="button" data-role="clear">Clear</button>
-  </div>
-
-  <div class="grid-wrap"><svg data-role="grid" role="application" aria-label="Build grid"></svg></div>
-
-  <ul class="legend">
-    <li><i class="key mated"></i>mates exactly</li>
-    <li><i class="key partial"></i>mates in part</li>
-    <li><i class="key clash"></i>will not fit</li>
-    <li><i class="key open"></i>open edge</li>
-    <li><i class="key abut"></i>neighbour, no socket</li>
-  </ul>
-</section>
-
-<aside class="inspect" data-role="inspect"></aside>`;
-
 export async function mount(container, catalog) {
   host = container;
   const version = document.querySelector('meta[name="catalog-version"]')?.content;
@@ -638,8 +600,11 @@ export async function mount(container, catalog) {
       .map((color) => [color.source, color.hex]),
   );
 
-  container.classList.add('builder');
-  container.innerHTML = MARKUP;
+  // The markup lives in index.html as a template so this module never has to
+  // write HTML from a string.
+  const template = document.querySelector('#builder-template');
+  if (!template) throw new Error('#builder-template is missing from the page');
+  container.replaceChildren(template.content.cloneNode(true));
   const role = (name) => container.querySelector(`[data-role="${name}"]`);
 
   grid = role('grid');
