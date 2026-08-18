@@ -6,7 +6,6 @@
   --ink-soft: #78746a;
   --line: #ded6c8;
   --accent: #4f7a3a;
-  --accent-soft: #cfe0b8;
   --warn: #b3382c;
   --radius: 12px;
   --shadow: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
@@ -22,7 +21,6 @@
     --ink-soft: #9a958a;
     --line: #383530;
     --accent: #8fc06a;
-    --accent-soft: #35452a;
     --warn: #f28b7d;
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
   }
@@ -287,10 +285,14 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 }
 
 .section[data-facet="assembly"] .grid {
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
 }
 
-.section[data-facet="assembly"] .card-viewer { aspect-ratio: 4 / 3; }
+.section[data-facet="scene"] .grid {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.section[data-facet="scene"] .card-viewer { aspect-ratio: 16 / 9; }
 
 .card-holder { position: relative; display: flex; }
 .card-holder[hidden] { display: none; }
@@ -362,10 +364,8 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .card-viewer {
   position: relative;
-  aspect-ratio: 1;
-  background:
-    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 68%),
-    var(--paper-deep);
+  aspect-ratio: 4 / 3;
+  background: var(--paper-deep);
 }
 
 .card-viewer model-viewer,
@@ -377,12 +377,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
-}
-
-.card-size {
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-soft);
 }
 
 .card-text {
@@ -474,9 +468,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .detail-viewer {
   min-height: 380px;
-  background:
-    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 70%),
-    var(--paper-deep);
+  background: var(--paper-deep);
 }
 
 .detail-viewer model-viewer {
@@ -646,7 +638,7 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
   }
 
   .section[data-facet="assembly"] .grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 
   .card-text { padding: 5px 6px 6px; gap: 1px; }
@@ -662,7 +654,6 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
   .card-meta { font-size: 9.5px; }
   .card-bytes { display: none; }
   .card-brand { display: none; }
-  .card-size { font-size: 9.5px; }
 
   .card-pick { top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 5px; }
   .card-pick::before { inset: -6px; }

@@ -17,6 +17,7 @@ const CATALOG_DIR = join(ROOT, 'catalog');
 const TEXTURES_DIR = join(ROOT, 'textures');
 const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
 const SCENES_DIR = join(ROOT, 'scenes');
+const THUMBNAILS_DIR = join(ROOT, 'thumbnails');
 
 const MATERIAL_NAMES = {
   'Cliff Face': 'Cliff Face',
@@ -155,17 +156,22 @@ function describe(dir, prefix, file, classify) {
   };
 }
 
-const models = files.map((file) => describe(MODELS_DIR, 'models', file, (id) => {
-  const size = determineSize(id);
-  return {
-    family: determineFamily(id).id,
-    shape: determineShape(id).id,
-    layer: determineLayer(id).id,
-    size: size?.label ?? null,
-    sizeGroup: determineSizeGroup(size).id,
-    traits: determineTraits(id),
-    variant: determineVariant(id),
-  };
+const models = files.map((file) => ({
+  ...describe(MODELS_DIR, 'models', file, (id) => {
+    const size = determineSize(id);
+    return {
+      family: determineFamily(id).id,
+      shape: determineShape(id).id,
+      layer: determineLayer(id).id,
+      size: size?.label ?? null,
+      sizeGroup: determineSizeGroup(size).id,
+      traits: determineTraits(id),
+      variant: determineVariant(id),
+    };
+  }),
+  // tools/add-floor.mjs bakes a real grid-plane under most pieces for the
+  // Parts tab; a few flat/zero-footprint pieces have no floored version.
+  floorFile: existsSync(join(THUMBNAILS_DIR, file)) ? `thumbnails/${file}` : null,
 }));
 
 const modelIds = new Set(models.map((model) => model.id));

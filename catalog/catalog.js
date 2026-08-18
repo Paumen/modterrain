@@ -57,7 +57,24 @@ function attachViewer(box) {
   viewer.setAttribute('interaction-prompt', 'none');
   viewer.setAttribute('disable-zoom', '');
   viewer.setAttribute('loading', 'eager');
+  if (box.dataset.floorSrc) {
+    viewer.addEventListener('load', () => swapToFloor(viewer, box.dataset.floorSrc), { once: true });
+  }
   box.replaceChildren(viewer);
+}
+
+// The floored file's own "auto" camera-orbit fits the whole scene, floor
+// included, which zooms out and shrinks the model — the floor is padded
+// past the model's footprint and sits off-center (at its base), so even
+// tight padding inflates the bounding sphere. Loading the plain model first
+// and locking its real auto-resolved framing (camera-orbit's radius is in
+// the same units either way) onto the floored swap keeps the model exactly
+// as prominent as everywhere else, with the floor just extending into frame.
+function swapToFloor(viewer, floorSrc) {
+  const { theta, phi, radius } = viewer.getCameraOrbit();
+  viewer.setAttribute('field-of-view', `${viewer.getFieldOfView()}deg`);
+  viewer.setAttribute('camera-orbit', `${theta}rad ${phi}rad ${radius}m`);
+  viewer.src = floorSrc;
 }
 
 function detachViewer(box) {
@@ -90,6 +107,13 @@ function makeCard(model, view, section) {
   const box = document.createElement('div');
   box.className = 'card-viewer';
   box.dataset.src = model.file;
+  // The Parts tab shows the floored variant (a real grid-plane mesh baked
+  // under the piece, see tools/add-floor.mjs) when one exists; every other
+  // view, and the handful of flat pieces with no footprint to floor, use
+  // just the plain model. attachViewer loads dataset.src first regardless,
+  // so the model's own true auto-framing can be captured and locked before
+  // swapping to the floored file — see swapToFloor.
+  if (view === 'parts' && model.floorFile) box.dataset.floorSrc = model.floorFile;
   box.dataset.alt = `3D model ${model.name}`;
 
   const text = document.createElement('div');
@@ -102,7 +126,6 @@ function makeCard(model, view, section) {
   const name = span('card-name', model.name);
   if (model.incomplete) name.classList.add('is-incomplete');
   text.append(name);
-  if (model.size) text.append(span('card-size', model.size));
   text.append(meta);
 
   card.append(box, text);
@@ -264,6 +287,8 @@ function showDetail(model) {
   viewer.alt = `3D model ${model.name}`;
   viewer.setAttribute('camera-controls', '');
   viewer.setAttribute('camera-orbit', '35deg 68deg auto');
+  const floorSrc = currentView === 'parts' && model.floorFile;
+  if (floorSrc) viewer.addEventListener('load', () => swapToFloor(viewer, floorSrc), { once: true });
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.7');
   viewer.setAttribute('shadow-softness', '0.9');
