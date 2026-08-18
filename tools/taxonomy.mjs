@@ -172,10 +172,15 @@ export const ASSEMBLY_GROUPS = [
   { id: 'assembly-cliff', name: 'Cliff Runs', color: '#9a8f80', test: (n) => n.startsWith('Cliff_Assembly_') },
   { id: 'assembly-water', name: 'Waterfalls & Cave Entrances', color: '#2fc7e8', test: (n) => n.startsWith('Cliff_') || n.startsWith('Water_') },
   { id: 'assembly-crack', name: 'Cracks', color: '#a8705a', test: (n) => n.startsWith('Crack_') },
+  // The only `Path_` prefabs kept: the rope bridges over a river, plus the
+  // bank they land on. Same color as the `Bridges & Ends` family they're
+  // built from.
+  { id: 'assembly-bridge', name: 'Bridges', color: '#8a5a2f', test: (n) => n.startsWith('Path_Bridge_') },
   { id: 'assembly-river', name: 'Rivers', color: '#3aa7d6', test: (n) => n.startsWith('River_') || n.startsWith('Terrain_Water_') },
   // The structural fallback for anything the rules above don't claim.
-  // Nothing lands here now that the cave, path, retaining-wall, stairs and
-  // fence prefabs are out of the placement list.
+  // Nothing lands here now that the cave, retaining-wall, stairs and fence
+  // prefabs are out of the placement list, and the path ones are down to the
+  // bridges.
   { id: 'assembly-structure', name: 'Other', color: '#b98c5a', test: () => true },
 ];
 

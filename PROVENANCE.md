@@ -107,17 +107,18 @@ name, position, rotation quaternion, scale. No geometry of their own, just
 arrangements of the pieces in `models/`.
 
 It is a subset, not the whole set: the source has 212 prefabs, and the cave,
-path, retaining-wall, stone-stairs and fence ones were dropped here, leaving
-120. That's a choice about this repo's scope, not something missing from the
-pack — the same as the models removed from `models/`. The full list is
-recoverable from the source project.
+retaining-wall, stone-stairs and fence ones were dropped here, along with
+the paths except for the three bridges, leaving 123. That's a choice about
+this repo's scope, not something missing from the pack — the same as the
+models removed from `models/`. The full list is recoverable from the source
+project.
 
 Two things about that data are Unity's rather than glTF's, and
 `tools/assemble.mjs` converts both: the coordinate system is left-handed
 (mirrored on X relative to the converted `.glb` files), and a position of
 `1.0` means one tile, not one unit — see *Scale* below.
 
-Fourteen of the 120 name pieces this repo doesn't carry: the waterfalls ask
+Fourteen of the 123 name pieces this repo doesn't carry: the waterfalls ask
 for `Mist` and `Ripple`, which are particle effects rather than models, and
 three ask for a crest and river surface that isn't here. That's this repo's
 scope again, not a gap in the pack.

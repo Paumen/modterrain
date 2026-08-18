@@ -1,7 +1,7 @@
 {
  "generated": "node tools/build-catalog.mjs",
  "total": 287,
- "assemblies": 4,
+ "assemblies": 6,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -47,6 +47,7 @@
   "assembly-cliff": "Cliff Runs",
   "assembly-water": "Waterfalls & Cave Entrances",
   "assembly-crack": "Cracks",
+  "assembly-bridge": "Bridges",
   "assembly-river": "Rivers",
   "assembly-structure": "Other"
  },
@@ -1501,7 +1502,7 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 4,
+   "count": 6,
    "sections": [
     {
      "id": "assemblies-assembly-cliff",
@@ -1527,6 +1528,15 @@
      "models": [
       290
      ]
+    },
+    {
+     "id": "assemblies-assembly-bridge",
+     "name": "Bridges",
+     "color": "#8a5a2f",
+     "models": [
+      291,
+      292
+     ]
     }
    ]
   }
@@ -1549,42 +1559,42 @@
      "name": "Grass",
      "source": "Grass",
      "hex": "#a7de76",
-     "count": 90
+     "count": 92
     },
     {
      "key": "material|dirt",
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#f6edd3",
-     "count": 45
+     "count": 47
     },
     {
      "key": "material|water-river",
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 16
+     "count": 18
     },
     {
      "key": "material|wood-dark",
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 16
+     "count": 18
     },
     {
      "key": "material|wood-light-end",
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 15
+     "count": 17
     },
     {
      "key": "material|wood-light",
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 14
+     "count": 16
     },
     {
      "key": "material|ice",
@@ -1612,7 +1622,7 @@
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 4
+     "count": 6
     },
     {
      "key": "material|water-lake",
@@ -1640,7 +1650,14 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 245
+     "count": 247
+    },
+    {
+     "key": "hidden|hidden-violet",
+     "name": "Hidden Violet",
+     "source": "Hidden Violet",
+     "hex": "#dccdff",
+     "count": 75
     },
     {
      "key": "hidden|hidden-yellow",
@@ -1648,13 +1665,6 @@
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
      "count": 74
-    },
-    {
-     "key": "hidden|hidden-violet",
-     "name": "Hidden Violet",
-     "source": "Hidden Violet",
-     "hex": "#dccdff",
-     "count": 73
     },
     {
      "key": "hidden|hidden-blue",
@@ -1675,21 +1685,21 @@
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 40
+     "count": 42
     },
     {
      "key": "hidden|hidden-red",
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 37
+     "count": 39
     },
     {
      "key": "hidden|hidden-pink",
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 33
+     "count": 35
     }
    ]
   }
@@ -13143,6 +13153,160 @@
     "hidden|hidden-yellow",
     "material|cliff-face",
     "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Bridge_River_Narrow",
+   "name": "Path Bridge River Narrow",
+   "file": "assemblies/Path_Bridge_River_Narrow.glb",
+   "group": "assembly-bridge",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 22,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Path_Terrain_Basic_Straight_1x1",
+     "count": 6
+    },
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 6
+    },
+    {
+     "id": "Path_Terrain_Basic_Curve_Inner_1x1",
+     "count": 4
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 2
+    },
+    {
+     "id": "Prop_Bridge_Center_1x2",
+     "count": 2
+    },
+    {
+     "id": "Prop_Bridge_End_2x2",
+     "count": 2
+    }
+   ],
+   "dwh": [
+    8,
+    3,
+    2.25
+   ],
+   "min": [
+    -3.5,
+    -1,
+    -1.5
+   ],
+   "max": [
+    4.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 3976,
+   "trianglesPerUnit": 74,
+   "calls": 86,
+   "bytes": 162356,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "material|dirt",
+    "material|grass",
+    "material|water-river",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Path_Bridge_River_Wide",
+   "name": "Path Bridge River Wide",
+   "file": "assemblies/Path_Bridge_River_Wide.glb",
+   "group": "assembly-bridge",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 31,
+   "missingPieces": [],
+   "pieces": [
+    {
+     "id": "Terrain_Water_River_Flat_1x1",
+     "count": 12
+    },
+    {
+     "id": "Path_Terrain_Basic_Straight_1x1",
+     "count": 6
+    },
+    {
+     "id": "Path_Terrain_Basic_Curve_Inner_1x1",
+     "count": 4
+    },
+    {
+     "id": "Prop_Bridge_Center_1x2",
+     "count": 4
+    },
+    {
+     "id": "Grass_Hill_Sharp_Straight_1x2",
+     "count": 2
+    },
+    {
+     "id": "Prop_Bridge_End_2x2",
+     "count": 2
+    },
+    {
+     "id": "Grass_Flat_1x1",
+     "count": 1
+    }
+   ],
+   "dwh": [
+    10,
+    3,
+    2.25
+   ],
+   "min": [
+    -4.5,
+    -1,
+    -1.5
+   ],
+   "max": [
+    5.5,
+    1.25,
+    1.5
+   ],
+   "triangles": 5292,
+   "trianglesPerUnit": 78,
+   "calls": 105,
+   "bytes": 168572,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "material|dirt",
+    "material|grass",
+    "material|water-river",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
    ],
    "missingTextures": []
   }

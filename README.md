@@ -19,7 +19,7 @@ fifth shows what those pieces build:
 | Shapes | inner curve, outer curve, s-curve, straight, incline… | "which pieces complete this curve?" |
 | Layers | under, base, mid, top | "what stacks onto this row?" |
 | Sizes | grid footprint from the name | "what fits this 3 × 3 gap?" |
-| Assemblies | what the arrangement builds | "what does a finished cliff run look like?" |
+| Assemblies | what the arrangement builds | "what does a finished bridge look like?" |
 
 Beyond that:
 
@@ -62,12 +62,12 @@ PROVENANCE.md                where the pack comes from and what's wrong with it
 ## Assemblies
 
 The pack doesn't only ship pieces; it ships arrangements of them — a cliff
-run, a waterfall, a crack in a grass field. Those live in
-`assemblies/placements.json` as a piece name and a transform per part, 120
+run, a rope bridge over a river, a crack in a grass field. Those live in
+`assemblies/placements.json` as a piece name and a transform per part, 123
 of them, and `tools/assemble.mjs` turns one back into a single `.glb`:
 
 ```sh
-node tools/assemble.mjs Crack_Large Cliff_Assembly_Straight_3_Mid
+node tools/assemble.mjs Path_Bridge_River_Wide Crack_Large
 node tools/assemble.mjs --all --only-complete --out assemblies
 ```
 
@@ -76,10 +76,10 @@ nine wall segments of a cliff cost one copy of the wall and nine nodes.
 
 Whatever ends up in `assemblies/` shows up in the catalog's **Assemblies**
 tab on the next `node tools/build-catalog.mjs`, with the piece list it was
-built from in the detail panel. Four are checked in: two cliff runs, a
-waterfall cave entrance, and the large crack.
+built from in the detail panel. Six are checked in: two river bridges, two
+cliff runs, a waterfall cave entrance, and the large crack.
 
-106 of the 120 build with every piece present. The remaining 14 are the
+109 of the 123 build with every piece present. The remaining 14 are the
 waterfalls, which all reach for `Mist` and `Ripple` — particle effects that
 were never models — or for a crest and river surface this repo doesn't
 carry. They build without those rather than failing, and the tool lists what
