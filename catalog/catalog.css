@@ -12,6 +12,7 @@
   --line: #ded6c8;
   --accent: #4f7a3a;
   --accent-soft: #cfe0b8;
+  --warn: #b3382c;
   --radius: 12px;
   --shadow: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
   color-scheme: light dark;
@@ -27,6 +28,7 @@
     --line: #383530;
     --accent: #8fc06a;
     --accent-soft: #35452a;
+    --warn: #f28b7d;
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
   }
 }
@@ -313,6 +315,15 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   gap: 10px;
 }
 
+/* An assembly is not a tile: it's a whole scene — the wide river bridge is
+   ten cells across — and inside a 112px square it reads as a smudge. Its
+   sections get wider tiles and a landscape preview instead. */
+.section[data-facet="assembly"] .grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.section[data-facet="assembly"] .card-viewer { aspect-ratio: 4 / 3; }
+
 /* The holder carries the selection checkbox on top of the card; the card
  * itself stays one button that opens the detail view. The grid sees the
  * holder as its tile, so filter() hides the holder, not the card. */
@@ -438,6 +449,14 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
      the longest take three. */
   min-height: 3.75em;
 }
+
+/* An assembly the repo can't build whole: pieces its prefab names aren't
+   here. Red on the name rather than a badge — the name is what you read
+   first, and a badge would need a corner the checkbox and the size line have
+   already taken. `Mist` and `Ripple` don't count as missing (see
+   tools/build-catalog.mjs): they were particle effects, never models, so no
+   copy of this pack ever had them. */
+.is-incomplete { color: var(--warn); }
 
 .card-meta {
   display: flex;
@@ -702,6 +721,10 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
     gap: 6px;
+  }
+
+  .section[data-facet="assembly"] .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   .card-text { padding: 5px 6px 6px; gap: 1px; }

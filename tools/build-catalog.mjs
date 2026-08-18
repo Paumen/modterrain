@@ -9,15 +9,15 @@
  * classification comes from tools/taxonomy.mjs.
  */
 
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { readGlb, measureScene, trianglesPerUnit, BUDGET_PER_UNIT, UNITS_PER_CELL } from './glb.mjs';
 import {
-  FAMILIES, SHAPES, LAYERS, SIZE_GROUPS, TABS,
+  FAMILIES, SHAPES, LAYERS, SIZE_GROUPS, ASSEMBLY_GROUPS, TABS,
   determineFamily, determineShape, determineLayer, determineSize, determineSizeGroup,
-  determineTraits, determineVariant, readableName,
+  determineAssemblyGroup, determineTraits, determineVariant, readableName,
 } from './taxonomy.mjs';
 import { TEXTURE_BY_MATERIAL } from './textures.mjs';
 import { averageColor } from './png.mjs';
@@ -26,6 +26,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const MODELS_DIR = join(ROOT, 'models');
 const CATALOG_DIR = join(ROOT, 'catalog');
 const TEXTURES_DIR = join(ROOT, 'textures');
+const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
 
 /* -- materials ------------------------------------------------------------
  * The pack has no texture atlas: every material is one flat color in
@@ -163,14 +164,27 @@ function writeVersion() {
 const files = readdirSync(MODELS_DIR).filter((name) => name.endsWith('.glb')).sort();
 if (files.length === 0) throw new Error('no .glb files in models/');
 
+/** model id → the names of the nodes inside it; see `missing` below. */
+const nodeNames = new Map();
+
 /** material key → { key, palette, name, source, hex, count } */
 const materials = new Map();
 const unknownMaterials = new Set();
 
-const models = files.map((file) => {
+/**
+ * Everything a .glb says about itself, for a piece and an assembly alike:
+ * how big it is, what it's made of, what it costs to draw. Only the
+ * classification differs between the two, and that's added by the caller.
+ *
+ * Material bookkeeping happens here as a side effect — one shared tally
+ * across both collections, so a swatch's count covers everything the catalog
+ * shows and the filter bar keeps working across tabs.
+ */
+function describe(dir, prefix, file, classify) {
   const id = file.replace(/\.glb$/, '');
-  const glb = readGlb(join(MODELS_DIR, file));
+  const glb = readGlb(join(dir, file));
   const measured = measureScene(glb);
+  nodeNames.set(id, new Set((glb.json.nodes ?? []).map((node) => node.name).filter(Boolean)));
 
   const used = [];
   for (const index of measured.materialIndices) {
@@ -193,8 +207,6 @@ const models = files.map((file) => {
   }
   for (const key of used) materials.get(key).count++;
 
-  const size = determineSize(id);
-
   /* tools/embed-textures.mjs already fixed the materials that pointed at a
    * real, recoverable texture. What's left here is genuinely missing: a
    * normal map (Rope NM.png) this catalog has no use for even if it existed,
@@ -210,14 +222,11 @@ const models = files.map((file) => {
   return {
     id,
     name: readableName(id),
-    file: `models/${file}`,
-    family: determineFamily(id).id,
-    shape: determineShape(id).id,
-    layer: determineLayer(id).id,
-    size: size?.label ?? null,
-    sizeGroup: determineSizeGroup(size).id,
-    traits: determineTraits(id),
-    variant: determineVariant(id),
+    file: `${prefix}/${file}`,
+    // A record's classification is inserted here by the caller — the field
+    // order below is the order catalog.json is written in, and a piece has
+    // its facets between its name and its measurements.
+    ...classify(id),
     dwh: measured.dwh,
     // This pack is deliberately not centered on the origin: each piece's
     // origin IS its grid cell. Where it sits around that — whether it
@@ -232,7 +241,89 @@ const models = files.map((file) => {
     materials: used.sort(),
     missingTextures: [...new Set(missingTextures)],
   };
-});
+}
+
+const models = files.map((file) => describe(MODELS_DIR, 'models', file, (id) => {
+  const size = determineSize(id);
+  return {
+    family: determineFamily(id).id,
+    shape: determineShape(id).id,
+    layer: determineLayer(id).id,
+    size: size?.label ?? null,
+    sizeGroup: determineSizeGroup(size).id,
+    traits: determineTraits(id),
+    variant: determineVariant(id),
+  };
+}));
+
+const modelIds = new Set(models.map((model) => model.id));
+
+/* -- the assemblies ---------------------------------------------------
+ * Whatever tools/assemble.mjs has built into assemblies/, with the piece
+ * list that went into each one read back from the placements it was built
+ * from. An assembly classifies by what it builds, not by how it fits a grid,
+ * so the four piece facets stay null on it: that's also what keeps it out of
+ * the Parts, Shapes, Layers and Sizes tabs, which match on facet id.
+ */
+/**
+ * Named in the prefabs, never models: Unity particle effects for the spray at
+ * the foot of a waterfall and the rings it makes on the water. An assembly
+ * that misses only these is as complete as it can be.
+ */
+const EFFECTS = new Set(['Mist', 'Ripple']);
+
+const PLACEMENTS = join(ASSEMBLIES_DIR, 'placements.json');
+const placements = existsSync(PLACEMENTS) ? JSON.parse(readFileSync(PLACEMENTS, 'utf8')).assemblies : {};
+
+const assemblyFiles = existsSync(ASSEMBLIES_DIR)
+  ? readdirSync(ASSEMBLIES_DIR).filter((name) => name.endsWith('.glb')).sort()
+  : [];
+
+const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assemblies', file, (id) => {
+  const placed = placements[id] ?? [];
+
+  // Distinct pieces with how often each occurs, most-used first — the same
+  // wall segment nine times is one entry, which is how the assembly is
+  // actually built.
+  const counts = new Map();
+  for (const { piece } of placed) counts.set(piece, (counts.get(piece) ?? 0) + 1);
+  const pieces = [...counts]
+    .map(([piece, count]) => ({ id: piece, count }))
+    .sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
+  /* A prefab lists its child objects the way it lists whole models, so a name
+   * with no .glb behind it isn't always a missing model: the three waterfall
+   * tops name a `_Crest` and a `_River` that are two of the three nodes
+   * inside the very file placed beside them. Those are already in the built
+   * assembly, so they don't count as missing — only names that turn up in no
+   * placed model do. */
+  const within = new Set(pieces.flatMap((piece) => [...nodeNames.get(piece.id) ?? []]));
+  const missing = pieces
+    .filter((piece) => !modelIds.has(piece.id) && !within.has(piece.id))
+    .map((piece) => piece.id);
+
+  return {
+    group: determineAssemblyGroup(id).id,
+    family: null,
+    shape: null,
+    layer: null,
+    size: null,
+    sizeGroup: null,
+    traits: [],
+    variant: null,
+    placed: placed.length,
+    // Pieces this repo doesn't carry: named by the prefab, absent from the
+    // built .glb. The catalog says so rather than quietly showing a partial
+    // assembly as a whole one.
+    missingPieces: missing,
+    // Whether the assembly is short of actual geometry, which is what the
+    // page marks in red — `Mist` and `Ripple` don't count. Every waterfall in
+    // the pack names those two, and they were never models in the first
+    // place: they're Unity particle effects, so no delivery of this pack
+    // could have contained them and no assembly is worse off for it.
+    incomplete: missing.some((piece) => !EFFECTS.has(piece)),
+    pieces,
+  };
+}));
 
 /* -- checking the grid size --------------------------------------------
  * The whole catalog measures in grid cells of UNITS_PER_CELL, and that
@@ -261,35 +352,40 @@ const skewed = models
 
 /* -- building the views -----------------------------------------------
  * Each tab is a list of sections, and each section a list of indices into
- * `models`. Indices, not full records, because one model shows up in four
- * tabs at once: written out in full, the catalog would be four times the
+ * `catalog.models`. Indices, not full records, because one model shows up in
+ * four tabs at once: written out in full, the catalog would be four times the
  * size.
+ *
+ * The pieces come first in that array and the assemblies after them, so an
+ * assembly tab's indices carry the offset below.
  */
+const entries = [...models, ...assemblies];
 
 const FACETS = {
   family: { list: FAMILIES, field: 'family' },
   shape: { list: SHAPES, field: 'shape' },
   layer: { list: LAYERS, field: 'layer' },
   size: { list: SIZE_GROUPS, field: 'sizeGroup' },
+  assembly: { list: ASSEMBLY_GROUPS, field: 'group', source: assemblies, offset: models.length },
 };
 
 /* All facet ids together must be unique: catalog.json puts them in one table
  * and the browser looks up a name without knowing which facet an id came
  * from. A collision would silently produce the wrong name — a model in the
  * "Base" layer calling itself something a family already claims. */
-const allIds = [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS].map((g) => g.id);
+const allIds = [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS].map((g) => g.id);
 const duplicateIds = allIds.filter((id, i) => allIds.indexOf(id) !== i);
 if (duplicateIds.length) throw new Error(`duplicate facet id in tools/taxonomy.mjs: ${[...new Set(duplicateIds)].join(', ')}`);
 
 const views = TABS.map((tab) => {
-  const { list, field } = FACETS[tab.facet];
+  const { list, field, source = models, offset = 0 } = FACETS[tab.facet];
   const sections = [];
 
   for (const group of list) {
     if (tab.families && !tab.families.includes(group.id)) continue;
 
-    const indices = models
-      .map((model, index) => [model, index])
+    const indices = source
+      .map((model, index) => [model, index + offset])
       .filter(([model]) => model[field] === group.id && (!tab.filter || tab.filter(model.id)))
       .map(([, index]) => index);
 
@@ -312,15 +408,20 @@ const views = TABS.map((tab) => {
     count: new Set(sections.flatMap((s) => s.models)).size,
     sections,
   };
-});
+// A tab with nothing in it is a dead button: with assemblies/ empty, the
+// Assemblies tab shouldn't exist at all.
+}).filter((view) => view.count > 0);
 
 /* A model that lands in no tab doesn't exist for the visitor. */
 const placed = new Set(views.flatMap((v) => v.sections.flatMap((s) => s.models)));
-const orphaned = models.filter((_, index) => !placed.has(index));
+const orphaned = entries.filter((_, index) => !placed.has(index));
 
 const catalog = {
   generated: 'node tools/build-catalog.mjs',
   total: models.length,
+  // Assemblies are in `models` too, after the pieces; this is how many of
+  // that tail are assemblies rather than pieces.
+  assemblies: assemblies.length,
   // So the browser doesn't need to know the limit a second time.
   budgetPerUnit: BUDGET_PER_UNIT,
   // Every dimension in this catalog is in grid cells; this is what one cell
@@ -331,7 +432,7 @@ const catalog = {
   // One table for all facets together — the ids are unique across facets, so
   // the browser doesn't need to know which facet it's looking in.
   facets: Object.fromEntries(
-    [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS].map((g) => [g.id, g.name]),
+    [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS].map((g) => [g.id, g.name]),
   ),
   views,
   palettes: PALETTES.map((palette) => ({
@@ -341,7 +442,7 @@ const catalog = {
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
       .map(({ palette: _, ...rest }) => rest),
   })),
-  models,
+  models: entries,
 };
 
 writeFileSync(join(CATALOG_DIR, 'catalog.json'), JSON.stringify(catalog, null, 1) + '\n');
@@ -349,7 +450,7 @@ writeVersion();
 
 /* -- report --------------------------------------------------------------- */
 
-console.log(`${models.length} models → catalog/catalog.json`);
+console.log(`${models.length} models and ${assemblies.length} assemblies → catalog/catalog.json`);
 for (const view of catalog.views) {
   console.log(`\ntab ${view.label} — ${view.count} models in ${view.sections.length} sections:`);
   for (const section of view.sections) {

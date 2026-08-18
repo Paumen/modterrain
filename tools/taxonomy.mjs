@@ -45,17 +45,17 @@ export const FAMILIES = [
   { id: 'water', name: 'Water & Waterfalls', color: '#2fc7e8', test: (n) => n.startsWith('Water_') || n.startsWith('Waterfall_') },
   { id: 'iceberg', name: 'Icebergs', color: '#8fc7ff', test: (n) => n.startsWith('Iceberg_') },
   { id: 'docks', name: 'Docks', color: '#c08447', test: (n) => n.startsWith('Docks_') },
-  // Cave walls and cave floor/ceiling used to be two families; on their own
-  // neither reaches ten pieces. They're the same room, so one "Cave" family
-  // instead of two thin ones.
-  { id: 'cave', name: 'Cave', color: '#7a6a86', test: (n) => n.startsWith('Cave_') || n.startsWith('Floor_') || n.startsWith('Ceiling_') },
+  // What's left of the Cave family after its walls, floors and ceilings were
+  // removed: the eight pieces that finish the mouth of a cave where it meets
+  // a cliff face, which the Cliff_Cave_Entrance_* assemblies are built from.
+  { id: 'cave', name: 'Cave Edges', color: '#7a6a86', test: (n) => n.startsWith('Cave_') },
   // Kept as the structural fallback for anything that matches no other rule
   // above (see determineFamily) even though nothing currently lands here:
   // the only Prop_* pieces left are the bridge props, claimed by
-  // `path-bridge` earlier in this list. Path Fences, Edging Stones, and
-  // Retaining Walls were removed outright rather than folded in — every one
-  // of their models was deleted (see the repo history), so there was
-  // nothing left to move.
+  // `path-bridge` earlier in this list. Path Fences, Edging Stones,
+  // Retaining Walls and most of the Cave family — its walls, floors and
+  // ceilings — were removed outright rather than folded in: every one of
+  // those models was deleted, so there was nothing left to move.
   { id: 'props', name: 'Props', color: '#b76fa8', test: (n) => n.startsWith('Prop_') },
 ];
 
@@ -156,14 +156,45 @@ const TRAITS = [
   [/Sign/, 'sign'],
 ];
 
+/* -- assemblies --------------------------------------------------------
+ * Not pieces: whole arrangements of them, the pack's own prefabs rebuilt by
+ * tools/assemble.mjs into one .glb each (see assemblies/placements.json).
+ * They classify by what they build rather than by how they fit a grid, so
+ * they get one table of their own instead of borrowing the four above —
+ * `Crack_Large` is a hole in a grass field, not a "Prop" and not a size.
+ *
+ * Colors match the families the pieces come from, so a cliff assembly reads
+ * as the same thing as the cliff pieces it's made of. The table covers the
+ * 120 prefabs kept in assemblies/placements.json; the tab shows whichever of
+ * those have actually been built into assemblies/.
+ */
+export const ASSEMBLY_GROUPS = [
+  { id: 'assembly-cliff', name: 'Cliff Runs', color: '#9a8f80', test: (n) => n.startsWith('Cliff_Assembly_') },
+  { id: 'assembly-water', name: 'Waterfalls & Cave Entrances', color: '#2fc7e8', test: (n) => n.startsWith('Cliff_') || n.startsWith('Water_') },
+  { id: 'assembly-crack', name: 'Cracks', color: '#a8705a', test: (n) => n.startsWith('Crack_') },
+  // The only `Path_` prefabs kept: the rope bridges over a river, plus the
+  // bank they land on. Same color as the `Bridges & Ends` family they're
+  // built from.
+  { id: 'assembly-bridge', name: 'Bridges', color: '#8a5a2f', test: (n) => n.startsWith('Path_Bridge_') },
+  { id: 'assembly-river', name: 'Rivers', color: '#3aa7d6', test: (n) => n.startsWith('River_') || n.startsWith('Terrain_Water_') },
+  // The structural fallback for anything the rules above don't claim.
+  // Nothing lands here now that the cave, retaining-wall, stairs and fence
+  // prefabs are out of the placement list, and the path ones are down to the
+  // bridges.
+  { id: 'assembly-structure', name: 'Other', color: '#b98c5a', test: () => true },
+];
+
 /* -- tabs -----------------------------------------------------------
- * Four facets across the whole pack.
+ * Four facets across the pieces, then the assemblies built from them.
+ * `source` says which collection a tab draws from; without it, a tab reads
+ * models/.
  */
 export const TABS = [
   { id: 'parts', label: 'Parts', facet: 'family' },
   { id: 'shapes', label: 'Shapes', facet: 'shape' },
   { id: 'layers', label: 'Layers', facet: 'layer' },
   { id: 'sizes', label: 'Sizes', facet: 'size' },
+  { id: 'assemblies', label: 'Assemblies', facet: 'assembly', source: 'assemblies' },
 ];
 
 /* -- deriving -------------------------------------------------------------- */
@@ -200,6 +231,11 @@ export function determineSize(name) {
   if (matches.length === 0) return null;
   const [, w, d] = matches.at(-1);
   return { label: `${w} × ${d}`, width: Number(w), depth: Number(d) };
+}
+
+/** An assembly's group; the last rule catches everything. */
+export function determineAssemblyGroup(name) {
+  return first(ASSEMBLY_GROUPS, (g) => g.test(name)) ?? ASSEMBLY_GROUPS.at(-1);
 }
 
 export function determineSizeGroup(size) {

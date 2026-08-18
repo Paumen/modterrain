@@ -98,6 +98,39 @@ would break the kit's modularity.
 The catalog therefore shows a *Position relative to origin* line for every
 model, with the bounding box in grid cells.
 
+## The assembly placements
+
+`assemblies/placements.json` did not come from the zip. It was read out of
+the source pack's own prefabs — the same **Modular Terrain 2.0** project
+that settles the material colors in §1 — as one flat list per prefab: piece
+name, position, rotation quaternion, scale. No geometry of their own, just
+arrangements of the pieces in `models/`.
+
+It is a subset, not the whole set: the source has 212 prefabs, and the cave,
+retaining-wall, stone-stairs and fence ones were dropped here, along with
+the paths except for the three bridges, leaving 123. That's a choice about
+this repo's scope, not something missing from the pack — the same as the
+models removed from `models/`. The full list is recoverable from the source
+project.
+
+Two things about that data are Unity's rather than glTF's, and
+`tools/assemble.mjs` converts both: the coordinate system is left-handed
+(mirrored on X relative to the converted `.glb` files), and a position of
+`1.0` means one tile, not one unit — see *Scale* below.
+
+Fifteen of the 123 name pieces this repo doesn't carry. Fourteen are
+waterfalls asking for `Mist` and `Ripple`, which are particle effects rather
+than models, so no delivery of this pack could have contained them; the
+fifteenth is `Crack_Large`, asking for the floor tile that went with the
+Cave family. That last one is this repo's scope, not a gap in the pack.
+
+A name with no `.glb` behind it isn't always a missing model, either: a
+prefab lists its own child objects the same way it lists whole models, so
+`Water_Waterfall_Top_Center_1x3_Crest` reads like a piece when it is one of
+the three nodes inside `Water_Waterfall_Top_Center_1x3.glb`. Both tools
+check the nodes inside the models they loaded before calling anything
+missing.
+
 ## Scale
 
 One grid cell is **100 units** in the source files. That's measured, not

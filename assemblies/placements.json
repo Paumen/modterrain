@@ -1,0 +1,1035 @@
+{
+"units": "unity_meters_1_tile",
+"coords": "unity_left_handed_y_up",
+"assemblies": {
+  "Cliff_Assembly_Curve_Inner_1_Base": [
+    {"piece": "Basic_Esse_Base_2x2", "pos": [3, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [2, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-2, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [-2, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_3x3_Base", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-3, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_1_Mid": [
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-3, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [3, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-2, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [2, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_3x3_Mid", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [-2, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_1_Top": [
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-2, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-3, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_3x3_Top", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [2, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [-2, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [3, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_2_Base": [
+    {"piece": "Basic_Curve_Inner_3x3_Base", "pos": [1, 0, 4], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [8, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Base", "pos": [1, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Base", "pos": [3, 0, 6], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Base", "pos": [6, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [4, 0, 7], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [3, 0, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Base", "pos": [5, 0, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_2_Mid": [
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Mid", "pos": [6, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [4, 0, 7], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_3x3_Mid", "pos": [1, 0, 4], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Mid", "pos": [5, 0, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Mid", "pos": [1, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [8, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [3, 0, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Mid", "pos": [3, 0, 6], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_2_Top": [
+    {"piece": "Basic_Straight_Top_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_3x3_Top", "pos": [1, 0, 4], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Top", "pos": [6, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Top", "pos": [3, 0, 6], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [4, 0, 7], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [3, 0, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Top", "pos": [1, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Top", "pos": [5, 0, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [8, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_3_Base": [
+    {"piece": "Basic_Esse_Base_2x2", "pos": [6, 0, -4], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Base", "pos": [-2, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [2, 0, -4], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Base", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [4, 0, -4], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Base", "pos": [0, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_3_Mid": [
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [4, 0, -4], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [6, 0, -4], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [2, 0, -4], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Mid", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Mid", "pos": [0, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Mid", "pos": [-2, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Inner_3_Top": [
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Top", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [2, 0, -4], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Top", "pos": [-2, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [6, 0, -4], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [4, 0, -4], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Top", "pos": [0, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_1_Base": [
+    {"piece": "Basic_Straight_Base_1x2", "pos": [3, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-3, 0, 3], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Base", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [2, 0, -5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-4, 0, 3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [2, 0, -3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Base", "pos": [-1, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Base", "pos": [2, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_1_Mid": [
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-3, 0, 3], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-4, 0, 3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Mid", "pos": [2, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [2, 0, -3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [3, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Mid", "pos": [-1, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [2, 0, -5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Mid", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_1_Top": [
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Top", "pos": [2, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [2, 0, -5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [3, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-4, 0, 3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Top", "pos": [-1, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-3, 0, 3], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Top", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [2, 0, -3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_2_Base": [
+    {"piece": "Basic_Curve_Outer_3x3_Base", "pos": [-1, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-3, 0, 3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [3, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Base", "pos": [2, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Base", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_2_Mid": [
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Mid", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [3, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-3, 0, 3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_3x3_Mid", "pos": [-1, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Mid", "pos": [2, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_2_Top": [
+    {"piece": "Basic_Curve_Outer_3x3_Top", "pos": [-1, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Top", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-3, 0, 3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Top", "pos": [2, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [3, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_3_Base": [
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Base", "pos": [-4, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [-1, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [-2, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Base", "pos": [1, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-2, 0, -5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Base", "pos": [-5, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Base", "pos": [1, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Base", "pos": [-1, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_3_Mid": [
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Mid", "pos": [-1, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Mid", "pos": [-5, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Mid", "pos": [-4, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [-1, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-2, 0, -5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Mid", "pos": [1, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [-2, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Mid", "pos": [1, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Curve_Outer_3_Top": [
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Top", "pos": [-1, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-2, 0, -5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Top", "pos": [-4, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [-2, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Top", "pos": [1, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Top", "pos": [1, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [-1, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Top", "pos": [-5, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_1_Base": [
+    {"piece": "Basic_Straight_Base_1x2", "pos": [1, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-1, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [-1, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, -2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_1_Mid": [
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, -2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-1, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [1, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [-1, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_1_Top": [
+    {"piece": "Basic_Esse_Top_2x2", "pos": [0, 0, -2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [1, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [-1, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [0, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-1, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_2_Base": [
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-1, 0, -2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [-1, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Base", "pos": [0, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [2, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [3, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Base", "pos": [2, 0, 1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_2_Mid": [
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Mid", "pos": [2, 0, 1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [3, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [-1, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Mid", "pos": [0, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [2, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-1, 0, -2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_2_Top": [
+    {"piece": "Basic_Straight_Top_1x1", "pos": [-1, 0, -4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [3, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [2, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Top", "pos": [0, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-1, 0, -2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Top", "pos": [2, 0, 1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_3_Base": [
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-3, 0, -4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-1, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [-3, 0, -7], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [-1, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Base", "pos": [-2, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Base", "pos": [0, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Base", "pos": [-4, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Base", "pos": [-2, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_3_Mid": [
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-1, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-3, 0, -7], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Mid", "pos": [-2, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [-1, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Mid", "pos": [-2, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Mid", "pos": [-4, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [-3, 0, -4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Mid", "pos": [0, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_3_Top": [
+    {"piece": "Basic_Curve_Inner_2x2_Wide_Top", "pos": [-2, 0, -2], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-3, 0, -4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-3, 0, -7], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Top", "pos": [0, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [-1, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [-1, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Top", "pos": [-4, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Wide_Top", "pos": [-2, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_4_Base": [
+    {"piece": "Basic_Straight_Base_1x2", "pos": [2, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Base", "pos": [4, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [5, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [1, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Base", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [2, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_4_Mid": [
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [5, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [2, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [1, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Mid", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Mid", "pos": [4, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [2, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Assembly_Straight_4_Top": [
+    {"piece": "Basic_Straight_Top_1x1", "pos": [2, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [0, 0, 3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [2, 0, -1], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Top_2x2", "pos": [1, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Curve_Outer_2x2_Narrow_Top", "pos": [4, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Top_1x1", "pos": [5, 0, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Curve_Inner_2x2_Narrow_Top", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Bridge": [
+    {"piece": "Path_Bridge_Edge_Top_1x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_Bridge_Edge_Top_1x2", "pos": [0, 0, 2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Path_Bridge_Center_Top_1x2", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_Rope_End_Basic_1x3", "pos": [3, 2, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Esse_Narrow_Base": [
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Center_Base_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Esse_Narrow_Mid": [
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Esse_Narrow_Top": [
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Center_Top_1x1", "pos": [0, 1, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Esse_Wide_Base": [
+    {"piece": "Cave_Center_Base_1x1", "pos": [0, 0, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Esse_Wide_Mid": [
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Esse_Wide_Top": [
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Center_Top_1x1", "pos": [0, 1, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Straight_Narrow_Base": [
+    {"piece": "Cave_Edge_Straight_Base_2x2", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Center_Base_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Straight_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Straight_Narrow_Mid": [
+    {"piece": "Cave_Edge_Straight_Mid_1x1", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Edge_Straight_Mid_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Straight_Narrow_Top": [
+    {"piece": "Cave_Edge_Straight_Top_1x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Straight_Top_1x3", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Center_Top_1x1", "pos": [0, 1, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Straight_Wide_Base": [
+    {"piece": "Cave_Edge_Straight_Base_2x2", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Center_Base_1x1", "pos": [0, 0, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Cave_Edge_Straight_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Straight_Wide_Mid": [
+    {"piece": "Cave_Edge_Straight_Mid_1x1", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Edge_Straight_Mid_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Straight_Wide_Top": [
+    {"piece": "Cave_Center_Top_1x1", "pos": [0, 1, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Cave_Edge_Straight_Top_1x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Straight_Top_1x3", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Waterfall_Narrow_Base": [
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Center_Base_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Right_1x1", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Waterfall_Narrow_Mid": [
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Waterfall_Narrow_Top": [
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 1, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Center_Top_1x1", "pos": [0, 1, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 1, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 1, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Waterfall_Wide_Base": [
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Right_1x1", "pos": [0, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 5], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 5], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Base_3x3", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Cave_Center_Base_1x1", "pos": [0, 0, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]}
+  ],
+  "Cliff_Cave_Entrance_Waterfall_Wide_Mid": [
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Mid_2x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Cave_Entrance_Waterfall_Wide_Top": [
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 1, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Center_Top_1x1", "pos": [0, 1, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 1, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 1, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cave_Edge_Esse_Top_3x4", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 1, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Path_Narrow": [
+    {"piece": "Path_End_Center_Top_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_End_Edge_Top_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_End_Edge_Top_1x1", "pos": [0, 0, 2], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Path_Wide": [
+    {"piece": "Path_End_Edge_Top_1x1", "pos": [0, 0, 3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Path_End_Edge_Top_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_End_Center_Top_1x1", "pos": [0, 0, 1.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]}
+  ],
+  "Cliff_Waterfall_Component_Center_Base": [
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Center_Mid": [
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Center_Top": [
+    {"piece": "Waterfall_Center_Top_Terrain_1x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Center_1x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Left_Base": [
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Left_Mid": [
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Left_Top": [
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Left_2x3", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Right_Base": [
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Right_1x1", "pos": [0, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, -2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, -1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, -1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, -2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Right_Mid": [
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Component_Right_Top": [
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Right_2x3", "pos": [0, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Narrow_Base": [
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Water_Waterfall_Base_Right_1x1", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Narrow_Mid": [
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Narrow_Top": [
+    {"piece": "Water_Waterfall_Top_Left_2x3", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 3], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Right_2x3", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Wide_Base": [
+    {"piece": "Water_Waterfall_Base_Right_1x1", "pos": [0, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 5], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 5], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 6], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 3]}
+  ],
+  "Cliff_Waterfall_Wide_Mid": [
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 6], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 3]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Wide_Top": [
+    {"piece": "Water_Waterfall_Top_Left_2x3", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Right_2x3", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 4], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Center_1x3", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Center_Top_Terrain_1x3", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Widest_Base": [
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 4], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 2], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 7], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Basic_Esse_Base_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 3], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Base_Right_1x1", "pos": [0, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 5], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 6], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 6], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 5], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Basic_Straight_Base_1x2", "pos": [0, 0, 3.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 4]}
+  ],
+  "Cliff_Waterfall_Widest_Mid": [
+    {"piece": "Basic_Straight_Mid_1x1", "pos": [0, 0, 3.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 4]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Basic_Esse_Mid_2x2", "pos": [0, 0, 7], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 6], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Cliff_Waterfall_Widest_Top": [
+    {"piece": "Water_Waterfall_Top_Center_1x3", "pos": [0, 0, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Center_Top_Terrain_1x3", "pos": [0, 0, 2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Water_Waterfall_Top_Center_1x3", "pos": [0, 0, 3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 5], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Left_2x3", "pos": [0, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Right_2x3", "pos": [0, 0, 4], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Waterfall_Left_Top_Terrain_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Crack_Large": [
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [0, 1, 4], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Esse_3x3", "pos": [-2, 1, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_2x2_1_Top", "pos": [2, 0, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [3, 1, -1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [-2, 1, -2], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_3x3_1_Mid", "pos": [-2, -1, 3], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_2x2_1_Top", "pos": [1, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Straight_2x2_1_Top", "pos": [3, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_2x2_1_Mid", "pos": [2, -1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Straight_2x2_1_Mid", "pos": [3, -1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [3, 1, 4], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_2x2_1_Top", "pos": [-2, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Floor_And_Ceiling_Flat_1x1", "pos": [-1, 1, -2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Floor_And_Ceiling_Flat_1x1", "pos": [-1, 0, -2.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 2]},
+    {"piece": "Grass_Carpet_Curve_Inner_2x2", "pos": [-1, 1, -3], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Floor_And_Ceiling_Flat_1x1", "pos": [-2.5, 0, -2], "quat": [0, 0, 0, 1], "scale": [2, 1, 3]},
+    {"piece": "Cracked_Curve_Inner_2x2_1_Mid", "pos": [1, -1, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [-3, 1, -3], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [-3, 1, -2], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_4x4_1_Mid", "pos": [2, -1, 3], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [3, 1, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [-3, 1, -1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_2x2_1_Mid", "pos": [-2, -1, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Curve_Inner_2x2", "pos": [3, 1, -3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Outer_3x3_2_Mid", "pos": [0, -1, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Outer_3x3_2_Top", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Curve_Inner_3x3", "pos": [-2, 1, 3], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_3x3_1_Top", "pos": [-2, 0, 3], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Esse_2x2", "pos": [3, 1, 2], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Curve_Inner_2x2", "pos": [2, 1, 4], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [1, 1, -3], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [3, 1, 3], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_4x4_1_Top", "pos": [2, 0, 3], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [-2, 1, -3], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Floor_And_Ceiling_Flat_1x1", "pos": [-2.5, 1, -2], "quat": [0, 0, 0, 1], "scale": [2, 1, 3]}
+  ],
+  "Crack_Small": [
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [-2, 1, 1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [-3, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_4x4_1_Top", "pos": [-4, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Straight_2x2_3_Top", "pos": [0, 0, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_3x3_1_Mid", "pos": [-4, -1, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_3x3_1_Top", "pos": [-4, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Curve_Inner_2x2", "pos": [1, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_4x4_1_Mid", "pos": [0, -1, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_4x4_1_Mid", "pos": [-4, -1, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [-1, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Straight_2x2_3_Mid", "pos": [0, -1, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Curve_Inner_3x3", "pos": [-4, 1, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Straight_1x1", "pos": [-2, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Esse_2x2", "pos": [0, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Grass_Carpet_Curve_Inner_2x2", "pos": [-5, 1, -2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Center_1x1", "pos": [1, 1, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Carpet_Curve_Inner_1x1", "pos": [1, 1, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Cracked_Curve_Inner_4x4_1_Top", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]}
+  ],
+  "Path_Bridge_End": [
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [1, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [0, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [0, 0, 1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [0, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_End_2x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [1, 0, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]}
+  ],
+  "Path_Bridge_River_Narrow": [
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [3, 0, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [-1, -1, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 3]},
+    {"piece": "Prop_Bridge_End_2x2", "pos": [-3, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_Center_1x2", "pos": [-1, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [-3, 0, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [2, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [0, -1, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 3]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [-3, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_End_2x2", "pos": [2, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [-4, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_Center_1x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [2, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [2, 0, 1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [-4, 0, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [-3, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [3, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Path_Bridge_River_Wide": [
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [3, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [-5, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_End_2x2", "pos": [3, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_Center_1x2", "pos": [1, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_Center_1x2", "pos": [-1, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [3, 0, 1], "quat": [0, 0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_Center_1x2", "pos": [-2, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [1, -1, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 3]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [3, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [4, 0, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [-5, 0, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [-4, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_Center_1x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [4, 0, -1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Prop_Bridge_End_2x2", "pos": [-4, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [-2, -1, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 3]},
+    {"piece": "Path_Terrain_Basic_Straight_1x1", "pos": [-4, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [-0.5, -1, 0], "quat": [0, 0, 0, 1], "scale": [2, 1, 3]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 0, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Path_Terrain_Basic_Curve_Inner_1x1", "pos": [-4, 0, 1], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 0, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Curve_Narrow_Large_CCW": [
+    {"piece": "Terrain_Water_River_Curve_CW_5x5", "pos": [1, 1, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Outer_4x4", "pos": [2, 0, 2], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Inner_6x6", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "River_Curve_Narrow_Large_CW": [
+    {"piece": "Terrain_Water_River_Curve_CCW_5x5", "pos": [1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Outer_4x4", "pos": [2, 0, 2], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Inner_6x6", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "River_Curve_Narrow_Small_CCW": [
+    {"piece": "Grass_Hill_Sharp_Curve_Inner_4x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Outer_2x2", "pos": [2, 0, 2], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Curve_CW_3x3", "pos": [1, 1, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "River_Curve_Narrow_Small_CW": [
+    {"piece": "Grass_Hill_Sharp_Curve_Inner_4x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Outer_2x2", "pos": [2, 0, 2], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Curve_CCW_3x3", "pos": [1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Curve_Wide_CCW": [
+    {"piece": "Terrain_Water_River_Curve_CW_3x3", "pos": [2, 1, 2], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Curve_CW_5x5", "pos": [1, 1, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [1.5, 0, 1.5], "quat": [0, 0, 0, 1], "scale": [4, 1, 4]},
+    {"piece": "Grass_Hill_Sharp_Curve_Outer_2x2", "pos": [3, 0, 3], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Inner_6x6", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "River_Curve_Wide_CW": [
+    {"piece": "Terrain_Water_River_Curve_CCW_5x5", "pos": [1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Inner_6x6", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Curve_Outer_2x2", "pos": [3, 0, 3], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [1.5, 0, 1.5], "quat": [0, 0, 0, 1], "scale": [4, 1, 4]},
+    {"piece": "Terrain_Water_River_Curve_CCW_3x3", "pos": [2, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Esse_Narrow_Gentle_Swerve_Left": [
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [-2, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Esse_CCW_3x4", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Esse_Narrow_Gentle_Swerve_Right": [
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [-2, 0, -1], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [-1, 1, 1]},
+    {"piece": "Terrain_Water_River_Esse_CW_3x4", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Esse_Narrow_Sharp_Swerve_Left": [
+    {"piece": "Terrain_Water_River_Esse_CCW_4x4", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [-3, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]}
+  ],
+  "River_Esse_Narrow_Sharp_Swerve_Right": [
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [-3, 0, -1], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [-1, 1, 1]},
+    {"piece": "Terrain_Water_River_Esse_CW_4x4", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Esse_Wide_Gentle_Swerve_Left": [
+    {"piece": "Grass_Flat_1x1", "pos": [-2, 0, 0.5], "quat": [0, 1, 0, 0], "scale": [3, 1, 4]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [-4, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Esse_CCW_4x5", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]}
+  ],
+  "River_Esse_Wide_Gentle_Swerve_Right": [
+    {"piece": "Terrain_Water_River_Esse_CW_4x5", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [-2, 0, -0.5], "quat": [0, 1, 0, 0], "scale": [3, 1, 4]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [-4, 0, -1], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [-1, 1, 1]}
+  ],
+  "River_Incline_Narrow_Gentle": [
+    {"piece": "Terrain_Water_River_Incline_Gentle_1x4", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Gentle_Overlapping_Sharp_2x4", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Gentle_Overlapping_Sharp_2x4", "pos": [-1, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]},
+    {"piece": "Terrain_Water_River_Incline_Gentle_1x4", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Incline_Narrow_Sharp": [
+    {"piece": "Terrain_Water_River_Incline_Sharp_1x2", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Incline_Sharp_1x2", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Overlapping_Sharp_2x2", "pos": [-1, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Overlapping_Sharp_2x2", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Incline_Wide_Gentle": [
+    {"piece": "Terrain_Water_River_Incline_Gentle_1x4", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Gentle_Straight_1x4", "pos": [-1.5, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 2]},
+    {"piece": "Terrain_Water_River_Incline_Gentle_1x4", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Gentle_Overlapping_Sharp_2x4", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Incline_Gentle_1x4", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Incline_Gentle_1x4", "pos": [-3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Gentle_Overlapping_Sharp_2x4", "pos": [-3, 0, 0], "quat": [0, 0.707107, 0, 0.707107], "scale": [-1, 1, 1]}
+  ],
+  "River_Incline_Wide_Sharp": [
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [-1.5, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 2]},
+    {"piece": "Terrain_Water_River_Incline_Sharp_1x2", "pos": [-3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Overlapping_Sharp_2x2", "pos": [0, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Overlapping_Sharp_2x2", "pos": [-3, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Incline_Sharp_1x2", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Incline_Sharp_1x2", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Incline_Sharp_1x2", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Straight_Narrow": [
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [-1, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]}
+  ],
+  "River_Straight_Wide": [
+    {"piece": "Grass_Flat_1x1", "pos": [-1.5, 0, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 2]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [-3, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Transition_Enter_Center": [
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [1.5, 0, -0.5], "quat": [0, -0.707107, 0, 0.707107], "scale": [4, 1, 2]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [3, 0, 0], "quat": [0, 0, 0, 1], "scale": [-1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Transition_Enter_Left": [
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [-1.5, 0, -0.5], "quat": [0, -0.707107, 0, 0.707107], "scale": [4, 1, 2]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [-1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [-3, 0, -0.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 4]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Transition_Enter_Right": [
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [3, 0, -0.5], "quat": [0, 1, 0, 0], "scale": [1, 1, 4]},
+    {"piece": "Grass_Flat_1x1", "pos": [1.5, 0, -0.5], "quat": [0, -0.707107, 0, 0.707107], "scale": [4, 1, 2]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, -2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Transition_Exit_Center": [
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [-1.5, 0, 0.5], "quat": [0, -0.707107, 0, 0.707107], "scale": [4, 1, 2]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x3", "pos": [-3, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Transition_Exit_Left": [
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [-3, 0, 0.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 4]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [-1.5, 0, 0.5], "quat": [0, -0.707107, 0, 0.707107], "scale": [4, 1, 2]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-2, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [-3, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "River_Transition_Exit_Right": [
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, 2], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Hill_Sharp_Straight_1x2", "pos": [3, 0, 0.5], "quat": [0, 1, 0, 0], "scale": [1, 1, 4]},
+    {"piece": "Grass_Hill_Sharp_Esse_4x4", "pos": [0, 0, 0], "quat": [0, 1, 0, 0], "scale": [-1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [2, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, 1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Grass_Flat_1x1", "pos": [1.5, 0, 0.5], "quat": [0, -0.707107, 0, 0.707107], "scale": [4, 1, 2]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [1, 1, -1], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]},
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [3, 1, 0], "quat": [0, -0.707107, 0, 0.707107], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Curve_CCW_3x3": [
+    {"piece": "Terrain_Water_River_Curve_CCW_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Curve_CCW_5x5": [
+    {"piece": "Terrain_Water_River_Curve_CCW_5x5", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Curve_CW_3x3": [
+    {"piece": "Terrain_Water_River_Curve_CW_3x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Curve_CW_5x5": [
+    {"piece": "Terrain_Water_River_Curve_CW_5x5", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Esse_CCW_3x4": [
+    {"piece": "Terrain_Water_River_Esse_CCW_3x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Esse_CCW_4x4": [
+    {"piece": "Terrain_Water_River_Esse_CCW_4x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Esse_CCW_4x5": [
+    {"piece": "Terrain_Water_River_Esse_CCW_4x5", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Esse_CW_3x4": [
+    {"piece": "Terrain_Water_River_Esse_CW_3x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Esse_CW_4x4": [
+    {"piece": "Terrain_Water_River_Esse_CW_4x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Esse_CW_4x5": [
+    {"piece": "Terrain_Water_River_Esse_CW_4x5", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Flat_1x1": [
+    {"piece": "Terrain_Water_River_Flat_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Incline_Gentle_1x4": [
+    {"piece": "Terrain_Water_River_Incline_Gentle_1x4", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Terrain_Water_River_Incline_Sharp_1x2": [
+    {"piece": "Terrain_Water_River_Incline_Sharp_1x2", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Circle_1_Lowpoly": [
+    {"piece": "Water_Circle_1_Lowpoly", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Circle_2_Midpoly": [
+    {"piece": "Water_Circle_2_Midpoly", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Circle_3_Highpoly": [
+    {"piece": "Water_Circle_3_Highpoly", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Base_Center_1x1": [
+    {"piece": "Water_Waterfall_Base_Center_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Base_Left_1x1": [
+    {"piece": "Water_Waterfall_Base_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Base_Right_1x1": [
+    {"piece": "Water_Waterfall_Base_Right_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, -1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Mist", "pos": [1.15, -0.4, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, 0], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]},
+    {"piece": "Ripple", "pos": [1, -0.24, -1], "quat": [0, 0.707107, 0.707107, 0], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Mid_Center_1x1": [
+    {"piece": "Water_Waterfall_Mid_Center_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Mid_Left_1x1": [
+    {"piece": "Water_Waterfall_Mid_Left_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Mid_Right_1x1": [
+    {"piece": "Water_Waterfall_Mid_Right_1x1", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Top_Center_1x3": [
+    {"piece": "Water_Waterfall_Top_Center_1x3_River", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Center_1x3_Crest", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Center_1x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Top_Left_2x3": [
+    {"piece": "Water_Waterfall_Top_Left_2x3_Crest", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Left_2x3_River", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Left_2x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ],
+  "Water_Waterfall_Top_Right_2x3": [
+    {"piece": "Water_Waterfall_Top_Right_2x3", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Right_2x3_Crest", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]},
+    {"piece": "Water_Waterfall_Top_Right_2x3_River", "pos": [0, 0, 0], "quat": [0, 0, 0, 1], "scale": [1, 1, 1]}
+  ]
+}
+}
