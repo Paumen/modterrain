@@ -121,7 +121,7 @@ function writeVersion() {
   // The builder is part of the catalog page, so its assets ride the same
   // stamp; builder.js and sockets.json are fetched from script and pick the
   // version up from the meta tag.
-  const content = ['catalog.json', 'catalog.css', 'catalog.js', 'builder.css', 'builder.js', 'sockets.json']
+  const content = ['catalog.json', 'catalog.css', 'catalog.js', 'builder.css', 'builder.js', 'previews.js', 'viewport.js', 'sockets.json']
     .map((name) => readFileSync(join(CATALOG_DIR, name)))
     .join('');
   const version = createHash('sha256').update(content).digest('hex').slice(0, 10);

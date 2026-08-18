@@ -909,7 +909,9 @@ export async function mount(container, catalog) {
     if ((event.key === 'Delete' || event.key === 'Backspace') && selected) { event.preventDefault(); remove(selected); }
   });
 
-  const { createViewport } = await import('./viewport.js');
+  // Versioned like the rest of the catalog's assets, or a browser that has
+  // been here before keeps yesterday's camera.
+  const { createViewport } = await import(version ? `./viewport.js?v=${version}` : './viewport.js');
   viewport = createViewport(role('view'), {
     colorOf: (name) => swatches.get(name),
     onTap: ({ id, x, z }) => {

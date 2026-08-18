@@ -148,7 +148,7 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   controls.addEventListener('start', () => { steered = true; });
   const draw = () => { renderer.render(scene, camera); frameNeeded = false; };
   const invalidate = () => { frameNeeded = true; };
-  controls.addEventListener('change', invalidate);
+  controls.addEventListener('change', () => { depthCue(); invalidate(); });
 
   renderer.setAnimationLoop(() => {
     if (!frameNeeded || !canvas.clientWidth) return;
@@ -345,6 +345,12 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
    * the target is lifted off the build by however far the middle of that band
    * is from the middle of the picture. */
   function aimAt(heading, distance) {
+    // OrbitControls clamps how far the camera may stand off its target, and
+    // that clamp is what a fitted view runs into: a forty-cell diorama needs
+    // the camera three times further back than a hand-held zoom ever asks
+    // for, and being clamped leaves it inside the scene, staring at the far
+    // side of shells it cannot see through.
+    controls.maxDistance = Math.max(80, distance * 1.05);
     const { dir, right, up } = basis(heading);
     const width = canvas.clientWidth || 1;
     const height = canvas.clientHeight || 1;
@@ -353,6 +359,24 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
       .addScaledVector(up, ((insets.top - insets.bottom) / height) * vertical)
       .addScaledVector(right, (insets.right / width) * vertical * camera.aspect);
     camera.position.copy(controls.target).addScaledVector(dir, distance);
+    depthCue();
+  }
+
+  /* Fog and the far plane were sized for a build of a few cells. A whole
+   * diorama stands further off than the fog's far edge, so it faded to paper
+   * before it was ever drawn — the view looked empty however well it was
+   * framed. Both now follow how far the camera is standing back. */
+  function depthCue() {
+    const reach = camera.position.distanceTo(controls.target);
+    const radius = bounds.getSize(new THREE.Vector3()).length() / 2;
+    scene.fog.near = Math.max(26, reach + radius);
+    scene.fog.far = Math.max(62, reach + radius * 3 + 40);
+
+    const far = Math.max(500, reach + radius * 4 + 100);
+    if (camera.far !== far) {
+      camera.far = far;
+      camera.updateProjectionMatrix();
+    }
   }
 
   // A standing viewpoint frames what is on the grid: turning to the front of
@@ -384,19 +408,27 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
 
   /* Five standing zoom stops rather than a free factor, so the buttons land
    * on the same handful of framings every time. They are spaced by a constant
-   * ratio: a step near the build and a step far from it look the same size. */
-  const ZOOM_STOPS = [3.5, 6, 10.4, 17.9, 31];
+   * ratio — a step near the build and a step far from it look the same size —
+   * and they follow the build: the stop that frames a single plate is deep
+   * inside a whole diorama. */
+  function stops() {
+    const far = span(new THREE.Vector3(0.42, 0.72, 0.55));
+    const near = Math.max(controls.minDistance, far / 8);
+    const ratio = (far / near) ** (1 / 4);
+    return [0, 1, 2, 3, 4].map((step) => Number((near * ratio ** step).toFixed(2)));
+  }
 
   // A drag or a pinch leaves the camera between stops. The first press then
   // snaps to the neighbouring stop in the direction asked for; from there on
   // every press is exactly one stop.
   function zoom(direction) {
     const inward = direction < 0;
-    const stops = inward ? [...ZOOM_STOPS].reverse() : ZOOM_STOPS;
+    const ladder = stops();
+    const rungs = inward ? [...ladder].reverse() : ladder;
     const offset = camera.position.clone().sub(controls.target);
     const current = offset.length();
-    const next = stops.find((stop) => (inward ? stop < current * 0.99 : stop > current * 1.01));
-    const distance = next ?? stops[stops.length - 1];
+    const next = rungs.find((stop) => (inward ? stop < current * 0.99 : stop > current * 1.01));
+    const distance = next ?? rungs[rungs.length - 1];
     aimAt(offset, distance);
     controls.update();
     steered = true;
@@ -457,12 +489,20 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   // What is on the grid, in cells, with a cell of air around it so a piece on
   // the edge is not flush against the side of the picture.
   function extent(placements) {
-    bounds.makeEmpty();
-    for (const placement of placements) {
-      bounds.expandByPoint(new THREE.Vector3(placement.cx - 1, placement.level, placement.cz - 1));
-      bounds.expandByPoint(new THREE.Vector3(placement.cx + 1, placement.level + 1, placement.cz + 1));
+    // Measured off the pieces themselves, not off the cells they were placed
+    // on: a piece is anchored on one cell but a scene can run five cells past
+    // it, and a cliff stack is far taller than the level it sits at. Framing
+    // on the anchors cuts all of that off the picture.
+    pieces.updateMatrixWorld(true);
+    bounds.setFromObject(pieces);
+
+    if (!placements.length || bounds.isEmpty() || !Number.isFinite(bounds.min.x + bounds.max.x)) {
+      bounds.set(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 1, 1));
+    } else {
+      // Enough air for a piece not to sit flush against the edge of the
+      // picture; the framing itself keeps a margin beyond this.
+      bounds.expandByScalar(0.1);
     }
-    if (bounds.isEmpty()) bounds.set(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 1, 1));
     bounds.getCenter(middle);
   }
 
