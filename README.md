@@ -89,7 +89,7 @@ amount to a block with a separate sheet of water floating above it.
 waterfalls, which all reach for `Mist` and `Ripple` — particle effects that
 were never models — or for a crest and river surface this repo doesn't
 carry. They build without those rather than failing, and the tool lists what
-it skipped. The four checked in are complete.
+it skipped. All thirty checked in are complete.
 
 **Coordinates.** The placements are Unity's: left-handed, one tile = 1.0.
 The `.glb` files went through an FBX conversion that mirrored X and scaled a
