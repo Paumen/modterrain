@@ -1,14 +1,3 @@
-/**
- * Builds catalog/catalog.json from the .glb files in models/.
- *
- * Run from the repo root:  node tools/build-catalog.mjs
- *
- * The catalog is derived entirely from what's actually on disk, so it can
- * never drift from the models. For each model it reads file size, bounding
- * box, triangle count, and materials from the .glb itself; the
- * classification comes from tools/taxonomy.mjs.
- */
-
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,19 +17,6 @@ const CATALOG_DIR = join(ROOT, 'catalog');
 const TEXTURES_DIR = join(ROOT, 'textures');
 const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
 
-/* -- materials ------------------------------------------------------------
- * The pack has no texture atlas: every material is one flat color in
- * `baseColorFactor`. That's plenty to filter by — color is the whole point,
- * grass is green, cliff wall is beige, hidden faces are near-white.
- */
-
-/**
- * Cleaned-up display name per material in the pack, listed explicitly so a
- * material this build has never seen before shows up as a warning instead of
- * passing through silently. Most of the source names are already clean
- * English and map to themselves; the signs get their size turned into an
- * aspect ratio.
- */
 const MATERIAL_NAMES = {
   'Cliff Face': 'Cliff Face',
   Grass: 'Grass',
@@ -66,48 +42,24 @@ const MATERIAL_NAMES = {
   'Sign 16x9': 'Sign 16:9',
 };
 
-/**
- * Two groups in the filter bar, because they're two different kinds of
- * color. The visible materials say what a piece is made of; the `Hidden`
- * series marks faces the pack itself flags as hidden — the sides that sit
- * against a neighboring tile. What distinguishes the color variants within
- * that group isn't explained by the pack; they're kept separate here so they
- * don't dilute the material group.
- */
 const HIDDEN = /^Hidden/;
 
 const PALETTES = [
   {
     id: 'material',
     name: 'Material',
-    // Labeled, because this group has materials that share a color: river,
-    // lake, waterfall, and waterfall crest are all the same cyan, and four
-    // identical swatches side by side is a puzzle, not a filter.
     style: 'chip',
   },
   {
     id: 'hidden',
     name: 'Hidden Faces',
-    // Here the color is the whole meaning — "Hidden Red" is named for being
-    // red — so the swatch itself is the label. Saves a row in the bar.
     style: 'swatch',
   },
 ];
 
-/**
- * The material color as it actually renders: `baseColorFactor` converted from
- * linear to sRGB, exactly as the glTF spec says and exactly as a
- * spec-conforming viewer draws it.
- *
- * This was briefly "corrected" the other way — on the theory that the FBX
- * export had written sRGB bytes into that linear field — but the source
- * Unity project's own material files (`materials.json`, PROVENANCE.md)
- * disprove that: `Grass` = 0.3882 / 0.7294 / 0.1804 is the exact linear value
- * Unity stores for `Terrain/Grass.mat`, and Unity's own gamma-decode of that
- * number is #A6DD75 — a pale green, matching what plain, unmodified gamma
- * decoding produces here too. The saturated #63ba2e some earlier build
- * showed was the bug, not the fix.
- */
+/* baseColorFactor is linear; this gamma-encodes it per the glTF spec. Do not
+ * invert the conversion — the source Unity materials confirm the stored values
+ * really are linear. */
 function toHex([r, g, b] = [1, 1, 1]) {
   const channel = (v) => {
     const s = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
@@ -116,14 +68,6 @@ function toHex([r, g, b] = [1, 1, 1]) {
   return `#${channel(r)}${channel(g)}${channel(b)}`;
 }
 
-/**
- * The swatch color for a material `tools/embed-textures.mjs` has given a
- * real texture: `baseColorFactor` is white on those (see textures.mjs), so
- * `toHex` would just draw a blank square. The texture's own average color —
- * computed fresh from the file on disk, not cached from the embed step —
- * says something a flat white swatch can't: which material is the dark wood
- * and which is the light one.
- */
 const averageColorCache = new Map();
 function swatchColor(source, baseColorFactor) {
   const textureFile = TEXTURE_BY_MATERIAL[source];
@@ -137,12 +81,6 @@ function swatchColor(source, baseColorFactor) {
 const slugify = (name) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-/* -- version ---------------------------------------------------------------
- * GitHub Pages serves with `cache-control: max-age=600`. Without a version in
- * the URL you'd look at stale CSS or JS for up to ten minutes after a
- * deploy, or worse: new HTML with old JS. The hash is derived from content,
- * so it changes exactly when something changes.
- */
 function writeVersion() {
   const content = ['catalog.json', 'catalog.css', 'catalog.js']
     .map((name) => readFileSync(join(CATALOG_DIR, name)))
@@ -159,27 +97,14 @@ function writeVersion() {
   console.log(`version ${version} → index.html`);
 }
 
-/* -- reading the models ----------------------------------------------------- */
-
 const files = readdirSync(MODELS_DIR).filter((name) => name.endsWith('.glb')).sort();
 if (files.length === 0) throw new Error('no .glb files in models/');
 
-/** model id → the names of the nodes inside it; see `missing` below. */
 const nodeNames = new Map();
 
-/** material key → { key, palette, name, source, hex, count } */
 const materials = new Map();
 const unknownMaterials = new Set();
 
-/**
- * Everything a .glb says about itself, for a piece and an assembly alike:
- * how big it is, what it's made of, what it costs to draw. Only the
- * classification differs between the two, and that's added by the caller.
- *
- * Material bookkeeping happens here as a side effect — one shared tally
- * across both collections, so a swatch's count covers everything the catalog
- * shows and the filter bar keeps working across tabs.
- */
 function describe(dir, prefix, file, classify) {
   const id = file.replace(/\.glb$/, '');
   const glb = readGlb(join(dir, file));
@@ -207,13 +132,6 @@ function describe(dir, prefix, file, classify) {
   }
   for (const key of used) materials.get(key).count++;
 
-  /* tools/embed-textures.mjs already fixed the materials that pointed at a
-   * real, recoverable texture. What's left here is genuinely missing: a
-   * normal map (Rope NM.png) this catalog has no use for even if it existed,
-   * and Waterfall Crest's reference to a UV-checker placeholder rather than
-   * a real texture. The viewer falls back to the flat material color, so the
-   * model still shows either way — this is surfaced rather than hidden
-   * because it's a property of the pack, not a bug in the catalog. */
   const missingTextures = (glb.json.images ?? [])
     .map((image) => image.uri)
     .filter((uri) => uri && !uri.startsWith('data:'))
@@ -223,15 +141,8 @@ function describe(dir, prefix, file, classify) {
     id,
     name: readableName(id),
     file: `${prefix}/${file}`,
-    // A record's classification is inserted here by the caller — the field
-    // order below is the order catalog.json is written in, and a piece has
-    // its facets between its name and its measurements.
     ...classify(id),
     dwh: measured.dwh,
-    // This pack is deliberately not centered on the origin: each piece's
-    // origin IS its grid cell. Where it sits around that — whether it
-    // overhangs, whether it dips below zero — is what these two corners are
-    // for.
     min: measured.min,
     max: measured.max,
     triangles: measured.triangles,
@@ -258,18 +169,7 @@ const models = files.map((file) => describe(MODELS_DIR, 'models', file, (id) => 
 
 const modelIds = new Set(models.map((model) => model.id));
 
-/* -- the assemblies ---------------------------------------------------
- * Whatever tools/assemble.mjs has built into assemblies/, with the piece
- * list that went into each one read back from the placements it was built
- * from. An assembly classifies by what it builds, not by how it fits a grid,
- * so the four piece facets stay null on it: that's also what keeps it out of
- * the Parts, Shapes, Layers and Sizes tabs, which match on facet id.
- */
-/**
- * Named in the prefabs, never models: Unity particle effects for the spray at
- * the foot of a waterfall and the rings it makes on the water. An assembly
- * that misses only these is as complete as it can be.
- */
+// Unity particle effects, never shipped as models.
 const EFFECTS = new Set(['Mist', 'Ripple']);
 
 const PLACEMENTS = join(ASSEMBLIES_DIR, 'placements.json');
@@ -282,20 +182,12 @@ const assemblyFiles = existsSync(ASSEMBLIES_DIR)
 const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assemblies', file, (id) => {
   const placed = placements[id] ?? [];
 
-  // Distinct pieces with how often each occurs, most-used first — the same
-  // wall segment nine times is one entry, which is how the assembly is
-  // actually built.
   const counts = new Map();
   for (const { piece } of placed) counts.set(piece, (counts.get(piece) ?? 0) + 1);
   const pieces = [...counts]
     .map(([piece, count]) => ({ id: piece, count }))
     .sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
-  /* A prefab lists its child objects the way it lists whole models, so a name
-   * with no .glb behind it isn't always a missing model: the three waterfall
-   * tops name a `_Crest` and a `_River` that are two of the three nodes
-   * inside the very file placed beside them. Those are already in the built
-   * assembly, so they don't count as missing — only names that turn up in no
-   * placed model do. */
+  // A placed name may be a node inside another placed model, not a missing model.
   const within = new Set(pieces.flatMap((piece) => [...nodeNames.get(piece.id) ?? []]));
   const missing = pieces
     .filter((piece) => !modelIds.has(piece.id) && !within.has(piece.id))
@@ -303,6 +195,7 @@ const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assembl
 
   return {
     group: determineAssemblyGroup(id).id,
+    // Null piece facets keep assemblies out of the Parts, Shapes, Layers and Sizes tabs.
     family: null,
     shape: null,
     layer: null,
@@ -311,32 +204,14 @@ const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assembl
     traits: [],
     variant: null,
     placed: placed.length,
-    // Pieces this repo doesn't carry: named by the prefab, absent from the
-    // built .glb. The catalog says so rather than quietly showing a partial
-    // assembly as a whole one.
     missingPieces: missing,
-    // Whether the assembly is short of actual geometry, which is what the
-    // page marks in red — `Mist` and `Ripple` don't count. Every waterfall in
-    // the pack names those two, and they were never models in the first
-    // place: they're Unity particle effects, so no delivery of this pack
-    // could have contained them and no assembly is worse off for it.
     incomplete: missing.some((piece) => !EFFECTS.has(piece)),
     pieces,
   };
 }));
 
-/* -- checking the grid size --------------------------------------------
- * The whole catalog measures in grid cells of UNITS_PER_CELL, and that
- * number was derived from the files, not stated by the pack. This check
- * keeps that derivation honest: the longest side measured should be close
- * to the longest side named.
- *
- * The margin is deliberately wide, because plenty is normal within it: a
- * fence post named 1 × 1 is only an eighth of a cell thick, and a
- * waterfall's side pieces hang a cell outside their footprint. What falls
- * outside this margin isn't a skewed tile, it's a scale that doesn't match —
- * a pack in centimeters instead of decimeters would fail immediately.
- */
+/* Wide margin on purpose: thin posts and overhanging pieces are normal; this
+ * only catches a scale that does not match. */
 const skewed = models
   .map((model) => {
     const matches = [...model.id.matchAll(/(\d+)x(\d+)/g)];
@@ -350,15 +225,6 @@ const skewed = models
   .filter(Boolean)
   .sort((a, b) => b.ratio - a.ratio);
 
-/* -- building the views -----------------------------------------------
- * Each tab is a list of sections, and each section a list of indices into
- * `catalog.models`. Indices, not full records, because one model shows up in
- * four tabs at once: written out in full, the catalog would be four times the
- * size.
- *
- * The pieces come first in that array and the assemblies after them, so an
- * assembly tab's indices carry the offset below.
- */
 const entries = [...models, ...assemblies];
 
 const FACETS = {
@@ -369,10 +235,6 @@ const FACETS = {
   assembly: { list: ASSEMBLY_GROUPS, field: 'group', source: assemblies, offset: models.length },
 };
 
-/* All facet ids together must be unique: catalog.json puts them in one table
- * and the browser looks up a name without knowing which facet an id came
- * from. A collision would silently produce the wrong name — a model in the
- * "Base" layer calling itself something a family already claims. */
 const allIds = [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS].map((g) => g.id);
 const duplicateIds = allIds.filter((id, i) => allIds.indexOf(id) !== i);
 if (duplicateIds.length) throw new Error(`duplicate facet id in tools/taxonomy.mjs: ${[...new Set(duplicateIds)].join(', ')}`);
@@ -402,35 +264,21 @@ const views = TABS.map((tab) => {
   return {
     id: tab.id,
     label: tab.label,
-    // What this tab groups by. The browser uses it to know whether the
-    // family label on a card would just repeat the section header.
     facet: tab.facet,
     count: new Set(sections.flatMap((s) => s.models)).size,
     sections,
   };
-// A tab with nothing in it is a dead button: with assemblies/ empty, the
-// Assemblies tab shouldn't exist at all.
 }).filter((view) => view.count > 0);
 
-/* A model that lands in no tab doesn't exist for the visitor. */
 const placed = new Set(views.flatMap((v) => v.sections.flatMap((s) => s.models)));
 const orphaned = entries.filter((_, index) => !placed.has(index));
 
 const catalog = {
   generated: 'node tools/build-catalog.mjs',
   total: models.length,
-  // Assemblies are in `models` too, after the pieces; this is how many of
-  // that tail are assemblies rather than pieces.
   assemblies: assemblies.length,
-  // So the browser doesn't need to know the limit a second time.
   budgetPerUnit: BUDGET_PER_UNIT,
-  // Every dimension in this catalog is in grid cells; this is what one cell
-  // measures in the source files. Whoever loads the .glb files straight
-  // into an engine needs that number.
   unitsPerCell: UNITS_PER_CELL,
-  // Every model carries its facets as an id; this is what those ids mean.
-  // One table for all facets together — the ids are unique across facets, so
-  // the browser doesn't need to know which facet it's looking in.
   facets: Object.fromEntries(
     [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS].map((g) => [g.id, g.name]),
   ),
@@ -447,8 +295,6 @@ const catalog = {
 
 writeFileSync(join(CATALOG_DIR, 'catalog.json'), JSON.stringify(catalog, null, 1) + '\n');
 writeVersion();
-
-/* -- report --------------------------------------------------------------- */
 
 console.log(`${models.length} models and ${assemblies.length} assemblies → catalog/catalog.json`);
 for (const view of catalog.views) {
@@ -486,9 +332,6 @@ if (skewed.length) {
   }
 }
 
-/* Above budget is not a hard error: the pack is what it is, and a model
- * above the line is a candidate to simplify, not a build stopper. The build
- * names them so the list doesn't grow silently. */
 const overBudget = models
   .filter((m) => m.trianglesPerUnit !== null && m.trianglesPerUnit > BUDGET_PER_UNIT)
   .sort((a, b) => b.trianglesPerUnit - a.trianglesPerUnit);

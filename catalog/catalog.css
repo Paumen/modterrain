@@ -1,8 +1,3 @@
-/* Modular Terrain — 3D catalog.
- *
- * Colors follow this pack: cliff-beige paper, moss-green accent.
- */
-
 :root {
   --paper: #f7f4ee;
   --paper-deep: #ece6db;
@@ -45,8 +40,6 @@ body {
 
 a { color: var(--accent); }
 
-/* ---------- header ---------- */
-
 .head {
   position: sticky;
   top: 0;
@@ -80,8 +73,6 @@ a { color: var(--accent); }
   color: var(--ink-soft);
 }
 
-/* Six tabs don't fit side by side on a phone; scroll rather than clip, since
-   the last tab isn't the least important one. */
 .tab-bar {
   display: flex;
   padding: 3px;
@@ -115,17 +106,12 @@ a { color: var(--accent); }
   font-weight: 600;
 }
 
-/* ---------- material filter ---------- */
-
 .filter-bar {
   padding: 9px clamp(16px, 4vw, 40px);
   border-bottom: 1px solid var(--line);
   background: var(--paper);
 }
 
-/* One row per kind of color: material on one line, hidden faces on the next.
-   Stacked rather than squeezed side by side, so neither one crowds out the
-   other or wraps into a confusing half-row. */
 .filter-swatches {
   display: flex;
   flex-direction: column;
@@ -181,7 +167,6 @@ a { color: var(--accent); }
   box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
 }
 
-/* Checkmark in a color that stands out against the swatch color. */
 .swatch[aria-pressed="true"]::after {
   content: "";
   position: absolute;
@@ -194,9 +179,6 @@ a { color: var(--accent); }
   transform: translateY(-1px) rotate(45deg);
 }
 
-/* The material group carries its name along: four materials share the same
-   cyan (river, lake, waterfall, waterfall crest) and three share the same
-   beige, so a bare swatch doesn't say which filter it turns on. */
 .swatch.chip {
   display: inline-flex;
   align-items: center;
@@ -226,8 +208,6 @@ a { color: var(--accent); }
   background: var(--swatch-color);
 }
 
-/* The bare swatch's checkmark would land right on top of the text; the chip
-   shows its pressed state via the border and the bold weight instead. */
 .swatch.chip::after { content: none; }
 .swatch.chip:hover { transform: none; border-color: var(--accent); }
 
@@ -258,9 +238,6 @@ a { color: var(--accent); }
   .filter-swatches { gap: 6px; }
   .filter-group + .filter-group { padding-top: 6px; }
 
-  /* A whole row of chips still won't fit a phone's width even on its own
-     line, so within each dedicated row the chips scroll sideways instead of
-     wrapping into a tall stack. */
   .filter-group-swatches {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -273,12 +250,8 @@ a { color: var(--accent); }
   .swatch.chip { height: 22px; padding: 0 9px 0 7px; font-size: 11px; }
 }
 
-/* ---------- sections ---------- */
-
 main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
-/* scroll-margin keeps the section header clear of the sticky header on a
-   deep link. */
 .section { padding-top: 16px; scroll-margin-top: 72px; }
 .section[hidden] { display: none; }
 
@@ -307,26 +280,18 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   color: var(--ink-soft);
 }
 
-/* ---------- grid + cards ---------- */
-
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
   gap: 10px;
 }
 
-/* An assembly is not a tile: it's a whole scene — the wide river bridge is
-   ten cells across — and inside a 112px square it reads as a smudge. Its
-   sections get wider tiles and a landscape preview instead. */
 .section[data-facet="assembly"] .grid {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
 .section[data-facet="assembly"] .card-viewer { aspect-ratio: 4 / 3; }
 
-/* The holder carries the selection checkbox on top of the card; the card
- * itself stays one button that opens the detail view. The grid sees the
- * holder as its tile, so filter() hides the holder, not the card. */
 .card-holder { position: relative; display: flex; }
 .card-holder[hidden] { display: none; }
 .card-holder > .card { flex: 1; min-width: 0; }
@@ -345,17 +310,11 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   background: color-mix(in srgb, var(--card-bg) 82%, transparent);
   backdrop-filter: blur(4px);
   cursor: pointer;
-  /* Visible at rest, not just on hover: without a hint of where it is,
-     hitting a 26px box exactly meant scrubbing around blind until it
-     appeared, which just as often opened the detail view instead. */
   opacity: .55;
   transition: opacity .12s ease;
 }
 
-/* `<label>` extends its clickable area to any generated content, so this
-   invisible halo widens the tap/click target well past the visible box
-   without making the badge itself any bigger on screen — the fix for
-   needing to hit the corner precisely. */
+/* Invisible halo widening the label's hit area. */
 .card-pick::before {
   content: "";
   position: absolute;
@@ -366,7 +325,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 .card-pick:focus-within,
 .card-pick:has(:checked) { opacity: 1; }
 
-/* No mouse means no hover to raise it from half-visible. */
 @media (hover: none) { .card-pick { opacity: .85; } }
 
 .card-pick input {
@@ -415,16 +373,12 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   width: 100%;
   height: 100%;
   display: block;
-  /* The card itself is the clickable button; the preview must not catch the
-     click. */
+  /* The card is the button; the preview must not catch the click. */
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
 }
 
-/* The grid footprint, as its own line under the name rather than an overlay
-   on the thumbnail — a badge sitting on top of the model competed with the
-   selection checkbox for the same corner and covered part of the preview. */
 .card-size {
   font-size: 11px;
   font-variant-numeric: tabular-nums;
@@ -444,18 +398,10 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   font-weight: 600;
   overflow-wrap: anywhere;
   line-height: 1.25;
-  /* Reserve three lines so the meta row lines up across the whole grid.
-     These names are long: "Retaining Wall 45 Degrees Outer Curve" takes two,
-     the longest take three. */
+  /* Reserve three lines so the meta rows align across the grid. */
   min-height: 3.75em;
 }
 
-/* An assembly the repo can't build whole: pieces its prefab names aren't
-   here. Red on the name rather than a badge — the name is what you read
-   first, and a badge would need a corner the checkbox and the size line have
-   already taken. `Mist` and `Ripple` don't count as missing (see
-   tools/build-catalog.mjs): they were particle effects, never models, so no
-   copy of this pack ever had them. */
 .is-incomplete { color: var(--warn); }
 
 .card-meta {
@@ -486,12 +432,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   background: var(--brand-color, var(--ink-soft));
 }
 
-/* In the Parts tab the family already sits in the section header; there the
-   label is noise, and the room goes to the file size instead. In the other
-   tabs it's the other way around — a section there mixes families, and the
-   origin is exactly what's interesting. This hangs off the facet the tab
-   groups by, not the tab itself, so a family that moves to its own tab
-   behaves correctly on its own. */
 .section[data-facet="family"] .card-brand { display: none; }
 .section:not([data-facet="family"]) .card-bytes { display: none; }
 
@@ -504,8 +444,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .empty:not([hidden]) { display: block; }
 
-/* ---------- footer ---------- */
-
 .foot {
   padding: 20px clamp(16px, 4vw, 40px) 40px;
   border-top: 1px solid var(--line);
@@ -514,8 +452,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 }
 
 .foot p { margin: 0; max-width: 70ch; }
-
-/* ---------- detail dialog ---------- */
 
 .detail {
   width: min(920px, 94vw);
@@ -567,8 +503,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   color: var(--ink-soft);
 }
 
-/* Whatever's in the name but doesn't fit a facet: how steep, how tight,
-   which variant. As chips, since there are sometimes six of them. */
 .detail-traits {
   display: flex;
   flex-wrap: wrap;
@@ -598,8 +532,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 .detail dt { color: var(--ink-soft); }
 .detail dd { margin: 0; overflow-wrap: anywhere; }
 
-/* A material is a name plus its color; without the swatch in front you'd
-   have to know the filter bar's colors by heart. */
 .detail-material {
   display: inline-flex;
   align-items: center;
@@ -655,10 +587,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   .detail-info { border-left: 0; border-top: 1px solid var(--line); }
 }
 
-/* ---------- selection bar ---------- */
-
-/* Only appears once something is selected, then floats over the grid: it
-   belongs to the selection, not to the page. */
 .selection-bar {
   position: fixed;
   left: 50%;
@@ -701,8 +629,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .selection-bar button:hover { border-color: var(--accent); }
 
-/* Same ring as .card and .swatch. The offset keeps it clear of the button,
-   so it stays legible on "Copy paths", which is already accent-colored. */
 .selection-bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .selection-bar button.primary {
@@ -711,12 +637,8 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   color: var(--paper);
 }
 
-/* Otherwise the bar would sit on top of the footer as soon as something is
-   selected. */
 body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 
-/* On a phone only two cards fit side by side otherwise. Smaller tiles,
-   tighter text: four per row, and a tap opens the full model. */
 @media (max-width: 560px) {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
@@ -731,7 +653,6 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 
   .card-name {
     font-size: 10.5px;
-    /* Don't reserve three lines: too tall at this width. */
     min-height: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -743,16 +664,10 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
   .card-brand { display: none; }
   .card-size { font-size: 9.5px; }
 
-  /* Four 76px tiles side by side: a 26px checkbox would cover half the
-     preview. Still bigger than the old 18px, and the expanded hit area below
-     is pulled in so it doesn't bleed into the next tile 6px over. */
   .card-pick { top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 5px; }
   .card-pick::before { inset: -6px; }
   .card-pick input { width: 12px; height: 12px; }
 
-  /* Three buttons next to a count are together wider than the screen here.
-     Let them wrap to a second line; the pill shape goes away, since a pill
-     two lines tall isn't a pill anymore. */
   .selection-bar {
     left: 12px;
     right: 12px;

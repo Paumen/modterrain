@@ -1,20 +1,3 @@
-/**
- * Just enough of PNG to compute one number: a texture's average color, for
- * the filter-bar swatch of a material that `tools/embed-textures.mjs` has
- * given a real texture and a white `baseColorFactor`. A flat swatch color
- * still has to represent *something* — the pack's own flat-color materials
- * do it with their factor, so a textured one does it with an average of its
- * pixels, weighted by alpha so a mostly-transparent edge (Rope.png) doesn't
- * pull the color toward its own padding.
- *
- * Handles the plain, non-interlaced 8-bit PNGs this pack's textures are:
- * grayscale, RGB, palette (indexed, expanded through PLTE/tRNS), grayscale
- * with alpha, or RGBA — whichever this particular texture happens to use.
- * `readPng` always hands back plain RGBA regardless of which. Nothing these
- * textures don't use (16-bit channels, interlacing) is supported; an
- * unexpected file throws rather than silently mis-decoding.
- */
-
 import { readFileSync } from 'node:fs';
 import { inflateSync } from 'node:zlib';
 
@@ -28,7 +11,7 @@ function readChunks(buf) {
     const length = buf.readUInt32BE(offset);
     const type = buf.toString('ascii', offset + 4, offset + 8);
     chunks.push({ type, data: buf.subarray(offset + 8, offset + 8 + length) });
-    offset += 12 + length; // length + type(4) + data + crc(4)
+    offset += 12 + length;
   }
   return chunks;
 }
@@ -39,7 +22,6 @@ const paeth = (a, b, c) => {
   return pa <= pb && pa <= pc ? a : pb <= pc ? b : c;
 };
 
-/** Undoes the per-scanline PNG filters, returning raw samples (not yet RGBA). */
 function unfilter(raw, width, height, samplesPerPixel) {
   const stride = width * samplesPerPixel;
   const out = new Uint8Array(height * stride);
@@ -70,7 +52,6 @@ function unfilter(raw, width, height, samplesPerPixel) {
   return out;
 }
 
-/** Reads a PNG into `{ width, height, pixels }`, `pixels` always RGBA. */
 export function readPng(path) {
   const chunks = readChunks(readFileSync(path));
   const ihdr = chunks.find((c) => c.type === 'IHDR').data;
@@ -92,9 +73,6 @@ export function readPng(path) {
   const pixels = new Uint8Array(pixelCount * 4);
 
   if (colorType === 3) {
-    // Palette: each sample is an index into PLTE (RGB triplets), with an
-    // optional per-index alpha in tRNS. Anything past the end of tRNS is
-    // fully opaque, per spec.
     const plte = chunks.find((c) => c.type === 'PLTE').data;
     const trns = chunks.find((c) => c.type === 'tRNS')?.data;
     for (let i = 0; i < pixelCount; i++) {
@@ -119,11 +97,6 @@ export function readPng(path) {
   return { width, height, pixels };
 }
 
-/**
- * The texture's average color as a hex string, alpha-weighted so a texture
- * with transparent padding (Rope.png sits on a mostly-empty 32×128 canvas)
- * isn't pulled toward black by pixels nobody sees.
- */
 export function averageColor(path) {
   const { pixels } = readPng(path);
   let r = 0, g = 0, b = 0, weight = 0;
