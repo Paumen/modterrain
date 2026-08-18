@@ -7,6 +7,11 @@ import { OrbitControls } from '../vendor/three/controls/OrbitControls.js';
  * in the same units as the socket data. */
 const UNITS_PER_CELL = 100;
 
+/* How far from the origin a piece may be dropped. Near the horizon a ray
+ * meets the ground a very long way off, and a piece placed out there is gone
+ * from the view with no way back to it. */
+const REACH = 12;
+
 const VERDICT = {
   mated: 0x3f8f5f,
   partial: 0xc9a227,
@@ -39,7 +44,7 @@ export function createViewport(canvas, { onTap, onHover }) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
-  camera.position.set(5, 6.2, 6.9);
+  camera.position.set(4.4, 9.2, 6.1);
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8578, 2.1));
   const sun = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -47,9 +52,32 @@ export function createViewport(canvas, { onTap, onHover }) {
   scene.add(sun);
 
   // Cell centres are the integers, so the lines belong on the half-integers.
-  const floor = new THREE.GridHelper(24, 24, 0xc9c1b2, 0xded6c8);
+  // The ground runs well past any sensible build and fades into the page
+  // colour, so the board reads as open rather than as a small mat.
+  const paper = getComputedStyle(document.body).getPropertyValue('--paper-deep').trim() || '#ece6db';
+  scene.fog = new THREE.Fog(new THREE.Color(paper), 26, 62);
+
+  const floor = new THREE.GridHelper(64, 64, 0xc9c1b2, 0xded6c8);
   floor.position.set(0.5, -0.002, 0.5);
   scene.add(floor);
+
+  /* The plane you are building on. Without it, raising the level changes
+   * nothing you can see until a piece lands, and the pick would still be
+   * taken against the ground. */
+  const deck = new THREE.Group();
+  const deckGrid = new THREE.GridHelper(24, 24, 0x4f7a3a, 0x4f7a3a);
+  deckGrid.material.transparent = true;
+  deckGrid.material.opacity = 0.5;
+  deckGrid.position.set(0.5, 0, 0.5);
+  const deckFill = new THREE.Mesh(
+    new THREE.PlaneGeometry(24, 24),
+    new THREE.MeshBasicMaterial({ color: 0x4f7a3a, transparent: true, opacity: 0.06, depthWrite: false }),
+  );
+  deckFill.rotation.x = -Math.PI / 2;
+  deckFill.position.set(0.5, 0, 0.5);
+  deck.add(deckGrid, deckFill);
+  deck.visible = false;
+  scene.add(deck);
 
   const pieces = new THREE.Group();
   const seams = new THREE.Group();
@@ -132,10 +160,11 @@ export function createViewport(canvas, { onTap, onHover }) {
     }
 
     const point = picked ? picked.point : (ray.ray.intersectPlane(plane, hit) ? hit : null);
+    const inside = point && Math.abs(point.x) <= REACH && Math.abs(point.z) <= REACH;
     return {
       id: owner,
-      x: point ? Math.round(point.x) : null,
-      z: point ? Math.round(point.z) : null,
+      x: inside ? Math.round(point.x) : null,
+      z: inside ? Math.round(point.z) : null,
     };
   }
 
@@ -193,6 +222,41 @@ export function createViewport(canvas, { onTap, onHover }) {
     invalidate();
   }
 
+  // ---------------------------------------------------------------- views
+
+  /* Standing viewpoints, because orbiting back to a square-on look by hand is
+   * fiddly and the level of a piece is far easier to read from the front. */
+  // Pitch is kept well off the horizon: at a few degrees the ground collapses
+  // to a strip and there is nowhere left to build.
+  const ANGLES = {
+    iso: [0.62, 0.78],
+    top: [1.52, 0.0001],
+    front: [0.36, 0],
+    side: [0.36, Math.PI / 2],
+  };
+
+  function setView(name) {
+    const [pitch, yaw] = ANGLES[name] ?? ANGLES.iso;
+    const distance = camera.position.distanceTo(controls.target);
+    camera.position.set(
+      controls.target.x + distance * Math.cos(pitch) * Math.sin(yaw + Math.PI / 4),
+      controls.target.y + distance * Math.sin(pitch),
+      controls.target.z + distance * Math.cos(pitch) * Math.cos(yaw + Math.PI / 4),
+    );
+    controls.update();
+    steered = true;
+    invalidate();
+  }
+
+  // The pick lands on the plane you are building on, not on the ground: at
+  // level 2 the ground behind a cliff is a different cell entirely.
+  function setLevel(level) {
+    plane.constant = -level;
+    deck.position.y = level + 0.004;
+    deck.visible = Math.abs(level) > 1e-6;
+    invalidate();
+  }
+
   // -------------------------------------------------------------- content
 
   // A mirrored piece is a negative scale on x, as in the pack's own
@@ -221,20 +285,23 @@ export function createViewport(canvas, { onTap, onHover }) {
 
     const centre = box.getCenter(new THREE.Vector3());
     const radius = Math.max(box.getSize(new THREE.Vector3()).length() / 2, 1.5);
-    const distance = radius / Math.sin((camera.fov * Math.PI) / 360) * 1.15;
+
+    // On a portrait screen the horizontal field is the tight one, so fitting
+    // to the vertical fov alone would push the build off the sides.
+    const vertical = (camera.fov * Math.PI) / 360;
+    const horizontal = Math.atan(Math.tan(vertical) * camera.aspect);
+    const distance = (radius / Math.sin(Math.min(vertical, horizontal))) * 1.1;
 
     controls.target.copy(centre);
     camera.position.set(
-      centre.x + distance * 0.55,
-      centre.y + distance * 0.62,
-      centre.z + distance * 0.75,
+      centre.x + distance * 0.42,
+      centre.y + distance * 0.72,
+      centre.z + distance * 0.55,
     );
     controls.update();
   }
 
   async function sync(placements, sockets, selected) {
-    plane.constant = 0;
-
     const loaded = await Promise.all(placements.map((placement) => loadPiece(placement.piece)));
     pieces.clear();
 
@@ -284,5 +351,5 @@ export function createViewport(canvas, { onTap, onHover }) {
   }
 
   resize();
-  return { sync, ghost, resize, invalidate };
+  return { sync, ghost, setView, setLevel, resize, invalidate };
 }

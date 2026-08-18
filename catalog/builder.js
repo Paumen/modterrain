@@ -1,3 +1,5 @@
+import { observe } from './previews.js';
+
 /* The builder is a tab of the catalog rather than a page of its own, so it
  * builds its own markup into whatever host the catalog hands it and reuses
  * the catalog data the page has already fetched. One instance per page, hence
@@ -564,17 +566,29 @@ function renderPalette() {
 
   paletteCount.textContent = `${matches.length} piece${matches.length === 1 ? '' : 's'}`;
   paletteList.replaceChildren();
-  for (const [id, piece] of matches.slice(0, 300)) {
+
+  /* The same lazy 3D preview the catalog grid uses: you pick a piece by
+   * looking at it, not by reading its name. */
+  for (const [id, piece] of matches) {
+    const name = names.get(id) ?? id;
     const item = element('li');
-    const button = element('button', id === brush ? 'is-brush' : null);
-    button.append(element('span', 'piece-name', names.get(id) ?? id));
-    const colours = element('span', 'piece-colors');
+    const button = element('button', `tile${id === brush ? ' is-brush' : ''}`);
+    button.title = name;
+
+    const box = element('span', 'tile-view');
+    box.dataset.src = `models/${id}.glb`;
+    box.dataset.alt = `3D model ${name}`;
+    button.append(box);
+
+    const colours = element('span', 'tile-colors');
     for (const color of [...new Set(piece.sockets.map((socket) => socket.color))]) colours.append(swatch(color));
-    if (!piece.sockets.length) colours.append(element('span', 'piece-none', 'no sockets'));
     button.append(colours);
+    button.append(element('span', 'tile-name', name));
+
     button.addEventListener('click', () => { brush = brush === id ? null : id; syncToolbar(); });
     item.append(button);
     paletteList.append(item);
+    observe(box);
   }
 }
 
@@ -586,6 +600,7 @@ function syncToolbar() {
     : 'Pick a piece to place — or click the grid to inspect';
   levelLabel.textContent = `level ${Number(level.toFixed(3))}`;
   mirrorButton.setAttribute('aria-pressed', String(mirrored));
+  viewport?.setLevel(level);
   renderPalette();
 }
 
@@ -646,6 +661,10 @@ export async function mount(container, catalog) {
     showInspector();
     showPick();
   });
+
+  for (const name of ['top', 'iso', 'front']) {
+    role(`view-${name}`).addEventListener('click', () => viewport.setView(name));
+  }
 
   pick = { root: role('pick'), name: role('pick-name') };
   role('pick-remove').addEventListener('click', () => remove(selected));
