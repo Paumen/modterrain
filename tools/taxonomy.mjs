@@ -45,17 +45,14 @@ export const FAMILIES = [
   { id: 'water', name: 'Water & Waterfalls', color: '#2fc7e8', test: (n) => n.startsWith('Water_') || n.startsWith('Waterfall_') },
   { id: 'iceberg', name: 'Icebergs', color: '#8fc7ff', test: (n) => n.startsWith('Iceberg_') },
   { id: 'docks', name: 'Docks', color: '#c08447', test: (n) => n.startsWith('Docks_') },
-  // Cave walls and cave floor/ceiling used to be two families; on their own
-  // neither reaches ten pieces. They're the same room, so one "Cave" family
-  // instead of two thin ones.
-  { id: 'cave', name: 'Cave', color: '#7a6a86', test: (n) => n.startsWith('Cave_') || n.startsWith('Floor_') || n.startsWith('Ceiling_') },
   // Kept as the structural fallback for anything that matches no other rule
   // above (see determineFamily) even though nothing currently lands here:
   // the only Prop_* pieces left are the bridge props, claimed by
-  // `path-bridge` earlier in this list. Path Fences, Edging Stones, and
-  // Retaining Walls were removed outright rather than folded in — every one
-  // of their models was deleted (see the repo history), so there was
-  // nothing left to move.
+  // `path-bridge` earlier in this list. Path Fences, Edging Stones,
+  // Retaining Walls and — most recently — the whole Cave family (its walls,
+  // floors and ceilings alike) were removed outright rather than folded in:
+  // every one of their models was deleted, so there was nothing left to
+  // move.
   { id: 'props', name: 'Props', color: '#b76fa8', test: (n) => n.startsWith('Prop_') },
 ];
 

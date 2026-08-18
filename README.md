@@ -1,8 +1,8 @@
 # Modular Terrain — 3D Catalog
 
-A browsable catalog of 287 models from a modular terrain pack: cliffs,
-walls, cracked cliffs, terrain paths, grass, sand, water, a cave, and
-standalone props. Everything runs in the browser, no build step and no
+A browsable catalog of 262 models from a modular terrain pack: cliffs,
+walls, cracked cliffs, terrain paths, grass, sand, water, and standalone
+props. Everything runs in the browser, no build step and no
 server — opening `index.html` is enough.
 
 The pack arrived with zero metadata, so the entire classification is derived
@@ -10,7 +10,7 @@ from filenames.
 
 ## Using the catalog
 
-**Five tabs.** The first four look at the same 287 pieces differently; the
+**Five tabs.** The first four look at the same 262 pieces differently; the
 fifth shows what those pieces build:
 
 | Tab | Groups by | For |
@@ -44,7 +44,7 @@ index.html                  the page itself
 catalog/catalog.css         styling
 catalog/catalog.js          the catalog in the browser
 catalog/catalog.json        generated; everything the page knows
-models/*.glb                 the 287 models, as delivered except for §2 in PROVENANCE.md
+models/*.glb                 the 262 models, as delivered except for §2 in PROVENANCE.md
 textures/*.png               source textures for the models that were missing theirs
 vendor/model-viewer.min.js   Google's <model-viewer> (BSD-3-Clause)
 assemblies/placements.json  the pack's own prefabs as piece + transform lists
@@ -76,9 +76,9 @@ nine wall segments of a cliff cost one copy of the wall and nine nodes.
 
 Whatever ends up in `assemblies/` shows up in the catalog's **Assemblies**
 tab on the next `node tools/build-catalog.mjs`, with the piece list it was
-built from in the detail panel. All 123 are built and checked in, 4.1 MB
-together, in five sections: 30 cliff runs, 51 waterfalls and cave entrances,
-37 rivers, 3 bridges, 2 cracks.
+built from in the detail panel. 111 of the 123 are built and checked in,
+3.9 MB together, in five sections: 30 cliff runs, 39 waterfalls and cave
+entrances, 37 rivers, 3 bridges, 2 cracks.
 
 Piece count says little about whether an assembly is worth building. The
 river tiles place three pieces — a terrain block, a water surface, a bank —
@@ -87,11 +87,13 @@ amount to a block with a separate sheet of water floating above it. Nineteen
 place exactly one: prefabs that wrap a single model so other prefabs can
 reuse it, kept here because they're part of what the pack ships.
 
-109 of the 123 build with every piece present. The remaining 14 are the
-waterfalls, which all reach for `Mist` and `Ripple` — particle effects that
-were never models — or for a crest and river surface this repo doesn't
-carry. They're built without those rather than skipped, and the detail panel
-names what's missing.
+92 of the 123 build with every piece present. Another 19 are built without
+a piece they name — the waterfalls asking for `Mist` and `Ripple`, particle
+effects that were never models, and the cave entrances, which lost their
+floors and ceilings when the cave family was removed. The detail panel names
+what's missing. The last 12 are the plain cave entrances, built entirely out
+of cave pieces: nothing of them is left to build, so they have no `.glb`
+here while their placements stay in the list.
 
 **Coordinates.** The placements are Unity's: left-handed, one tile = 1.0.
 The `.glb` files went through an FBX conversion that mirrored X and scaled a
