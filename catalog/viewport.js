@@ -45,7 +45,7 @@ export function createViewport(canvas, { onTap, onHover }) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
-  camera.position.set(4.4, 9.2, 6.1);
+  camera.position.set(6.2, 12.6, 8.6);
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8578, 2.1));
   const sun = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -324,7 +324,7 @@ export function createViewport(canvas, { onTap, onHover }) {
     // to the vertical fov alone would push the build off the sides.
     const vertical = (camera.fov * Math.PI) / 360;
     const horizontal = Math.atan(Math.tan(vertical) * camera.aspect);
-    const distance = (radius / Math.sin(Math.min(vertical, horizontal))) * 1.1;
+    const distance = (radius / Math.sin(Math.min(vertical, horizontal))) * 1.45;
 
     controls.target.copy(centre);
     camera.position.set(

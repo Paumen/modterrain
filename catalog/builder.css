@@ -188,27 +188,28 @@
 
 .hud-views [data-icon] svg { width: 17px; height: 17px; }
 
-/* Standing viewpoints, tucked under the control bar so they never land on
-   the drawer. */
+/* The camera controls read as a second row of the toolbar rather than as a
+   column stuck to the edge of the view. */
 .hud-views {
-  top: 60px;
+  top: 58px;
   right: 8px;
   display: flex;
-  flex-direction: column;
   gap: 4px;
+  align-items: center;
   padding: 4px;
 }
 
 .hud-views button {
-  min-width: 44px;
+  min-width: 34px;
   min-height: 30px;
-  padding: 0 4px;
+  padding: 0 6px;
   font-size: 11px;
 }
 
 .hud-split {
-  height: 1px;
-  margin: 1px 3px;
+  width: 1px;
+  height: 18px;
+  margin: 0 2px;
   background: var(--line);
 }
 
