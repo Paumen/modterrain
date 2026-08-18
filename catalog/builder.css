@@ -1,6 +1,11 @@
 /* Socket builder — the catalog's Builder tab. Base tokens, typography and the
    page shell come from catalog.css; only the seam verdict colours and this
-   tab's own layout live here. */
+   tab's own layout live here.
+
+   The builder is a phone layout and nothing else: one column, touch-sized
+   controls, and a sheet under the grid that carries either the piece list or
+   the seam report. On a wide screen it renders the same layout centred rather
+   than growing a second design. */
 
 :root {
   --mated: #3f8f5f;
@@ -8,6 +13,7 @@
   --clash: #c9422f;
   --open: #9a958a;
   --abut: #4f7a9e;
+  --tap: 44px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,21 +31,220 @@
 .builder[hidden] { display: none; }
 
 .builder {
-  display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr) minmax(280px, 360px);
-  gap: 1px;
-  min-height: 70vh;
-  background: var(--line);
-  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 460px);
+  min-height: 78svh;
+  margin: 0 auto;
+  border-inline: 1px solid var(--line);
+  background: var(--paper);
 }
 
-.builder .palette,
-.builder .board,
-.builder .inspect {
-  max-height: 78vh;
-  padding: 14px clamp(12px, 1.6vw, 18px);
+/* ----------------------------------------------------------------- bar */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.brush {
+  margin: 0 0 7px;
+  overflow: hidden;
+  font-weight: 600;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.controls button,
+.sheet-tabs button,
+.seam-fits,
+.fits-list button,
+.inspect-actions button {
+  min-height: var(--tap);
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.controls button:last-child { margin-left: auto; }
+
+.controls button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-bg);
+}
+
+.stepper button {
+  min-width: var(--tap);
+  min-height: var(--tap);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.level {
+  min-width: 30px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------- stage */
+
+.stage { padding: 10px 12px 8px; }
+
+/* The grid keeps its natural size and the box pans, rather than being
+   stretched to fit: shrinking it would take the cells below a reliable tap. */
+.grid-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  max-height: 42svh;
   overflow: auto;
-  background: var(--paper);
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+}
+
+.grid-wrap svg { flex: none; }
+
+.grid-lines line {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.cell { fill: transparent; }
+.cell:active { fill: color-mix(in srgb, var(--accent) 16%, transparent); }
+
+.bodies { pointer-events: none; }
+
+.body rect {
+  fill: color-mix(in srgb, var(--accent) 16%, var(--card-bg));
+  stroke: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.body.is-selected rect {
+  fill: color-mix(in srgb, var(--accent) 30%, var(--card-bg));
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.body-label {
+  fill: var(--ink);
+  font-size: 9px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.seam {
+  stroke-width: 4;
+  stroke-linecap: round;
+  opacity: .75;
+}
+
+.seam.is-selected { stroke-width: 6; opacity: 1; }
+.seam.mated { stroke: var(--mated); }
+.seam.partial { stroke: var(--partial); }
+.seam.clash { stroke: var(--clash); }
+.seam.open { stroke: var(--open); stroke-dasharray: 3 4; }
+.seam.abut { stroke: var(--abut); stroke-dasharray: 6 3; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 8px 0 0;
+  padding: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  list-style: none;
+}
+
+.legend li {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.key {
+  width: 14px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.key.mated { background: var(--mated); }
+.key.partial { background: var(--partial); }
+.key.clash { background: var(--clash); }
+.key.open { background: var(--open); }
+.key.abut { background: var(--abut); }
+
+/* --------------------------------------------------------------- sheet */
+
+.sheet {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  border-top: 1px solid var(--line);
+  background: var(--card-bg);
+}
+
+.sheet-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px 0;
+}
+
+.sheet-tabs button {
+  flex: 1;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.sheet-tabs button[aria-selected="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  font-weight: 600;
+}
+
+.sheet-panel {
+  max-height: 46svh;
+  padding: 10px 12px 16px;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 /* ------------------------------------------------------------- palette */
@@ -53,7 +258,8 @@
 .palette-controls input,
 .palette-controls select {
   width: 100%;
-  padding: 7px 9px;
+  min-height: var(--tap);
+  padding: 7px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--card-bg);
@@ -71,8 +277,7 @@
 .palette-list,
 .seam-list,
 .stack-list,
-.fits-list,
-.legend {
+.fits-list {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -84,7 +289,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 6px 8px;
+  min-height: var(--tap);
+  padding: 6px 10px;
   border: 1px solid transparent;
   border-radius: 8px;
   background: none;
@@ -126,151 +332,6 @@
   border: 1px solid var(--line);
   border-radius: 3px;
 }
-
-/* --------------------------------------------------------------- board */
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.toolbar-group {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.toolbar button,
-.inspect-actions button,
-.seam-fits,
-.fits-list button {
-  padding: 5px 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--card-bg);
-  color: inherit;
-  font: inherit;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.toolbar button:hover,
-.inspect-actions button:hover,
-.seam-fits:hover,
-.fits-list button:hover { border-color: var(--accent); }
-
-.toolbar button[aria-pressed="true"] {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
-}
-
-.toolbar kbd {
-  padding: 0 3px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  color: var(--ink-soft);
-  font: inherit;
-  font-size: 11px;
-}
-
-.brush {
-  flex: 1 1 200px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.level {
-  min-width: 62px;
-  color: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
-  font-size: 13px;
-  text-align: center;
-}
-
-.grid-wrap {
-  display: flex;
-  justify-content: center;
-  overflow: auto;
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--card-bg);
-}
-
-.grid-lines line {
-  stroke: var(--line);
-  stroke-width: 1;
-}
-
-.cell {
-  fill: transparent;
-  cursor: crosshair;
-}
-
-.cell:hover { fill: color-mix(in srgb, var(--accent) 10%, transparent); }
-
-.bodies { pointer-events: none; }
-
-.body rect {
-  fill: color-mix(in srgb, var(--accent) 16%, var(--card-bg));
-  stroke: color-mix(in srgb, var(--accent) 45%, transparent);
-}
-
-.body.is-selected rect {
-  fill: color-mix(in srgb, var(--accent) 30%, var(--card-bg));
-  stroke: var(--accent);
-  stroke-width: 2;
-}
-
-.body-label {
-  fill: var(--ink);
-  font-size: 9px;
-  text-anchor: middle;
-  pointer-events: none;
-}
-
-.seam {
-  stroke-width: 4;
-  stroke-linecap: round;
-  opacity: .75;
-}
-
-.seam.is-selected { stroke-width: 6; opacity: 1; }
-.seam.mated { stroke: var(--mated); }
-.seam.partial { stroke: var(--partial); }
-.seam.clash { stroke: var(--clash); }
-.seam.open { stroke: var(--open); stroke-dasharray: 3 4; }
-.seam.abut { stroke: var(--abut); stroke-dasharray: 6 3; }
-
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-  margin-top: 10px;
-  color: var(--ink-soft);
-  font-size: 12px;
-}
-
-.legend li {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.key {
-  width: 16px;
-  height: 4px;
-  border-radius: 2px;
-}
-
-.key.mated { background: var(--mated); }
-.key.partial { background: var(--partial); }
-.key.clash { background: var(--clash); }
-.key.open { background: var(--open); }
-.key.abut { background: var(--abut); }
 
 /* ----------------------------------------------------------- inspector */
 
@@ -381,12 +442,4 @@
   display: flex;
   gap: 6px;
   margin-bottom: 4px;
-}
-
-@media (max-width: 1080px) {
-  .builder { grid-template-columns: 1fr; }
-
-  .builder .palette,
-  .builder .board,
-  .builder .inspect { max-height: none; }
 }

@@ -16,6 +16,7 @@ let swatches;
 let host;
 let grid;
 let inspector;
+let sheet;
 let search;
 let familySelect;
 let paletteList;
@@ -231,7 +232,7 @@ const svg = (tag, attributes = {}) => {
 
 function bounds() {
   const cells = placements.flatMap(worldCells);
-  if (!cells.length) return { x0: -6, z0: -6, x1: 6, z1: 6 };
+  if (!cells.length) return { x0: -4, z0: -4, x1: 4, z1: 4 };
   return {
     x0: Math.min(...cells.map((c) => c[0])) - PAD,
     z0: Math.min(...cells.map((c) => c[1])) - PAD,
@@ -331,14 +332,33 @@ function topmostAt(x, z) {
 
 function addAt(x, z) {
   if (!brush) return;
-  placements.push({ id: nextId++, piece: brush, cx: x, cz: z, level, rot: rotation, mirror: mirrored });
-  select(placements[placements.length - 1].id);
+  const id = nextId++;
+  placements.push({ id, piece: brush, cx: x, cz: z, level, rot: rotation, mirror: mirrored });
+  selected = id;
+  render();
+  showInspector();
+
+  // Keep the piece list up while building — the seam report only takes the
+  // sheet over when the placement actually went wrong.
+  if (evaluate().some((socket) => socket.owner === id && socket.verdict === 'clash')) showSheet('seams');
+}
+
+/* One column means the palette and the seam report cannot both be on screen,
+ * so they share a sheet under the grid. Placing or picking a piece moves the
+ * sheet to whichever of the two the next step needs. */
+function showSheet(name) {
+  if (!sheet) return;
+  for (const [key, part] of Object.entries(sheet)) {
+    part.tab.setAttribute('aria-selected', String(key === name));
+    part.panel.hidden = key !== name;
+  }
 }
 
 function select(id) {
   selected = id;
   render();
   showInspector();
+  if (id !== null) showSheet('seams');
 }
 
 function remove(id) {
@@ -608,7 +628,7 @@ export async function mount(container, catalog) {
   const role = (name) => container.querySelector(`[data-role="${name}"]`);
 
   grid = role('grid');
-  inspector = role('inspect');
+  inspector = role('panel-seams');
   search = role('search');
   familySelect = role('family');
   paletteList = role('list');
@@ -632,6 +652,14 @@ export async function mount(container, catalog) {
     render();
     showInspector();
   });
+
+  sheet = {
+    pieces: { tab: role('tab-pieces'), panel: role('panel-pieces') },
+    seams: { tab: role('tab-seams'), panel: role('panel-seams') },
+  };
+  for (const name of Object.keys(sheet)) {
+    sheet[name].tab.addEventListener('click', () => showSheet(name));
+  }
 
   search.addEventListener('input', renderPalette);
   familySelect.addEventListener('change', renderPalette);
