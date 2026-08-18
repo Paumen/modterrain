@@ -19,6 +19,10 @@ connect something there: another piece facing the other way with a plain
 hidden back, or terrain on the same square filling the bottom half of the
 other side.
 
+The full placement rulebook — grid, transforms, socket colors, layer
+stacking, rivers, prefab reuse — derived from the pack's own assemblies,
+lives in `docs/kit-rules.md`. Read it before placing pieces.
+
 Practical facts about the kit:
 
 - **Scale:** 1 grid cell = 100 glTF units (`UNITS_PER_CELL` in
