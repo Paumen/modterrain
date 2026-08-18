@@ -1,7 +1,7 @@
 /* Screenshots a GLB from named camera angles, so a scene can be checked by
  * eye the way a glTF viewer would draw it: backfaces culled, one sided shells.
  *
- *   node tools/render.mjs scenes/Riverfall_Bluff.glb --out shots/bluff \
+ *   node tools/render.mjs scenes/Island.glb --out shots/island \
  *     --shots '[{"name":"iso","orbit":"38deg 55deg 2000m","target":"550m 380m 450m"}]'
  */
 import { createServer } from 'node:http';

@@ -1,0 +1,901 @@
+{
+ "units": "unity_meters_1_tile",
+ "coords": "unity_left_handed_y_up",
+ "assemblies": {
+  "Island": [
+   {
+    "piece": "Grass_Flat_1x1",
+    "pos": [
+     -5,
+     1,
+     0.5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     5,
+     1,
+     4
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Straight_1x4",
+    "pos": [
+     -4,
+     0.5,
+     7
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Curve_Outer_2x2",
+    "pos": [
+     7,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Inner_8x8",
+    "pos": [
+     5,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Flat_1x1",
+    "pos": [
+     -5.5,
+     1,
+     -4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     6,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Grade_Transition_Straight_Rear_3x4",
+    "pos": [
+     5,
+     0,
+     -1
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Straight_1x4",
+    "pos": [
+     -2,
+     0.5,
+     -4
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Flat_1x1",
+    "pos": [
+     -8,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     3
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Gentle_Esse_4x5",
+    "pos": [
+     -6,
+     0,
+     5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_12x12",
+    "pos": [
+     -11,
+     0,
+     7
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Water_Circle_3_Highpoly",
+    "pos": [
+     -2,
+     -0.25,
+     0
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     2,
+     1,
+     2
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_4x4",
+    "pos": [
+     0,
+     0.5,
+     -3
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_4x4",
+    "pos": [
+     -10,
+     0.5,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Flat_1x1",
+    "pos": [
+     3.5,
+     0,
+     -2.5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     6,
+     1,
+     4
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Esse_4x4",
+    "pos": [
+     -1,
+     0,
+     -5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_4x4",
+    "pos": [
+     -2,
+     0.5,
+     6
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Flat_1x1",
+    "pos": [
+     0.5,
+     1,
+     -3
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     2,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Straight_1x2",
+    "pos": [
+     1,
+     0,
+     -5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_4x4",
+    "pos": [
+     12,
+     0,
+     1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Straight_1x4",
+    "pos": [
+     9.5,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     2
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Straight_1x2",
+    "pos": [
+     6,
+     0,
+     -4
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Gentle_Curve_Outer_4x4",
+    "pos": [
+     -1,
+     0,
+     5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Esse_6x6",
+    "pos": [
+     -2,
+     0,
+     10
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Esse_6x6",
+    "pos": [
+     -2,
+     0,
+     -9
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Straight_1x4",
+    "pos": [
+     -14,
+     0,
+     -5.5
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     2
+    ]
+   },
+   {
+    "piece": "Grass_Flat_1x1",
+    "pos": [
+     -5,
+     1,
+     -2.5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     9,
+     1,
+     2
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Curve_Outer_4x4",
+    "pos": [
+     -10,
+     0,
+     -4
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Flat_1x1",
+    "pos": [
+     -5.5,
+     0,
+     -4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     12,
+     1,
+     5
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Gentle_Curve_Outer_4x4",
+    "pos": [
+     -10,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Curve_Outer_2x2",
+    "pos": [
+     7,
+     0,
+     -3
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_4x4",
+    "pos": [
+     -13,
+     0,
+     -8
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Grade_Transition_Straight_Front_4x4",
+    "pos": [
+     -11,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Esse_6x6",
+    "pos": [
+     -1,
+     0.5,
+     2
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_8x8",
+    "pos": [
+     -9,
+     0.5,
+     5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Straight_1x2",
+    "pos": [
+     -4,
+     0,
+     -7
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Flat_1x1",
+    "pos": [
+     -4,
+     1,
+     -5
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Esse_6x6",
+    "pos": [
+     4,
+     0,
+     -7
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Esse_6x6",
+    "pos": [
+     -14,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Esse_6x6",
+    "pos": [
+     -6,
+     0.5,
+     -2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Flat_1x1",
+    "pos": [
+     -0.5,
+     0,
+     6
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     2,
+     1,
+     3
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Esse_4x3",
+    "pos": [
+     4,
+     0,
+     -4
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Sharp_Esse_4x3",
+    "pos": [
+     -7,
+     0,
+     -6
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Esse_6x6",
+    "pos": [
+     -9,
+     0,
+     -9
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     -1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_4x4",
+    "pos": [
+     2,
+     0,
+     9
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Hill_Gentle_Curve_Inner_4x4",
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Terrain_Sand_Incline_Curve_Outer_8x8",
+    "pos": [
+     11,
+     0,
+     -5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Grass_Flat_1x1",
+    "pos": [
+     -2,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   }
+  ]
+ }
+}
