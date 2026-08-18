@@ -29,6 +29,11 @@ Beyond that:
 - **Click a tile** to open the model full-size, rotatable, with its
   dimensions, triangle count, materials, and the *Copy path* /
   *Download .glb* buttons.
+- **A red name** marks an assembly built without a piece its prefab names,
+  with the missing pieces listed in the detail panel. `Mist` and `Ripple`
+  don't count: every waterfall in the pack names those two, and they were
+  Unity particle effects rather than models, so no copy of this pack ever
+  had them to deliver.
 - **Select multiple pieces** with the checkbox in a tile's top-left corner;
   shift-click extends the selection across whatever's currently visible. The
   bar at the bottom copies every selected path to the clipboard at once.

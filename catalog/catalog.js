@@ -126,7 +126,11 @@ function makeCard(model, view, section) {
     span('card-brand', section.brand ?? ''),
     span('card-bytes', readableBytes(model.bytes)),
   );
-  text.append(span('card-name', model.name));
+  // Red when the assembly is short of geometry the repo doesn't carry; see
+  // `incomplete` in tools/build-catalog.mjs for what does and doesn't count.
+  const name = span('card-name', model.name);
+  if (model.incomplete) name.classList.add('is-incomplete');
+  text.append(name);
   // Its own row rather than an overlay on the thumbnail: a badge sitting on
   // top of the model made the corner of the preview harder to read and
   // competed with the selection checkbox for the same corner.
@@ -244,7 +248,9 @@ function pieceList(pieces) {
 
 function showDetail(model) {
   activePath = model.file;
-  document.querySelector('#detail-name').textContent = model.name;
+  const heading = document.querySelector('#detail-name');
+  heading.textContent = model.name;
+  heading.classList.toggle('is-incomplete', Boolean(model.incomplete));
   document.querySelector('#detail-origin').textContent =
     [model.familyName, model.groupName, model.shapeName, model.layerName].filter(Boolean).join(' · ');
 
@@ -269,7 +275,10 @@ function showDetail(model) {
         ['Built from', `${model.placed} pieces, ${model.pieces.length} distinct`],
         [`Pieces (${model.pieces.length})`, pieceList(model.pieces)],
         ...(model.missingPieces?.length
-          ? [['Not in this repo', `${model.missingPieces.join(', ')} — built without them`]]
+          ? [[
+            'Not in this repo',
+            `${model.missingPieces.join(', ')} — built without ${model.missingPieces.length === 1 ? 'it' : 'them'}`,
+          ]]
           : []),
       ]
       : [['Grid footprint', model.size ? `${model.size} cells` : '—']]),

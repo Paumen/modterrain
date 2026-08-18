@@ -11931,6 +11931,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Base_2x2",
@@ -11984,6 +11985,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -12037,6 +12039,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Top_2x2",
@@ -12093,6 +12096,7 @@
    "variant": null,
    "placed": 10,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Base_1x2",
@@ -12158,6 +12162,7 @@
    "variant": null,
    "placed": 10,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Mid_1x1",
@@ -12223,6 +12228,7 @@
    "variant": null,
    "placed": 10,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Top_1x1",
@@ -12291,6 +12297,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Base_2x2",
@@ -12352,6 +12359,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -12413,6 +12421,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Top_2x2",
@@ -12477,6 +12486,7 @@
    "variant": null,
    "placed": 8,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Base_2x2",
@@ -12538,6 +12548,7 @@
    "variant": null,
    "placed": 8,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -12599,6 +12610,7 @@
    "variant": null,
    "placed": 8,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Top_2x2",
@@ -12663,6 +12675,7 @@
    "variant": null,
    "placed": 5,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Base_2x2",
@@ -12720,6 +12733,7 @@
    "variant": null,
    "placed": 5,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -12777,6 +12791,7 @@
    "variant": null,
    "placed": 5,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Top_2x2",
@@ -12837,6 +12852,7 @@
    "variant": null,
    "placed": 9,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Curve_Outer_2x2_Narrow_Base",
@@ -12902,6 +12918,7 @@
    "variant": null,
    "placed": 9,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Curve_Outer_2x2_Narrow_Mid",
@@ -12967,6 +12984,7 @@
    "variant": null,
    "placed": 9,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Curve_Outer_2x2_Narrow_Top",
@@ -13035,6 +13053,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Base_1x2",
@@ -13084,6 +13103,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Mid_1x1",
@@ -13133,6 +13153,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Top_1x1",
@@ -13185,6 +13206,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Base_2x2",
@@ -13242,6 +13264,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -13299,6 +13322,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Top_2x2",
@@ -13359,6 +13383,7 @@
    "variant": null,
    "placed": 9,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Base_2x2",
@@ -13420,6 +13445,7 @@
    "variant": null,
    "placed": 9,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -13481,6 +13507,7 @@
    "variant": null,
    "placed": 9,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Top_2x2",
@@ -13545,6 +13572,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Base_2x2",
@@ -13602,6 +13630,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -13659,6 +13688,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Top_2x2",
@@ -13719,6 +13749,7 @@
    "variant": null,
    "placed": 4,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Path_Bridge_Edge_Top_1x2",
@@ -13788,6 +13819,7 @@
     "Cave_Edge_Esse_Base_3x3",
     "Cave_Center_Base_1x1"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Mist",
@@ -13858,6 +13890,7 @@
    "missingPieces": [
     "Cave_Edge_Esse_Mid_2x3"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Cave_Edge_Esse_Mid_2x3",
@@ -13917,6 +13950,7 @@
     "Cave_Edge_Esse_Top_3x4",
     "Cave_Center_Top_1x1"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Cave_Edge_Esse_Top_3x4",
@@ -13982,6 +14016,7 @@
     "Cave_Edge_Esse_Base_3x3",
     "Cave_Center_Base_1x1"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Mist",
@@ -14052,6 +14087,7 @@
    "missingPieces": [
     "Cave_Edge_Esse_Mid_2x3"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Cave_Edge_Esse_Mid_2x3",
@@ -14111,6 +14147,7 @@
     "Cave_Edge_Esse_Top_3x4",
     "Cave_Center_Top_1x1"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Water_Waterfall_Mid_Center_1x1",
@@ -14171,6 +14208,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Path_End_Edge_Top_1x1",
@@ -14225,6 +14263,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Path_End_Edge_Top_1x1",
@@ -14282,6 +14321,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Base_1x2",
@@ -14340,6 +14380,7 @@
    "variant": null,
    "placed": 2,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Straight_Mid_1x1",
@@ -14390,6 +14431,7 @@
    "variant": null,
    "placed": 2,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Center_1x3",
@@ -14450,6 +14492,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -14512,6 +14555,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -14566,6 +14610,7 @@
    "variant": null,
    "placed": 2,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Left_2x3",
@@ -14628,6 +14673,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -14690,6 +14736,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -14744,6 +14791,7 @@
    "variant": null,
    "placed": 2,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Right_2x3",
@@ -14806,6 +14854,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -14872,6 +14921,7 @@
    "variant": null,
    "placed": 5,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -14930,6 +14980,7 @@
    "variant": null,
    "placed": 4,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Waterfall_Left_Top_Terrain_3x3",
@@ -14996,6 +15047,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -15066,6 +15118,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -15128,6 +15181,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Waterfall_Left_Top_Terrain_3x3",
@@ -15202,6 +15256,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -15272,6 +15327,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Basic_Esse_Mid_2x2",
@@ -15334,6 +15390,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Center_1x3",
@@ -15407,6 +15464,7 @@
    "missingPieces": [
     "Floor_And_Ceiling_Flat_1x1"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Grass_Carpet_Center_1x1",
@@ -15520,6 +15578,7 @@
    "variant": null,
    "placed": 18,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Carpet_Straight_1x1",
@@ -15613,6 +15672,7 @@
    "variant": null,
    "placed": 6,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Path_Terrain_Basic_Straight_1x1",
@@ -15673,6 +15733,7 @@
    "variant": null,
    "placed": 22,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Path_Terrain_Basic_Straight_1x1",
@@ -15748,6 +15809,7 @@
    "variant": null,
    "placed": 31,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -15827,6 +15889,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
@@ -15884,6 +15947,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Curve_Inner_6x6",
@@ -15941,6 +16005,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Curve_Inner_4x4",
@@ -15998,6 +16063,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Curve_Inner_4x4",
@@ -16055,6 +16121,7 @@
    "variant": null,
    "placed": 5,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Flat_1x1",
@@ -16120,6 +16187,7 @@
    "variant": null,
    "placed": 5,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Flat_1x1",
@@ -16185,6 +16253,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Esse_4x3",
@@ -16238,6 +16307,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Esse_4x3",
@@ -16291,6 +16361,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Esse_4x4",
@@ -16344,6 +16415,7 @@
    "variant": null,
    "placed": 3,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Esse_4x4",
@@ -16397,6 +16469,7 @@
    "variant": null,
    "placed": 4,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Esse_4x3",
@@ -16454,6 +16527,7 @@
    "variant": null,
    "placed": 4,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Esse_4x3",
@@ -16511,6 +16585,7 @@
    "variant": null,
    "placed": 4,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Gentle_Overlapping_Sharp_2x4",
@@ -16564,6 +16639,7 @@
    "variant": null,
    "placed": 4,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Overlapping_Sharp_2x2",
@@ -16616,6 +16692,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Incline_Gentle_1x4",
@@ -16674,6 +16751,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Incline_Sharp_1x2",
@@ -16731,6 +16809,7 @@
    "variant": null,
    "placed": 4,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Hill_Sharp_Straight_1x2",
@@ -16784,6 +16863,7 @@
    "variant": null,
    "placed": 7,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -16841,6 +16921,7 @@
    "variant": null,
    "placed": 19,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -16898,6 +16979,7 @@
    "variant": null,
    "placed": 18,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -16959,6 +17041,7 @@
    "variant": null,
    "placed": 18,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -17020,6 +17103,7 @@
    "variant": null,
    "placed": 19,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -17077,6 +17161,7 @@
    "variant": null,
    "placed": 18,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -17138,6 +17223,7 @@
    "variant": null,
    "placed": 18,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -17199,6 +17285,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Curve_CCW_3x3",
@@ -17243,6 +17330,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Curve_CCW_5x5",
@@ -17287,6 +17375,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Curve_CW_3x3",
@@ -17331,6 +17420,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Curve_CW_5x5",
@@ -17375,6 +17465,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Esse_CCW_3x4",
@@ -17419,6 +17510,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Esse_CCW_4x4",
@@ -17463,6 +17555,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Esse_CCW_4x5",
@@ -17507,6 +17600,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Esse_CW_3x4",
@@ -17551,6 +17645,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Esse_CW_4x4",
@@ -17595,6 +17690,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Esse_CW_4x5",
@@ -17639,6 +17735,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Flat_1x1",
@@ -17683,6 +17780,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Incline_Gentle_1x4",
@@ -17727,6 +17825,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Terrain_Water_River_Incline_Sharp_1x2",
@@ -17771,6 +17870,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Circle_1_Lowpoly",
@@ -17815,6 +17915,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Circle_2_Midpoly",
@@ -17859,6 +17960,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Circle_3_Highpoly",
@@ -17906,6 +18008,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -17961,6 +18064,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -18016,6 +18120,7 @@
     "Mist",
     "Ripple"
    ],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Mist",
@@ -18068,6 +18173,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Mid_Center_1x1",
@@ -18112,6 +18218,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Mid_Left_1x1",
@@ -18156,6 +18263,7 @@
    "variant": null,
    "placed": 1,
    "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Mid_Right_1x1",
@@ -18203,6 +18311,7 @@
     "Water_Waterfall_Top_Center_1x3_Crest",
     "Water_Waterfall_Top_Center_1x3_River"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Center_1x3",
@@ -18262,6 +18371,7 @@
     "Water_Waterfall_Top_Left_2x3_Crest",
     "Water_Waterfall_Top_Left_2x3_River"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Left_2x3",
@@ -18321,6 +18431,7 @@
     "Water_Waterfall_Top_Right_2x3_Crest",
     "Water_Waterfall_Top_Right_2x3_River"
    ],
+   "incomplete": true,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Right_2x3",

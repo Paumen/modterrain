@@ -261,6 +261,13 @@ const modelIds = new Set(models.map((model) => model.id));
  * so the four piece facets stay null on it: that's also what keeps it out of
  * the Parts, Shapes, Layers and Sizes tabs, which match on facet id.
  */
+/**
+ * Named in the prefabs, never models: Unity particle effects for the spray at
+ * the foot of a waterfall and the rings it makes on the water. An assembly
+ * that misses only these is as complete as it can be.
+ */
+const EFFECTS = new Set(['Mist', 'Ripple']);
+
 const PLACEMENTS = join(ASSEMBLIES_DIR, 'placements.json');
 const placements = existsSync(PLACEMENTS) ? JSON.parse(readFileSync(PLACEMENTS, 'utf8')).assemblies : {};
 
@@ -279,6 +286,7 @@ const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assembl
   const pieces = [...counts]
     .map(([piece, count]) => ({ id: piece, count }))
     .sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
+  const missing = pieces.filter((piece) => !modelIds.has(piece.id)).map((piece) => piece.id);
 
   return {
     group: determineAssemblyGroup(id).id,
@@ -291,9 +299,15 @@ const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assembl
     variant: null,
     placed: placed.length,
     // Pieces this repo doesn't carry: named by the prefab, absent from the
-    // built .glb. Zero for everything checked in, but the catalog says so
-    // rather than quietly showing a partial assembly as a whole one.
-    missingPieces: pieces.filter((p) => !modelIds.has(p.id)).map((p) => p.id),
+    // built .glb. The catalog says so rather than quietly showing a partial
+    // assembly as a whole one.
+    missingPieces: missing,
+    // Whether the assembly is short of actual geometry, which is what the
+    // page marks in red — `Mist` and `Ripple` don't count. Every waterfall in
+    // the pack names those two, and they were never models in the first
+    // place: they're Unity particle effects, so no delivery of this pack
+    // could have contained them and no assembly is worse off for it.
+    incomplete: missing.some((piece) => !EFFECTS.has(piece)),
     pieces,
   };
 }));
