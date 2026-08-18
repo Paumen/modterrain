@@ -19,7 +19,7 @@ fifth shows what those pieces build:
 | Shapes | inner curve, outer curve, s-curve, straight, incline… | "which pieces complete this curve?" |
 | Layers | under, base, mid, top | "what stacks onto this row?" |
 | Sizes | grid footprint from the name | "what fits this 3 × 3 gap?" |
-| Assemblies | what the arrangement builds | "what does a finished bridge look like?" |
+| Assemblies | what the arrangement builds | "what does a finished cliff run look like?" |
 
 Beyond that:
 
@@ -61,13 +61,13 @@ PROVENANCE.md                where the pack comes from and what's wrong with it
 
 ## Assemblies
 
-The pack doesn't only ship pieces; it ships arrangements of them — a rope
-bridge over a river, a crack in a grass field, a cliff run. Those live in
-`assemblies/placements.json` as a piece name and a transform per part, 212
+The pack doesn't only ship pieces; it ships arrangements of them — a cliff
+run, a waterfall, a crack in a grass field. Those live in
+`assemblies/placements.json` as a piece name and a transform per part, 120
 of them, and `tools/assemble.mjs` turns one back into a single `.glb`:
 
 ```sh
-node tools/assemble.mjs Path_Bridge_River_Wide Crack_Large
+node tools/assemble.mjs Crack_Large Cliff_Assembly_Straight_3_Mid
 node tools/assemble.mjs --all --only-complete --out assemblies
 ```
 
@@ -76,13 +76,14 @@ nine wall segments of a cliff cost one copy of the wall and nine nodes.
 
 Whatever ends up in `assemblies/` shows up in the catalog's **Assemblies**
 tab on the next `node tools/build-catalog.mjs`, with the piece list it was
-built from in the detail panel. Two are checked in: the wide river bridge
-and the large crack.
+built from in the detail panel. Four are checked in: two cliff runs, a
+waterfall cave entrance, and the large crack.
 
-172 of the 212 build with every piece present. The remaining 40 reach for
-models this repo doesn't carry — tiered retaining walls, fences, cave props,
-all removed earlier — and build without them rather than failing; the tool
-lists what it skipped. The two checked in under `assemblies/` are complete.
+106 of the 120 build with every piece present. The remaining 14 are the
+waterfalls, which all reach for `Mist` and `Ripple` — particle effects that
+were never models — or for a crest and river surface this repo doesn't
+carry. They build without those rather than failing, and the tool lists what
+it skipped. The four checked in are complete.
 
 **Coordinates.** The placements are Unity's: left-handed, one tile = 1.0.
 The `.glb` files went through an FBX conversion that mirrored X and scaled a
@@ -110,9 +111,9 @@ named grid size, missing textures, and models above the triangle budget.
 
 Everything the catalog "knows" about the kit lives in `tools/taxonomy.mjs`:
 the families with their color, the shapes with their pattern, the layers,
-the size groups, the assembly groups, the traits, and the tabs. One table per facet, rules
-top to bottom, first match wins. A mis-classified model is a one-line fix
-there; then run `node tools/build-catalog.mjs` again.
+the size groups, the assembly groups, the traits, and the tabs. One table
+per facet, rules top to bottom, first match wins. A mis-classified model is
+a one-line fix there; then run `node tools/build-catalog.mjs` again.
 
 ## What to watch out for
 

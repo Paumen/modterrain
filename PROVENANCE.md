@@ -103,16 +103,24 @@ model, with the bounding box in grid cells.
 `assemblies/placements.json` did not come from the zip. It was read out of
 the source pack's own prefabs — the same **Modular Terrain 2.0** project
 that settles the material colors in §1 — as one flat list per prefab: piece
-name, position, rotation quaternion, scale. 212 prefabs, no geometry of
-their own, just arrangements of the pieces in `models/`.
+name, position, rotation quaternion, scale. No geometry of their own, just
+arrangements of the pieces in `models/`.
+
+It is a subset, not the whole set: the source has 212 prefabs, and the cave,
+path, retaining-wall, stone-stairs and fence ones were dropped here, leaving
+120. That's a choice about this repo's scope, not something missing from the
+pack — the same as the models removed from `models/`. The full list is
+recoverable from the source project.
 
 Two things about that data are Unity's rather than glTF's, and
 `tools/assemble.mjs` converts both: the coordinate system is left-handed
 (mirrored on X relative to the converted `.glb` files), and a position of
 `1.0` means one tile, not one unit — see *Scale* below.
 
-Forty of the 212 name pieces this repo doesn't carry, because those models
-were removed here, not because anything is missing from the source pack.
+Fourteen of the 120 name pieces this repo doesn't carry: the waterfalls ask
+for `Mist` and `Ripple`, which are particle effects rather than models, and
+three ask for a crest and river surface that isn't here. That's this repo's
+scope again, not a gap in the pack.
 
 ## Scale
 

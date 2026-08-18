@@ -164,18 +164,19 @@ const TRAITS = [
  * `Crack_Large` is a hole in a grass field, not a "Prop" and not a size.
  *
  * Colors match the families the pieces come from, so a cliff assembly reads
- * as the same thing as the cliff pieces it's made of. The table covers all
- * 212 prefabs; the tab shows whichever ones have actually been built into
- * assemblies/.
+ * as the same thing as the cliff pieces it's made of. The table covers the
+ * 120 prefabs kept in assemblies/placements.json; the tab shows whichever of
+ * those have actually been built into assemblies/.
  */
 export const ASSEMBLY_GROUPS = [
   { id: 'assembly-cliff', name: 'Cliff Runs', color: '#9a8f80', test: (n) => n.startsWith('Cliff_Assembly_') },
-  { id: 'assembly-cave', name: 'Cave Tunnels & Walls', color: '#7a6a86', test: (n) => n.startsWith('Cave_') },
   { id: 'assembly-water', name: 'Waterfalls & Cave Entrances', color: '#2fc7e8', test: (n) => n.startsWith('Cliff_') || n.startsWith('Water_') },
   { id: 'assembly-crack', name: 'Cracks', color: '#a8705a', test: (n) => n.startsWith('Crack_') },
-  { id: 'assembly-path', name: 'Paths & Bridges', color: '#d98f4f', test: (n) => n.startsWith('Path_') },
   { id: 'assembly-river', name: 'Rivers', color: '#3aa7d6', test: (n) => n.startsWith('River_') || n.startsWith('Terrain_Water_') },
-  { id: 'assembly-structure', name: 'Stairs, Walls & Gates', color: '#b98c5a', test: () => true },
+  // The structural fallback for anything the rules above don't claim.
+  // Nothing lands here now that the cave, path, retaining-wall, stairs and
+  // fence prefabs are out of the placement list.
+  { id: 'assembly-structure', name: 'Other', color: '#b98c5a', test: () => true },
 ];
 
 /* -- tabs -----------------------------------------------------------
