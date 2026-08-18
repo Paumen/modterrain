@@ -21,6 +21,9 @@ let lastPicked = null;
 const selectedMaterials = new Set();
 const swatches = [];
 
+const UNITS_PER_CELL = 100; // matches tools/glb.mjs
+const CARD_ASPECT = 4 / 3; // matches .card-viewer's CSS aspect-ratio
+
 const readableBytes = (bytes) =>
   bytes < 1024 ? `${bytes} B` : `${(bytes / 1024).toFixed(bytes < 10240 ? 1 : 0)} kB`;
 
@@ -57,7 +60,23 @@ function attachViewer(box) {
   viewer.setAttribute('interaction-prompt', 'none');
   viewer.setAttribute('disable-zoom', '');
   viewer.setAttribute('loading', 'eager');
+  viewer.addEventListener('load', () => setCellSize(box, viewer), { once: true });
   box.replaceChildren(viewer);
+}
+
+// The "auto" camera-orbit above fits each model tightly to its own frame, so
+// the frame's world size (and thus a cell's true fraction of it) differs per
+// model. Read that back from model-viewer once it's settled, so the grid
+// background (drawn in %, see catalog.css) lines up with real cells instead
+// of an arbitrary fixed pixel size.
+function setCellSize(box, viewer) {
+  const { radius } = viewer.getCameraOrbit();
+  const fovDeg = viewer.getFieldOfView();
+  if (!radius || !fovDeg) return;
+  const visibleHeight = 2 * radius * Math.tan((fovDeg * Math.PI) / 360);
+  const visibleWidth = visibleHeight * CARD_ASPECT;
+  box.style.setProperty('--cell-x', `${(UNITS_PER_CELL / visibleWidth) * 100}%`);
+  box.style.setProperty('--cell-y', `${(UNITS_PER_CELL / visibleHeight) * 100}%`);
 }
 
 function detachViewer(box) {

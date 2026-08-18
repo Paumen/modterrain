@@ -368,12 +368,25 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   background: var(--paper-deep);
 }
 
-/* A reference grid under each part so its footprint in cells reads at a glance. */
-.section[data-facet="family"] .card-viewer {
+/*
+ * A ground-plane grid under each part so its footprint in cells reads at a
+ * glance, tilted to match the fixed camera-orbit phi (68deg from vertical,
+ * same for every card — see attachViewer) so it reads as a floor the model
+ * stands on rather than a flat overlay. --cell-x/--cell-y are set per card
+ * in catalog.js from that card's own camera framing, so one square is
+ * always exactly one true 100-unit cell even though the camera auto-fits
+ * each model to a different frame size.
+ */
+.section[data-facet="family"] .card-viewer { perspective: 500px; }
+
+.section[data-facet="family"] .card-viewer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background:
-    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 20px),
-    repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 20px),
-    var(--paper-deep);
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px var(--cell-x, 20%)),
+    repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px var(--cell-y, 20%));
+  transform: rotateX(68deg);
 }
 
 .card-viewer model-viewer,
