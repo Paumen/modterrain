@@ -396,13 +396,14 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   box-shadow: 0 0 0 2px var(--accent), var(--shadow);
 }
 
+/* Same tile as the builder's piece list: same radius, same padding, same
+   one-line name, so the two grids read as one thing across the tab bar. */
 .card {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 10px;
   background: var(--card-bg);
-  box-shadow: var(--shadow);
   overflow: hidden;
   cursor: pointer;
   text-align: left;
@@ -437,8 +438,8 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 .card-text {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 9px 10px 10px;
+  gap: 2px;
+  padding: 3px 4px;
   border-top: 1px solid var(--line);
 }
 
@@ -455,14 +456,9 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .is-incomplete { color: var(--warn); }
 
-.card-meta {
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 11px;
-  color: var(--ink-soft);
-}
+/* The section heading already says the family, and the byte count is detail
+   for the dialog, not for a tile this size. */
+.card-meta { display: none; }
 
 .card-brand {
   display: inline-flex;
@@ -690,16 +686,13 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 
 @media (max-width: 560px) {
-  .card-text { padding: 5px 6px 6px; gap: 1px; }
 
   .card-name { font-size: 9.5px; }
 
   /* The tick has to leave the tile something to show. */
   .card-pick { top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 6px; }
 
-  .card-meta { font-size: 9.5px; }
-  .card-bytes { display: none; }
-  .card-brand { display: none; }
+
 
   .card-pick { top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 5px; }
   .card-pick::before { inset: -6px; }
