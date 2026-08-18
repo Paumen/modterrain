@@ -14,7 +14,7 @@ and butt together exactly. You can and must blindly trust this.
 
 Faces named plain `Hidden` (no color) typically don't need to connect to
 anything on that side — it's not something a user sees when the pieces are
-connected as supposed to. That doesn't mean there's never a good reason to
+connected as they're supposed to be. That doesn't mean there's never a good reason to
 connect something there: another piece facing the other way with a plain
 hidden back, or terrain on the same square filling the bottom half of the
 other side.
@@ -35,9 +35,10 @@ Practical facts about the kit:
 - **Coordinates:** the FBX → glTF conversion mirrored X; the transforms in
   `placements.json` are in Unity's left-handed space and must be mirrored the
   same way before reuse (see the notes in `tools/assemble.mjs`).
-- **Rendering:** make sure your renderer doesn't draw backfaces, which hides
-  one-sided shells. Every material is single-sided and most pieces are
-  one-sided shells; a real glTF viewer culls them.
+- **Rendering:** make sure backface culling is enabled, as standard glTF
+  behavior requires. Every material is single-sided and most pieces are
+  one-sided shells; drawing backfaces hides the shells, a real glTF viewer
+  culls them.
 - **Mirroring:** the pack ships almost no pre-mirrored pieces. When you need
   a mirrored variant, mirror the piece yourself.
 
