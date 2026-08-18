@@ -144,10 +144,11 @@ function makeCard(model, view, section) {
   return item;
 }
 
-const counted = (facet) => (n) =>
-  facet === 'assembly'
-    ? `${n} ${n === 1 ? 'assembly' : 'assemblies'}`
-    : `${n} model${n === 1 ? '' : 's'}`;
+const counted = (facet) => (n) => {
+  if (facet === 'assembly') return `${n} ${n === 1 ? 'assembly' : 'assemblies'}`;
+  if (facet === 'scene') return `${n} scene${n === 1 ? '' : 's'}`;
+  return `${n} model${n === 1 ? '' : 's'}`;
+};
 
 function makeSection(view, section, facet) {
   const element = document.createElement('section');

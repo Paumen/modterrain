@@ -1,0 +1,2402 @@
+{
+ "units": "unity_meters_1_tile",
+ "coords": "unity_left_handed_y_up",
+ "assemblies": {
+  "Docks": [
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     -1,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -1,
+     -1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     -1,
+     1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     2,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     1,
+     0.5,
+     -1
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     1,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     1,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -2,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     1,
+     -1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -2,
+     0,
+     1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     -1,
+     0.5,
+     -1
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     1,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     0,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     -1,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     -1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     3,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -2,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     1,
+     -1,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     2,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     -1,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     1,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x2",
+    "pos": [
+     -1,
+     0,
+     1
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     -1,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Steps_1x2",
+    "pos": [
+     2,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     -1,
+     1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     0,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     1,
+     -1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     -2,
+     0,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x2",
+    "pos": [
+     1,
+     0,
+     1
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     -1,
+     2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     2,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     2,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     0,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     3,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     3,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     1,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     1,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     0,
+     -1,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     -1,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     1,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     1,
+     1,
+     1
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     -1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -1,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -1,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     3,
+     0.5,
+     -1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Ladder_Top_1x1",
+    "pos": [
+     -2,
+     0,
+     1
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     1,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     0,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     -1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -1,
+     -1,
+     5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     -1,
+     2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     1,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -2,
+     0,
+     5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     -1,
+     5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     -1,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     -2,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     -2,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     2,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     0,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -1,
+     0,
+     5
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     0,
+     -1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     -1,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     2,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     0,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     -1,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     2,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -2,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     -2,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     0,
+     0,
+     4
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -1,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     2,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     -1,
+     1,
+     1
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x2",
+    "pos": [
+     0,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     0,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -2,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Board_1_1x1",
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -2,
+     -1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     -1,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     0,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Posts_Steps_Roped_1x3",
+    "pos": [
+     2,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -1,
+     -1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     -2,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     1,
+     1,
+     1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     -1,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     0,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     1,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Brace_1x1",
+    "pos": [
+     -1,
+     0.5,
+     0
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     1,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x2",
+    "pos": [
+     2,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     3,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Posts_Steps_Roped_1x3",
+    "pos": [
+     1,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     3,
+     0,
+     1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     -1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     2,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     1,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     -1,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     -1,
+     1,
+     1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     0,
+     1,
+     1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Broken_2_1x1",
+    "pos": [
+     -1,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     2,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     -1,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     0,
+     0,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     0,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -2,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     2,
+     -1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     0,
+     -1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     0,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -1,
+     0,
+     0
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     1,
+     -1,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     2,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     -1,
+     -1,
+     3
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_1_1x1",
+    "pos": [
+     2,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x2",
+    "pos": [
+     0,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     2,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     0,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Support_Post_Mid_1x1",
+    "pos": [
+     1,
+     -1,
+     1
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Post_Top_Roped_1x1",
+    "pos": [
+     -1,
+     1,
+     -2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Bumper_1_1x1",
+    "pos": [
+     -2,
+     0,
+     2
+    ],
+    "quat": [
+     0,
+     -1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Decking_Flat_1x1",
+    "pos": [
+     2,
+     0,
+     3
+    ],
+    "quat": [
+     0,
+     0,
+     0,
+     1
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Broken_1_1x1",
+    "pos": [
+     -1,
+     1,
+     -1
+    ],
+    "quat": [
+     0,
+     -0.707107,
+     0,
+     -0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Railing_Rope_Basic_2_1x1",
+    "pos": [
+     3,
+     1,
+     0
+    ],
+    "quat": [
+     0,
+     0.707107,
+     0,
+     0.707107
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   },
+   {
+    "piece": "Docks_Ladder_Middle_1x1",
+    "pos": [
+     -2,
+     -1,
+     1
+    ],
+    "quat": [
+     0,
+     1,
+     0,
+     0
+    ],
+    "scale": [
+     1,
+     1,
+     1
+    ]
+   }
+  ]
+ }
+}

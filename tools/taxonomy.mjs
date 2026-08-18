@@ -99,12 +99,17 @@ export const ASSEMBLY_GROUPS = [
   { id: 'assembly-structure', name: 'Other', color: '#b98c5a', test: () => true },
 ];
 
+export const SCENE_GROUPS = [
+  { id: 'scene-diorama', name: 'Scenes', color: '#4f8f6f', test: () => true },
+];
+
 export const TABS = [
   { id: 'parts', label: 'Parts', facet: 'family' },
   { id: 'shapes', label: 'Shapes', facet: 'shape' },
   { id: 'layers', label: 'Layers', facet: 'layer' },
   { id: 'sizes', label: 'Sizes', facet: 'size' },
   { id: 'assemblies', label: 'Assemblies', facet: 'assembly', source: 'assemblies' },
+  { id: 'scenes', label: 'Scenes', facet: 'scene', source: 'scenes' },
 ];
 
 const first = (list, test) => list.find(test);
@@ -133,6 +138,10 @@ export function determineSize(name) {
 
 export function determineAssemblyGroup(name) {
   return first(ASSEMBLY_GROUPS, (g) => g.test(name)) ?? ASSEMBLY_GROUPS.at(-1);
+}
+
+export function determineSceneGroup(name) {
+  return first(SCENE_GROUPS, (g) => g.test(name)) ?? SCENE_GROUPS.at(-1);
 }
 
 export function determineSizeGroup(size) {

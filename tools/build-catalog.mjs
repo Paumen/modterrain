@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { readGlb, measureScene, trianglesPerUnit, BUDGET_PER_UNIT, UNITS_PER_CELL } from './glb.mjs';
 import {
-  FAMILIES, SHAPES, LAYERS, SIZE_GROUPS, ASSEMBLY_GROUPS, TABS,
+  FAMILIES, SHAPES, LAYERS, SIZE_GROUPS, ASSEMBLY_GROUPS, SCENE_GROUPS, TABS,
   determineFamily, determineShape, determineLayer, determineSize, determineSizeGroup,
-  determineAssemblyGroup, determineTraits, determineVariant, readableName,
+  determineAssemblyGroup, determineSceneGroup, determineTraits, determineVariant, readableName,
 } from './taxonomy.mjs';
 import { TEXTURE_BY_MATERIAL } from './textures.mjs';
 import { averageColor } from './png.mjs';
@@ -16,6 +16,7 @@ const MODELS_DIR = join(ROOT, 'models');
 const CATALOG_DIR = join(ROOT, 'catalog');
 const TEXTURES_DIR = join(ROOT, 'textures');
 const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
+const SCENES_DIR = join(ROOT, 'scenes');
 
 const MATERIAL_NAMES = {
   'Cliff Face': 'Cliff Face',
@@ -210,6 +211,57 @@ const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assembl
   };
 }));
 
+// Scenes are full built dioramas, not reusable kit pieces; a scene's piece
+// breakdown comes from a same-named JSON file next to its glb, if one exists
+// (scenes/riverfall-bluff.json for scenes/Riverfall_Bluff.glb). Scenes with no
+// such file (hand-authored, not built from placements.json) just show no
+// piece breakdown, the same as a plain model.
+const scenePlacementsCache = new Map();
+function scenePlacements(id) {
+  const path = join(SCENES_DIR, `${slugify(id)}.json`);
+  if (!existsSync(path)) return null;
+  if (!scenePlacementsCache.has(path)) {
+    const data = JSON.parse(readFileSync(path, 'utf8'));
+    scenePlacementsCache.set(path, data.assemblies?.[id] ?? []);
+  }
+  return scenePlacementsCache.get(path);
+}
+
+const sceneFiles = existsSync(SCENES_DIR)
+  ? readdirSync(SCENES_DIR).filter((name) => name.endsWith('.glb')).sort()
+  : [];
+
+const scenes = sceneFiles.map((file) => describe(SCENES_DIR, 'scenes', file, (id) => {
+  const placed = scenePlacements(id);
+  if (!placed) {
+    return {
+      group: determineSceneGroup(id).id,
+      family: null, shape: null, layer: null, size: null, sizeGroup: null,
+      traits: [], variant: null,
+    };
+  }
+
+  const counts = new Map();
+  for (const { piece } of placed) counts.set(piece, (counts.get(piece) ?? 0) + 1);
+  const pieces = [...counts]
+    .map(([piece, count]) => ({ id: piece, count }))
+    .sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
+  const within = new Set(pieces.flatMap((piece) => [...nodeNames.get(piece.id) ?? []]));
+  const missing = pieces
+    .filter((piece) => !modelIds.has(piece.id) && !within.has(piece.id))
+    .map((piece) => piece.id);
+
+  return {
+    group: determineSceneGroup(id).id,
+    family: null, shape: null, layer: null, size: null, sizeGroup: null,
+    traits: [], variant: null,
+    placed: placed.length,
+    missingPieces: missing,
+    incomplete: missing.some((piece) => !EFFECTS.has(piece)),
+    pieces,
+  };
+}));
+
 /* Wide margin on purpose: thin posts and overhanging pieces are normal; this
  * only catches a scale that does not match. */
 const skewed = models
@@ -225,7 +277,7 @@ const skewed = models
   .filter(Boolean)
   .sort((a, b) => b.ratio - a.ratio);
 
-const entries = [...models, ...assemblies];
+const entries = [...models, ...assemblies, ...scenes];
 
 const FACETS = {
   family: { list: FAMILIES, field: 'family' },
@@ -233,9 +285,10 @@ const FACETS = {
   layer: { list: LAYERS, field: 'layer' },
   size: { list: SIZE_GROUPS, field: 'sizeGroup' },
   assembly: { list: ASSEMBLY_GROUPS, field: 'group', source: assemblies, offset: models.length },
+  scene: { list: SCENE_GROUPS, field: 'group', source: scenes, offset: models.length + assemblies.length },
 };
 
-const allIds = [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS].map((g) => g.id);
+const allIds = [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS, ...SCENE_GROUPS].map((g) => g.id);
 const duplicateIds = allIds.filter((id, i) => allIds.indexOf(id) !== i);
 if (duplicateIds.length) throw new Error(`duplicate facet id in tools/taxonomy.mjs: ${[...new Set(duplicateIds)].join(', ')}`);
 
@@ -277,10 +330,11 @@ const catalog = {
   generated: 'node tools/build-catalog.mjs',
   total: models.length,
   assemblies: assemblies.length,
+  scenes: scenes.length,
   budgetPerUnit: BUDGET_PER_UNIT,
   unitsPerCell: UNITS_PER_CELL,
   facets: Object.fromEntries(
-    [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS].map((g) => [g.id, g.name]),
+    [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS, ...SCENE_GROUPS].map((g) => [g.id, g.name]),
   ),
   views,
   palettes: PALETTES.map((palette) => ({
@@ -296,7 +350,7 @@ const catalog = {
 writeFileSync(join(CATALOG_DIR, 'catalog.json'), JSON.stringify(catalog, null, 1) + '\n');
 writeVersion();
 
-console.log(`${models.length} models and ${assemblies.length} assemblies → catalog/catalog.json`);
+console.log(`${models.length} models, ${assemblies.length} assemblies, and ${scenes.length} scenes → catalog/catalog.json`);
 for (const view of catalog.views) {
   console.log(`\ntab ${view.label} — ${view.count} models in ${view.sections.length} sections:`);
   for (const section of view.sections) {
