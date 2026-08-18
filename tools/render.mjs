@@ -6,7 +6,7 @@
  */
 import { createServer } from 'node:http';
 import { readFileSync, existsSync, mkdirSync } from 'node:fs';
-import { join, extname, resolve } from 'node:path';
+import { extname, resolve, relative, isAbsolute, sep } from 'node:path';
 import { chromium } from 'playwright';
 
 import { fileURLToPath } from 'node:url';
@@ -14,24 +14,48 @@ import { fileURLToPath } from 'node:url';
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const TYPES = { '.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.json':'application/json', '.glb':'model/gltf-binary', '.png':'image/png', '.css':'text/css' };
 
+// Serves the repo to the headless page. Paths are resolved and then checked
+// against ROOT plus a separator, so neither `..` nor a sibling directory whose
+// name merely starts with ROOT can be reached.
 const server = createServer((req, res) => {
-  const path = join(ROOT, decodeURIComponent(req.url.split('?')[0]));
-  if (!path.startsWith(ROOT) || !existsSync(path)) { res.writeHead(404); res.end('nope'); return; }
+  const path = resolve(ROOT, `.${decodeURIComponent(req.url.split('?')[0])}`);
+  if ((path !== ROOT && !path.startsWith(ROOT + sep)) || !existsSync(path)) { res.writeHead(404); res.end('nope'); return; }
   res.writeHead(200, { 'Content-Type': TYPES[extname(path)] ?? 'application/octet-stream', 'Access-Control-Allow-Origin': '*' });
   res.end(readFileSync(path));
 });
 await new Promise((r) => server.listen(0, r));
 const port = server.address().port;
 
-const args = process.argv.slice(2);
-const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i === -1 ? d : args[i+1]; };
-const model = args.find((a) => !a.startsWith('--') && !Object.values(['out','orbit','target','fov','size','shots']).includes(a)) ?? args[0];
-const src = model.startsWith('/') ? model.slice(ROOT.length + 1) : model;
+/* Options are `--name value`, so an option's value has to be consumed with it
+ * — otherwise the first bare word in `--out shots/bluff scene.glb` reads as
+ * the model.
+ */
+const OPTIONS = new Set(['out', 'orbit', 'target', 'size', 'shots']);
+const values = new Map();
+const positional = [];
+for (const argv = process.argv.slice(2); argv.length;) {
+  const arg = argv.shift();
+  const name = arg.startsWith('--') ? arg.slice(2) : null;
+  if (name && OPTIONS.has(name)) values.set(name, argv.shift());
+  else if (!name) positional.push(arg);
+}
+
+const opt = (name, fallback) => values.get(name) ?? fallback;
+const model = positional[0];
+if (!model) {
+  console.error('usage: node tools/render.mjs <file.glb> [--out prefix] [--size WxH] [--shots json] [--orbit o] [--target t]');
+  process.exit(1);
+}
+const src = isAbsolute(model) ? relative(ROOT, model) : model;
 const out = opt('out', 'shot');
-const size = (opt('size', '1200x800')).split('x').map(Number);
+const size = opt('size', '1200x800').split('x').map(Number);
 const shots = JSON.parse(opt('shots', 'null')) ?? [{ name: 'view', orbit: opt('orbit', '35deg 62deg auto'), target: opt('target', 'auto auto auto') }];
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' , args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'] });
+// Playwright finds its own Chromium; CHROMIUM_PATH is for installs it cannot.
+const browser = await chromium.launch({
+  ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
+  args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
+});
 const page = await browser.newPage({ viewport: { width: size[0], height: size[1] }, deviceScaleFactor: 2 });
 page.on('console', m => { if (m.type()==='error') console.error('  [page]', m.text()); });
 
