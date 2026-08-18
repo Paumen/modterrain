@@ -68,8 +68,12 @@ Across all 783 prefab placements only these transforms occur:
   y 1.80–2.25 on `Basic_*_Top` pieces. Everything below and behind is plain
   `Hidden`, which simply butts against the neighbour's identical plain hidden
   face. Plain-hidden contact is the normal state of most of a joint.
-- All colour-coded sockets are **vertical** faces (their normals are
-  horizontal). Layers stack by grid position, not by socket.
+- In every terrain family the assemblies use, colour-coded sockets are
+  **vertical** faces (their normals are horizontal) and layers stack by grid
+  position, not by socket. The one exception is the `Wall_*` family — absent
+  from every shipped assembly — which colour-codes its stacking interface
+  too: a horizontal `Hidden Blue` face on top of a wall Base, on both ends
+  of a wall Mid, and under a wall Top.
 - Where each colour shows up in the pack's own joints, by terrain context:
 
   *Cliffs, cracks, caves, walls*
@@ -92,7 +96,8 @@ Across all 783 prefab placements only these transforms occur:
     run; also sand.
   - **Pink** — also joins the two mirrored halves of path-end crowns and of
     iceberg pieces.
-  - **Blue** — also waterfall crown terrain joints and wall runs.
+  - **Blue** — also waterfall crown terrain joints; on `Wall_*` pieces it
+    marks the horizontal Base/Mid/Top stacking interface (see above).
 
   As those double entries show, colours repeat across families that never
   touch (pink on hills vs. on icebergs is not the same cross-section). Mate
