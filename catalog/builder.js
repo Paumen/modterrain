@@ -34,6 +34,7 @@ let mirrored = false;
 let level = 0;
 let selected = null;
 let armed = null;
+let moveButtons = {};
 let placeButton;
 
 // ------------------------------------------------------------------ shapes
@@ -332,21 +333,33 @@ function syncHistory() {
 
 // ---------------------------------------------------------------- editing
 
-/* Placing takes two taps, never one. A touch screen has no hover, so the
- * first tap is what shows the ghost: it aims, and only a second tap on the
- * same cell commits. Turning the camera, or changing your mind about where a
- * piece goes, therefore never drops one by accident. */
-function aim(x, z) {
-  if (armed && armed.cx === x && armed.cz === z) return commitArmed();
+/* Picking a piece arms it straight away, so the ghost is on the board before
+ * anything is aimed: you steer it there and press Place. Nothing is ever laid
+ * down by a tap, so turning the camera or thinking again about where a piece
+ * goes cannot drop one by accident. */
+function arm(x, z) {
   armed = { cx: x, cz: z };
   syncToolbar();
 }
 
+// The arrows read as the screen does, not as the grid does: after the camera
+// has been turned, "left" still means towards the left of the view.
+function nudge(dx, dz) {
+  if (!armed) return;
+  const { right, away } = viewport?.axes() ?? { right: [1, 0], away: [0, -1] };
+  arm(armed.cx + right[0] * dx + away[0] * dz, armed.cz + right[1] * dx + away[1] * dz);
+}
+
+const nearLast = () => {
+  const last = placements[placements.length - 1];
+  return last ? { cx: last.cx, cz: last.cz } : { cx: 0, cz: 0 };
+};
+
 function commitArmed() {
   if (!armed) return;
-  const { cx, cz } = armed;
-  armed = null;
-  addAt(cx, cz);
+  addAt(armed.cx, armed.cz);
+  // The ghost stays where it was laid, so a row of the same piece is a nudge
+  // and a press each time rather than a fresh aim.
   syncToolbar();
 }
 
@@ -436,12 +449,24 @@ function openDrawer(open) {
 }
 
 /* Whatever floats over the view has to clear the drawer, and the drawer's
- * visible height changes as it slides, so it is measured rather than assumed. */
+ * visible height changes as it slides, so it is measured rather than assumed.
+ * The camera is told the same numbers: it frames the build into the band the
+ * panels leave clear, and the picker is open for most of a build. */
 function measureDrawer() {
   if (!drawer || !host) return;
-  const bottom = host.getBoundingClientRect().bottom;
-  const top = drawer.root.getBoundingClientRect().top;
-  host.style.setProperty('--drawer', `${Math.max(0, Math.round(bottom - top))}px`);
+  const view = host.getBoundingClientRect();
+  const sheetTop = drawer.root.getBoundingClientRect().top;
+  const covered = Math.max(0, Math.round(view.bottom - sheetTop));
+  host.style.setProperty('--drawer', `${covered}px`);
+
+  const rect = (selector) => host.querySelector(selector)?.getBoundingClientRect();
+  const bar = rect('.hud-top');
+  const cameras = rect('.hud-views');
+  viewport?.setInsets({
+    top: bar ? Math.max(0, Math.round(bar.bottom - view.top)) : 0,
+    right: cameras ? Math.max(0, Math.round(view.right - cameras.left)) : 0,
+    bottom: covered,
+  });
 }
 
 // -------------------------------------------------------------- inspector
@@ -676,7 +701,14 @@ function renderPalette() {
     button.append(colours);
     button.append(element('span', 'tile-name', name));
 
-    button.addEventListener('click', () => { brush = brush === id ? null : id; armed = null; syncToolbar(); });
+    button.addEventListener('click', () => {
+      brush = brush === id ? null : id;
+      // The ghost appears where you were last building, not at the origin:
+      // after opening a saved build, the middle of the board is nowhere near
+      // what is on it.
+      armed = brush ? (armed ?? nearLast()) : null;
+      syncToolbar();
+    });
     item.append(button);
     paletteList.append(item);
     observe(box);
@@ -695,17 +727,18 @@ function showGhost(x, z) {
 
 function syncToolbar() {
   const name = brush ? (names.get(brush) ?? brush) : null;
-  brushLabel.textContent = !name ? 'Pick a piece — then tap once to aim, again to place'
-    : `${armed ? 'Tap again to place · ' : ''}${name}`
-      + `${rotation ? ` · ${rotation * 90}°` : ''}${mirrored ? ' · mirrored' : ''}`;
+  brushLabel.textContent = !name ? 'Pick a piece — steer it with the arrows, then press Place'
+    : `${name}${rotation ? ` · ${rotation * 90}°` : ''}${mirrored ? ' · mirrored' : ''}`;
   levelLabel.textContent = String(Number(level.toFixed(3)));
   mirrorButton.setAttribute('aria-pressed', String(mirrored));
-  if (placeButton) placeButton.disabled = !armed;
-  if (host) host.dataset.aim = armed ? `${armed.cx},${armed.cz}` : '';
+  const aiming = Boolean(brush && armed);
+  if (placeButton) placeButton.disabled = !aiming;
+  for (const button of Object.values(moveButtons)) button.disabled = !aiming;
+  if (host) host.dataset.aim = aiming ? `${armed.cx},${armed.cz}` : '';
 
   viewport?.setLevel(level);
-  if (armed) showGhost(armed.cx, armed.cz);
-  else if (!brush) viewport?.ghost(null);
+  if (aiming) showGhost(armed.cx, armed.cz);
+  else viewport?.ghost(null);
   renderPalette();
 }
 
@@ -807,6 +840,14 @@ export async function mount(container, catalog) {
   placeButton = role('place');
   placeButton.addEventListener('click', commitArmed);
 
+  moveButtons = {
+    left: role('move-left'), right: role('move-right'), away: role('move-away'), near: role('move-near'),
+  };
+  moveButtons.left.addEventListener('click', () => nudge(-1, 0));
+  moveButtons.right.addEventListener('click', () => nudge(1, 0));
+  moveButtons.away.addEventListener('click', () => nudge(0, 1));
+  moveButtons.near.addEventListener('click', () => nudge(0, -1));
+
   drawer = { root: role('drawer') };
   drawer.root.addEventListener('transitionend', measureDrawer);
   new ResizeObserver(measureDrawer).observe(drawer.root);
@@ -861,6 +902,8 @@ export async function mount(container, catalog) {
     if (undoKey) { event.preventDefault(); step(event.shiftKey ? at + 1 : at - 1); return; }
     if (event.key === 'Escape') { armed = null; brush = null; syncToolbar(); }
     if (event.key === 'Enter' && armed) { event.preventDefault(); commitArmed(); }
+    const step = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[event.key];
+    if (step && brush) { event.preventDefault(); nudge(...step); }
     if (event.key === 'r' || event.key === 'R') { rotation = (rotation + 1) % 4; syncToolbar(); }
     if (event.key === 'm' || event.key === 'M') { mirrored = !mirrored; syncToolbar(); }
     if ((event.key === 'Delete' || event.key === 'Backspace') && selected) { event.preventDefault(); remove(selected); }
@@ -870,14 +913,8 @@ export async function mount(container, catalog) {
   viewport = createViewport(role('view'), {
     colorOf: (name) => swatches.get(name),
     onTap: ({ id, x, z }) => {
-      if (brush && x !== null) return aim(x, z);
+      if (brush && x !== null) return arm(x, z);
       select(id ?? (x === null ? null : topmostAt(x, z)));
-    },
-    // Hover only sharpens the aim on a pointer that has one; the ghost is
-    // held by the aim, so a touch screen loses nothing by having no hover.
-    onHover: (x, z) => {
-      if (!brush || armed || x === null) return;
-      showGhost(x, z);
     },
   });
 
