@@ -14,7 +14,10 @@ const OUT_DIR = join(ROOT, 'thumbnails');
 const GRID_PNG = readFileSync(join(ROOT, 'tools', 'assets', 'grid-tile.png'));
 
 // Margin around the model's own footprint, so it doesn't sit flush with the
-// floor's edge, snapped outward to whole cells below.
+// floor's edge, snapped outward to whole cells below. catalog.js locks the
+// camera to the model's own framing before swapping to this file (see
+// swapToFloor), so this margin no longer affects how large the model
+// appears — free to be generous.
 const PAD_UNITS = UNITS_PER_CELL / 2;
 
 const align4 = (n) => (4 - (n % 4)) % 4;
@@ -103,13 +106,14 @@ function addFloor(glb) {
 
   const imageBufferView = pushBufferView(GRID_PNG);
   const imageIndex = json.images.push({ mimeType: 'image/png', bufferView: imageBufferView }) - 1;
-  // minFilter LINEAR, no mipmap: thumbnails render this plane small, and mip
-  // minification thins the grid lines toward invisible; full-resolution
-  // sampling at any distance keeps them present.
-  // magFilter NEAREST: the detail panel views this plane large (auto-rotate,
-  // camera-controls), where LINEAR magnification blurs a thin line into a
-  // soft smear. NEAREST keeps the line edge crisp there.
-  const samplerIndex = json.samplers.push({ wrapS: 10497, wrapT: 10497, magFilter: 9728, minFilter: 9729 }) - 1;
+  // No mipmap: thumbnails render this plane small, and mip minification
+  // thins the grid lines toward invisible; full-resolution sampling at any
+  // distance keeps them present. LINEAR (not NEAREST) for both filters: the
+  // grid tile is high-resolution enough now (512px) that LINEAR's blur is
+  // negligible, and NEAREST was worse — a perspective-receding grid isn't
+  // screen-axis-aligned, so nearest-neighbor sampling made the lines look
+  // jagged/dashed rather than crisp.
+  const samplerIndex = json.samplers.push({ wrapS: 10497, wrapT: 10497, magFilter: 9729, minFilter: 9729 }) - 1;
   const textureIndex = json.textures.push({ source: imageIndex, sampler: samplerIndex }) - 1;
   const materialIndex = json.materials.push({
     name: 'Floor Grid',
