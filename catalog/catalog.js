@@ -1,15 +1,3 @@
-/**
- * Modular Terrain — 3D catalog.
- *
- * The pack ships with no metadata at all, so the entire classification comes
- * from filenames (tools/taxonomy.mjs → catalog/catalog.json).
- *
- * One model appears in multiple tabs — the same piece is an inner curve, a
- * mid layer, AND a 3 × 3 — so one model produces multiple cards. Anything
- * that hangs off the model rather than the card (selection) is therefore
- * keyed by file path.
- */
-
 const number = new Intl.NumberFormat('en-US');
 const unit = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
@@ -25,13 +13,6 @@ const views = new Map();
 
 let currentView = null;
 
-/**
- * Selection is keyed by file path, not by card. One model has multiple
- * cards — the same inner curve appears in Parts, Shapes, Layers, AND Sizes —
- * and they all need to show the same checkbox state. This also dedupes:
- * checking the same model in two tabs still yields the path once on the
- * clipboard.
- */
 const selectedPaths = new Set();
 const cardsByPath = new Map();
 
@@ -79,12 +60,6 @@ function attachViewer(box) {
   box.replaceChildren(viewer);
 }
 
-/**
- * Once out of view, the render loop stops, but the picture stays: a single
- * snapshot as webp, taken the moment the card scrolls away. Without that the
- * grid would go blank on every scroll — with hundreds of tiles per tab,
- * that's the difference between browsing and waiting.
- */
 function detachViewer(box) {
   const viewer = box.querySelector('model-viewer');
   if (!viewer) return;
@@ -106,8 +81,6 @@ function detachViewer(box) {
   }
 }
 
-/* ---------- cards ---------- */
-
 function makeCard(model, view, section) {
   const card = document.createElement('button');
   card.type = 'button';
@@ -126,23 +99,16 @@ function makeCard(model, view, section) {
     span('card-brand', section.brand ?? ''),
     span('card-bytes', readableBytes(model.bytes)),
   );
-  // Red when the assembly is short of geometry the repo doesn't carry; see
-  // `incomplete` in tools/build-catalog.mjs for what does and doesn't count.
   const name = span('card-name', model.name);
   if (model.incomplete) name.classList.add('is-incomplete');
   text.append(name);
-  // Its own row rather than an overlay on the thumbnail: a badge sitting on
-  // top of the model made the corner of the preview harder to read and
-  // competed with the selection checkbox for the same corner.
   if (model.size) text.append(span('card-size', model.size));
   text.append(meta);
 
   card.append(box, text);
   card.addEventListener('click', () => showDetail(model));
 
-  // The checkbox is a sibling of the card, not a child: a button inside a
-  // button isn't allowed, and this way the card itself stays fully clickable
-  // toward the detail view.
+  // Sibling of the card, not a child: a button can't nest in a button.
   const pick = document.createElement('label');
   pick.className = 'card-pick';
   const checkbox = document.createElement('input');
@@ -178,10 +144,6 @@ function makeCard(model, view, section) {
   return item;
 }
 
-/**
- * "12 models", "1 assembly" — the noun follows what the tab is counting, and
- * the count itself changes as the material filter narrows the section.
- */
 const counted = (facet) => (n) =>
   facet === 'assembly'
     ? `${n} ${n === 1 ? 'assembly' : 'assemblies'}`
@@ -211,32 +173,17 @@ function makeSection(view, section, facet) {
   return { element, grid, countEl, label };
 }
 
-/* ---------- detail view ---------- */
-
 const detailViewer = document.querySelector('#detail-viewer');
 const detailCopy = document.querySelector('#detail-copy');
 let activePath = '';
 
-/** material key → { name, hex }, filled in by buildFilterBar(). */
 const materialInfo = new Map();
 
-/**
- * A model's position relative to its grid cell. This pack is deliberately
- * not centered on the origin — a piece's origin IS its grid cell — so
- * "-0.5 to 0.5" means centered and "0 to 1" means the piece sits up and to
- * the right of its origin. Anyone placing the kit on a grid in an engine
- * needs exactly that.
- */
 const placement = (min, max) =>
   [['width', 0], ['depth', 2], ['height', 1]]
     .map(([axis, index]) => `${axis} ${unit.format(min[index])} … ${unit.format(max[index])}`)
     .join(' · ');
 
-/**
- * The pieces an assembly is built from, most-used first, each with how often
- * it occurs. A count of one stays bare — "× 1" on two thirds of the list is
- * noise around the entries that actually repeat.
- */
 function pieceList(pieces) {
   const holder = document.createElement('span');
   for (const piece of pieces) {
@@ -268,8 +215,6 @@ function showDetail(model) {
 
   const rows = [
     ['File', model.file],
-    // An assembly has no grid footprint of its own — it's an arrangement of
-    // pieces that do — so it says what it's built from instead.
     ...(model.pieces
       ? [
         ['Built from', `${model.placed} pieces, ${model.pieces.length} distinct`],
@@ -285,16 +230,12 @@ function showDetail(model) {
     ['Dimensions (w × d × h)', readableDimensions(model.dwh)],
     ['Position relative to origin', placement(model.min, model.max)],
     ['Triangles', number.format(model.triangles)],
-    // Every axis counts for at least one unit, so a model that stays within
-    // one grid cell isn't penalized for being small (tools/glb.mjs).
     [
       'Triangles per unit',
       Number.isFinite(model.trianglesPerUnit) ? number.format(model.trianglesPerUnit) : '—',
     ],
     ['Draw calls', model.calls === undefined ? '—' : number.format(model.calls)],
     [`Materials (${model.materials.length})`, materialList],
-    // Only for the models it applies to; the rest have nothing to say here.
-    // The viewer still shows them, just in the flat material color.
     ...(model.missingTextures?.length
       ? [['Missing texture', `${model.missingTextures.join(', ')} — not in the pack`]]
       : []),
@@ -325,9 +266,6 @@ function showDetail(model) {
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.7');
   viewer.setAttribute('shadow-softness', '0.9');
-  // Nothing in this pack is animated, so the auto-rotate is the only way to
-  // see the back without dragging — and on a modular piece the back is
-  // exactly the side that meets the neighboring tile.
   viewer.setAttribute('auto-rotate', '');
   viewer.setAttribute('rotation-per-second', '18deg');
 
@@ -347,8 +285,6 @@ detailCopy.addEventListener('click', async () => {
   setTimeout(() => { detailCopy.textContent = 'Copy path'; }, 1600);
 });
 
-/* ---------- selection ---------- */
-
 const selectionBar = document.querySelector('#selection-bar');
 const selectionCount = document.querySelector('#selection-count');
 const selectionCopy = document.querySelector('#selection-copy');
@@ -366,12 +302,6 @@ function setSelection(paths, on) {
   updateSelectionBar();
 }
 
-/**
- * Shift-click extends the selection from the previous click to this one,
- * across whatever cards are currently visible. So after filtering to "curve"
- * shift picks exactly the curves, not everything that sat between them in
- * the unfiltered catalog.
- */
 function pickRange(to, on) {
   const list = visibleCards();
   const from = list.indexOf(lastPicked);
@@ -392,12 +322,6 @@ function updateSelectionBar() {
   }
 }
 
-/**
- * Without clipboard permission — a page not served over https, for
- * instance, straight from the filesystem — the browser falls back to a
- * field you clear with ctrl-C. That still fits in the button label for one
- * path, not for seventy.
- */
 async function toClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
@@ -421,8 +345,6 @@ async function toClipboard(text) {
 
 selectionCopy.addEventListener('click', async () => {
   const count = selectedPaths.size;
-  // A Set preserves insertion order: paths come out in the order they were
-  // checked, and with "Select all visible" that's the order on screen.
   const ok = await toClipboard([...selectedPaths].join('\n'));
   selectionCopy.textContent = ok
     ? `${count} path${count === 1 ? '' : 's'} copied`
@@ -442,8 +364,6 @@ document.querySelector('#select-clear').addEventListener('click', () => {
 detailSelect.addEventListener('click', () => {
   setSelection([activePath], !selectedPaths.has(activePath));
 });
-
-/* ---------- material filter ---------- */
 
 function checkColor(hex) {
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
@@ -506,8 +426,6 @@ function buildFilterBar(palettes) {
   });
 }
 
-/* ---------- view & filter ---------- */
-
 function switchView(id) {
   currentView = id;
   for (const button of tabBar.children) {
@@ -515,9 +433,7 @@ function switchView(id) {
   }
   panel.setAttribute('aria-labelledby', `tab-${id}`);
 
-  // A swatch that touches no model in this tab is a button that filters
-  // everything away. Hide it, and clear its selection — otherwise a hidden
-  // button would empty the whole page.
+  // A hidden swatch must also lose its selection, or it filters everything away.
   const present = new Set(
     cards.filter((c) => c.view === id).flatMap((c) => c.materials),
   );
@@ -553,23 +469,17 @@ function filter() {
   emptyMessage.hidden = visible > 0;
 }
 
-/* ---------- startup ---------- */
-
 async function start() {
   const version = document.querySelector('meta[name="catalog-version"]')?.content;
   const response = await fetch(version ? `catalog/catalog.json?v=${version}` : 'catalog/catalog.json');
   if (!response.ok) throw new Error(`catalog/catalog.json not found (${response.status})`);
   const data = await response.json();
 
-  /* A model carries its family, shape, and layer only as an id; `facets`
-   * says what those ids mean. Resolved here once so the detail view and
-   * cards can show them. */
   const names = new Map(Object.entries(data.facets ?? {}));
   const nameOf = (id) => names.get(id) ?? id;
 
   for (const model of data.models) {
     model.familyName = nameOf(model.family);
-    // Assemblies carry a group instead of the four piece facets.
     model.groupName = model.group ? nameOf(model.group) : null;
     model.shapeName = nameOf(model.shape);
     model.layerName = model.layer === 'layer-none' ? null : nameOf(model.layer);
@@ -603,9 +513,6 @@ async function start() {
         const model = data.models[index];
         const item = makeCard(model, view.id, {
           color: section.color,
-          // What the card says about itself beside its size: which family a
-          // piece belongs to, and for an assembly — which has no family —
-          // how many pieces went into it.
           brand: model.pieces ? `${model.placed} pieces` : model.familyName,
         });
         parts.grid.append(item.element);
