@@ -6,7 +6,6 @@
   --ink-soft: #78746a;
   --line: #ded6c8;
   --accent: #4f7a3a;
-  --accent-soft: #cfe0b8;
   --warn: #b3382c;
   --radius: 12px;
   --shadow: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
@@ -22,7 +21,6 @@
     --ink-soft: #9a958a;
     --line: #383530;
     --accent: #8fc06a;
-    --accent-soft: #35452a;
     --warn: #f28b7d;
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
   }
@@ -367,15 +365,12 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 .card-viewer {
   position: relative;
   aspect-ratio: 4 / 3;
-  background:
-    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 68%),
-    var(--paper-deep);
+  background: var(--paper-deep);
 }
 
 /* A reference grid under each part so its footprint in cells reads at a glance. */
 .section[data-facet="family"] .card-viewer {
   background:
-    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 68%),
     repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 20px),
     repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 20px),
     var(--paper-deep);
@@ -481,9 +476,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .detail-viewer {
   min-height: 380px;
-  background:
-    radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 70%),
-    var(--paper-deep);
+  background: var(--paper-deep);
 }
 
 .detail-viewer model-viewer {
