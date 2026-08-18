@@ -12,7 +12,7 @@ import { TEXTURE_BY_MATERIAL } from './textures.mjs';
 import { averageColor } from './png.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const MODELS_DIR = join(ROOT, 'models');
+const ATOMS_DIR = join(ROOT, 'atoms');
 const CATALOG_DIR = join(ROOT, 'catalog');
 const TEXTURES_DIR = join(ROOT, 'textures');
 const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
@@ -45,6 +45,40 @@ const MATERIAL_NAMES = {
 };
 
 const HIDDEN = /^Hidden/;
+
+/* Filter chips carry a name each and there are dozens of them, so a leading
+ * word shared by a crowd of entries ("Snow …", "Flower …") is dropped as long
+ * as what is left still names one colour and one colour only. `Hidden ` goes
+ * unconditionally: the group it sits in is already labelled. */
+function shorten(colors) {
+  const short = new Map(colors.map((color) => [color.key, color.name.replace(/^Hidden (?=.)/, '')]));
+
+  for (let pass = 0; pass < 4; pass++) {
+    const leading = new Map();
+    for (const value of short.values()) {
+      const first = value.split(' ')[0];
+      leading.set(first, (leading.get(first) ?? 0) + 1);
+    }
+
+    let changed = false;
+    for (const color of colors) {
+      const words = short.get(color.key).split(' ');
+      if (words.length < 2 || (leading.get(words[0]) ?? 0) < 3) continue;
+
+      // A name has to still read as a name: "Carved Stone 1" must not become "1".
+      const candidate = words.slice(1).join(' ');
+      if (candidate.length < 3 || !/[a-z]/i.test(candidate)) continue;
+
+      const taken = [...short].some(([key, value]) => key !== color.key && value === candidate);
+      if (taken) continue;
+
+      short.set(color.key, candidate);
+      changed = true;
+    }
+    if (!changed) break;
+  }
+  return short;
+}
 
 const PALETTES = [
   {
@@ -84,7 +118,10 @@ const slugify = (name) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function writeVersion() {
-  const content = ['catalog.json', 'catalog.css', 'catalog.js']
+  // The builder is part of the catalog page, so its assets ride the same
+  // stamp; builder.js and sockets.json are fetched from script and pick the
+  // version up from the meta tag.
+  const content = ['catalog.json', 'catalog.css', 'catalog.js', 'builder.css', 'builder.js', 'sockets.json']
     .map((name) => readFileSync(join(CATALOG_DIR, name)))
     .join('');
   const version = createHash('sha256').update(content).digest('hex').slice(0, 10);
@@ -92,6 +129,7 @@ function writeVersion() {
   const path = join(ROOT, 'index.html');
   const html = readFileSync(path, 'utf8')
     .replace(/href="catalog\/catalog\.css(?:\?v=[a-f0-9]+)?"/, `href="catalog/catalog.css?v=${version}"`)
+    .replace(/href="catalog\/builder\.css(?:\?v=[a-f0-9]+)?"/, `href="catalog/builder.css?v=${version}"`)
     .replace(/src="catalog\/catalog\.js(?:\?v=[a-f0-9]+)?"/, `src="catalog/catalog.js?v=${version}"`)
     .replace(/<meta name="catalog-version" content="[^"]*">/, `<meta name="catalog-version" content="${version}">`);
 
@@ -99,8 +137,8 @@ function writeVersion() {
   console.log(`version ${version} → index.html`);
 }
 
-const files = readdirSync(MODELS_DIR).filter((name) => name.endsWith('.glb')).sort();
-if (files.length === 0) throw new Error('no .glb files in models/');
+const files = readdirSync(ATOMS_DIR).filter((name) => name.endsWith('.glb')).sort();
+if (files.length === 0) throw new Error('no .glb files in atoms/');
 
 const nodeNames = new Map();
 
@@ -157,7 +195,7 @@ function describe(dir, prefix, file, classify) {
 }
 
 const models = files.map((file) => ({
-  ...describe(MODELS_DIR, 'models', file, (id) => {
+  ...describe(ATOMS_DIR, 'atoms', file, (id) => {
     const size = determineSize(id);
     return {
       family: determineFamily(id).id,
@@ -343,13 +381,14 @@ const catalog = {
     [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS, ...SCENE_GROUPS].map((g) => [g.id, g.name]),
   ),
   views,
-  palettes: PALETTES.map((palette) => ({
-    ...palette,
-    colors: [...materials.values()]
+  palettes: PALETTES.map((palette) => {
+    const colors = [...materials.values()]
       .filter((m) => m.palette === palette.id)
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
-      .map(({ palette: _, ...rest }) => rest),
-  })),
+      .map(({ palette: _, ...rest }) => rest);
+    const short = shorten(colors);
+    return { ...palette, colors: colors.map((color) => ({ ...color, short: short.get(color.key) })) };
+  }),
   models: entries,
 };
 

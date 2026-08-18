@@ -1,4 +1,4 @@
-// Bakes a real grid-plane mesh under each models/*.glb piece, sized and
+// Bakes a real grid-plane mesh under each atoms/*.glb piece, sized and
 // UV-mapped to its own true footprint in cells, and writes the result to
 // thumbnails/. This is real scene geometry (not a CSS overlay) so it's
 // correctly lit, occluded, and framed by model-viewer's own camera —
@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { readGlb, writeGlb, measureScene, UNITS_PER_CELL } from './glb.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const MODELS_DIR = join(ROOT, 'models');
+const MODELS_DIR = join(ROOT, 'atoms');
 const OUT_DIR = join(ROOT, 'thumbnails');
 const GRID_PNG = readFileSync(join(ROOT, 'tools', 'assets', 'grid-tile.png'));
 

@@ -1,0 +1,570 @@
+/* Socket builder — the catalog's Builder tab. Base tokens, typography and the
+   page shell come from catalog.css; the seam verdict colours and this tab's
+   own layout live here.
+
+   The 3D view is the whole tab: it fills the pane and everything else floats
+   over it, so the board is as large as the screen allows rather than a window
+   inside a stack of chrome. */
+
+:root {
+  --mated: #3f8f5f;
+  --partial: #c9a227;
+  --clash: #c9422f;
+  --open: #9a958a;
+  --abut: #4f7a9e;
+  --tap: 40px;
+  --glass: color-mix(in srgb, #fff 78%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mated: #6fbb8a;
+    --partial: #ddbc4c;
+    --clash: #ef7a66;
+    --open: #6d6961;
+    --abut: #79aad0;
+    --glass: color-mix(in srgb, #1a1a17 76%, transparent);
+  }
+}
+
+/* An author `display` beats the UA rule behind the hidden attribute, so the
+   tab has to opt back out explicitly. */
+.builder[hidden] { display: none; }
+
+.builder button,
+.builder label,
+.builder [role="tab"] {
+  transition: transform .09s ease, background-color .12s ease, border-color .12s ease, filter .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Only the small controls shrink under the finger; a tab or a tile that
+   scales reads as broken rather than as pressed, so those darken instead. */
+.builder .hud button:active,
+.builder .hud label:active { transform: scale(.92); }
+
+.builder [role="tab"]:active,
+.builder .tile:active,
+.builder .seam-fits:active,
+.builder .fits-list button:active { filter: brightness(.94); }
+
+.builder button:disabled:active { transform: none; }
+
+.builder {
+  position: relative;
+  height: calc(100svh - var(--chrome, 64px));
+  overflow: hidden;
+  background: var(--paper-deep);
+  touch-action: none;
+  user-select: none;
+}
+
+.viewport {
+  position: absolute;
+  inset: 0;
+}
+
+.viewport canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ----------------------------------------------------------------- hud */
+
+.hud {
+  position: absolute;
+  z-index: 2;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.hud-top {
+  top: 8px;
+  right: 8px;
+  left: 8px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px;
+}
+
+/* Eight controls leave no room for a name on a phone, and "P…" says nothing:
+   the highlighted tile names the piece and the Place button says when it is
+   aimed, so the label only appears where it fits. */
+.brush { display: none; }
+
+@media (min-width: 560px) {
+  .brush { display: block; }
+}
+
+.brush {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0 4px;
+  overflow: hidden;
+  font-weight: 600;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hud button,
+.drawer-tabs button,
+.drawer-toggle,
+.seam-fits,
+.fits-list button,
+.inspect-actions button {
+  min-width: 30px;
+  min-height: 32px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--card-bg);
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.hud button:disabled { opacity: .35; cursor: default; }
+
+.hud button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.hud button.danger {
+  border-color: color-mix(in srgb, var(--clash) 50%, var(--line));
+  color: var(--clash);
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-bg);
+}
+
+.stepper button {
+  min-width: 26px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 16px;
+}
+
+.level {
+  min-width: 16px;
+  padding: 0 1px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Icons carry the controls, so they need to be legible: a stroked glyph at a
+   real size rather than a small character in the middle of a button. */
+.builder [data-icon] svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.hud-views [data-icon] svg { width: 17px; height: 17px; }
+
+/* The camera controls read as a second row of the toolbar rather than as a
+   column stuck to the edge of the view. */
+.hud-views {
+  top: 58px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px;
+}
+
+.hud-views button {
+  min-width: 34px;
+  min-height: 30px;
+  padding: 0 6px;
+  font-size: 11px;
+}
+
+.hud-split {
+  width: 1px;
+  height: 18px;
+  margin: 0 2px;
+  background: var(--line);
+}
+
+.hud-save {
+  bottom: calc(var(--drawer, 46px) + 10px);
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+}
+
+/* Saving is a rare thing to want, so it is one button until it is wanted. */
+.save-more {
+  display: none;
+  gap: 4px;
+}
+
+.hud-save[data-open="true"] .save-more { display: flex; }
+
+.hud-save button,
+.hud-save .open {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 30px;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-bg);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.hud-save .open:hover,
+.hud-save button:hover { border-color: var(--accent); }
+
+/* An author `display` beats the UA rule behind the hidden attribute, so
+   anything laid out here opts back out. */
+.palette[hidden],
+.inspect[hidden] { display: none; }
+
+.legend {
+  position: absolute;
+  bottom: calc(var(--drawer, 46px) + 10px);
+  left: 12px;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 10px;
+  margin: 0;
+  padding: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  list-style: none;
+  pointer-events: none;
+}
+
+.legend li {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.key {
+  width: 13px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.key.mated { background: var(--mated); }
+.key.partial { background: var(--partial); }
+.key.clash { background: var(--clash); }
+.key.open { background: var(--open); }
+.key.abut { background: var(--abut); }
+
+/* -------------------------------------------------------------- drawer */
+
+/* Three heights, cycled by the chevron: a strip, about a third, and half the
+   tab. Anything taller buries the board it is there to serve. */
+.drawer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  height: 46px;
+  border-top: 1px solid var(--line);
+  border-radius: 16px 16px 0 0;
+  background: var(--card-bg);
+  box-shadow: 0 -6px 24px rgb(0 0 0 / 12%);
+  transition: height .18s ease;
+}
+
+.drawer[data-height="half"] { height: 34%; }
+.drawer[data-height="full"] { height: 52%; }
+.drawer[data-height="full"] [data-role="drawer-size"] svg { transform: rotate(180deg); }
+
+.drawer-tabs {
+  display: flex;
+  flex: none;
+  gap: 6px;
+  height: 46px;
+  padding: 6px 8px 0;
+}
+
+.drawer-tabs button[role="tab"] { flex: 1; }
+
+/* The filter belongs with the tabs, not on a row of its own below them. */
+.drawer-tabs select {
+  flex: 1.2;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+}
+
+[data-role="drawer-size"] { flex: none; }
+[data-role="drawer-size"] svg { transition: transform .18s ease; }
+
+.drawer-tabs button[aria-selected="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  font-weight: 600;
+}
+
+.drawer-body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 12px 16px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* ------------------------------------------------------------- palette */
+
+.palette-list,
+.seam-list,
+.stack-list,
+.fits-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Five or six pieces to a row on a phone, like the catalog's own grid: you
+   pick by looking, and the full name is on the tile's title. */
+.palette-list {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+}
+
+@media (min-width: 700px) {
+  .palette-list {
+    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  }
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tile:hover { border-color: color-mix(in srgb, var(--accent) 60%, var(--line)); }
+
+.tile.is-brush {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.tile-view {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--paper-deep);
+}
+
+.tile-view model-viewer,
+.tile-view img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  --poster-color: transparent;
+  --progress-bar-color: var(--accent);
+  --progress-bar-height: 2px;
+}
+
+.tile-colors {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  gap: 2px;
+}
+
+.tile-name {
+  padding: 3px 4px;
+  overflow: hidden;
+  font-size: 9.5px;
+  line-height: 1.3;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Not `.swatch`: the catalog's filter buttons already own that name. */
+.socket-dot {
+  width: 9px;
+  height: 9px;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  border-radius: 2px;
+}
+
+/* ----------------------------------------------------------- inspector */
+
+.inspect h2 {
+  margin: 0 0 2px;
+  font-size: 16px;
+}
+
+.inspect h3 {
+  margin: 16px 0 6px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.inspect-empty,
+.inspect-meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.inspect-meta { margin: 0 0 10px; }
+
+.inspect-warn {
+  margin: 10px 0 0;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--partial) 16%, transparent);
+  font-size: 12px;
+}
+
+.seam-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  align-items: center;
+  margin-bottom: 4px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--open);
+  border-radius: 7px;
+  background: var(--card-bg);
+}
+
+.seam-item.mated { border-left-color: var(--mated); }
+.seam-item.partial { border-left-color: var(--partial); }
+.seam-item.clash { border-left-color: var(--clash); }
+.seam-item.abut { border-left-color: var(--abut); }
+
+.seam-head {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  align-items: center;
+  min-width: 120px;
+  font-size: 12px;
+}
+
+.seam-where {
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+
+.seam-verdict {
+  margin-left: auto;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.seam-verdict.mated { background: color-mix(in srgb, var(--mated) 22%, transparent); color: var(--ink); }
+.seam-verdict.partial { background: color-mix(in srgb, var(--partial) 26%, transparent); color: var(--ink); }
+.seam-verdict.clash { background: color-mix(in srgb, var(--clash) 24%, transparent); color: var(--ink); }
+
+.seam-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.seam-note.fine { color: var(--mated); }
+.seam-note.mixed { color: var(--partial); }
+.seam-note.wants { color: var(--clash); }
+
+.seam-fits {
+  min-width: 0;
+  min-height: 26px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+/* The candidate list is the piece list: same tiles, same size. */
+.fits-list {
+  margin-top: 6px;
+}
+
+.tile-part {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  padding: 0 4px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--partial) 80%, var(--card-bg));
+  color: var(--ink);
+  font-size: 9px;
+}
+
+.stack-list li {
+  padding: 3px 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.stack-list li.rests { color: var(--ink); }
+.stack-list li.muted { font-size: 12px; }
+
+.inspect-actions {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+}

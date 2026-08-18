@@ -26,7 +26,39 @@
   }
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+label,
+summary,
+[role="tab"] {
+  transition: transform .09s ease, background-color .12s ease, border-color .12s ease, filter .12s ease;
+}
+
+/* Only small controls shrink under the finger. A wide button or a tab that
+   scales reads as broken rather than as pressed, so those darken instead. */
+button:active { transform: scale(.94); }
+
+[role="tab"]:active,
+.filter-clear:active,
+.selection-bar button:active,
+.detail-actions button:active,
+.detail-actions a:active {
+  transform: none;
+  filter: brightness(.94);
+}
+
+.offscreen {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 body {
   margin: 0;
@@ -47,7 +79,7 @@ a { color: var(--accent); }
   gap: 12px 24px;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 16px clamp(16px, 4vw, 40px) 14px;
+  padding: 6px clamp(16px, 4vw, 40px);
   background: color-mix(in srgb, var(--paper) 88%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
@@ -104,11 +136,22 @@ a { color: var(--accent); }
   font-weight: 600;
 }
 
+/* An author `display` beats the UA rule behind the hidden attribute, and the
+   builder hides this bar: its filters belong to the catalog's grids. */
+.filter-bar[hidden] { display: none; }
+
+/* The clear button sits with the filters and only ever greys out, so the bar
+   keeps its height and the page under it never jumps as you select. */
 .filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
   padding: 9px clamp(16px, 4vw, 40px);
   border-bottom: 1px solid var(--line);
   background: var(--paper);
 }
+
+.filter-swatches { flex: 1; }
 
 .filter-swatches {
   display: flex;
@@ -139,21 +182,28 @@ a { color: var(--accent); }
   color: var(--ink-soft);
 }
 
+/* One row per group, scrolled sideways rather than wrapped: the bar keeps a
+   fixed height, so selecting a filter never reflows the page under it. */
 .filter-group-swatches {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 5px;
   min-width: 0;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+
+.filter-group-swatches::-webkit-scrollbar { display: none; }
 
 .swatch {
   position: relative;
   flex: none;
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: 1px solid rgba(0, 0, 0, .18);
-  border-radius: 7px;
+  border-radius: 8px;
   background: var(--swatch-color);
   cursor: pointer;
 }
@@ -170,8 +220,8 @@ a { color: var(--accent); }
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 6px;
-  height: 11px;
+  width: 7px;
+  height: 13px;
   border: solid var(--check, #fff);
   border-width: 0 2px 2px 0;
   transform: translateY(-1px) rotate(45deg);
@@ -182,14 +232,14 @@ a { color: var(--accent); }
   align-items: center;
   gap: 6px;
   width: auto;
-  height: 26px;
-  padding: 0 11px 0 8px;
+  height: 34px;
+  padding: 0 12px 0 9px;
   border-radius: 999px;
   border-color: var(--line);
   background: var(--card-bg);
   color: var(--ink-soft);
   font: inherit;
-  font-size: 11.5px;
+  font-size: 10.5px;
   white-space: nowrap;
 }
 
@@ -229,70 +279,74 @@ a { color: var(--accent); }
   cursor: pointer;
 }
 
-.filter-clear[hidden] { display: none; }
+.filter-clear:disabled {
+  opacity: .4;
+  cursor: default;
+}
 
 @media (max-width: 560px) {
   .filter-bar { padding: 8px clamp(16px, 4vw, 40px); }
   .filter-swatches { gap: 6px; }
   .filter-group + .filter-group { padding-top: 6px; }
 
-  .filter-group-swatches {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
 
   .filter-group-swatches::-webkit-scrollbar { display: none; }
   .filter-group-label { display: none; }
-  .swatch { width: 22px; height: 22px; border-radius: 6px; }
-  .swatch.chip { height: 22px; padding: 0 9px 0 7px; font-size: 11px; }
+  .swatch { width: 30px; height: 30px; }
+  .swatch.chip { height: 30px; padding: 0 10px 0 8px; }
 }
 
 main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
-.section { padding-top: 16px; scroll-margin-top: 72px; }
+.section { padding-top: 10px; scroll-margin-top: 60px; }
 .section[hidden] { display: none; }
 
+/* The heading and the rule that used to sit under it are one slim bar. */
 .section-head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 12px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid var(--section-color, var(--line));
-  margin-bottom: 10px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 4px 9px;
+  border-left: 3px solid var(--section-color, var(--line));
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink) 14%, var(--paper-deep));
+  color: color-mix(in srgb, var(--ink) 88%, transparent);
 }
 
 .section-head h2 {
   margin: 0;
-  font-size: 17px;
-  letter-spacing: -.01em;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .01em;
 }
 
 .section-head .count {
-  padding: 2px 9px;
-  border-radius: 999px;
-  background: var(--paper-deep);
-  border: 1px solid var(--line);
-  font-size: 12px;
+  margin-left: auto;
   color: var(--ink-soft);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
 }
 
+/* One raster for atoms, assemblies and scenes, the same the builder's piece
+   list uses, so the whole catalog reads as a single wall of tiles. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  gap: 10px;
+  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
 }
 
-.section[data-facet="assembly"] .grid {
-  grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+@media (min-width: 700px) {
+  .grid {
+    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  }
 }
 
-.section[data-facet="scene"] .grid {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-}
+/* A whole diorama is unreadable at one tile wide, so a scene spans two of
+   them. The raster is unchanged; the card just covers more of it. */
+.section[data-facet="scene"] .card-holder { grid-column: span 2; }
 
-.section[data-facet="scene"] .card-viewer { aspect-ratio: 16 / 9; }
 
 .card-holder { position: relative; display: flex; }
 .card-holder[hidden] { display: none; }
@@ -342,13 +396,14 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   box-shadow: 0 0 0 2px var(--accent), var(--shadow);
 }
 
+/* Same tile as the builder's piece list: same radius, same padding, same
+   one-line name, so the two grids read as one thing across the tab bar. */
 .card {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 10px;
   background: var(--card-bg);
-  box-shadow: var(--shadow);
   overflow: hidden;
   cursor: pointer;
   text-align: left;
@@ -377,35 +432,33 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
+  --progress-bar-height: 2px;
 }
 
 .card-text {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 9px 10px 10px;
+  gap: 2px;
+  padding: 3px 4px;
   border-top: 1px solid var(--line);
 }
 
+/* One line a name, whatever its length: at this tile size a wrapped name
+   crowds out the thing you are actually looking at. */
 .card-name {
-  font-size: 12.5px;
+  overflow: hidden;
+  font-size: 10.5px;
   font-weight: 600;
-  overflow-wrap: anywhere;
-  line-height: 1.25;
-  /* Reserve three lines so the meta rows align across the grid. */
-  min-height: 3.75em;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .is-incomplete { color: var(--warn); }
 
-.card-meta {
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 11px;
-  color: var(--ink-soft);
-}
+/* The section heading already says the family, and the byte count is detail
+   for the dialog, not for a tile this size. */
+.card-meta { display: none; }
 
 .card-brand {
   display: inline-flex;
@@ -475,6 +528,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   width: 100%;
   height: 100%;
   --progress-bar-color: var(--accent);
+  --progress-bar-height: 2px;
 }
 
 .detail-info {
@@ -632,28 +686,13 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 
 @media (max-width: 560px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
-    gap: 6px;
-  }
 
-  .section[data-facet="assembly"] .grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
+  .card-name { font-size: 9.5px; }
 
-  .card-text { padding: 5px 6px 6px; gap: 1px; }
+  /* The tick has to leave the tile something to show. */
+  .card-pick { top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 6px; }
 
-  .card-name {
-    font-size: 10.5px;
-    min-height: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 
-  .card-meta { font-size: 9.5px; }
-  .card-bytes { display: none; }
-  .card-brand { display: none; }
 
   .card-pick { top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 5px; }
   .card-pick::before { inset: -6px; }

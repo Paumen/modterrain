@@ -1,3 +1,5 @@
+import { observe, swapToFloor } from './previews.js';
+
 const number = new Intl.NumberFormat('en-US');
 const unit = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
@@ -12,6 +14,7 @@ const sections = [];
 const views = new Map();
 
 let currentView = null;
+let catalogData = null;
 
 const selectedPaths = new Set();
 const cardsByPath = new Map();
@@ -34,70 +37,6 @@ function span(className, text = '') {
   return element;
 }
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    for (const { target, isIntersecting } of entries) {
-      if (isIntersecting) attachViewer(target);
-      else detachViewer(target);
-    }
-  },
-  { rootMargin: '800px 0px' },
-);
-
-function attachViewer(box) {
-  if (box.querySelector('model-viewer')) return;
-
-  const viewer = document.createElement('model-viewer');
-  viewer.src = box.dataset.src;
-  viewer.alt = box.dataset.alt;
-  viewer.setAttribute('camera-orbit', '35deg 68deg auto');
-  viewer.setAttribute('environment-image', 'neutral');
-  viewer.setAttribute('shadow-intensity', '0.6');
-  viewer.setAttribute('shadow-softness', '0.9');
-  viewer.setAttribute('interaction-prompt', 'none');
-  viewer.setAttribute('disable-zoom', '');
-  viewer.setAttribute('loading', 'eager');
-  if (box.dataset.floorSrc) {
-    viewer.addEventListener('load', () => swapToFloor(viewer, box.dataset.floorSrc), { once: true });
-  }
-  box.replaceChildren(viewer);
-}
-
-// The floored file's own "auto" camera-orbit fits the whole scene, floor
-// included, which zooms out and shrinks the model — the floor is padded
-// past the model's footprint and sits off-center (at its base), so even
-// tight padding inflates the bounding sphere. Loading the plain model first
-// and locking its real auto-resolved framing (camera-orbit's radius is in
-// the same units either way) onto the floored swap keeps the model exactly
-// as prominent as everywhere else, with the floor just extending into frame.
-function swapToFloor(viewer, floorSrc) {
-  const { theta, phi, radius } = viewer.getCameraOrbit();
-  viewer.setAttribute('field-of-view', `${viewer.getFieldOfView()}deg`);
-  viewer.setAttribute('camera-orbit', `${theta}rad ${phi}rad ${radius}m`);
-  viewer.src = floorSrc;
-}
-
-function detachViewer(box) {
-  const viewer = box.querySelector('model-viewer');
-  if (!viewer) return;
-
-  if (viewer.loaded && !box.dataset.snapshot) {
-    try {
-      box.dataset.snapshot = viewer.toDataURL('image/webp', 0.72);
-    } catch {}
-  }
-
-  if (box.dataset.snapshot) {
-    const image = document.createElement('img');
-    image.src = box.dataset.snapshot;
-    image.alt = box.dataset.alt;
-    image.loading = 'lazy';
-    box.replaceChildren(image);
-  } else {
-    box.replaceChildren();
-  }
-}
-
 function makeCard(model, view, section) {
   const card = document.createElement('button');
   card.type = 'button';
@@ -107,13 +46,13 @@ function makeCard(model, view, section) {
   const box = document.createElement('div');
   box.className = 'card-viewer';
   box.dataset.src = model.file;
-  // The Parts tab shows the floored variant (a real grid-plane mesh baked
+  // The Atoms tab shows the floored variant (a real grid-plane mesh baked
   // under the piece, see tools/add-floor.mjs) when one exists; every other
   // view, and the handful of flat pieces with no footprint to floor, use
   // just the plain model. attachViewer loads dataset.src first regardless,
   // so the model's own true auto-framing can be captured and locked before
   // swapping to the floored file — see swapToFloor.
-  if (view === 'parts' && model.floorFile) box.dataset.floorSrc = model.floorFile;
+  if (view === 'atoms' && model.floorFile) box.dataset.floorSrc = model.floorFile;
   box.dataset.alt = `3D model ${model.name}`;
 
   const text = document.createElement('div');
@@ -163,7 +102,7 @@ function makeCard(model, view, section) {
     lastPicked = item;
   });
 
-  observer.observe(box);
+  observe(box);
   return item;
 }
 
@@ -222,18 +161,17 @@ function showDetail(model) {
   const heading = document.querySelector('#detail-name');
   heading.textContent = model.name;
   heading.classList.toggle('is-incomplete', Boolean(model.incomplete));
-  document.querySelector('#detail-origin').textContent =
-    [model.familyName, model.groupName, model.shapeName, model.layerName].filter(Boolean).join(' · ');
-
   const traits = document.querySelector('#detail-traits');
   traits.replaceChildren(...model.traits.map((t) => span('', t)));
 
+  const swatchesOnly = model.group === 'scene-diorama';
   const materialList = document.createElement('span');
+  materialList.className = swatchesOnly ? 'detail-materials swatches' : 'detail-materials';
   for (const key of model.materials) {
     const info = materialInfo.get(key);
-    const chip = span('detail-material', info?.name ?? key);
+    const chip = span('detail-material', swatchesOnly ? '' : (info?.short ?? info?.name ?? key));
+    chip.title = info?.name ?? key;
     if (info) chip.style.setProperty('--material-color', info.hex);
-    if (materialList.childNodes.length) materialList.append(', ');
     materialList.append(chip);
   }
 
@@ -242,7 +180,7 @@ function showDetail(model) {
     ...(model.pieces
       ? [
         ['Built from', `${model.placed} pieces, ${model.pieces.length} distinct`],
-        [`Pieces (${model.pieces.length})`, pieceList(model.pieces)],
+        ...(model.group === 'scene-diorama' ? [] : [[`Pieces (${model.pieces.length})`, pieceList(model.pieces)]]),
         ...(model.missingPieces?.length
           ? [[
             'Not in this repo',
@@ -287,7 +225,7 @@ function showDetail(model) {
   viewer.alt = `3D model ${model.name}`;
   viewer.setAttribute('camera-controls', '');
   viewer.setAttribute('camera-orbit', '35deg 68deg auto');
-  const floorSrc = currentView === 'parts' && model.floorFile;
+  const floorSrc = currentView === 'atoms' && model.floorFile;
   if (floorSrc) viewer.addEventListener('load', () => swapToFloor(viewer, floorSrc), { once: true });
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.7');
@@ -425,14 +363,14 @@ function buildFilterBar(palettes) {
       button.setAttribute('aria-pressed', 'false');
       button.title = `${color.name} ${color.hex} — ${color.count} models · material "${color.source}"`;
       button.setAttribute('aria-label', `${color.name}, ${color.count} models`);
-      if (palette.style === 'chip') button.append(color.name);
+      if (palette.style === 'chip') button.append(color.short ?? color.name);
 
       button.addEventListener('click', () => {
         const on = !selectedMaterials.has(color.key);
         if (on) selectedMaterials.add(color.key);
         else selectedMaterials.delete(color.key);
         button.setAttribute('aria-pressed', String(on));
-        clearButton.hidden = selectedMaterials.size === 0;
+        clearButton.disabled = selectedMaterials.size === 0;
         filter();
       });
 
@@ -447,9 +385,30 @@ function buildFilterBar(palettes) {
   clearButton.addEventListener('click', () => {
     selectedMaterials.clear();
     for (const swatch of swatches) swatch.element.setAttribute('aria-pressed', 'false');
-    clearButton.hidden = true;
+    clearButton.disabled = true;
     filter();
   });
+}
+
+/* The builder is a tool rather than a facet of the models, so it has no
+ * sections to filter and takes over the panel wholesale. Its module is pulled
+ * in the first time the tab is opened, keeping it off the catalog's own load. */
+const builderHost = document.querySelector('#builder');
+const assetVersion = document.querySelector('meta[name="catalog-version"]')?.content;
+let builderLoaded = null;
+
+function showBuilder(data) {
+  builderHost.hidden = false;
+  panel.hidden = true;
+  document.querySelector('#filter-bar').hidden = true;
+  emptyMessage.hidden = true;
+
+  builderLoaded ??= import(assetVersion ? `./builder.js?v=${assetVersion}` : './builder.js')
+    .then((module) => module.mount(builderHost, data))
+    .catch((error) => {
+      builderHost.textContent = `Failed to load the builder: ${error.message}`;
+      console.error(error);
+    });
 }
 
 function switchView(id) {
@@ -458,6 +417,11 @@ function switchView(id) {
     button.setAttribute('aria-selected', String(button.dataset.view === id));
   }
   panel.setAttribute('aria-labelledby', `tab-${id}`);
+
+  if (id === 'builder') return showBuilder(catalogData);
+  builderHost.hidden = true;
+  panel.hidden = false;
+  document.querySelector('#filter-bar').hidden = false;
 
   // A hidden swatch must also lose its selection, or it filters everything away.
   const present = new Set(
@@ -469,7 +433,7 @@ function switchView(id) {
     selectedMaterials.delete(swatch.key);
     swatch.element.setAttribute('aria-pressed', 'false');
   }
-  document.querySelector('#filter-clear').hidden = selectedMaterials.size === 0;
+  document.querySelector('#filter-clear').disabled = selectedMaterials.size === 0;
 
   filter();
 }
@@ -496,10 +460,10 @@ function filter() {
 }
 
 async function start() {
-  const version = document.querySelector('meta[name="catalog-version"]')?.content;
-  const response = await fetch(version ? `catalog/catalog.json?v=${version}` : 'catalog/catalog.json');
+  const response = await fetch(assetVersion ? `catalog/catalog.json?v=${assetVersion}` : 'catalog/catalog.json');
   if (!response.ok) throw new Error(`catalog/catalog.json not found (${response.status})`);
   const data = await response.json();
+  catalogData = data;
 
   const names = new Map(Object.entries(data.facets ?? {}));
   const nameOf = (id) => names.get(id) ?? id;
@@ -554,6 +518,22 @@ async function start() {
       });
     }
   }
+
+  const builderTab = document.createElement('button');
+  builderTab.type = 'button';
+  builderTab.role = 'tab';
+  builderTab.id = 'tab-builder';
+  builderTab.dataset.view = 'builder';
+  builderTab.setAttribute('aria-controls', 'panel');
+  builderTab.setAttribute('aria-selected', 'false');
+  builderTab.textContent = 'Builder';
+  builderTab.addEventListener('click', () => {
+    switchView('builder');
+    history.replaceState(null, '', '#builder');
+    window.scrollTo({ top: 0 });
+  });
+  tabBar.append(builderTab);
+  views.set('builder', { id: 'builder', label: 'Builder' });
 
   const anchor = location.hash.slice(1);
   const targetSection = anchor ? document.getElementById(anchor) : null;
