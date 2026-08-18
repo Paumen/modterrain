@@ -46,7 +46,7 @@ export const FAMILIES = [
   { id: 'iceberg', name: 'Icebergs', color: '#8fc7ff', test: (n) => n.startsWith('Iceberg_') },
   { id: 'docks', name: 'Docks', color: '#c08447', test: (n) => n.startsWith('Docks_') },
   // What's left of the Cave family after its walls, floors and ceilings were
-  // removed: the five pieces that finish the mouth of a cave where it meets
+  // removed: the eight pieces that finish the mouth of a cave where it meets
   // a cliff face, which the Cliff_Cave_Entrance_* assemblies are built from.
   { id: 'cave', name: 'Cave Edges', color: '#7a6a86', test: (n) => n.startsWith('Cave_') },
   // Kept as the structural fallback for anything that matches no other rule
