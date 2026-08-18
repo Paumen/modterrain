@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modular Terrain — Socket Builder</title>
+<meta name="description" content="Place pieces from the modular terrain pack on a grid and see which seams actually mate: matched sockets, colour clashes that will not fit, surface layers that rest on top, and which open edges are safe to leave exposed.">
+<link rel="stylesheet" href="catalog/builder.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🧩</text></svg>">
+</head>
+<body>
+
+<header class="head">
+  <div class="head-title">
+    <h1>Socket Builder</h1>
+    <p class="head-sub">Place pieces and see what mates, what clashes, and what may be left open.</p>
+  </div>
+  <nav class="head-links"><a href="index.html">Catalog →</a></nav>
+</header>
+
+<div class="stage">
+
+  <aside class="palette">
+    <div class="palette-controls">
+      <input type="search" id="search" placeholder="Search pieces" aria-label="Search pieces">
+      <select id="family" aria-label="Filter by family"></select>
+    </div>
+    <p class="palette-count" id="palette-count"></p>
+    <ul class="palette-list" id="palette-list"></ul>
+  </aside>
+
+  <section class="board">
+    <div class="toolbar">
+      <span class="brush" id="brush">Pick a piece to place</span>
+      <span class="toolbar-group">
+        <button type="button" id="rotate" title="Rotate (R)">Rotate <kbd>R</kbd></button>
+        <button type="button" id="mirror" aria-pressed="false" title="Mirror (M)">Mirror <kbd>M</kbd></button>
+      </span>
+      <span class="toolbar-group">
+        <button type="button" id="level-down" title="Lower level">−</button>
+        <span class="level" id="level">level 0</span>
+        <button type="button" id="level-up" title="Raise level">+</button>
+      </span>
+      <span class="toolbar-group">
+        <button type="button" id="clear">Clear</button>
+      </span>
+    </div>
+
+    <div class="grid-wrap">
+      <svg id="grid" role="application" aria-label="Build grid"></svg>
+    </div>
+
+    <ul class="legend">
+      <li><i class="key mated"></i>mates exactly</li>
+      <li><i class="key partial"></i>mates in part</li>
+      <li><i class="key clash"></i>will not fit</li>
+      <li><i class="key open"></i>open edge</li>
+      <li><i class="key abut"></i>neighbour, no socket</li>
+    </ul>
+  </section>
+
+  <aside class="inspect" id="inspect">
+    <p class="inspect-empty">Select a placed piece to inspect its seams.</p>
+  </aside>
+
+</div>
+
+<script src="catalog/builder.js" type="module"></script>
+</body>
+</html>

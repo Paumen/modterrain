@@ -677,3 +677,11 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 
   body:has(.selection-bar:not([hidden])) { padding-bottom: 96px; }
 }
+
+.head-link {
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.head-link:hover { text-decoration: underline; }
