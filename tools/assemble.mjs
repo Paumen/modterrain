@@ -1,18 +1,3 @@
-/**
- * Build one GLB per assembly out of the pieces in models/.
- *
- * The pack ships prefabs — "here is a cliff, made of these 9 pieces at these
- * transforms" — and `assemblies/placements.json` is that placement list,
- * lifted out of the prefabs. This turns a list back into a model:
- *
- *     node tools/assemble.mjs Path_Bridge_River_Wide
- *     node tools/assemble.mjs --all --out assemblies
- *
- * Geometry is merged once per distinct piece and instanced from there, so an
- * assembly that uses the same wall segment nine times carries one copy of it
- * and nine nodes.
- */
-
 import { readdirSync, readFileSync, mkdirSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,40 +7,16 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const MODELS = join(ROOT, 'models');
 const PLACEMENTS = join(ROOT, 'assemblies', 'placements.json');
 
-/* -- coordinate systems --------------------------------------------------
- * The placements come from Unity: left-handed, Y up, one tile = 1.0. The GLBs
- * come from the same source through an FBX → glTF conversion that mirrored X
- * to reach glTF's right-handed space, and that scaled a tile to 100 units
- * (`UNITS_PER_CELL`).
- *
- * So a placement has to be mirrored the same way the geometry was. Mirroring
- * a transform means conjugating it: with F = diag(-1, 1, 1),
- *
- *     F · (T·R·S) · F = T(F·t) · (F·R·F) · S
- *
- * — the translation flips its x, the rotation flips y and z (conjugating a
- * quaternion by F negates the components perpendicular to the mirror axis),
- * and a diagonal scale, mirrored or not, comes through untouched.
- *
- * This is the mapping the pack's own note suggests, and it's the one that
- * holds up: assembled with it, neighbouring tiles meet along their shared
- * edge. Without the mirror the same pieces overlap by whole tiles — curves
- * turn the wrong way and run into their neighbours — which `--no-mirror`
- * exists to show.
+/* Placements are Unity left-handed; the GLBs were mirrored in X by the FBX →
+ * glTF conversion, so each transform must be conjugated by diag(-1, 1, 1):
+ * translation x flips, quaternion y and z negate, scale is untouched. Without
+ * it pieces overlap by whole tiles.
  */
 const placeNode = (pos, quat, scale, mirror) => ({
   translation: [(mirror ? -pos[0] : pos[0]) * UNITS_PER_CELL, pos[1] * UNITS_PER_CELL, pos[2] * UNITS_PER_CELL],
   rotation: mirror ? [quat[0], -quat[1], -quat[2], quat[3]] : quat,
   scale,
 });
-
-/* -- merging -------------------------------------------------------------
- * A merged GLB is the concatenation of its parts with every index rewritten:
- * bufferViews move down the binary chunk, accessors follow their bufferView,
- * meshes follow their accessors and material, and so on up the tree. Each
- * `add*` below appends one array and returns the old index → new index map
- * its dependents need.
- */
 
 const align4 = (n) => (4 - (n % 4)) % 4;
 
@@ -80,7 +41,6 @@ function createMerged() {
   };
 }
 
-/** Appends a piece's binary chunk, 4-byte aligned, and returns where it landed. */
 function addBin(out, bin) {
   const padding = align4(out.binLength);
   if (padding) out.chunks.push(Buffer.alloc(padding));
@@ -90,14 +50,6 @@ function addBin(out, bin) {
   return offset;
 }
 
-/**
- * Rewrites the texture references inside a material. A textureInfo is
- * `baseColorTexture`, `normalTexture`, and whatever an extension adds, so the
- * walk keys off the shape rather than a list of field names: an object whose
- * keys are a textureInfo's keys and nothing else. Anything else carrying an
- * `index` — a future extension indexing into some other array — doesn't match
- * and is copied through untouched.
- */
 const TEXTURE_INFO_KEYS = new Set(['index', 'texCoord', 'scale', 'strength', 'extensions', 'extras']);
 
 const isTextureInfo = (value) => typeof value.index === 'number'
@@ -112,18 +64,6 @@ function remapTextures(value, textureMap) {
   return out;
 }
 
-/**
- * What this merge carries: static geometry, its materials, and its textures.
- * That's the whole pack — 287 files with no animation, no skinning, no morph
- * targets, no sparse accessors, no cameras, and no node-level extensions.
- *
- * A file with any of that would merge into something quietly wrong: a morph
- * target still pointing at the piece's own accessor numbering, a skin at a
- * joint that moved. So the ones that would go unnoticed are a hard error
- * instead, the same call `glb.mjs` makes about sparse accessors. Whoever
- * feeds this a richer file gets told which feature to add support for,
- * rather than a model that looks subtly wrong.
- */
 function checkSupported(json) {
   const unsupported = [
     [(json.accessors ?? []).some((accessor) => accessor.sparse), 'sparse accessors'],
@@ -137,12 +77,6 @@ function checkSupported(json) {
   if (found.length) throw new Error(`assemble.mjs merges static geometry only; this piece uses ${found.join(', ')}`);
 }
 
-/**
- * Merges one piece's geometry, materials and textures into `out`, and returns
- * what an instance of it needs: the piece's own node array (kept as a
- * template — nodes are cloned per instance, since a glTF node has exactly one
- * parent), its scene roots, and the mesh index map.
- */
 function addPiece(out, glb) {
   const { json, bin } = glb;
   checkSupported(json);
@@ -187,8 +121,6 @@ function addPiece(out, glb) {
     out.json.textures.push(copy);
   });
 
-  // Materials are shared across the whole pack — "Cliff Face" is one material
-  // repeated in 138 files — so identical ones collapse into a single entry.
   const materialMap = new Map();
   (json.materials ?? []).forEach((material, index) => {
     const remapped = remapTextures(material, textureMap);
@@ -223,17 +155,6 @@ function addPiece(out, glb) {
   return { nodes, roots, meshMap };
 }
 
-/**
- * Copies one node and everything under it into `out`, returning the new index.
- *
- * Transform, mesh and children come across; `extras` doesn't. Every node in
- * this pack carries the same four fields the FBX exporter attaches
- * (`UserProperties`, `IsNull`, `DefaultAttributeIndex`, `InheritType`), none
- * of which mean anything outside that exporter — and an assembly instantiates
- * up to 35 nodes, so carrying them would be 35 copies of exporter bookkeeping.
- * Anything with actual behaviour attached to a node is refused outright by
- * `checkSupported` rather than silently dropped here.
- */
 function cloneNode(out, piece, index) {
   const node = piece.nodes[index];
   const copy = {};
@@ -248,23 +169,12 @@ function cloneNode(out, piece, index) {
   return at;
 }
 
-/**
- * Assembles one placement list into a single `{ json, bin }` GLB.
- *
- * Missing pieces are skipped rather than fatal: this repo ships 287 of the
- * pack's models, and an assembly reaching for one of the removed props should
- * still build the other 30. They come back in `missing` for the caller to
- * report.
- */
 export function assemble(placements, { mirror = true, models = MODELS } = {}) {
   const out = createMerged();
   const pieces = new Map();
   const missing = [];
-  // Node names inside the models that did load. A prefab lists its child
-  // objects the same way it lists whole models, so `Water_Waterfall_Top_
-  // Center_1x3_Crest` looks like a missing model when it is really one node
-  // of `Water_Waterfall_Top_Center_1x3.glb`, already placed. Those are not
-  // missing: the geometry is in the file next to it.
+  // Node names inside loaded models: a prefab lists its child objects the same
+  // way it lists whole models, so those names are placed geometry, not missing.
   const inside = new Set();
   let placed = 0;
 
@@ -297,15 +207,12 @@ export function assemble(placements, { mirror = true, models = MODELS } = {}) {
   return { json: out.json, bin, placed, missing: [...new Set(missing)].filter((piece) => !inside.has(piece)) };
 }
 
-/* -- cli ---------------------------------------------------------------- */
-
 function main(argv) {
   const flag = (name) => argv.includes(`--${name}`);
   const option = (name, fallback) => {
     const at = argv.indexOf(`--${name}`);
     return at === -1 ? fallback : argv[at + 1];
   };
-  // Everything that isn't a flag or a flag's value is an assembly name.
   const values = new Set(['out', 'data'].map((name) => option(name, null)).filter(Boolean));
   const names = argv.filter((arg) => !arg.startsWith('--') && !values.has(arg));
 
@@ -336,10 +243,6 @@ function main(argv) {
 
     const built = assemble(placements, { mirror });
 
-    /* An assembly whose every piece is gone — the plain cave entrances, once
-     * the cave models were removed — has nothing to write. A .glb holding an
-     * empty scene is worse than no file: the catalog would show a card with
-     * nothing on it. */
     if (built.placed === 0) {
       console.log(`  ${name}: nothing left to build, ${placements.length} pieces all missing`);
       continue;
