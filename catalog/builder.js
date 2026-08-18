@@ -361,9 +361,14 @@ function topmostAt(x, z) {
 
 function addAt(x, z) {
   if (!brush) return;
+  addPiece(brush, { cx: x, cz: z, level, rot: rotation, mirror: mirrored });
+}
+
+function addPiece(pieceId, { cx, cz, level: at, rot, mirror }) {
+  const piece = sockets.pieces[pieceId];
+  if (!piece) return;
   const id = nextId++;
-  const piece = sockets.pieces[brush];
-  placements.push({ id, piece: brush, dir: piece.dir, scale: piece.scale, cx: x, cz: z, level, rot: rotation, mirror: mirrored });
+  placements.push({ id, piece: pieceId, dir: piece.dir, scale: piece.scale, cx, cz, level: at, rot, mirror });
   selected = id;
   render();
   showInspector();
@@ -377,6 +382,7 @@ function addAt(x, z) {
     showSheet('seams');
     openDrawer(true);
   }
+  return id;
 }
 
 /* One column means the palette and the seam report cannot both be on screen,
@@ -472,7 +478,7 @@ function candidates(socket) {
           if (other.facing === socket.facing) continue;
           const result = compare(socket, other);
           if (!result || result.agree === 0) continue;
-          found.push({ piece, rot, mirror, agree: result.agree, of: steps(socket) });
+          found.push({ piece, rot, mirror, cx, cz, level: trial.level, agree: result.agree, of: steps(socket) });
         }
       }
     }
@@ -612,22 +618,34 @@ function showCandidates(item, socket, button) {
     item.append(element('p', 'seam-note wants', 'no piece in the pack presents a matching profile here'));
     return;
   }
-  const list = element('ul', 'fits-list');
+  /* The same tile as the piece list, and choosing one puts it on the board:
+   * the cell, the turn and the mirror are all already known — that is what
+   * made it a candidate. */
+  const list = element('ul', 'fits-list palette-list');
   for (const match of matches.slice(0, 12)) {
+    const piece = sockets.pieces[match.piece];
+    const name = names.get(match.piece) ?? match.piece;
     const entry = element('li');
-    const button2 = element('button', null,
-      `${short(match.piece)}${match.rot ? ` · ${match.rot * 90}°` : ''}${match.mirror ? ' · mirrored' : ''}`
-      + `${match.agree < match.of ? ` · ${pct(match.agree / match.of)}` : ''}`);
-    button2.addEventListener('click', () => {
-      brush = match.piece;
-      rotation = match.rot;
-      mirrored = match.mirror;
-      syncToolbar();
+    const tile = element('button', 'tile');
+    tile.title = `${name}${match.rot ? ` · ${match.rot * 90}°` : ''}${match.mirror ? ' · mirrored' : ''}`
+      + `${match.agree < match.of ? ` · covers ${pct(match.agree / match.of)}` : ''}`;
+
+    const box = element('span', 'tile-view');
+    box.dataset.src = `${piece.dir}/${match.piece}.glb`;
+    box.dataset.alt = `3D model ${name}`;
+    tile.append(box);
+    if (match.agree < match.of) tile.append(element('span', 'tile-part', pct(match.agree / match.of)));
+    tile.append(element('span', 'tile-name', name));
+
+    tile.addEventListener('click', () => {
+      addPiece(match.piece, { cx: match.cx, cz: match.cz, level: match.level, rot: match.rot, mirror: match.mirror });
+      showSheet('seams');
     });
-    entry.append(button2);
+    entry.append(tile);
     list.append(entry);
+    observe(box);
   }
-  item.append(element('p', 'seam-note', `${matches.length} piece${matches.length === 1 ? '' : 's'} would mate here — click to load one:`));
+  item.append(element('p', 'seam-note', `${matches.length} would mate — tap to attach:`));
   item.append(list);
 }
 
@@ -776,8 +794,12 @@ export async function mount(container, catalog) {
 
   role('orbit-left').addEventListener('click', () => viewport.orbit(-Math.PI / 8));
   role('orbit-right').addEventListener('click', () => viewport.orbit(Math.PI / 8));
-  role('zoom-in').addEventListener('click', () => viewport.zoom(0.8));
-  role('zoom-out').addEventListener('click', () => viewport.zoom(1.25));
+  const stepZoom = (direction) => {
+    const distance = viewport.zoom(direction);
+    if (host) host.dataset.zoom = distance.toFixed(2);
+  };
+  role('zoom-in').addEventListener('click', () => stepZoom(-1));
+  role('zoom-out').addEventListener('click', () => stepZoom(1));
 
   removeButton = role('remove');
   removeButton.addEventListener('click', () => remove(selected));

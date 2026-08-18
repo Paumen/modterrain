@@ -538,14 +538,21 @@
   font-size: 11px;
 }
 
+/* The candidate list is the piece list: same tiles, same size. */
 .fits-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
   margin-top: 6px;
 }
 
-.fits-list button { font-size: 12px; }
+.tile-part {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  padding: 0 4px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--partial) 80%, var(--card-bg));
+  color: var(--ink);
+  font-size: 9px;
+}
 
 .stack-list li {
   padding: 3px 0;

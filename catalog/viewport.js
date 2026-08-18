@@ -129,6 +129,10 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
 
   let frameNeeded = true;
   let steered = false;
+  // Where the build is. Turning or zooming pivots on this rather than on
+  // wherever the camera was first aimed, or the view swings around a point
+  // off to one side of what is being built.
+  const middle = new THREE.Vector3(0, 0.5, 0);
   controls.addEventListener('start', () => { steered = true; });
   const draw = () => { renderer.render(scene, camera); frameNeeded = false; };
   const invalidate = () => { frameNeeded = true; };
@@ -272,6 +276,7 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   function setView(name) {
     const [pitch, yaw] = ANGLES[name] ?? ANGLES.iso;
     const distance = camera.position.distanceTo(controls.target);
+    controls.target.copy(middle);
     camera.position.set(
       controls.target.x + distance * Math.cos(pitch) * Math.sin(yaw + Math.PI / 4),
       controls.target.y + distance * Math.sin(pitch),
@@ -285,6 +290,7 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   /* Turning and zooming from buttons as well as from the drag, because on a
    * touch screen the drag is also how a piece gets placed. */
   function orbit(radians) {
+    controls.target.copy(middle);
     const offset = camera.position.clone().sub(controls.target);
     const angle = Math.atan2(offset.x, offset.z) + radians;
     const flat = Math.hypot(offset.x, offset.z);
@@ -298,13 +304,27 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
     invalidate();
   }
 
-  function zoom(factor) {
+  /* Five standing zoom stops rather than a free factor, so the buttons land
+   * on the same handful of framings every time. They are spaced by a constant
+   * ratio: a step near the build and a step far from it look the same size. */
+  const ZOOM_STOPS = [3.5, 6, 10.4, 17.9, 31];
+
+  // A drag or a pinch leaves the camera between stops. The first press then
+  // snaps to the neighbouring stop in the direction asked for; from there on
+  // every press is exactly one stop.
+  function zoom(direction) {
+    const inward = direction < 0;
+    const stops = inward ? [...ZOOM_STOPS].reverse() : ZOOM_STOPS;
+    controls.target.copy(middle);
     const offset = camera.position.clone().sub(controls.target);
-    const distance = Math.min(Math.max(offset.length() * factor, controls.minDistance), controls.maxDistance);
+    const current = offset.length();
+    const next = stops.find((stop) => (inward ? stop < current * 0.99 : stop > current * 1.01));
+    const distance = next ?? stops[stops.length - 1];
     camera.position.copy(controls.target).add(offset.setLength(distance));
     controls.update();
     steered = true;
     invalidate();
+    return distance;
   }
 
   // Sockets can be taken back out of the view once they have been read; the
@@ -414,6 +434,18 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
         quad.position.set(mid, socket.floor + height / 2, socket.at);
       }
       seams.add(quad);
+    }
+
+    // The pivot follows the build, whether or not the camera does.
+    if (placements.length) {
+      const box = new THREE.Box3();
+      for (const placement of placements) {
+        box.expandByPoint(new THREE.Vector3(placement.cx, placement.level, placement.cz));
+      }
+      box.getCenter(middle);
+      middle.y += 0.5;
+    } else {
+      middle.set(0, 0.5, 0);
     }
 
     marks.clear();
