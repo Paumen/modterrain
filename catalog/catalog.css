@@ -287,10 +287,14 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 }
 
 .section[data-facet="assembly"] .grid {
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
 }
 
-.section[data-facet="assembly"] .card-viewer { aspect-ratio: 4 / 3; }
+.section[data-facet="scene"] .grid {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.section[data-facet="scene"] .card-viewer { aspect-ratio: 16 / 9; }
 
 .card-holder { position: relative; display: flex; }
 .card-holder[hidden] { display: none; }
@@ -362,7 +366,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .card-viewer {
   position: relative;
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 3;
   background:
     radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent 68%),
     var(--paper-deep);

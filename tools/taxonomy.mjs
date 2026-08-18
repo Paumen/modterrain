@@ -90,6 +90,10 @@ const TRAITS = [
   [/Sign/, 'sign'],
 ];
 
+// No Water_/Terrain_Water_ clause below: every assembly that matched one was a
+// single-piece rebuild of a models/ file, not a real multi-piece prefab, and got
+// dropped from assemblies/. Don't re-add the clause without re-adding assemblies
+// that need it.
 export const ASSEMBLY_GROUPS = [
   { id: 'assembly-cliff', name: 'Cliff Runs', color: '#9a8f80', test: (n) => n.startsWith('Cliff_Assembly_') },
   { id: 'assembly-water', name: 'Waterfalls & Cave Entrances', color: '#2fc7e8', test: (n) => n.startsWith('Cliff_') },
