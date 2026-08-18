@@ -17,6 +17,17 @@ itself does, measured from those files — not a guess.
   X translation and the quaternion's Y and Z), while
   `scenes/riverfall-bluff.json` is `gltf_right_handed_y_up` and is assembled
   with `--no-mirror`. Always check `coords` before reusing transforms.
+
+  Worked example, straight from `Cliff_Assembly_Curve_Inner_1_Base`:
+
+  | | pos | quat (x y z w) | scale |
+  |---|---|---|---|
+  | Unity (placements.json) | `[3, 0, -2]` | `[0, 0.707107, 0, 0.707107]` | `[-1, 1, 1]` |
+  | glTF (after conjugation) | `[-3, 0, -2]` | `[0, -0.707107, 0, 0.707107]` | `[-1, 1, 1]` |
+
+  X of the position flips, Y and Z of the quaternion negate (the sense of
+  the yaw reverses), the scale — including a mirror — passes through
+  untouched.
 - **Facing convention** (glTF space): a piece at rotation 0 is a cliff whose
   face looks down −X and whose solid land is the +X half of its cell. Ringing
   a plateau: west edge 0°, north +Z 90°, east 180°, south 270°.
@@ -59,26 +70,35 @@ Across all 783 prefab placements only these transforms occur:
   face. Plain-hidden contact is the normal state of most of a joint.
 - All colour-coded sockets are **vertical** faces (their normals are
   horizontal). Layers stack by grid position, not by socket.
-- Where each colour shows up in the pack's own joints:
+- Where each colour shows up in the pack's own joints, by terrain context:
+
+  *Cliffs, cracks, caves, walls*
   - **Yellow** — the cliff rim/lip profile: `Basic` tops joining along a
     cliff run, `Cracked` crack walls, grass-carpet lip ends, `Cave_Edge`
     bands, the outer ends of path crowns against the plain cliff run.
+  - **Green** — the cave / wall arch interior profile.
+
+  *Grass slabs and hill banks*
+  - **Violet** — the flat grass slab edge (0–0.25 cells): flat grass to flat
+    grass, path verge to the field beside it.
   - **Orange** — a full-height straight cut through grass slab/bank interior:
     grass-carpet back edges, the cliff top's plateau-facing edge, the high
     end of hill pieces, the bridge path centreline.
-  - **Violet** — the flat grass slab edge (0–0.25 cells): flat grass to flat
-    grass, path verge to the field beside it.
+  - **Pink** — the sharp hill's sloped side profile.
+  - **Blue** — the gentle hill's sloped side.
+
+  *Paths, sand, waterfalls, icebergs*
   - **Red** — the dirt track cross-section: path tile to path tile along the
     run; also sand.
-  - **Pink** — the sharp hill's sloped side profile; also joins the two
-    mirrored halves of path-end crowns and iceberg pieces.
-  - **Green** — the cave / wall arch interior profile.
-  - **Blue** — the gentle hill's sloped side; waterfall crown terrain joints;
-    wall runs.
-  - Colours repeat across families that never touch (pink on hills vs. on
-    icebergs is not the same cross-section). Mate a colour with itself in the
-    pairings the pack itself demonstrates; a colour match between unrelated
-    families is not evidence the profiles agree.
+  - **Pink** — also joins the two mirrored halves of path-end crowns and of
+    iceberg pieces.
+  - **Blue** — also waterfall crown terrain joints and wall runs.
+
+  As those double entries show, colours repeat across families that never
+  touch (pink on hills vs. on icebergs is not the same cross-section). Mate
+  a colour with itself in the pairings the pack itself demonstrates; a
+  colour match between unrelated families is not evidence the profiles
+  agree.
 - `node tools/sockets.mjs <file.glb> [--verbose]` measures how much socket
   area is mated vs. open. Two caveats, both visible on the pack's own
   prefabs: its "joined across colors" warning also fires when two unrelated
