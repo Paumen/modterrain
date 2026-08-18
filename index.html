@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Modular Terrain — 3D Catalog</title>
 <meta name="description" content="Browsable catalog of 270 models from a modular terrain pack: cliffs, walls, cracked cliffs, terrain paths, grass, sand, water, and props — by part, shape, layer, and grid size, plus the pack's own assemblies rebuilt from those pieces.">
-<meta name="catalog-version" content="3b6140ff39">
-<link rel="stylesheet" href="catalog/catalog.css?v=3b6140ff39">
-<link rel="stylesheet" href="catalog/builder.css?v=3b6140ff39">
+<meta name="catalog-version" content="755fc8b6ab">
+<link rel="stylesheet" href="catalog/catalog.css?v=755fc8b6ab">
+<link rel="stylesheet" href="catalog/builder.css?v=755fc8b6ab">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⛰️</text></svg>">
 </head>
 <body>
@@ -37,26 +37,29 @@
 
   <div class="hud hud-top">
     <p class="brush" data-role="brush"></p>
-    <button type="button" data-role="rotate" data-icon title="Rotate (R)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></button>
-    <button type="button" data-role="mirror" data-icon aria-pressed="false" title="Mirror (M)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="M8 8 4 12l4 4"/><path d="m16 8 4 4-4 4"/></svg></button>
+    <button type="button" data-role="rotate" data-icon title="Rotate (R)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg></button>
+    <button type="button" data-role="mirror" data-icon aria-pressed="false" title="Mirror (M)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7 5 5-5 5V7"/><path d="m21 7-5 5 5 5V7"/><path d="M12 3v2m0 4v2m0 4v2m0 4v2"/></svg></button>
     <span class="stepper">
       <button type="button" data-role="down" aria-label="Lower level">&minus;</button>
-      <span class="level" data-role="level">0</span>
+      <span class="level" data-role="level" title="Build level">0</span>
       <button type="button" data-role="up" aria-label="Raise level">+</button>
     </span>
-    <button type="button" data-role="place" data-icon title="Place the aimed piece (Enter)" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg></button>
-    <button type="button" data-role="remove" data-icon title="Remove the selected piece" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M6 7l1 13h10l1-13"/></svg></button>
-    <button type="button" data-role="undo" data-icon title="Undo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h11a5 5 0 0 1 0 10H8"/><path d="M4 9l4-4M4 9l4 4"/></svg></button>
-    <button type="button" data-role="redo" data-icon title="Redo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 9H9a5 5 0 0 0 0 10h7"/><path d="m20 9-4-4m4 4-4 4"/></svg></button>
-    <button type="button" data-role="clear" data-icon title="Clear the board"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    <button type="button" data-role="place" data-icon title="Place the aimed piece (Enter)" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+    <button type="button" data-role="remove" data-icon title="Remove the selected piece" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg></button>
+    <button type="button" data-role="undo" data-icon title="Undo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+    <button type="button" data-role="redo" data-icon title="Redo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
+    <button type="button" data-role="clear" data-icon title="Clear the board"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
   </div>
 
-  <div class="hud hud-save">
-    <button type="button" data-role="save-json" title="Save the build as JSON">JSON</button>
-    <button type="button" data-role="save-glb" title="Export the build as GLB">GLB</button>
-    <label class="open" title="Open a saved build">
-      Open<input type="file" data-role="open" accept="application/json,.json" hidden>
-    </label>
+  <div class="hud hud-save" data-role="save" data-open="false">
+    <button type="button" data-role="save-toggle" data-icon aria-expanded="false" aria-label="Save, export or open a build"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg></button>
+    <span class="save-more">
+      <button type="button" data-role="save-json" title="Save the build as JSON">JSON</button>
+      <button type="button" data-role="save-glb" title="Export the build as GLB">GLB</button>
+      <label class="open" title="Open a saved build">
+        Open<input type="file" data-role="open" accept="application/json,.json" hidden>
+      </label>
+    </span>
   </div>
 
   <div class="hud hud-views">
@@ -64,10 +67,10 @@
     <button type="button" data-role="view-iso" title="Angled view">Iso</button>
     <button type="button" data-role="view-front" title="Front view">Front</button>
     <span class="hud-split"></span>
-    <button type="button" data-role="orbit-left" data-icon aria-label="Turn left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66"/><path d="M4 4v5h5"/></svg></button>
-    <button type="button" data-role="orbit-right" data-icon aria-label="Turn right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></button>
-    <button type="button" data-role="zoom-in" data-icon aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M11 8v6M8 11h6M20 20l-4.7-4.7"/></svg></button>
-    <button type="button" data-role="zoom-out" data-icon aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M8 11h6M20 20l-4.7-4.7"/></svg></button>
+    <button type="button" data-role="orbit-left" data-icon aria-label="Turn left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9c-2.52 0-4.93 1-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+    <button type="button" data-role="orbit-right" data-icon aria-label="Turn right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg></button>
+    <button type="button" data-role="zoom-in" data-icon aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></button>
+    <button type="button" data-role="zoom-out" data-icon aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg></button>
   </div>
 
   <ul class="legend">
@@ -77,15 +80,16 @@
     <li><i class="key open"></i>open</li>
   </ul>
 
-  <div class="drawer" data-role="drawer">
+  <div class="drawer" data-role="drawer" data-height="half">
     <div class="drawer-tabs" role="tablist">
       <button type="button" role="tab" data-role="tab-pieces" aria-selected="true">Pieces</button>
       <button type="button" role="tab" data-role="tab-seams" aria-selected="false">Seams</button>
+      <select data-role="family" aria-label="Filter pieces"></select>
+      <button type="button" data-role="drawer-size" data-icon aria-label="Resize the panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
     </div>
 
     <div class="drawer-body">
       <section class="palette" data-role="panel-pieces" role="tabpanel">
-        <select data-role="family" aria-label="Filter pieces"></select>
         <ul class="palette-list" data-role="list"></ul>
       </section>
 
@@ -123,6 +127,6 @@
 { "imports": { "three": "./vendor/three/build/three.module.min.js" } }
 </script>
 <script src="vendor/model-viewer.min.js" type="module"></script>
-<script src="catalog/catalog.js?v=3b6140ff39" type="module"></script>
+<script src="catalog/catalog.js?v=755fc8b6ab" type="module"></script>
 </body>
 </html>

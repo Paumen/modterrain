@@ -413,10 +413,20 @@ function showPick() {
   if (removeButton) removeButton.disabled = !placements.some((entry) => entry.id === selected);
 }
 
+/* Shut, part-open, open. The chevron walks up through them and back down
+ * from the top, so one control covers every height. */
+const HEIGHTS = ['shut', 'half', 'full'];
+
+function setDrawer(height) {
+  if (!drawer) return;
+  drawer.root.dataset.height = height;
+  measureDrawer();
+}
+
 function openDrawer(open) {
   if (!drawer) return;
-  drawer.root.classList.toggle('is-shut', !open);
-  measureDrawer();
+  if (!open) return setDrawer('shut');
+  if (drawer.root.dataset.height === 'shut') setDrawer('half');
 }
 
 /* Whatever floats over the view has to clear the drawer, and the drawer's
@@ -670,7 +680,7 @@ function syncToolbar() {
   brushLabel.textContent = !name ? 'Pick a piece — then tap once to aim, again to place'
     : `${armed ? 'Tap again to place · ' : ''}${name}`
       + `${rotation ? ` · ${rotation * 90}°` : ''}${mirrored ? ' · mirrored' : ''}`;
-  levelLabel.textContent = `level ${Number(level.toFixed(3))}`;
+  levelLabel.textContent = String(Number(level.toFixed(3)));
   mirrorButton.setAttribute('aria-pressed', String(mirrored));
   if (placeButton) placeButton.disabled = !armed;
   if (host) host.dataset.aim = armed ? `${armed.cx},${armed.cz}` : '';
@@ -772,6 +782,18 @@ export async function mount(container, catalog) {
   drawer.root.addEventListener('transitionend', measureDrawer);
   new ResizeObserver(measureDrawer).observe(drawer.root);
 
+  role('drawer-size').addEventListener('click', () => {
+    const at = HEIGHTS.indexOf(drawer.root.dataset.height);
+    setDrawer(HEIGHTS[at >= HEIGHTS.length - 1 ? 0 : at + 1]);
+  });
+
+  const save = role('save');
+  role('save-toggle').addEventListener('click', () => {
+    const open = save.dataset.open !== 'true';
+    save.dataset.open = String(open);
+    role('save-toggle').setAttribute('aria-expanded', String(open));
+  });
+
   sheet = {
     pieces: { tab: role('tab-pieces'), panel: role('panel-pieces') },
     seams: { tab: role('tab-seams'), panel: role('panel-seams') },
@@ -794,7 +816,7 @@ export async function mount(container, catalog) {
   });
   for (const name of Object.keys(sheet)) {
     sheet[name].tab.addEventListener('click', () => {
-      const shut = drawer.root.classList.contains('is-shut');
+      const shut = drawer.root.dataset.height === 'shut';
       const already = sheet[name].tab.getAttribute('aria-selected') === 'true';
       showSheet(name);
       openDrawer(shut || !already);

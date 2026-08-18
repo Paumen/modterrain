@@ -35,12 +35,21 @@ button,
 label,
 summary,
 [role="tab"] {
-  transition: transform .09s ease, background-color .12s ease, border-color .12s ease;
+  transition: transform .09s ease, background-color .12s ease, border-color .12s ease, filter .12s ease;
 }
 
-button:active,
-label:active,
-[role="tab"]:active { transform: scale(.94); }
+/* Only small controls shrink under the finger. A wide button or a tab that
+   scales reads as broken rather than as pressed, so those darken instead. */
+button:active { transform: scale(.94); }
+
+[role="tab"]:active,
+.filter-clear:active,
+.selection-bar button:active,
+.detail-actions button:active,
+.detail-actions a:active {
+  transform: none;
+  filter: brightness(.94);
+}
 
 .offscreen {
   position: absolute;
@@ -70,7 +79,7 @@ a { color: var(--accent); }
   gap: 12px 24px;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 16px clamp(16px, 4vw, 40px) 14px;
+  padding: 6px clamp(16px, 4vw, 40px);
   background: color-mix(in srgb, var(--paper) 88%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
@@ -126,6 +135,10 @@ a { color: var(--accent); }
   box-shadow: var(--shadow);
   font-weight: 600;
 }
+
+/* An author `display` beats the UA rule behind the hidden attribute, and the
+   builder hides this bar: its filters belong to the catalog's grids. */
+.filter-bar[hidden] { display: none; }
 
 /* The clear button sits with the filters and only ever greys out, so the bar
    keeps its height and the page under it never jumps as you select. */
@@ -294,10 +307,11 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   gap: 8px;
   align-items: center;
   margin-bottom: 6px;
-  padding: 3px 8px;
+  padding: 4px 9px;
   border-left: 3px solid var(--section-color, var(--line));
   border-radius: 3px;
-  background: var(--paper-deep);
+  background: color-mix(in srgb, var(--ink) 14%, var(--paper-deep));
+  color: color-mix(in srgb, var(--ink) 88%, transparent);
 }
 
 .section-head h2 {
@@ -428,13 +442,15 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   border-top: 1px solid var(--line);
 }
 
+/* One line a name, whatever its length: at this tile size a wrapped name
+   crowds out the thing you are actually looking at. */
 .card-name {
-  font-size: 12.5px;
+  overflow: hidden;
+  font-size: 10.5px;
   font-weight: 600;
-  overflow-wrap: anywhere;
-  line-height: 1.25;
-  /* Reserve three lines so the meta rows align across the grid. */
-  min-height: 3.75em;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .is-incomplete { color: var(--warn); }
@@ -676,16 +692,7 @@ body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
 @media (max-width: 560px) {
   .card-text { padding: 5px 6px 6px; gap: 1px; }
 
-  .card-name {
-    display: -webkit-box;
-    min-height: 0;
-    height: 2.5em;
-    overflow: hidden;
-    font-size: 10px;
-    line-height: 1.25;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
+  .card-name { font-size: 9.5px; }
 
   /* The tick has to leave the tile something to show. */
   .card-pick { top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 6px; }

@@ -16,10 +16,6 @@
   --glass: color-mix(in srgb, #fff 78%, transparent);
 }
 
-@media (min-width: 900px) {
-  .drawer { max-height: 42%; }
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --mated: #6fbb8a;
@@ -38,13 +34,19 @@
 .builder button,
 .builder label,
 .builder [role="tab"] {
-  transition: transform .09s ease, background-color .12s ease, border-color .12s ease;
+  transition: transform .09s ease, background-color .12s ease, border-color .12s ease, filter .12s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.builder button:active,
-.builder label:active,
-.builder [role="tab"]:active { transform: scale(.92); }
+/* Only the small controls shrink under the finger; a tab or a tile that
+   scales reads as broken rather than as pressed, so those darken instead. */
+.builder .hud button:active,
+.builder .hud label:active { transform: scale(.92); }
+
+.builder [role="tab"]:active,
+.builder .tile:active,
+.builder .seam-fits:active,
+.builder .fits-list button:active { filter: brightness(.94); }
 
 .builder button:disabled:active { transform: none; }
 
@@ -91,8 +93,17 @@
   padding: 5px;
 }
 
+/* Eight controls leave no room for a name on a phone, and "P…" says nothing:
+   the highlighted tile names the piece and the Place button says when it is
+   aimed, so the label only appears where it fits. */
+.brush { display: none; }
+
+@media (min-width: 560px) {
+  .brush { display: block; }
+}
+
 .brush {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
   margin: 0;
   padding: 0 4px;
@@ -109,11 +120,11 @@
 .seam-fits,
 .fits-list button,
 .inspect-actions button {
-  min-width: 34px;
-  min-height: 34px;
-  padding: 0 8px;
+  min-width: 30px;
+  min-height: 32px;
+  padding: 0 6px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 9px;
   background: var(--card-bg);
   color: inherit;
   font: inherit;
@@ -145,7 +156,7 @@
 }
 
 .stepper button {
-  min-width: 30px;
+  min-width: 26px;
   border: 0;
   border-radius: 0;
   background: none;
@@ -153,8 +164,8 @@
 }
 
 .level {
-  min-width: 26px;
-  padding: 0 2px;
+  min-width: 16px;
+  padding: 0 1px;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
   font-size: 13px;
@@ -165,8 +176,8 @@
 /* Icons carry the controls, so they need to be legible: a stroked glyph at a
    real size rather than a small character in the middle of a button. */
 .builder [data-icon] svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.9;
@@ -208,6 +219,14 @@
   gap: 4px;
   padding: 4px;
 }
+
+/* Saving is a rare thing to want, so it is one button until it is wanted. */
+.save-more {
+  display: none;
+  gap: 4px;
+}
+
+.hud-save[data-open="true"] .save-more { display: flex; }
 
 .hud-save button,
 .hud-save .open {
@@ -268,6 +287,8 @@
 
 /* -------------------------------------------------------------- drawer */
 
+/* Three heights, cycled by the chevron: a strip, about a third, and half the
+   tab. Anything taller buries the board it is there to serve. */
 .drawer {
   position: absolute;
   right: 0;
@@ -276,25 +297,44 @@
   z-index: 3;
   display: flex;
   flex-direction: column;
-  max-height: 58%;
+  height: 46px;
   border-top: 1px solid var(--line);
   border-radius: 16px 16px 0 0;
   background: var(--card-bg);
   box-shadow: 0 -6px 24px rgb(0 0 0 / 12%);
-  transition: transform .18s ease;
+  transition: height .18s ease;
 }
 
-.drawer.is-shut { transform: translateY(calc(100% - 46px)); }
+.drawer[data-height="half"] { height: 34%; }
+.drawer[data-height="full"] { height: 52%; }
+.drawer[data-height="full"] [data-role="drawer-size"] svg { transform: rotate(180deg); }
 
 .drawer-tabs {
   display: flex;
   flex: none;
   gap: 6px;
   height: 46px;
-  padding: 6px 10px 0;
+  padding: 6px 8px 0;
 }
 
-.drawer-tabs button { flex: 1; }
+.drawer-tabs button[role="tab"] { flex: 1; }
+
+/* The filter belongs with the tabs, not on a row of its own below them. */
+.drawer-tabs select {
+  flex: 1.2;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+}
+
+[data-role="drawer-size"] { flex: none; }
+[data-role="drawer-size"] svg { transition: transform .18s ease; }
 
 .drawer-tabs button[aria-selected="true"] {
   border-color: var(--accent);
@@ -311,19 +351,6 @@
 }
 
 /* ------------------------------------------------------------- palette */
-
-.palette select {
-  width: 100%;
-  min-height: var(--tap);
-  margin-bottom: 8px;
-  padding: 7px 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--card-bg);
-  color: inherit;
-  font: inherit;
-  font-size: 13px;
-}
 
 .palette-list,
 .seam-list,
@@ -398,15 +425,13 @@
 }
 
 .tile-name {
-  display: -webkit-box;
-  height: 2.9em;
   padding: 3px 4px;
   overflow: hidden;
-  font-size: 10px;
-  line-height: 1.25;
+  font-size: 9.5px;
+  line-height: 1.3;
   text-align: left;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Not `.swatch`: the catalog's filter buttons already own that name. */
