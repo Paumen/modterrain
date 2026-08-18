@@ -76,8 +76,8 @@ nine wall segments of a cliff cost one copy of the wall and nine nodes.
 
 Whatever ends up in `assemblies/` shows up in the catalog's **Assemblies**
 tab on the next `node tools/build-catalog.mjs`, with the piece list it was
-built from in the detail panel. Six are checked in: two river bridges, two
-cliff runs, a waterfall cave entrance, and the large crack.
+built from in the detail panel. Twenty are checked in: cliff runs,
+waterfalls, river transitions, the two river bridges, and the large crack.
 
 109 of the 123 build with every piece present. The remaining 14 are the
 waterfalls, which all reach for `Mist` and `Ripple` — particle effects that
