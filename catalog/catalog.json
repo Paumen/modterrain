@@ -18307,11 +18307,8 @@
    "traits": [],
    "variant": null,
    "placed": 3,
-   "missingPieces": [
-    "Water_Waterfall_Top_Center_1x3_Crest",
-    "Water_Waterfall_Top_Center_1x3_River"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Center_1x3",
@@ -18367,11 +18364,8 @@
    "traits": [],
    "variant": null,
    "placed": 3,
-   "missingPieces": [
-    "Water_Waterfall_Top_Left_2x3_Crest",
-    "Water_Waterfall_Top_Left_2x3_River"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Left_2x3",
@@ -18427,11 +18421,8 @@
    "traits": [],
    "variant": null,
    "placed": 3,
-   "missingPieces": [
-    "Water_Waterfall_Top_Right_2x3_Crest",
-    "Water_Waterfall_Top_Right_2x3_River"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Water_Waterfall_Top_Right_2x3",

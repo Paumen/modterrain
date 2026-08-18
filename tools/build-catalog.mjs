@@ -164,6 +164,9 @@ function writeVersion() {
 const files = readdirSync(MODELS_DIR).filter((name) => name.endsWith('.glb')).sort();
 if (files.length === 0) throw new Error('no .glb files in models/');
 
+/** model id → the names of the nodes inside it; see `missing` below. */
+const nodeNames = new Map();
+
 /** material key → { key, palette, name, source, hex, count } */
 const materials = new Map();
 const unknownMaterials = new Set();
@@ -181,6 +184,7 @@ function describe(dir, prefix, file, classify) {
   const id = file.replace(/\.glb$/, '');
   const glb = readGlb(join(dir, file));
   const measured = measureScene(glb);
+  nodeNames.set(id, new Set((glb.json.nodes ?? []).map((node) => node.name).filter(Boolean)));
 
   const used = [];
   for (const index of measured.materialIndices) {
@@ -286,7 +290,16 @@ const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assembl
   const pieces = [...counts]
     .map(([piece, count]) => ({ id: piece, count }))
     .sort((a, b) => b.count - a.count || a.id.localeCompare(b.id));
-  const missing = pieces.filter((piece) => !modelIds.has(piece.id)).map((piece) => piece.id);
+  /* A prefab lists its child objects the way it lists whole models, so a name
+   * with no .glb behind it isn't always a missing model: the three waterfall
+   * tops name a `_Crest` and a `_River` that are two of the three nodes
+   * inside the very file placed beside them. Those are already in the built
+   * assembly, so they don't count as missing — only names that turn up in no
+   * placed model do. */
+  const within = new Set(pieces.flatMap((piece) => [...nodeNames.get(piece.id) ?? []]));
+  const missing = pieces
+    .filter((piece) => !modelIds.has(piece.id) && !within.has(piece.id))
+    .map((piece) => piece.id);
 
   return {
     group: determineAssemblyGroup(id).id,

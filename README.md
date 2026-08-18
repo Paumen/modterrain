@@ -92,13 +92,13 @@ amount to a block with a separate sheet of water floating above it. Nineteen
 place exactly one: prefabs that wrap a single model so other prefabs can
 reuse it, kept here because they're part of what the pack ships.
 
-92 of the 123 build with every piece present. Another 19 are built without
-a piece they name — the waterfalls asking for `Mist` and `Ripple`, particle
+95 of the 123 build with every piece present. Another 16 are built without a
+piece they name — the waterfalls asking for `Mist` and `Ripple`, particle
 effects that were never models, and the cave entrances, which lost their
 floors and ceilings when the cave family was removed. The detail panel names
 what's missing. The last 12 are the plain cave entrances, built entirely out
-of cave pieces: nothing of them is left to build, so they have no `.glb`
-here while their placements stay in the list.
+of cave pieces: nothing of them is left to build, so the tool writes no file
+at all while their placements stay in the list.
 
 **Coordinates.** The placements are Unity's: left-handed, one tile = 1.0.
 The `.glb` files went through an FBX conversion that mirrored X and scaled a

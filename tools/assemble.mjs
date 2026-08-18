@@ -260,6 +260,12 @@ export function assemble(placements, { mirror = true, models = MODELS } = {}) {
   const out = createMerged();
   const pieces = new Map();
   const missing = [];
+  // Node names inside the models that did load. A prefab lists its child
+  // objects the same way it lists whole models, so `Water_Waterfall_Top_
+  // Center_1x3_Crest` looks like a missing model when it is really one node
+  // of `Water_Waterfall_Top_Center_1x3.glb`, already placed. Those are not
+  // missing: the geometry is in the file next to it.
+  const inside = new Set();
   let placed = 0;
 
   for (const { piece, pos, quat, scale } of placements) {
@@ -270,6 +276,7 @@ export function assemble(placements, { mirror = true, models = MODELS } = {}) {
       } catch {
         missing.push(piece);
       }
+      if (glb) for (const node of glb.json.nodes ?? []) if (node.name) inside.add(node.name);
       pieces.set(piece, glb && addPiece(out, glb));
     }
     const merged = pieces.get(piece);
@@ -287,7 +294,7 @@ export function assemble(placements, { mirror = true, models = MODELS } = {}) {
 
   const bin = Buffer.concat(out.chunks);
   out.json.buffers[0].byteLength = bin.length;
-  return { json: out.json, bin, placed, missing: [...new Set(missing)] };
+  return { json: out.json, bin, placed, missing: [...new Set(missing)].filter((piece) => !inside.has(piece)) };
 }
 
 /* -- cli ---------------------------------------------------------------- */
@@ -328,6 +335,16 @@ function main(argv) {
     if (flag('only-complete') && placements.some(({ piece }) => !available.has(piece))) continue;
 
     const built = assemble(placements, { mirror });
+
+    /* An assembly whose every piece is gone — the plain cave entrances, once
+     * the cave models were removed — has nothing to write. A .glb holding an
+     * empty scene is worse than no file: the catalog would show a card with
+     * nothing on it. */
+    if (built.placed === 0) {
+      console.log(`  ${name}: nothing left to build, ${placements.length} pieces all missing`);
+      continue;
+    }
+
     const path = join(outDir, `${name}.glb`);
     writeGlb(path, built.json, built.bin);
 
