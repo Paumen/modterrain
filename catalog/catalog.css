@@ -9,21 +9,7 @@
   --warn: #b3382c;
   --radius: 12px;
   --shadow: 0 1px 2px rgba(43, 42, 38, .06), 0 4px 14px rgba(43, 42, 38, .05);
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #1a1a17;
-    --paper-deep: #141412;
-    --card-bg: #242320;
-    --ink: #e9e5db;
-    --ink-soft: #9a958a;
-    --line: #383530;
-    --accent: #8fc06a;
-    --warn: #f28b7d;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
-  }
+  color-scheme: light;
 }
 
 * {
@@ -38,8 +24,6 @@ summary,
   transition: transform .09s ease, background-color .12s ease, border-color .12s ease, filter .12s ease;
 }
 
-/* Only small controls shrink under the finger. A wide button or a tab that
-   scales reads as broken rather than as pressed, so those darken instead. */
 button:active { transform: scale(.94); }
 
 [role="tab"]:active,
@@ -136,27 +120,22 @@ a { color: var(--accent); }
   font-weight: 600;
 }
 
-/* An author `display` beats the UA rule behind the hidden attribute, and the
-   builder hides this bar: its filters belong to the catalog's grids. */
 .filter-bar[hidden] { display: none; }
 
-/* The clear button sits with the filters and only ever greys out, so the bar
-   keeps its height and the page under it never jumps as you select. */
 .filter-bar {
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  padding: 9px clamp(16px, 4vw, 40px);
+  padding: 8px clamp(16px, 4vw, 40px);
   border-bottom: 1px solid var(--line);
   background: var(--paper);
 }
 
-.filter-swatches { flex: 1; }
-
 .filter-swatches {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
 }
 
@@ -167,23 +146,15 @@ a { color: var(--accent); }
   gap: 7px;
 }
 
-/* `display: flex` beats the [hidden] attribute in the UA stylesheet. */
 .filter-group[hidden] { display: none; }
 
 .filter-group + .filter-group {
-  padding-top: 8px;
+  padding-top: 6px;
   border-top: 1px solid var(--line);
 }
 
-.filter-group-label {
-  flex: none;
-  font-size: 11px;
-  letter-spacing: .02em;
-  color: var(--ink-soft);
-}
+.filter-group-label { display: none; }
 
-/* One row per group, scrolled sideways rather than wrapped: the bar keeps a
-   fixed height, so selecting a filter never reflows the page under it. */
 .filter-group-swatches {
   display: flex;
   flex-wrap: nowrap;
@@ -199,8 +170,8 @@ a { color: var(--accent); }
 .swatch {
   position: relative;
   flex: none;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 1px solid rgba(0, 0, 0, .18);
   border-radius: 8px;
@@ -232,8 +203,8 @@ a { color: var(--accent); }
   align-items: center;
   gap: 6px;
   width: auto;
-  height: 34px;
-  padding: 0 12px 0 9px;
+  height: 30px;
+  padding: 0 10px 0 8px;
   border-radius: 999px;
   border-color: var(--line);
   background: var(--card-bg);
@@ -243,7 +214,6 @@ a { color: var(--accent); }
   white-space: nowrap;
 }
 
-/* `display: inline-flex` beats the [hidden] attribute in the UA stylesheet. */
 .swatch[hidden] { display: none; }
 
 .swatch.chip::before {
@@ -284,24 +254,11 @@ a { color: var(--accent); }
   cursor: default;
 }
 
-@media (max-width: 560px) {
-  .filter-bar { padding: 8px clamp(16px, 4vw, 40px); }
-  .filter-swatches { gap: 6px; }
-  .filter-group + .filter-group { padding-top: 6px; }
-
-
-  .filter-group-swatches::-webkit-scrollbar { display: none; }
-  .filter-group-label { display: none; }
-  .swatch { width: 40px; height: 40px; }
-  .swatch.chip { height: 30px; padding: 0 10px 0 8px; }
-}
-
 main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .section { padding-top: 10px; scroll-margin-top: 60px; }
 .section[hidden] { display: none; }
 
-/* The heading and the rule that used to sit under it are one slim bar. */
 .section-head {
   display: flex;
   gap: 8px;
@@ -328,25 +285,13 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   font-variant-numeric: tabular-nums;
 }
 
-/* One raster for atoms, assemblies and scenes, the same the builder's piece
-   list uses, so the whole catalog reads as a single wall of tiles. */
 .grid {
   display: grid;
   gap: 6px;
-  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
 }
 
-@media (min-width: 700px) {
-  .grid {
-    gap: 8px;
-    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  }
-}
-
-/* A whole diorama is unreadable at one tile wide, so a scene spans two of
-   them. The raster is unchanged; the card just covers more of it. */
 .section[data-facet="scene"] .card-holder { grid-column: span 2; }
-
 
 .card-holder { position: relative; display: flex; }
 .card-holder[hidden] { display: none; }
@@ -354,39 +299,36 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .card-pick {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 3px;
+  left: 3px;
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 5px;
   background: color-mix(in srgb, var(--card-bg) 82%, transparent);
   backdrop-filter: blur(4px);
   cursor: pointer;
-  opacity: .55;
+  opacity: .85;
   transition: opacity .12s ease;
 }
 
-/* Invisible halo widening the label's hit area. */
 .card-pick::before {
   content: "";
   position: absolute;
-  inset: -10px;
+  inset: -6px;
 }
 
 .card-holder:hover .card-pick,
 .card-pick:focus-within,
 .card-pick:has(:checked) { opacity: 1; }
 
-@media (hover: none) { .card-pick { opacity: .85; } }
-
 .card-pick input {
   margin: 0;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   accent-color: var(--accent);
   cursor: pointer;
 }
@@ -396,8 +338,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   box-shadow: 0 0 0 2px var(--accent), var(--shadow);
 }
 
-/* Same tile as the builder's piece list: same radius, same padding, same
-   one-line name, so the two grids read as one thing across the tab bar. */
 .card {
   display: flex;
   flex-direction: column;
@@ -428,7 +368,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   width: 100%;
   height: 100%;
   display: block;
-  /* The card is the button; the preview must not catch the click. */
   pointer-events: none;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
@@ -443,11 +382,9 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   border-top: 1px solid var(--line);
 }
 
-/* One line a name, whatever its length: at this tile size a wrapped name
-   crowds out the thing you are actually looking at. */
 .card-name {
   overflow: hidden;
-  font-size: 10.5px;
+  font-size: 9.5px;
   font-weight: 600;
   line-height: 1.3;
   text-overflow: ellipsis;
@@ -456,8 +393,6 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .is-incomplete { color: var(--warn); }
 
-/* The section heading already says the family, and the byte count is detail
-   for the dialog, not for a tile this size. */
 .card-meta { display: none; }
 
 .card-brand {
@@ -516,11 +451,11 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .detail[open] {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 1fr);
+  grid-template-columns: 1fr;
 }
 
 .detail-viewer {
-  min-height: 380px;
+  min-height: 46vh;
   background: var(--paper-deep);
 }
 
@@ -533,7 +468,7 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .detail-info {
   padding: 22px 22px 24px;
-  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
   overflow-y: auto;
 }
 
@@ -627,25 +562,20 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   cursor: pointer;
 }
 
-@media (max-width: 720px) {
-  .detail[open] { grid-template-columns: 1fr; }
-  .detail-viewer { min-height: 46vh; }
-  .detail-info { border-left: 0; border-top: 1px solid var(--line); }
-}
-
 .selection-bar {
   position: fixed;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
   z-index: 30;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  max-width: calc(100vw - 24px);
-  padding: 8px 10px 8px 16px;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 18px;
   background: color-mix(in srgb, var(--card-bg) 92%, transparent);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow), 0 8px 28px rgba(43, 42, 38, .16);
@@ -655,20 +585,20 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
 
 .selection-count {
   flex: none;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .selection-bar button {
   flex: none;
-  padding: 5px 12px;
+  padding: 5px 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--paper);
   color: inherit;
   font: inherit;
-  font-size: 12px;
+  font-size: 11.5px;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -683,36 +613,4 @@ main { padding: 0 clamp(16px, 4vw, 40px) 60px; }
   color: var(--paper);
 }
 
-body:has(.selection-bar:not([hidden])) { padding-bottom: 56px; }
-
-@media (max-width: 560px) {
-
-  .card-name { font-size: 9.5px; }
-
-  /* The tick has to leave the tile something to show. */
-  .card-pick { top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 6px; }
-
-
-
-  .card-pick { top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 5px; }
-  .card-pick::before { inset: -6px; }
-  .card-pick input { width: 12px; height: 12px; }
-
-  .selection-bar {
-    left: 12px;
-    right: 12px;
-    transform: none;
-    max-width: none;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
-    padding: 8px 10px;
-    border-radius: 18px;
-    bottom: 10px;
-  }
-
-  .selection-count { font-size: 12px; }
-  .selection-bar button { padding: 5px 10px; font-size: 11.5px; }
-
-  body:has(.selection-bar:not([hidden])) { padding-bottom: 96px; }
-}
+body:has(.selection-bar:not([hidden])) { padding-bottom: 96px; }
