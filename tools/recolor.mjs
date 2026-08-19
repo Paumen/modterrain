@@ -6,9 +6,10 @@
  * Why: the pack's terrain materials are a texture *tinted* by a colour, and the
  * glTF export kept only the tint. `Cliff Face` therefore arrives as #e0ddd7 and
  * `Grass` as #a7de76 — a cliff the colour of paper and grass the colour of
- * nothing. The texture the tint belongs to is in the pack's own zip, so the
- * colour a surface is *meant* to be can be worked out rather than guessed:
- * average the albedo, multiply by the tint, and that is the colour.
+ * nothing. The textures those materials paint with are in the pack's own zip,
+ * so the colour a surface is *meant* to be can be worked out rather than
+ * guessed: average the albedo, and multiply by the tint only where the shader
+ * actually reads one — which, in this pack, is almost nowhere.
  *
  * Where the colour then comes from is the point of the exercise. It is not
  * written into the material as a number but taken from `textures/colormap.png`,
@@ -84,6 +85,25 @@ const PALETTE_SOURCES = {
  */
 const ALBEDO_KEYS = ['_TopAlbedo', '_TriplanarAlbedo', '_Albedo', '_MainTex'];
 
+/**
+ * Unity's guid for its built-in shaders. A material on one of those may carry a
+ * live `_Color`; a material on one of the pack's own may not.
+ *
+ * Not one of the thirteen shaders in `textures_unity/Shaders/` declares a
+ * `_Color` property — `SRP Triplanar.shader`, which every terrain material
+ * uses, samples `_TopAlbedo` and `_TriplanarAlbedo` and nothing else. The
+ * `_Color` still sitting in those .mat files is left over from the Standard
+ * shader they were built on, and it shows: one cream #F5ECD2 is shared by
+ * `Dirt`, `Ice`, `Snow Dirt` and four `Snow Carved Stone` materials, which
+ * cannot be the colour of all seven. Multiplying it in turned ice from #addcfe
+ * to #a7ccd2 and put it on a lavender.
+ *
+ * The pack's own scene export agrees: it recorded `Cliff`, `Dirt`, `Grass` and
+ * `Ice` as their bare albedo averages, to the byte, and `Waterfall Crest` — the
+ * one material here on a built-in shader — as its tint.
+ */
+const UNITY_BUILT_IN_SHADER = '0000000000000000f000000000000000';
+
 /** Surfaces that keep their own texture. See the note at the top. */
 const KEEPS_TEXTURE = new Set([
   'Wood Dark', 'Wood Light', 'Wood Light End', 'Wood Medium',
@@ -91,20 +111,26 @@ const KEEPS_TEXTURE = new Set([
 ]);
 
 /**
- * The one colour the shared map did not have.
+ * The two colours the shared map did not have, both of them blue.
  *
- * `Waterfall Crest` is the lip at the top of a fall, and the pack paints it a
- * pure cyan: #00edf9. The nearest thing on the map is the water blue #29abe2,
- * 150 away — not a shade off, a different colour. Everything else in the pack
- * landed inside the threshold and reuses what is already there, which is what
- * a shared map is for.
+ * `Waterfall Crest` is the lip at the top of a fall and the pack paints it a
+ * pure cyan, #00edf9; the nearest thing on the map was the water blue #29abe2,
+ * 150 away — not a shade off, a different colour. Flat rather than a band,
+ * because the pack shows one colour and no gradient. Row 2 is where the blues
+ * live, so both of these go there.
  *
- * It goes at [6, 2] because row 2 is where the blues live: the water band sits
- * at [4, 2] and the bright blue at [2, 2]. Flat rather than a band, because the
- * pack shows one colour and no gradient.
+ * Everything else in the pack reuses a colour that is already on the map, which
+ * is what a shared map is for.
  */
 const ADDED_CELLS = [
   { cell: [6, 2], name: 'crest cyan', top: [0, 237, 249], bottom: [0, 237, 249] },
+  /* Ice, #addcfe. The map has a bright blue, a water blue, a lavender and a
+   * white, and the nearest of those is the lavender — a hue away, on a surface
+   * that is nothing but that colour across a whole iceberg. The band runs
+   * between the light and dark ends of `ice.png` itself, which is a narrow run
+   * because the texture is nearly one colour. It sits at [7, 2] beside the
+   * other blues and the crest. */
+  { cell: [7, 2], name: 'ice blue', top: [186, 229, 255], bottom: [162, 209, 253] },
 ];
 
 /**
@@ -169,6 +195,22 @@ const LAYER_ROWS = {
  */
 const NEW_CELL_ABOVE = 60;
 
+/**
+ * Surfaces that reuse a colour further away than that, and why.
+ *
+ * `Grass` is the one. The v2 texture in this pack averages #509346, a muted
+ * green, and the map's grass green #228b22 is 92 away — over the line. But that
+ * cell is on the map *because of this pack*: Taalei's import of its previous
+ * version read a flat `Grass` material of exactly #228b22 and added the cell
+ * for it, over the same objection, since every other green on the map yellowed
+ * the grass. Adding a second green a shade off the first would be two greens
+ * for one thing, on a map whose whole point is that a colour means one thing
+ * everywhere.
+ */
+const REUSED_BEYOND_THRESHOLD = {
+  Grass: "the map's grass green was added for this pack's own earlier version",
+};
+
 const toLinear = (v) => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
 const toSrgb = (v) => (v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055);
 
@@ -208,7 +250,12 @@ function packColors() {
     const material = materials.get(file);
     if (!material) throw new Error(`${surface}: ${file} is not in ${relative(ROOT, PACK)}`);
 
-    const tint = material.colors?._Color?.linear ?? [1, 1, 1, 1];
+    // The tint counts only where the shader reads it — see UNITY_BUILT_IN_SHADER.
+    const shader = zip.get(`textures_unity/${file}`)().toString('utf8')
+      .match(/m_Shader:.*guid: ([0-9a-f]+)/)?.[1];
+    const live = shader === UNITY_BUILT_IN_SHADER;
+    const tint = live ? material.colors?._Color?.linear ?? [1, 1, 1, 1] : [1, 1, 1, 1];
+
     const albedo = ALBEDO_KEYS.map((key) => material.textures?.[key])
       .find((name) => name && name !== '?');
 
@@ -223,6 +270,7 @@ function packColors() {
       rgb: linear.map((v, k) => Math.round(toSrgb(v * tint[k]) * 255)),
       albedo: albedo ?? null,
       material: file,
+      tint: live ? material.colors?._Color?.hex_srgb ?? null : null,
     });
   }
   return colors;
@@ -259,6 +307,11 @@ const colors = packColors();
 const placement = new Map();
 for (const [surface, source] of colors) {
   const point = nearestPoint(points, source.rgb);
+  if (!point) {
+    throw new Error(
+      `${surface}: the map holds nothing of ${toHex(source.rgb)}'s hue at all — give it a cell in ADDED_CELLS`,
+    );
+  }
   // What the surface is where it cannot be shaded: a cliff runs down its band,
   // so the one colour that stands for it is the middle of the ladder.
   const flat = SHADED.has(surface) ? colorAtRow(point.cell, LADDER[2]) : point.rgb;
@@ -274,7 +327,8 @@ for (const [surface, { source, point }] of [...placement].sort((a, b) => b[1].po
   );
 }
 
-const tooFar = [...placement].filter(([, { point }]) => point.distance > NEW_CELL_ABOVE);
+const tooFar = [...placement].filter(([surface, { point }]) =>
+  point.distance > NEW_CELL_ABOVE && !REUSED_BEYOND_THRESHOLD[surface]);
 if (tooFar.length) {
   throw new Error(
     `${tooFar.length} surfaces are further than ${NEW_CELL_ABOVE} from any colour on the map ` +

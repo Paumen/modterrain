@@ -100,15 +100,62 @@ export function fillCell(atlas, [column, row], top, bottom) {
   }
 }
 
+const saturation = ([r, g, b]) => {
+  const max = Math.max(r, g, b);
+  return max === 0 ? 0 : (max - Math.min(r, g, b)) / max;
+};
+
+const hue = ([r, g, b]) => {
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), span = max - min;
+  if (span === 0) return 0;
+  const sixth = max === r ? (((g - b) / span) + 6) % 6
+    : max === g ? (b - r) / span + 2
+    : (r - g) / span + 4;
+  return sixth * 60;
+};
+
+const hueApart = (a, b) => {
+  const d = Math.abs(hue(a) - hue(b)) % 360;
+  return d > 180 ? 360 - d : d;
+};
+
+/**
+ * Below this much saturation a colour has no hue worth the name — the hue of a
+ * warm grey swings wildly on a couple of points of red — so the gate below
+ * steps aside and distance decides on its own.
+ */
+const HAS_A_HUE = 0.25;
+
+/**
+ * How far round the wheel a match may sit from what it is matching.
+ *
+ * Distance alone is not enough. Redmean will happily answer a pale blue with a
+ * pale violet or a tan with a salmon, because on a light colour a hue swing
+ * costs less than a lightness one — and a hue swing is exactly what the eye
+ * picks up across a whole cliff of it. Ice at #addcfe (205°) drew #c5cef7
+ * (229°); dirt at #ccb688 (41°) drew #e5ad86 (25°). Fifteen degrees keeps the
+ * answer in the same colour family and still leaves room for a shade.
+ */
+const SAME_HUE = 15;
+
+/**
+ * The colour on the map that best answers `rgb`.
+ *
+ * Nearest by distance, but never a different hue: see SAME_HUE. Returns null
+ * if the map holds nothing of that hue at all, which is the map saying it is
+ * missing a colour rather than offering a wrong one.
+ */
 export function nearestPoint(points, rgb) {
-  let best = points[0];
+  const gate = saturation(rgb) >= HAS_A_HUE;
+  let best = null;
   let distance = Infinity;
   for (const point of points) {
+    if (gate && hueApart(rgb, point.rgb) > SAME_HUE) continue;
     const d = colorDistance(rgb, point.rgb);
     if (d < distance) {
       distance = d;
       best = point;
     }
   }
-  return { ...best, distance };
+  return best && { ...best, distance };
 }
