@@ -292,7 +292,7 @@ a { color: var(--accent); }
 
   .filter-group-swatches::-webkit-scrollbar { display: none; }
   .filter-group-label { display: none; }
-  .swatch { width: 30px; height: 30px; }
+  .swatch { width: 40px; height: 40px; }
   .swatch.chip { height: 30px; padding: 0 10px 0 8px; }
 }
 
