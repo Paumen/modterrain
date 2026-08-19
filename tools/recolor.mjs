@@ -164,21 +164,31 @@ const LADDER = [13, 38, 64, 90, 115];
 const SHADED = new Set(['Cliff Face', 'Cliff']);
 
 /**
- * Which step of the ladder each layer gets.
+ * Which rows of the ladder each layer gets.
  *
  * Kenney ramps every module over the same rows, so a stack of them repeats the
  * gradient at every seam — fine for a wall two blocks high, less so for a cliff
  * that runs Under, Base, Mid, Top. This pack names the layer in every file, so
  * the four of them can share the ladder instead: a piece ramps inside its own
- * step, and a full stack reads as one gradient from the crest to the foot.
+ * quarter, and a full stack reads as one gradient from the crest to the foot.
+ *
+ * `Mid` is the exception, and it is flat. It is the one piece meant to repeat —
+ * a cliff is however many Mids tall — and a ramp that repeats sawtooths: each
+ * Mid would run light to dark, so every seam in the run would jump back to
+ * light. One tone at the middle of its quarter instead, so any number of them
+ * read as one wall and the gradient comes from the Top above and the Base and
+ * Under below. That tone sits between two rungs of the ladder rather than on
+ * one, which is right: Mid is a repeat, not a step.
  *
  * A piece with no layer spans the lot. There are five of those with a cliff
  * face — the two paths, the bridge and the two cracks — and each of them runs
  * down the whole height of a cliff rather than sitting at one level of it.
  */
+const MID_TONE = (LADDER[1] + LADDER[2]) / 2;
+
 const LAYER_ROWS = {
   'layer-top': [LADDER[0], LADDER[1]],
-  'layer-mid': [LADDER[1], LADDER[2]],
+  'layer-mid': [MID_TONE, MID_TONE],
   'layer-base': [LADDER[2], LADDER[3]],
   'layer-under': [LADDER[3], LADDER[4]],
   'layer-none': [LADDER[0], LADDER[4]],

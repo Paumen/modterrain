@@ -41,9 +41,11 @@ Practical facts about the kit:
   it — light where they face the sky, dark where they meet the ground, from
   the two ends of one band with the rasterizer filling in between. The four
   layers share the band, so `Top` sits in its lightest quarter and `Under` in
-  its darkest and a full stack reads as one gradient. A run of several `Mid`
-  pieces repeats its own quarter; that is the cost of the piece being
-  repeatable. Everything else takes one flat color.
+  its darkest and a full stack reads as one gradient. `Mid` is the exception
+  and is one flat tone at the middle of its quarter: it is the piece meant to
+  repeat, and a ramp that repeats sawtooths — every seam in a run would jump
+  back to light. However many Mids you stack, they read as one wall.
+  Everything else takes one flat color.
   Wood, rope and water are the exception: their UVs tile far outside 0–1, so
   they keep their own texture (`tools/textures.mjs`). The `Hidden` faces keep
   their own colors too — those are socket identity, not decoration.
