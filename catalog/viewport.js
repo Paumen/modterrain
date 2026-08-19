@@ -143,6 +143,7 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
 
   function setInsets(next) {
     insets = { top: next.top ?? 0, right: next.right ?? 0, bottom: next.bottom ?? 0 };
+    lens();
     invalidate();
   }
   controls.addEventListener('start', () => { steered = true; });
@@ -160,7 +161,7 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
     if (!width || !height) return;
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.updateProjectionMatrix();
+    lens();
     invalidate();
   }
   new ResizeObserver(resize).observe(canvas);
@@ -341,9 +342,10 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
     return Math.max(reach * 1.12 + deep, controls.minDistance);
   }
 
-  /* Aim so the build sits in the clear band, not at the centre of the canvas:
-   * the target is lifted off the build by however far the middle of that band
-   * is from the middle of the picture. */
+  /* The pivot is the middle of the build and nothing else, so turning the
+   * camera — by the buttons or by a finger — rolls the build round on the
+   * spot instead of swinging it about some point off to one side. Sitting
+   * the build in the clear band is the lens's job, not the pivot's. */
   function aimAt(heading, distance) {
     // OrbitControls clamps how far the camera may stand off its target, and
     // that clamp is what a fitted view runs into: a forty-cell diorama needs
@@ -351,15 +353,19 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
     // for, and being clamped leaves it inside the scene, staring at the far
     // side of shells it cannot see through.
     controls.maxDistance = Math.max(80, distance * 1.05);
-    const { dir, right, up } = basis(heading);
+    controls.target.copy(middle);
+    camera.position.copy(controls.target).addScaledVector(basis(heading).dir, distance);
+    depthCue();
+  }
+
+  /* Where the picture sits inside the canvas. The panels float over the view,
+   * so the build has to be drawn off to one side of the glass to look centred
+   * between them — done by shifting the frustum rather than the camera, which
+   * leaves the pivot on the build itself. */
+  function lens() {
     const width = canvas.clientWidth || 1;
     const height = canvas.clientHeight || 1;
-    const vertical = Math.tan((camera.fov * Math.PI) / 360) * distance;
-    controls.target.copy(middle)
-      .addScaledVector(up, ((insets.top - insets.bottom) / height) * vertical)
-      .addScaledVector(right, (insets.right / width) * vertical * camera.aspect);
-    camera.position.copy(controls.target).addScaledVector(dir, distance);
-    depthCue();
+    camera.setViewOffset(width, height, insets.right / 2, (insets.bottom - insets.top) / 2, width, height);
   }
 
   /* Fog and the far plane were sized for a build of a few cells. A whole
@@ -496,6 +502,7 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
     pieces.updateMatrixWorld(true);
     bounds.setFromObject(pieces);
 
+    const was = middle.clone();
     if (!placements.length || bounds.isEmpty() || !Number.isFinite(bounds.min.x + bounds.max.x)) {
       bounds.set(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 1, 1));
     } else {
@@ -504,6 +511,18 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
       bounds.expandByScalar(0.1);
     }
     bounds.getCenter(middle);
+
+    /* Building outwards moves the middle of the build. The camera and its
+     * target both step with it, so the picture does not jump and the next
+     * turn of the camera still goes round the middle rather than round
+     * wherever the middle used to be. Panning survives it: only the change
+     * is applied, so a target the user has moved keeps its own offset. */
+    const drift = middle.clone().sub(was);
+    if (framed && drift.lengthSq() > 1e-8) {
+      controls.target.add(drift);
+      camera.position.add(drift);
+      controls.update();
+    }
   }
 
   function frame(placements) {

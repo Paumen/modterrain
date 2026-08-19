@@ -689,6 +689,7 @@ function renderPalette() {
     const name = names.get(id) ?? id;
     const item = element('li');
     const button = element('button', `tile${id === brush ? ' is-brush' : ''}`);
+    button.dataset.piece = id;
     button.title = name;
 
     const box = element('span', 'tile-view');
@@ -712,6 +713,18 @@ function renderPalette() {
     item.append(button);
     paletteList.append(item);
     observe(box);
+  }
+}
+
+/* Turning, mirroring or nudging a piece changes nothing about the list of
+ * pieces, so the list is left alone and only the highlight moves. Rebuilding
+ * it threw away every preview in it, and each one then loaded its model over
+ * again — the whole picker flickering through its thumbnails on every press
+ * of an arrow. */
+function markBrush() {
+  if (!paletteList) return;
+  for (const tile of paletteList.querySelectorAll('.tile')) {
+    tile.classList.toggle('is-brush', tile.dataset.piece === brush);
   }
 }
 
@@ -739,7 +752,7 @@ function syncToolbar() {
   viewport?.setLevel(level);
   if (aiming) showGhost(armed.cx, armed.cz);
   else viewport?.ghost(null);
-  renderPalette();
+  markBrush();
 }
 
 export async function mount(container, catalog) {
@@ -894,6 +907,7 @@ export async function mount(container, catalog) {
   }
 
   familySelect.addEventListener('change', renderPalette);
+  renderPalette();
 
   // Shortcuts belong to this tab, not the whole catalog.
   document.addEventListener('keydown', (event) => {
