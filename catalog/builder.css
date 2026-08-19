@@ -1,28 +1,19 @@
 /* Socket builder — the catalog's Builder tab. Base tokens, typography and the
-   page shell come from catalog.css; the seam verdict colours and this tab's
-   own layout live here.
+   page shell come from catalog.css; this tab's own layout lives here.
 
    The 3D view is the whole tab: it fills the pane and everything else floats
    over it, so the board is as large as the screen allows rather than a window
    inside a stack of chrome. */
 
 :root {
-  --mated: #3f8f5f;
-  --partial: #c9a227;
   --clash: #c9422f;
-  --open: #9a958a;
-  --abut: #4f7a9e;
   --tap: 40px;
   --glass: color-mix(in srgb, #fff 78%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mated: #6fbb8a;
-    --partial: #ddbc4c;
     --clash: #ef7a66;
-    --open: #6d6961;
-    --abut: #79aad0;
     --glass: color-mix(in srgb, #1a1a17 76%, transparent);
   }
 }
@@ -44,9 +35,7 @@
 .builder .hud label:active { transform: scale(.92); }
 
 .builder [role="tab"]:active,
-.builder .tile:active,
-.builder .seam-fits:active,
-.builder .fits-list button:active { filter: brightness(.94); }
+.builder .tile:active { filter: brightness(.94); }
 
 .builder button:disabled:active { transform: none; }
 
@@ -117,8 +106,6 @@
 .hud button,
 .drawer-tabs button,
 .drawer-toggle,
-.seam-fits,
-.fits-list button,
 .inspect-actions button {
   min-width: 30px;
   min-height: 32px;
@@ -287,42 +274,6 @@
 .palette[hidden],
 .inspect[hidden] { display: none; }
 
-/* The seam key sits under the toolbar rather than by the drawer: the pad for
-   steering a piece has the bottom-left corner now. */
-.legend {
-  position: absolute;
-  top: 58px;
-  left: 12px;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px 10px;
-  margin: 0;
-  padding: 0;
-  color: var(--ink-soft);
-  font-size: 11px;
-  list-style: none;
-  pointer-events: none;
-}
-
-.legend li {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.key {
-  width: 13px;
-  height: 4px;
-  border-radius: 2px;
-}
-
-.key.mated { background: var(--mated); }
-.key.partial { background: var(--partial); }
-.key.clash { background: var(--clash); }
-.key.open { background: var(--open); }
-.key.abut { background: var(--abut); }
-
 /* -------------------------------------------------------------- drawer */
 
 /* Three heights, cycled by the chevron: a strip, about a third, and half the
@@ -391,9 +342,7 @@
 /* ------------------------------------------------------------- palette */
 
 .palette-list,
-.seam-list,
-.stack-list,
-.fits-list {
+.stack-list {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -454,14 +403,6 @@
   --progress-bar-height: 2px;
 }
 
-.tile-colors {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  display: flex;
-  gap: 2px;
-}
-
 .tile-name {
   padding: 3px 4px;
   overflow: hidden;
@@ -472,124 +413,7 @@
   white-space: nowrap;
 }
 
-/* Not `.swatch`: the catalog's filter buttons already own that name. */
-.socket-dot {
-  width: 9px;
-  height: 9px;
-  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
-  border-radius: 2px;
-}
-
-/* ----------------------------------------------------------- inspector */
-
-.inspect h2 {
-  margin: 0 0 2px;
-  font-size: 16px;
-}
-
-.inspect h3 {
-  margin: 16px 0 6px;
-  color: var(--ink-soft);
-  font-size: 12px;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-
-.inspect-empty,
-.inspect-meta {
-  color: var(--ink-soft);
-  font-size: 13px;
-}
-
 .inspect-meta { margin: 0 0 10px; }
-
-.inspect-warn {
-  margin: 10px 0 0;
-  padding: 7px 9px;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--partial) 16%, transparent);
-  font-size: 12px;
-}
-
-.seam-item {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px 8px;
-  align-items: center;
-  margin-bottom: 4px;
-  padding: 5px 8px;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--open);
-  border-radius: 7px;
-  background: var(--card-bg);
-}
-
-.seam-item.mated { border-left-color: var(--mated); }
-.seam-item.partial { border-left-color: var(--partial); }
-.seam-item.clash { border-left-color: var(--clash); }
-.seam-item.abut { border-left-color: var(--abut); }
-
-.seam-head {
-  display: flex;
-  flex: 1;
-  gap: 6px;
-  align-items: center;
-  min-width: 120px;
-  font-size: 12px;
-}
-
-.seam-where {
-  color: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
-  font-size: 12px;
-}
-
-.seam-verdict {
-  margin-left: auto;
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: var(--paper-deep);
-  color: var(--ink-soft);
-  font-size: 11px;
-  white-space: nowrap;
-}
-
-.seam-verdict.mated { background: color-mix(in srgb, var(--mated) 22%, transparent); color: var(--ink); }
-.seam-verdict.partial { background: color-mix(in srgb, var(--partial) 26%, transparent); color: var(--ink); }
-.seam-verdict.clash { background: color-mix(in srgb, var(--clash) 24%, transparent); color: var(--ink); }
-
-.seam-note {
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 11px;
-}
-
-.seam-note.fine { color: var(--mated); }
-.seam-note.mixed { color: var(--partial); }
-.seam-note.wants { color: var(--clash); }
-
-.seam-fits {
-  min-width: 0;
-  min-height: 26px;
-  padding: 0 8px;
-  font-size: 11px;
-}
-
-/* The candidate list is the piece list: same tiles, same size. */
-.fits-list {
-  margin-top: 6px;
-}
-
-.tile-part {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  padding: 0 4px;
-  border-radius: 5px;
-  background: color-mix(in srgb, var(--partial) 80%, var(--card-bg));
-  color: var(--ink);
-  font-size: 9px;
-}
 
 .stack-list li {
   padding: 3px 0;

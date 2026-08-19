@@ -5,9 +5,7 @@ import { observe } from './previews.js';
  * the catalog data the page has already fetched. One instance per page, hence
  * plain module state. */
 
-let sockets;
-let STEP;
-let QUANT;
+let pieces;
 let names;
 let families;
 let swatches;
@@ -37,31 +35,6 @@ let armed = null;
 let moveButtons = {};
 let placeButton;
 
-// ------------------------------------------------------------------ shapes
-
-const decode = (text) =>
-  text.split('+').map((part) => part.split(':').map((value) => Number(value) / QUANT));
-
-const columnCache = new Map();
-function columns(id) {
-  if (!columnCache.has(id)) {
-    const shape = sockets.shapes[id];
-    columnCache.set(id, shape.uniform ? decode(shape.column) : shape.columns.map(decode));
-  }
-  return columnCache.get(id);
-}
-
-/* A socket reads along the increasing world axis of its seam. Rotating or
- * mirroring a piece can flip which end that is, so the reading is reversed
- * rather than the stored shape being rewritten. */
-function columnOf(socket, index) {
-  const shape = sockets.shapes[socket.shape];
-  if (shape.uniform) return columns(socket.shape);
-  const list = columns(socket.shape);
-  const i = socket.flipped ? list.length - 1 - index : index;
-  return list[i] ?? null;
-}
-
 // ------------------------------------------------------------- placements
 
 // Rotation is a quarter turn about the vertical axis: (x, z) → (z, −x).
@@ -74,138 +47,18 @@ function place(point, rot, mirror) {
 }
 
 function worldCells(placement) {
-  const piece = sockets.pieces[placement.piece];
+  const piece = pieces[placement.piece];
   return piece.cells.map((cell) => {
     const [x, z] = place(cell, placement.rot, placement.mirror);
     return [x + placement.cx, z + placement.cz];
   });
 }
 
-function worldSockets(placement) {
-  const piece = sockets.pieces[placement.piece];
-  const cells = worldCells(placement);
-
-  return piece.sockets.map((socket, index) => {
-    const ends = socket.axis === 'x'
-      ? [[socket.at, socket.from], [socket.at, socket.to]]
-      : [[socket.from, socket.at], [socket.to, socket.at]];
-    const [a, b] = ends.map((end) => place(end, placement.rot, placement.mirror));
-
-    const axis = Math.abs(a[0] - b[0]) < 1e-6 ? 'x' : 'z';
-    const along = axis === 'x' ? 1 : 0;
-    const across = axis === 'x' ? 0 : 1;
-    const at = (axis === 'x' ? a[0] : a[1]) + (axis === 'x' ? placement.cx : placement.cz);
-
-    // A socket looks away from its own piece. Without that, two pieces sitting
-    // side by side would have their co-planar faces read as a joint, when in
-    // truth both are facing the same way.
-    const centre = cells.reduce((sum, cell) => sum + cell[across], 0) / cells.length;
-
-    return {
-      index,
-      owner: placement.id,
-      color: socket.color,
-      shape: socket.shape,
-      axis,
-      at,
-      facing: at > centre ? 1 : -1,
-      flipped: a[along] > b[along],
-      from: Math.min(a[along], b[along]) + (axis === 'x' ? placement.cz : placement.cx),
-      to: Math.max(a[along], b[along]) + (axis === 'x' ? placement.cz : placement.cx),
-      floor: socket.base + placement.level,
-    };
-  });
-}
 
 const height = (placement) => {
-  const piece = sockets.pieces[placement.piece];
+  const piece = pieces[placement.piece];
   return [(piece.min?.[1] ?? 0) + placement.level, (piece.max?.[1] ?? 0) + placement.level];
 };
-
-// ------------------------------------------------------------- validation
-
-const steps = (socket) => Math.round((socket.to - socket.from) / STEP);
-const same = (a, b) => a.length === b.length
-  && a.every(([lo, hi], i) => Math.abs(lo - b[i][0]) < 1e-6 && Math.abs(hi - b[i][1]) < 1e-6);
-
-const lift = (column, floor) => column.map(([lo, hi]) => [lo + floor, hi + floor]);
-
-/* Both sides of a joint are sampled on the same lattice along the same world
- * axis, so agreement is a column-by-column comparison over the overlap — no
- * alignment to guess, and a longer piece meeting a shorter one simply mates
- * over the part they share. */
-function compare(a, b) {
-  const from = Math.max(a.from, b.from);
-  const to = Math.min(a.to, b.to);
-  const count = Math.round((to - from) / STEP);
-  if (count <= 0) return null;
-
-  let agree = 0;
-  let conflict = 0;
-  for (let k = 0; k < count; k++) {
-    const u = from + k * STEP;
-    const one = columnOf(a, Math.round((u - a.from) / STEP));
-    const two = columnOf(b, Math.round((u - b.from) / STEP));
-    if (!one || !two) continue;
-    if (same(lift(one, a.floor), lift(two, b.floor))) agree++;
-    else conflict++;
-  }
-  return { overlap: count, agree, conflict, from, to };
-}
-
-function evaluate() {
-  const all = placements.flatMap((placement) => worldSockets(placement));
-  const occupied = new Map();
-  for (const placement of placements) {
-    for (const [x, z] of worldCells(placement)) {
-      const key = `${x},${z},${placement.level}`;
-      if (!occupied.has(key)) occupied.set(key, []);
-      occupied.get(key).push(placement.id);
-    }
-  }
-
-  for (const socket of all) {
-    socket.partners = [];
-    socket.agree = 0;
-    socket.conflict = 0;
-    for (const other of all) {
-      if (other.owner === socket.owner) continue;
-      if (other.axis !== socket.axis || Math.abs(other.at - socket.at) > 1e-6) continue;
-      if (other.facing === socket.facing) continue;
-      const result = compare(socket, other);
-      if (!result) continue;
-      socket.partners.push({ socket: other, ...result });
-      socket.agree += result.agree;
-      socket.conflict += result.conflict;
-    }
-
-    // A seam that is only partly covered is fine — a long piece can meet a
-    // short one. A seam where facing columns disagree is not: that is two
-    // profiles pushed into the same place.
-    const total = steps(socket);
-    socket.verdict = !socket.partners.length ? 'open'
-      : socket.conflict > 0 ? 'clash'
-        : socket.agree >= total ? 'mated'
-          : 'partial';
-    socket.covered = total ? socket.agree / total : 0;
-  }
-
-  // A neighbouring cell with no facing socket is not a fault — most of the
-  // pack's vertical contacts work that way — but it is worth showing.
-  for (const socket of all) {
-    if (socket.verdict !== 'open') continue;
-    const side = socket.axis === 'x' ? [[0.5, 0], [-0.5, 0]] : [[0, 0.5], [0, -0.5]];
-    const mid = (socket.from + socket.to) / 2;
-    socket.abuts = side.some(([dx, dz]) => {
-      const x = Math.round((socket.axis === 'x' ? socket.at : mid) + dx);
-      const z = Math.round((socket.axis === 'x' ? mid : socket.at) + dz);
-      const owners = occupied.get(`${x},${z},${placementById(socket.owner).level}`) ?? [];
-      return owners.some((id) => id !== socket.owner);
-    });
-  }
-
-  return all;
-}
 
 const placementById = (id) => placements.find((placement) => placement.id === id);
 
@@ -229,15 +82,10 @@ function stacking(placement) {
 // ---------------------------------------------------------------- drawing
 
 /* The viewport owns the three.js scene; this module only tells it what is
- * placed and how each seam came out. Seams carry their own height so the
- * overlay sits exactly where the sockets meet. */
+ * placed and which piece is selected. */
 function render() {
   if (!viewport) return;
-  const sockets_ = evaluate().map((socket) => ({
-    ...socket,
-    height: Math.max(sockets.shapes[socket.shape]?.height ?? 0, 0.02),
-  }));
-  viewport.sync(placements, sockets_, selected);
+  viewport.sync(placements, selected);
 }
 
 const short = (id) => id.replace(/_/g, ' ').replace(/\s(Base|Mid|Top|Under)$/, '');
@@ -271,7 +119,7 @@ function load(text) {
 
   placements.length = 0;
   for (const entry of list) {
-    const piece = sockets.pieces[entry.piece];
+    const piece = pieces[entry.piece];
     if (!piece) continue;
     placements.push({
       id: nextId++,
@@ -378,7 +226,7 @@ function addAt(x, z) {
 }
 
 function addPiece(pieceId, { cx, cz, level: at, rot, mirror }) {
-  const piece = sockets.pieces[pieceId];
+  const piece = pieces[pieceId];
   if (!piece) return;
   const id = nextId++;
   placements.push({ id, piece: pieceId, dir: piece.dir, scale: piece.scale, cx, cz, level: at, rot, mirror });
@@ -389,12 +237,6 @@ function addPiece(pieceId, { cx, cz, level: at, rot, mirror }) {
   commit();
   showPick();
 
-  // Keep the piece list up while building — the seam report only takes the
-  // drawer over when the placement actually went wrong.
-  if (evaluate().some((socket) => socket.owner === id && socket.verdict === 'clash')) {
-    showSheet('seams');
-    openDrawer(true);
-  }
   return id;
 }
 
@@ -471,62 +313,6 @@ function measureDrawer() {
 
 // -------------------------------------------------------------- inspector
 
-const pct = (value) => `${Math.round(value * 100)}%`;
-
-function openAdvice(shapeId) {
-  const shape = sockets.shapes[shapeId];
-  const seen = (shape?.open ?? 0) + (shape?.mated ?? 0);
-  if (!seen) return { tone: 'unknown', text: 'never seen in the scenes' };
-  const share = shape.open / seen;
-  if (share >= 0.6) return { tone: 'fine', text: `usually left open (${pct(share)} of ${seen})` };
-  if (share >= 0.2) return { tone: 'mixed', text: `open either way (${pct(share)} of ${seen})` };
-  return { tone: 'wants', text: `usually wants a neighbour (open ${pct(share)} of ${seen})` };
-}
-
-/* Which pieces would mate into an open seam: every piece, in each of its
- * eight placements, is asked whether one of its sockets would agree with this
- * one from the neighbouring cell. */
-function candidates(socket) {
-  const found = [];
-  const dx = socket.axis === 'x' ? (socket.at > placementById(socket.owner).cx ? 1 : -1) : 0;
-  const dz = socket.axis === 'z' ? (socket.at > placementById(socket.owner).cz ? 1 : -1) : 0;
-  const mid = Math.round((socket.from + socket.to) / 2 - 0.5);
-  const cx = socket.axis === 'x' ? Math.round(socket.at + dx / 2) : mid;
-  const cz = socket.axis === 'z' ? Math.round(socket.at + dz / 2) : mid;
-
-  for (const piece of Object.keys(sockets.pieces)) {
-    for (let rot = 0; rot < 4; rot++) {
-      for (const mirror of [false, true]) {
-        const trial = { id: -1, piece, cx, cz, level: placementById(socket.owner).level, rot, mirror };
-        for (const other of worldSockets(trial)) {
-          if (other.axis !== socket.axis || Math.abs(other.at - socket.at) > 1e-6) continue;
-          if (other.facing === socket.facing) continue;
-          const result = compare(socket, other);
-          if (!result || result.agree === 0) continue;
-          found.push({ piece, rot, mirror, cx, cz, level: trial.level, agree: result.agree, of: steps(socket) });
-        }
-      }
-    }
-  }
-
-  const best = new Map();
-  for (const entry of found) {
-    const current = best.get(entry.piece);
-    if (!current || entry.agree > current.agree) best.set(entry.piece, entry);
-  }
-  return [...best.values()].sort((a, b) => b.agree - a.agree);
-}
-
-/* Nothing in the pack marks a surface as something you may build on, so the
- * suggestions come from what the dioramas do: how often each family was laid
- * on top of this one. */
-function laidOn(family) {
-  return Object.entries(sockets.stacks ?? {})
-    .filter(([key]) => key.split('>')[0] === family)
-    .map(([key, count]) => ({ family: key.split('>')[1], count }))
-    .sort((a, b) => b.count - a.count);
-}
-
 function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -543,7 +329,7 @@ function showInspector() {
     return;
   }
 
-  const piece = sockets.pieces[placement.piece];
+  const piece = pieces[placement.piece];
   inspector.append(element('h2', null, names.get(placement.piece) ?? placement.piece));
   inspector.append(element('p', 'inspect-meta',
     `${families.get(piece.family) ?? piece.family ?? 'unclassified'} · ${piece.size ?? '—'} · level ${placement.level}`
@@ -555,43 +341,6 @@ function showInspector() {
   actions.append(drop);
   inspector.append(actions);
 
-  const mine = evaluate().filter((socket) => socket.owner === placement.id);
-  inspector.append(element('h3', null, `Seams (${mine.length})`));
-
-  /* One line a seam: the colour, where it is, and how it came out. The detail
-   * only appears where there is something to say about it. */
-  const list = element('ul', 'seam-list');
-  for (const socket of mine) {
-    const tone = socket.verdict === 'open' && socket.abuts ? 'abut' : socket.verdict;
-    const item = element('li', `seam-item ${tone}`);
-
-    const head = element('div', 'seam-head');
-    head.append(swatch(socket.color));
-    head.append(element('span', 'seam-where', `${socket.axis} ${socket.at}`));
-    head.append(element('span', `seam-verdict ${tone}`, verdictLabel(socket)));
-    item.append(head);
-
-    if (socket.verdict === 'clash') {
-      const other = placementById(socket.partners[0].socket.owner);
-      item.append(element('p', 'seam-note', `against ${short(other.piece)}`));
-    } else if (socket.verdict === 'partial') {
-      item.append(element('p', 'seam-note', `${pct(socket.covered)} of it mates`));
-    } else if (socket.verdict === 'open') {
-      const advice = openAdvice(socket.shape);
-      item.append(element('p', `seam-note ${advice.tone}`, advice.text));
-      const button = element('button', 'seam-fits', 'What fits?');
-      button.addEventListener('click', () => showCandidates(item, socket, button));
-      item.append(button);
-    }
-    list.append(item);
-  }
-  inspector.append(list);
-
-  if (piece.unchecked) {
-    inspector.append(element('p', 'inspect-warn',
-      `${piece.unchecked} curved or off-grid face${piece.unchecked === 1 ? '' : 's'} on this piece cannot be checked against a neighbouring cell.`));
-  }
-
   const { under, over } = stacking(placement);
   const [bottom, top] = height(placement);
   inspector.append(element('h3', null, 'Stacking'));
@@ -600,85 +349,13 @@ function showInspector() {
   for (const other of under) stack.append(element('li', 'rests', `rests on ${short(other.piece)}`));
   for (const other of over) stack.append(element('li', 'rests', `${short(other.piece)} rests on this`));
   inspector.append(stack);
-
-  const suggestions = laidOn(piece.family);
-  if (suggestions.length) {
-    inspector.append(element('p', 'seam-note',
-      'Laid on top rather than butted — no socket is involved, so set the level and place:'));
-    const laid = element('ul', 'fits-list');
-    for (const entry of suggestions.slice(0, 6)) {
-      const item = element('li');
-      const button = element('button', null, `${families.get(entry.family) ?? entry.family} · ${entry.count}×`);
-      button.addEventListener('click', () => {
-        level = top;
-        familySelect.value = `atoms:${entry.family}`;
-        syncToolbar();
-      });
-      item.append(button);
-      laid.append(item);
-    }
-    inspector.append(laid);
-  } else {
-    inspector.append(element('p', 'seam-note', 'nothing was ever laid on this family in the shipped dioramas'));
-  }
-}
-
-function verdictLabel(socket) {
-  if (socket.verdict === 'mated') return 'mates';
-  if (socket.verdict === 'partial') return 'part';
-  if (socket.verdict === 'clash') return 'clashes';
-  return socket.abuts ? 'abuts' : 'open';
-}
-
-function swatch(color) {
-  const node = element('i', 'socket-dot');
-  node.style.background = swatches.get(color) ?? '#f8f8f8';
-  return node;
-}
-
-function showCandidates(item, socket, button) {
-  button.remove();
-  const matches = candidates(socket);
-  if (!matches.length) {
-    item.append(element('p', 'seam-note wants', 'no piece in the pack presents a matching profile here'));
-    return;
-  }
-  /* The same tile as the piece list, and choosing one puts it on the board:
-   * the cell, the turn and the mirror are all already known — that is what
-   * made it a candidate. */
-  const list = element('ul', 'fits-list palette-list');
-  for (const match of matches.slice(0, 12)) {
-    const piece = sockets.pieces[match.piece];
-    const name = names.get(match.piece) ?? match.piece;
-    const entry = element('li');
-    const tile = element('button', 'tile');
-    tile.title = `${name}${match.rot ? ` · ${match.rot * 90}°` : ''}${match.mirror ? ' · mirrored' : ''}`
-      + `${match.agree < match.of ? ` · covers ${pct(match.agree / match.of)}` : ''}`;
-
-    const box = element('span', 'tile-view');
-    box.dataset.src = `${piece.dir}/${match.piece}.glb`;
-    box.dataset.alt = `3D model ${name}`;
-    tile.append(box);
-    if (match.agree < match.of) tile.append(element('span', 'tile-part', pct(match.agree / match.of)));
-    tile.append(element('span', 'tile-name', name));
-
-    tile.addEventListener('click', () => {
-      addPiece(match.piece, { cx: match.cx, cz: match.cz, level: match.level, rot: match.rot, mirror: match.mirror });
-      showSheet('seams');
-    });
-    entry.append(tile);
-    list.append(entry);
-    observe(box);
-  }
-  item.append(element('p', 'seam-note', `${matches.length} would mate — tap to attach:`));
-  item.append(list);
 }
 
 // ---------------------------------------------------------------- palette
 
 function renderPalette() {
   const [dir, family] = familySelect.value.split(':');
-  const matches = Object.entries(sockets.pieces).filter(([, piece]) =>
+  const matches = Object.entries(pieces).filter(([, piece]) =>
     (!dir || piece.dir === dir) && (!family || piece.family === family));
 
   paletteList.replaceChildren();
@@ -697,9 +374,6 @@ function renderPalette() {
     box.dataset.alt = `3D model ${name}`;
     button.append(box);
 
-    const colours = element('span', 'tile-colors');
-    for (const color of [...new Set(piece.sockets.map((socket) => socket.color))]) colours.append(swatch(color));
-    button.append(colours);
     button.append(element('span', 'tile-name', name));
 
     button.addEventListener('click', () => {
@@ -731,7 +405,7 @@ function markBrush() {
 // ---------------------------------------------------------------- toolbar
 
 function showGhost(x, z) {
-  const piece = sockets.pieces[brush];
+  const piece = pieces[brush];
   if (!piece) return viewport?.ghost(null);
   viewport?.ghost({
     piece: brush, dir: piece.dir, scale: piece.scale, cx: x, cz: z, level, rot: rotation, mirror: mirrored,
@@ -758,13 +432,11 @@ function syncToolbar() {
 export async function mount(container, catalog) {
   host = container;
   const version = document.querySelector('meta[name="catalog-version"]')?.content;
-  const url = version ? `catalog/sockets.json?v=${version}` : 'catalog/sockets.json';
-  sockets = await fetch(url).then((response) => {
-    if (!response.ok) throw new Error(`catalog/sockets.json not found (${response.status})`);
+  const url = version ? `catalog/pieces.json?v=${version}` : 'catalog/pieces.json';
+  pieces = await fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`catalog/pieces.json not found (${response.status})`);
     return response.json();
-  });
-  STEP = sockets.step;
-  QUANT = sockets.quant ?? 256;
+  }).then((data) => data.pieces);
 
   names = new Map(catalog.models.map((entry) => [entry.id, entry.name]));
   families = new Map(Object.entries(catalog.facets ?? {}));
@@ -780,7 +452,7 @@ export async function mount(container, catalog) {
   container.replaceChildren(template.content.cloneNode(true));
   const role = (name) => container.querySelector(`[data-role="${name}"]`);
 
-  inspector = role('panel-seams');
+  inspector = role('panel-inspect');
   familySelect = role('family');
   paletteList = role('list');
   brushLabel = role('brush');
@@ -788,7 +460,7 @@ export async function mount(container, catalog) {
   mirrorButton = role('mirror');
 
   familySelect.append(new Option('Everything', ''));
-  for (const id of [...new Set(Object.values(sockets.pieces)
+  for (const id of [...new Set(Object.values(pieces)
     .filter((piece) => piece.dir === 'atoms').map((piece) => piece.family))].filter(Boolean).sort()) {
     familySelect.append(new Option(families.get(id) ?? id, `atoms:${id}`));
   }
@@ -879,7 +551,7 @@ export async function mount(container, catalog) {
 
   sheet = {
     pieces: { tab: role('tab-pieces'), panel: role('panel-pieces') },
-    seams: { tab: role('tab-seams'), panel: role('panel-seams') },
+    inspect: { tab: role('tab-inspect'), panel: role('panel-inspect') },
   };
 
   /* Swiping across the drawer moves between its tabs, since reaching for a
