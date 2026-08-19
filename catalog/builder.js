@@ -485,7 +485,9 @@ function openAdvice(shapeId) {
 
 /* Which pieces would mate into an open seam: every piece, in each of its
  * eight placements, is asked whether one of its sockets would agree with this
- * one from the neighbouring cell. */
+ * one from the neighbouring cell. A single conflicting column disqualifies the
+ * placement outright, on the same terms evaluate() judges a placed seam by —
+ * otherwise the count promises mates that turn into clashes on contact. */
 function candidates(socket) {
   const found = [];
   const dx = socket.axis === 'x' ? (socket.at > placementById(socket.owner).cx ? 1 : -1) : 0;
@@ -502,7 +504,7 @@ function candidates(socket) {
           if (other.axis !== socket.axis || Math.abs(other.at - socket.at) > 1e-6) continue;
           if (other.facing === socket.facing) continue;
           const result = compare(socket, other);
-          if (!result || result.agree === 0) continue;
+          if (!result || result.agree === 0 || result.conflict > 0) continue;
           found.push({ piece, rot, mirror, cx, cz, level: trial.level, agree: result.agree, of: steps(socket) });
         }
       }
