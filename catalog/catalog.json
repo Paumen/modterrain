@@ -2,7 +2,7 @@
  "generated": "node tools/build-catalog.mjs",
  "total": 270,
  "assemblies": 98,
- "scenes": 6,
+ "scenes": 7,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1250,7 +1250,7 @@
    "id": "scenes",
    "label": "Scenes",
    "facet": "scene",
-   "count": 6,
+   "count": 7,
    "sections": [
     {
      "id": "scenes-scene-diorama",
@@ -1262,7 +1262,8 @@
       370,
       371,
       372,
-      373
+      373,
+      374
      ]
     }
    ]
@@ -1287,7 +1288,7 @@
      "name": "Grass",
      "source": "Grass",
      "hex": "#228b22",
-     "count": 142,
+     "count": 143,
      "short": "Grass"
     },
     {
@@ -1295,7 +1296,7 @@
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#bca176",
-     "count": 56,
+     "count": 57,
      "short": "Dirt"
     },
     {
@@ -1303,7 +1304,7 @@
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 52,
+     "count": 53,
      "short": "River"
     },
     {
@@ -1311,7 +1312,7 @@
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 36,
+     "count": 37,
      "short": "Waterfall"
     },
     {
@@ -1319,7 +1320,7 @@
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 25,
+     "count": 26,
      "short": "Dark"
     },
     {
@@ -1327,7 +1328,7 @@
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 24,
+     "count": 25,
      "short": "Light End"
     },
     {
@@ -1335,7 +1336,7 @@
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 23,
+     "count": 24,
      "short": "Light"
     },
     {
@@ -1343,7 +1344,7 @@
      "name": "Rope",
      "source": "Rope",
      "hex": "#7f725a",
-     "count": 14,
+     "count": 15,
      "short": "Rope"
     },
     {
@@ -1359,7 +1360,7 @@
      "name": "Waterfall Crest",
      "source": "Waterfall Crest",
      "hex": "#00edf9",
-     "count": 12,
+     "count": 13,
      "short": "Waterfall Crest"
     },
     {
@@ -1367,8 +1368,24 @@
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 12,
+     "count": 13,
      "short": "Medium"
+    },
+    {
+     "key": "material|cliff",
+     "name": "Cliff",
+     "source": "Cliff",
+     "hex": "#88796d",
+     "count": 5,
+     "short": "Cliff"
+    },
+    {
+     "key": "material|metal-iron",
+     "name": "Metal Iron",
+     "source": "Metal Iron",
+     "hex": "#726c68",
+     "count": 5,
+     "short": "Iron"
     },
     {
      "key": "material|candlewax",
@@ -1379,20 +1396,12 @@
      "short": "Candlewax"
     },
     {
-     "key": "material|cliff",
-     "name": "Cliff",
-     "source": "Cliff",
-     "hex": "#88796d",
+     "key": "material|cave-pool",
+     "name": "Cave Pool",
+     "source": "Cave Pool",
+     "hex": "#22cde3",
      "count": 4,
-     "short": "Cliff"
-    },
-    {
-     "key": "material|metal-iron",
-     "name": "Metal Iron",
-     "source": "Metal Iron",
-     "hex": "#726c68",
-     "count": 4,
-     "short": "Iron"
+     "short": "Cave Pool"
     },
     {
      "key": "material|bark-branch",
@@ -1443,20 +1452,44 @@
      "short": "Pine"
     },
     {
+     "key": "material|carved-stone-1",
+     "name": "Carved Stone 1",
+     "source": "Carved Stone 1",
+     "hex": "#baae9f",
+     "count": 3,
+     "short": "Stone 1"
+    },
+    {
+     "key": "material|carved-stone-2",
+     "name": "Carved Stone 2",
+     "source": "Carved Stone 2",
+     "hex": "#c7bfb3",
+     "count": 3,
+     "short": "Stone 2"
+    },
+    {
+     "key": "material|carved-stone-3",
+     "name": "Carved Stone 3",
+     "source": "Carved Stone 3",
+     "hex": "#d6d2cb",
+     "count": 3,
+     "short": "Stone 3"
+    },
+    {
+     "key": "material|carved-stone-walkway",
+     "name": "Carved Stone Walkway",
+     "source": "Carved Stone Walkway",
+     "hex": "#bfbab4",
+     "count": 3,
+     "short": "Walkway"
+    },
+    {
      "key": "material|cattail-grass",
      "name": "Cattail Grass",
      "source": "Cattail Grass",
      "hex": "#dbe1b9",
      "count": 3,
      "short": "Cattail Grass"
-    },
-    {
-     "key": "material|cave-pool",
-     "name": "Cave Pool",
-     "source": "Cave Pool",
-     "hex": "#22cde3",
-     "count": 3,
-     "short": "Cave Pool"
     },
     {
      "key": "material|coconut",
@@ -1633,38 +1666,6 @@
      "hex": "#9d7f58",
      "count": 2,
      "short": "Stump"
-    },
-    {
-     "key": "material|carved-stone-1",
-     "name": "Carved Stone 1",
-     "source": "Carved Stone 1",
-     "hex": "#baae9f",
-     "count": 2,
-     "short": "Stone 1"
-    },
-    {
-     "key": "material|carved-stone-2",
-     "name": "Carved Stone 2",
-     "source": "Carved Stone 2",
-     "hex": "#c7bfb3",
-     "count": 2,
-     "short": "Stone 2"
-    },
-    {
-     "key": "material|carved-stone-3",
-     "name": "Carved Stone 3",
-     "source": "Carved Stone 3",
-     "hex": "#d6d2cb",
-     "count": 2,
-     "short": "Stone 3"
-    },
-    {
-     "key": "material|carved-stone-walkway",
-     "name": "Carved Stone Walkway",
-     "source": "Carved Stone Walkway",
-     "hex": "#bfbab4",
-     "count": 2,
-     "short": "Walkway"
     },
     {
      "key": "material|cattail",
@@ -1982,7 +1983,7 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 329,
+     "count": 330,
      "short": "Hidden"
     },
     {
@@ -1990,7 +1991,7 @@
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 111,
+     "count": 112,
      "short": "Violet"
     },
     {
@@ -1998,7 +1999,7 @@
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 91,
+     "count": 92,
      "short": "Yellow"
     },
     {
@@ -2006,7 +2007,7 @@
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 83,
+     "count": 84,
      "short": "Orange"
     },
     {
@@ -2014,7 +2015,7 @@
      "name": "Hidden Blue",
      "source": "Hidden Blue",
      "hex": "#d8efff",
-     "count": 72,
+     "count": 73,
      "short": "Blue"
     },
     {
@@ -2022,7 +2023,7 @@
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 71,
+     "count": 72,
      "short": "Pink"
     },
     {
@@ -2030,7 +2031,7 @@
      "name": "Hidden Green",
      "source": "Hidden Green",
      "hex": "#dcfdc8",
-     "count": 70,
+     "count": 71,
      "short": "Green"
     },
     {
@@ -2038,7 +2039,7 @@
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 47,
+     "count": 48,
      "short": "Red"
     }
    ]
@@ -19031,6 +19032,66 @@
     "material|starfish-bleached",
     "material|tarp-blue",
     "material|tarp-green",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Large_Island_v2_No_Ocean_No_Props",
+   "name": "Large Island v2 No Ocean No Props",
+   "file": "scenes/Large_Island_v2_No_Ocean_No_Props.glb",
+   "group": "scene-diorama",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1.57,
+    1.34,
+    0.193
+   ],
+   "min": [
+    -0.64,
+    -0.07,
+    -0.94
+   ],
+   "max": [
+    0.93,
+    0.123,
+    0.4
+   ],
+   "triangles": 190412,
+   "trianglesPerUnit": 90509,
+   "calls": 12430,
+   "bytes": 6087292,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|carved-stone-1",
+    "material|carved-stone-2",
+    "material|carved-stone-3",
+    "material|carved-stone-walkway",
+    "material|cave-pool",
+    "material|cliff",
+    "material|dirt",
+    "material|grass",
+    "material|metal-iron",
+    "material|rope",
     "material|water-river",
     "material|waterfall",
     "material|waterfall-crest",
