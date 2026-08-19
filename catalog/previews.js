@@ -25,24 +25,7 @@ function attachViewer(box) {
   viewer.setAttribute('interaction-prompt', 'none');
   viewer.setAttribute('disable-zoom', '');
   viewer.setAttribute('loading', 'eager');
-  if (box.dataset.floorSrc) {
-    viewer.addEventListener('load', () => swapToFloor(viewer, box.dataset.floorSrc), { once: true });
-  }
   box.replaceChildren(viewer);
-}
-
-// The floored file's own "auto" camera-orbit fits the whole scene, floor
-// included, which zooms out and shrinks the model — the floor is padded
-// past the model's footprint and sits off-center (at its base), so even
-// tight padding inflates the bounding sphere. Loading the plain model first
-// and locking its real auto-resolved framing (camera-orbit's radius is in
-// the same units either way) onto the floored swap keeps the model exactly
-// as prominent as everywhere else, with the floor just extending into frame.
-export function swapToFloor(viewer, floorSrc) {
-  const { theta, phi, radius } = viewer.getCameraOrbit();
-  viewer.setAttribute('field-of-view', `${viewer.getFieldOfView()}deg`);
-  viewer.setAttribute('camera-orbit', `${theta}rad ${phi}rad ${radius}m`);
-  viewer.src = floorSrc;
 }
 
 function detachViewer(box) {

@@ -17,7 +17,6 @@ const CATALOG_DIR = join(ROOT, 'catalog');
 const TEXTURES_DIR = join(ROOT, 'textures');
 const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
 const SCENES_DIR = join(ROOT, 'scenes');
-const THUMBNAILS_DIR = join(ROOT, 'thumbnails');
 
 const MATERIAL_NAMES = {
   'Cliff Face': 'Cliff Face',
@@ -207,9 +206,6 @@ const models = files.map((file) => ({
       variant: determineVariant(id),
     };
   }),
-  // tools/add-floor.mjs bakes a real grid-plane under most pieces for the
-  // Parts tab; a few flat/zero-footprint pieces have no floored version.
-  floorFile: existsSync(join(THUMBNAILS_DIR, file)) ? `thumbnails/${file}` : null,
 }));
 
 const modelIds = new Set(models.map((model) => model.id));
