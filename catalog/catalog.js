@@ -1,4 +1,4 @@
-import { observe, swapToFloor } from './previews.js';
+import { observe } from './previews.js';
 
 const number = new Intl.NumberFormat('en-US');
 const unit = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
@@ -46,13 +46,6 @@ function makeCard(model, view, section) {
   const box = document.createElement('div');
   box.className = 'card-viewer';
   box.dataset.src = model.file;
-  // The Atoms tab shows the floored variant (a real grid-plane mesh baked
-  // under the piece, see tools/add-floor.mjs) when one exists; every other
-  // view, and the handful of flat pieces with no footprint to floor, use
-  // just the plain model. attachViewer loads dataset.src first regardless,
-  // so the model's own true auto-framing can be captured and locked before
-  // swapping to the floored file — see swapToFloor.
-  if (view === 'atoms' && model.floorFile) box.dataset.floorSrc = model.floorFile;
   box.dataset.alt = `3D model ${model.name}`;
 
   const text = document.createElement('div');
@@ -225,8 +218,6 @@ function showDetail(model) {
   viewer.alt = `3D model ${model.name}`;
   viewer.setAttribute('camera-controls', '');
   viewer.setAttribute('camera-orbit', '35deg 68deg auto');
-  const floorSrc = currentView === 'atoms' && model.floorFile;
-  if (floorSrc) viewer.addEventListener('load', () => swapToFloor(viewer, floorSrc), { once: true });
   viewer.setAttribute('environment-image', 'neutral');
   viewer.setAttribute('shadow-intensity', '0.7');
   viewer.setAttribute('shadow-softness', '0.9');
