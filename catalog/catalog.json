@@ -2,7 +2,7 @@
  "generated": "node tools/build-catalog.mjs",
  "total": 270,
  "assemblies": 98,
- "scenes": 5,
+ "scenes": 6,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1250,7 +1250,7 @@
    "id": "scenes",
    "label": "Scenes",
    "facet": "scene",
-   "count": 5,
+   "count": 6,
    "sections": [
     {
      "id": "scenes-scene-diorama",
@@ -1261,7 +1261,8 @@
       369,
       370,
       371,
-      372
+      372,
+      373
      ]
     }
    ]
@@ -1286,7 +1287,7 @@
      "name": "Grass",
      "source": "Grass",
      "hex": "#228b22",
-     "count": 141,
+     "count": 142,
      "short": "Grass"
     },
     {
@@ -1294,7 +1295,7 @@
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#bca176",
-     "count": 55,
+     "count": 56,
      "short": "Dirt"
     },
     {
@@ -1302,7 +1303,7 @@
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 51,
+     "count": 52,
      "short": "River"
     },
     {
@@ -1310,7 +1311,7 @@
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 35,
+     "count": 36,
      "short": "Waterfall"
     },
     {
@@ -1318,7 +1319,7 @@
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 24,
+     "count": 25,
      "short": "Dark"
     },
     {
@@ -1326,7 +1327,7 @@
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 23,
+     "count": 24,
      "short": "Light End"
     },
     {
@@ -1334,8 +1335,16 @@
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 22,
+     "count": 23,
      "short": "Light"
+    },
+    {
+     "key": "material|rope",
+     "name": "Rope",
+     "source": "Rope",
+     "hex": "#7f725a",
+     "count": 14,
+     "short": "Rope"
     },
     {
      "key": "material|ice",
@@ -1346,19 +1355,11 @@
      "short": "Ice"
     },
     {
-     "key": "material|rope",
-     "name": "Rope",
-     "source": "Rope",
-     "hex": "#7f725a",
-     "count": 13,
-     "short": "Rope"
-    },
-    {
      "key": "material|waterfall-crest",
      "name": "Waterfall Crest",
      "source": "Waterfall Crest",
      "hex": "#00edf9",
-     "count": 11,
+     "count": 12,
      "short": "Waterfall Crest"
     },
     {
@@ -1366,7 +1367,7 @@
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 11,
+     "count": 12,
      "short": "Medium"
     },
     {
@@ -1374,7 +1375,7 @@
      "name": "Candlewax",
      "source": "Candlewax",
      "hex": "#fff5e6",
-     "count": 3,
+     "count": 4,
      "short": "Candlewax"
     },
     {
@@ -1382,7 +1383,7 @@
      "name": "Cliff",
      "source": "Cliff",
      "hex": "#88796d",
-     "count": 3,
+     "count": 4,
      "short": "Cliff"
     },
     {
@@ -1390,8 +1391,216 @@
      "name": "Metal Iron",
      "source": "Metal Iron",
      "hex": "#726c68",
-     "count": 3,
+     "count": 4,
      "short": "Iron"
+    },
+    {
+     "key": "material|bark-branch",
+     "name": "Bark Branch",
+     "source": "Bark Branch",
+     "hex": "#9d7f58",
+     "count": 3,
+     "short": "Branch"
+    },
+    {
+     "key": "material|bark-cedar",
+     "name": "Bark Cedar",
+     "source": "Bark Cedar",
+     "hex": "#76624b",
+     "count": 3,
+     "short": "Cedar"
+    },
+    {
+     "key": "material|bark-firewood",
+     "name": "Bark Firewood",
+     "source": "Bark Firewood",
+     "hex": "#9d7f58",
+     "count": 3,
+     "short": "Firewood"
+    },
+    {
+     "key": "material|bark-log",
+     "name": "Bark Log",
+     "source": "Bark Log",
+     "hex": "#9d7f58",
+     "count": 3,
+     "short": "Log"
+    },
+    {
+     "key": "material|bark-palm",
+     "name": "Bark Palm",
+     "source": "Bark Palm",
+     "hex": "#d2bb9c",
+     "count": 3,
+     "short": "Palm"
+    },
+    {
+     "key": "material|bark-pine",
+     "name": "Bark Pine",
+     "source": "Bark Pine",
+     "hex": "#76624b",
+     "count": 3,
+     "short": "Pine"
+    },
+    {
+     "key": "material|cattail-grass",
+     "name": "Cattail Grass",
+     "source": "Cattail Grass",
+     "hex": "#dbe1b9",
+     "count": 3,
+     "short": "Cattail Grass"
+    },
+    {
+     "key": "material|cave-pool",
+     "name": "Cave Pool",
+     "source": "Cave Pool",
+     "hex": "#22cde3",
+     "count": 3,
+     "short": "Cave Pool"
+    },
+    {
+     "key": "material|coconut",
+     "name": "Coconut",
+     "source": "Coconut",
+     "hex": "#87755a",
+     "count": 3,
+     "short": "Coconut"
+    },
+    {
+     "key": "material|flower-stem",
+     "name": "Flower Stem",
+     "source": "Flower Stem",
+     "hex": "#88ce97",
+     "count": 3,
+     "short": "Stem"
+    },
+    {
+     "key": "material|flower-sunflower",
+     "name": "Flower Sunflower",
+     "source": "Flower Sunflower",
+     "hex": "#f9eed0",
+     "count": 3,
+     "short": "Sunflower"
+    },
+    {
+     "key": "material|leaf",
+     "name": "Leaf",
+     "source": "Leaf",
+     "hex": "#99de95",
+     "count": 3,
+     "short": "Leaf"
+    },
+    {
+     "key": "material|leaf-palm",
+     "name": "Leaf Palm",
+     "source": "Leaf Palm",
+     "hex": "#8ec996",
+     "count": 3,
+     "short": "Leaf Palm"
+    },
+    {
+     "key": "material|metal-iron-light",
+     "name": "Metal Iron Light",
+     "source": "Metal Iron Light",
+     "hex": "#948e87",
+     "count": 3,
+     "short": "Iron Light"
+    },
+    {
+     "key": "material|mushroom-brown",
+     "name": "Mushroom Brown",
+     "source": "Mushroom Brown",
+     "hex": "#edd7c2",
+     "count": 3,
+     "short": "Brown"
+    },
+    {
+     "key": "material|mushroom-dark-red",
+     "name": "Mushroom Dark Red",
+     "source": "Mushroom Dark Red",
+     "hex": "#ebd8cf",
+     "count": 3,
+     "short": "Dark Red"
+    },
+    {
+     "key": "material|mushroom-gray",
+     "name": "Mushroom Gray",
+     "source": "Mushroom Gray",
+     "hex": "#ecded0",
+     "count": 3,
+     "short": "Gray"
+    },
+    {
+     "key": "material|mushroom-red-spotted",
+     "name": "Mushroom Red Spotted",
+     "source": "Mushroom Red Spotted",
+     "hex": "#f5dad1",
+     "count": 3,
+     "short": "Red Spotted"
+    },
+    {
+     "key": "material|mushroom-stem",
+     "name": "Mushroom Stem",
+     "source": "Mushroom Stem",
+     "hex": "#fcf1e5",
+     "count": 3,
+     "short": "Mushroom Stem"
+    },
+    {
+     "key": "material|rock",
+     "name": "Rock",
+     "source": "Rock",
+     "hex": "#bebebe",
+     "count": 3,
+     "short": "Rock"
+    },
+    {
+     "key": "material|shell-inner",
+     "name": "Shell Inner",
+     "source": "Shell Inner",
+     "hex": "#eee3dd",
+     "count": 3,
+     "short": "Inner"
+    },
+    {
+     "key": "material|shell-layered",
+     "name": "Shell Layered",
+     "source": "Shell Layered",
+     "hex": "#e5d2c6",
+     "count": 3,
+     "short": "Layered"
+    },
+    {
+     "key": "material|shell-salmon",
+     "name": "Shell Salmon",
+     "source": "Shell Salmon",
+     "hex": "#efd3bc",
+     "count": 3,
+     "short": "Salmon"
+    },
+    {
+     "key": "material|shell-slate",
+     "name": "Shell Slate",
+     "source": "Shell Slate",
+     "hex": "#cdd8dd",
+     "count": 3,
+     "short": "Slate"
+    },
+    {
+     "key": "material|starfish",
+     "name": "Starfish",
+     "source": "Starfish",
+     "hex": "#caa996",
+     "count": 3,
+     "short": "Starfish"
+    },
+    {
+     "key": "material|starfish-bleached",
+     "name": "Starfish Bleached",
+     "source": "Starfish Bleached",
+     "hex": "#d6d0c8",
+     "count": 3,
+     "short": "Starfish Bleached"
     },
     {
      "key": "material|water-lake",
@@ -1402,212 +1611,156 @@
      "short": "Lake"
     },
     {
-     "key": "material|bark-branch",
-     "name": "Bark Branch",
-     "source": "Bark Branch",
+     "key": "material|",
+     "name": "",
+     "source": "",
+     "hex": "#ffffff",
+     "count": 2,
+     "short": ""
+    },
+    {
+     "key": "material|bark-oak",
+     "name": "Bark Oak",
+     "source": "Bark Oak",
+     "hex": "#988a78",
+     "count": 2,
+     "short": "Oak"
+    },
+    {
+     "key": "material|bark-stump",
+     "name": "Bark Stump",
+     "source": "Bark Stump",
      "hex": "#9d7f58",
      "count": 2,
-     "short": "Branch"
+     "short": "Stump"
     },
     {
-     "key": "material|bark-cedar",
-     "name": "Bark Cedar",
-     "source": "Bark Cedar",
-     "hex": "#76624b",
+     "key": "material|carved-stone-1",
+     "name": "Carved Stone 1",
+     "source": "Carved Stone 1",
+     "hex": "#baae9f",
      "count": 2,
-     "short": "Cedar"
+     "short": "Stone 1"
     },
     {
-     "key": "material|bark-firewood",
-     "name": "Bark Firewood",
-     "source": "Bark Firewood",
-     "hex": "#9d7f58",
+     "key": "material|carved-stone-2",
+     "name": "Carved Stone 2",
+     "source": "Carved Stone 2",
+     "hex": "#c7bfb3",
      "count": 2,
-     "short": "Firewood"
+     "short": "Stone 2"
     },
     {
-     "key": "material|bark-log",
-     "name": "Bark Log",
-     "source": "Bark Log",
-     "hex": "#9d7f58",
+     "key": "material|carved-stone-3",
+     "name": "Carved Stone 3",
+     "source": "Carved Stone 3",
+     "hex": "#d6d2cb",
      "count": 2,
-     "short": "Log"
+     "short": "Stone 3"
     },
     {
-     "key": "material|bark-palm",
-     "name": "Bark Palm",
-     "source": "Bark Palm",
-     "hex": "#d2bb9c",
+     "key": "material|carved-stone-walkway",
+     "name": "Carved Stone Walkway",
+     "source": "Carved Stone Walkway",
+     "hex": "#bfbab4",
      "count": 2,
-     "short": "Palm"
+     "short": "Walkway"
     },
     {
-     "key": "material|bark-pine",
-     "name": "Bark Pine",
-     "source": "Bark Pine",
-     "hex": "#76624b",
+     "key": "material|cattail",
+     "name": "Cattail",
+     "source": "Cattail",
+     "hex": "#af9070",
      "count": 2,
-     "short": "Pine"
+     "short": "Cattail"
     },
     {
-     "key": "material|cattail-grass",
-     "name": "Cattail Grass",
-     "source": "Cattail Grass",
-     "hex": "#dbe1b9",
+     "key": "material|cattail-stem",
+     "name": "Cattail Stem",
+     "source": "Cattail Stem",
+     "hex": "#c3c29c",
      "count": 2,
-     "short": "Cattail Grass"
+     "short": "Cattail Stem"
     },
     {
-     "key": "material|cave-pool",
-     "name": "Cave Pool",
-     "source": "Cave Pool",
-     "hex": "#22cde3",
+     "key": "material|flower-5-point-blue",
+     "name": "Flower 5 Point Blue",
+     "source": "Flower 5 Point Blue",
+     "hex": "#f0f8ff",
      "count": 2,
-     "short": "Cave Pool"
+     "short": "Blue"
     },
     {
-     "key": "material|coconut",
-     "name": "Coconut",
-     "source": "Coconut",
-     "hex": "#87755a",
+     "key": "material|flower-5-point-pink",
+     "name": "Flower 5 Point Pink",
+     "source": "Flower 5 Point Pink",
+     "hex": "#fbf2f2",
      "count": 2,
-     "short": "Coconut"
+     "short": "Pink"
     },
     {
-     "key": "material|flower-stem",
-     "name": "Flower Stem",
-     "source": "Flower Stem",
-     "hex": "#88ce97",
+     "key": "material|flower-5-point-violet",
+     "name": "Flower 5 Point Violet",
+     "source": "Flower 5 Point Violet",
+     "hex": "#fef4fd",
      "count": 2,
-     "short": "Stem"
+     "short": "Violet"
     },
     {
-     "key": "material|flower-sunflower",
-     "name": "Flower Sunflower",
-     "source": "Flower Sunflower",
-     "hex": "#f9eed0",
+     "key": "material|flower-daisy-white",
+     "name": "Flower Daisy White",
+     "source": "Flower Daisy White",
+     "hex": "#d5d5d5",
      "count": 2,
-     "short": "Sunflower"
+     "short": "Daisy White"
     },
     {
-     "key": "material|leaf",
-     "name": "Leaf",
-     "source": "Leaf",
-     "hex": "#99de95",
+     "key": "material|flower-stamen",
+     "name": "Flower Stamen",
+     "source": "Flower Stamen",
+     "hex": "#faf5ee",
      "count": 2,
-     "short": "Leaf"
+     "short": "Stamen"
     },
     {
-     "key": "material|leaf-palm",
-     "name": "Leaf Palm",
-     "source": "Leaf Palm",
-     "hex": "#8ec996",
+     "key": "material|leaves-cedar",
+     "name": "Leaves Cedar",
+     "source": "Leaves Cedar",
+     "hex": "#659f47",
      "count": 2,
-     "short": "Leaf Palm"
+     "short": "Leaves Cedar"
     },
     {
-     "key": "material|metal-iron-light",
-     "name": "Metal Iron Light",
-     "source": "Metal Iron Light",
-     "hex": "#948e87",
+     "key": "material|leaves-oak",
+     "name": "Leaves Oak",
+     "source": "Leaves Oak",
+     "hex": "#bde99b",
      "count": 2,
-     "short": "Iron Light"
+     "short": "Leaves Oak"
     },
     {
-     "key": "material|mushroom-brown",
-     "name": "Mushroom Brown",
-     "source": "Mushroom Brown",
-     "hex": "#edd7c2",
+     "key": "material|leaves-pine",
+     "name": "Leaves Pine",
+     "source": "Leaves Pine",
+     "hex": "#569f94",
      "count": 2,
-     "short": "Brown"
+     "short": "Leaves Pine"
     },
     {
-     "key": "material|mushroom-dark-red",
-     "name": "Mushroom Dark Red",
-     "source": "Mushroom Dark Red",
-     "hex": "#ebd8cf",
+     "key": "material|tarp-blue",
+     "name": "Tarp Blue",
+     "source": "Tarp Blue",
+     "hex": "#5c8b9c",
      "count": 2,
-     "short": "Dark Red"
+     "short": "Tarp Blue"
     },
     {
-     "key": "material|mushroom-gray",
-     "name": "Mushroom Gray",
-     "source": "Mushroom Gray",
-     "hex": "#ecded0",
+     "key": "material|tarp-green",
+     "name": "Tarp Green",
+     "source": "Tarp Green",
+     "hex": "#1c7d4b",
      "count": 2,
-     "short": "Gray"
-    },
-    {
-     "key": "material|mushroom-red-spotted",
-     "name": "Mushroom Red Spotted",
-     "source": "Mushroom Red Spotted",
-     "hex": "#f5dad1",
-     "count": 2,
-     "short": "Red Spotted"
-    },
-    {
-     "key": "material|mushroom-stem",
-     "name": "Mushroom Stem",
-     "source": "Mushroom Stem",
-     "hex": "#fcf1e5",
-     "count": 2,
-     "short": "Mushroom Stem"
-    },
-    {
-     "key": "material|rock",
-     "name": "Rock",
-     "source": "Rock",
-     "hex": "#bebebe",
-     "count": 2,
-     "short": "Rock"
-    },
-    {
-     "key": "material|shell-inner",
-     "name": "Shell Inner",
-     "source": "Shell Inner",
-     "hex": "#eee3dd",
-     "count": 2,
-     "short": "Inner"
-    },
-    {
-     "key": "material|shell-layered",
-     "name": "Shell Layered",
-     "source": "Shell Layered",
-     "hex": "#e5d2c6",
-     "count": 2,
-     "short": "Layered"
-    },
-    {
-     "key": "material|shell-salmon",
-     "name": "Shell Salmon",
-     "source": "Shell Salmon",
-     "hex": "#efd3bc",
-     "count": 2,
-     "short": "Salmon"
-    },
-    {
-     "key": "material|shell-slate",
-     "name": "Shell Slate",
-     "source": "Shell Slate",
-     "hex": "#cdd8dd",
-     "count": 2,
-     "short": "Slate"
-    },
-    {
-     "key": "material|starfish",
-     "name": "Starfish",
-     "source": "Starfish",
-     "hex": "#caa996",
-     "count": 2,
-     "short": "Starfish"
-    },
-    {
-     "key": "material|starfish-bleached",
-     "name": "Starfish Bleached",
-     "source": "Starfish Bleached",
-     "hex": "#d6d0c8",
-     "count": 2,
-     "short": "Starfish Bleached"
+     "short": "Tarp Green"
     },
     {
      "key": "material|water-ocean",
@@ -1618,14 +1771,6 @@
      "short": "Ocean"
     },
     {
-     "key": "material|",
-     "name": "",
-     "source": "",
-     "hex": "#ffffff",
-     "count": 1,
-     "short": ""
-    },
-    {
      "key": "material|bark-birch",
      "name": "Bark Birch",
      "source": "Bark Birch",
@@ -1634,116 +1779,12 @@
      "short": "Birch"
     },
     {
-     "key": "material|bark-oak",
-     "name": "Bark Oak",
-     "source": "Bark Oak",
-     "hex": "#988a78",
-     "count": 1,
-     "short": "Oak"
-    },
-    {
-     "key": "material|bark-stump",
-     "name": "Bark Stump",
-     "source": "Bark Stump",
-     "hex": "#9d7f58",
-     "count": 1,
-     "short": "Stump"
-    },
-    {
-     "key": "material|carved-stone-1",
-     "name": "Carved Stone 1",
-     "source": "Carved Stone 1",
-     "hex": "#baae9f",
-     "count": 1,
-     "short": "Stone 1"
-    },
-    {
-     "key": "material|carved-stone-2",
-     "name": "Carved Stone 2",
-     "source": "Carved Stone 2",
-     "hex": "#c7bfb3",
-     "count": 1,
-     "short": "Stone 2"
-    },
-    {
-     "key": "material|carved-stone-3",
-     "name": "Carved Stone 3",
-     "source": "Carved Stone 3",
-     "hex": "#d6d2cb",
-     "count": 1,
-     "short": "Stone 3"
-    },
-    {
-     "key": "material|carved-stone-walkway",
-     "name": "Carved Stone Walkway",
-     "source": "Carved Stone Walkway",
-     "hex": "#bfbab4",
-     "count": 1,
-     "short": "Walkway"
-    },
-    {
-     "key": "material|cattail",
-     "name": "Cattail",
-     "source": "Cattail",
-     "hex": "#af9070",
-     "count": 1,
-     "short": "Cattail"
-    },
-    {
-     "key": "material|cattail-stem",
-     "name": "Cattail Stem",
-     "source": "Cattail Stem",
-     "hex": "#c3c29c",
-     "count": 1,
-     "short": "Cattail Stem"
-    },
-    {
      "key": "material|cave-waterfall",
      "name": "Cave Waterfall",
      "source": "Cave Waterfall",
      "hex": "#51cde2",
      "count": 1,
      "short": "Cave Waterfall"
-    },
-    {
-     "key": "material|flower-5-point-blue",
-     "name": "Flower 5 Point Blue",
-     "source": "Flower 5 Point Blue",
-     "hex": "#f0f8ff",
-     "count": 1,
-     "short": "Blue"
-    },
-    {
-     "key": "material|flower-5-point-pink",
-     "name": "Flower 5 Point Pink",
-     "source": "Flower 5 Point Pink",
-     "hex": "#fbf2f2",
-     "count": 1,
-     "short": "Pink"
-    },
-    {
-     "key": "material|flower-5-point-violet",
-     "name": "Flower 5 Point Violet",
-     "source": "Flower 5 Point Violet",
-     "hex": "#fef4fd",
-     "count": 1,
-     "short": "Violet"
-    },
-    {
-     "key": "material|flower-daisy-white",
-     "name": "Flower Daisy White",
-     "source": "Flower Daisy White",
-     "hex": "#d5d5d5",
-     "count": 1,
-     "short": "Daisy White"
-    },
-    {
-     "key": "material|flower-stamen",
-     "name": "Flower Stamen",
-     "source": "Flower Stamen",
-     "hex": "#faf5ee",
-     "count": 1,
-     "short": "Stamen"
     },
     {
      "key": "material|grass-autumn",
@@ -1784,30 +1825,6 @@
      "hex": "#d6b638",
      "count": 1,
      "short": "Yellow"
-    },
-    {
-     "key": "material|leaves-cedar",
-     "name": "Leaves Cedar",
-     "source": "Leaves Cedar",
-     "hex": "#659f47",
-     "count": 1,
-     "short": "Leaves Cedar"
-    },
-    {
-     "key": "material|leaves-oak",
-     "name": "Leaves Oak",
-     "source": "Leaves Oak",
-     "hex": "#bde99b",
-     "count": 1,
-     "short": "Leaves Oak"
-    },
-    {
-     "key": "material|leaves-pine",
-     "name": "Leaves Pine",
-     "source": "Leaves Pine",
-     "hex": "#569f94",
-     "count": 1,
-     "short": "Leaves Pine"
     },
     {
      "key": "material|mountain",
@@ -1946,22 +1963,6 @@
      "short": "Wood Medium"
     },
     {
-     "key": "material|tarp-blue",
-     "name": "Tarp Blue",
-     "source": "Tarp Blue",
-     "hex": "#5c8b9c",
-     "count": 1,
-     "short": "Tarp Blue"
-    },
-    {
-     "key": "material|tarp-green",
-     "name": "Tarp Green",
-     "source": "Tarp Green",
-     "hex": "#1c7d4b",
-     "count": 1,
-     "short": "Tarp Green"
-    },
-    {
      "key": "material|winter-water-river",
      "name": "Winter Water River",
      "source": "Winter Water River",
@@ -1981,7 +1982,7 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 328,
+     "count": 329,
      "short": "Hidden"
     },
     {
@@ -1989,7 +1990,7 @@
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 110,
+     "count": 111,
      "short": "Violet"
     },
     {
@@ -1997,7 +1998,7 @@
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 90,
+     "count": 91,
      "short": "Yellow"
     },
     {
@@ -2005,7 +2006,7 @@
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 82,
+     "count": 83,
      "short": "Orange"
     },
     {
@@ -2013,7 +2014,7 @@
      "name": "Hidden Blue",
      "source": "Hidden Blue",
      "hex": "#d8efff",
-     "count": 71,
+     "count": 72,
      "short": "Blue"
     },
     {
@@ -2021,7 +2022,7 @@
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 70,
+     "count": 71,
      "short": "Pink"
     },
     {
@@ -2029,7 +2030,7 @@
      "name": "Hidden Green",
      "source": "Hidden Green",
      "hex": "#dcfdc8",
-     "count": 69,
+     "count": 70,
      "short": "Green"
     },
     {
@@ -2037,7 +2038,7 @@
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 46,
+     "count": 47,
      "short": "Red"
     }
    ]
@@ -18929,6 +18930,107 @@
     "material|tarp-blue",
     "material|tarp-green",
     "material|water-ocean",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Large_Island_v2_No_Ocean",
+   "name": "Large Island v2 No Ocean",
+   "file": "scenes/Large_Island_v2_No_Ocean.glb",
+   "group": "scene-diorama",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1.57,
+    1.34,
+    0.361
+   ],
+   "min": [
+    -0.64,
+    -0.07,
+    -0.94
+   ],
+   "max": [
+    0.93,
+    0.291,
+    0.4
+   ],
+   "triangles": 544823,
+   "trianglesPerUnit": 258971,
+   "calls": 21010,
+   "bytes": 10592472,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|",
+    "material|bark-branch",
+    "material|bark-cedar",
+    "material|bark-firewood",
+    "material|bark-log",
+    "material|bark-oak",
+    "material|bark-palm",
+    "material|bark-pine",
+    "material|bark-stump",
+    "material|candlewax",
+    "material|carved-stone-1",
+    "material|carved-stone-2",
+    "material|carved-stone-3",
+    "material|carved-stone-walkway",
+    "material|cattail",
+    "material|cattail-grass",
+    "material|cattail-stem",
+    "material|cave-pool",
+    "material|cliff",
+    "material|coconut",
+    "material|dirt",
+    "material|flower-5-point-blue",
+    "material|flower-5-point-pink",
+    "material|flower-5-point-violet",
+    "material|flower-daisy-white",
+    "material|flower-stamen",
+    "material|flower-stem",
+    "material|flower-sunflower",
+    "material|grass",
+    "material|leaf",
+    "material|leaf-palm",
+    "material|leaves-cedar",
+    "material|leaves-oak",
+    "material|leaves-pine",
+    "material|metal-iron",
+    "material|metal-iron-light",
+    "material|mushroom-brown",
+    "material|mushroom-dark-red",
+    "material|mushroom-gray",
+    "material|mushroom-red-spotted",
+    "material|mushroom-stem",
+    "material|rock",
+    "material|rope",
+    "material|shell-inner",
+    "material|shell-layered",
+    "material|shell-salmon",
+    "material|shell-slate",
+    "material|starfish",
+    "material|starfish-bleached",
+    "material|tarp-blue",
+    "material|tarp-green",
     "material|water-river",
     "material|waterfall",
     "material|waterfall-crest",
