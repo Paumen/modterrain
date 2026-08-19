@@ -1,0 +1,106 @@
+{
+ "generated": "node tools/recolor.mjs",
+ "atlas": "textures/colormap.png",
+ "surfaces": {
+  "Cliff Face": {
+   "hex": "#a09083",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.7841796875
+   ],
+   "packColor": "#9d9381",
+   "packMaterial": "Terrain/Cliff.mat",
+   "packAlbedo": "Cliff.png",
+   "distance": 8
+  },
+  "Cliff": {
+   "hex": "#a09083",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.7841796875
+   ],
+   "packColor": "#9d9381",
+   "packMaterial": "Terrain/Cliff.mat",
+   "packAlbedo": "Cliff.png",
+   "distance": 8
+  },
+  "Dirt": {
+   "hex": "#bca176",
+   "cell": [
+    14,
+    0
+   ],
+   "uv": [
+    0.9072265625,
+    0.0009765625
+   ],
+   "packColor": "#c4a870",
+   "packMaterial": "Terrain/Dirt.mat",
+   "packAlbedo": "dirt texture.png",
+   "distance": 21
+  },
+  "Grass": {
+   "hex": "#228b22",
+   "cell": [
+    4,
+    1
+   ],
+   "uv": [
+    0.2822265625,
+    0.2509765625
+   ],
+   "packColor": "#327f1b",
+   "packMaterial": "Terrain/Grass.mat",
+   "packAlbedo": "grass texture.png",
+   "distance": 36
+  },
+  "Ice": {
+   "hex": "#b3bce1",
+   "cell": [
+    3,
+    2
+   ],
+   "uv": [
+    0.2197265625,
+    0.5556640625
+   ],
+   "packColor": "#a7ccd2",
+   "packMaterial": "Terrain/Ice.mat",
+   "packAlbedo": "ice.png",
+   "distance": 44
+  },
+  "Waterfall Crest": {
+   "hex": "#00edf9",
+   "cell": [
+    6,
+    2
+   ],
+   "uv": [
+    0.4072265625,
+    0.5009765625
+   ],
+   "packColor": "#00edf9",
+   "packMaterial": "Water/Waterfall Crest.mat",
+   "packAlbedo": "Waterfall Crest Overlay.png",
+   "distance": 0
+  }
+ },
+ "keepsTexture": [
+  "Rope",
+  "Water Lake",
+  "Water River",
+  "Waterfall",
+  "Wood Dark",
+  "Wood Light",
+  "Wood Light End",
+  "Wood Medium"
+ ]
+}
