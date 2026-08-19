@@ -18,6 +18,10 @@ const TEXTURES_DIR = join(ROOT, 'textures');
 const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
 const SCENES_DIR = join(ROOT, 'scenes');
 
+/* Written by tools/recolor.mjs: which surfaces take their colour from
+ * textures/colormap.png, and what colour that is. */
+const PALETTE = JSON.parse(readFileSync(join(CATALOG_DIR, 'palette.json'), 'utf8'));
+
 const MATERIAL_NAMES = {
   'Cliff Face': 'Cliff Face',
   Grass: 'Grass',
@@ -105,6 +109,12 @@ function toHex([r, g, b] = [1, 1, 1]) {
 
 const averageColorCache = new Map();
 function swatchColor(source, baseColorFactor) {
+  // A surface on the shared colormap has no colour of its own to read: it
+  // points a UV at `textures/colormap.png` and takes the colour there, which
+  // tools/recolor.mjs wrote down when it aimed the UV.
+  const mapped = PALETTE.surfaces[source];
+  if (mapped) return mapped.hex;
+
   const textureFile = TEXTURE_BY_MATERIAL[source];
   if (!textureFile) return toHex(baseColorFactor);
   if (!averageColorCache.has(textureFile)) {
@@ -171,10 +181,13 @@ function describe(dir, prefix, file, classify) {
   }
   for (const key of used) materials.get(key).count++;
 
+  // An image outside the .glb is only a problem when the pack does not carry
+  // it — the shared colormap is referenced rather than embedded on purpose.
   const missingTextures = (glb.json.images ?? [])
     .map((image) => image.uri)
     .filter((uri) => uri && !uri.startsWith('data:'))
-    .map((uri) => decodeURIComponent(uri).split(/[\\/]/).pop());
+    .map((uri) => decodeURIComponent(uri).split(/[\\/]/).pop())
+    .filter((file) => !existsSync(join(TEXTURES_DIR, file)));
 
   return {
     id,

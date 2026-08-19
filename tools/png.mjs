@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs';
-import { inflateSync } from 'node:zlib';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { deflateSync, inflateSync } from 'node:zlib';
 
 const SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
@@ -52,8 +52,10 @@ function unfilter(raw, width, height, samplesPerPixel) {
   return out;
 }
 
-export function readPng(path) {
-  const chunks = readChunks(readFileSync(path));
+export const readPng = (path) => decodePng(readFileSync(path), path);
+
+export function decodePng(buf, path = 'buffer') {
+  const chunks = readChunks(buf);
   const ihdr = chunks.find((c) => c.type === 'IHDR').data;
   const width = ihdr.readUInt32BE(0);
   const height = ihdr.readUInt32BE(4);
@@ -110,4 +112,83 @@ export function averageColor(path) {
   if (weight === 0) weight = 1;
   const hex = (v) => Math.round(v / weight).toString(16).padStart(2, '0');
   return `#${hex(r)}${hex(g)}${hex(b)}`;
+}
+
+/* 8-bit RGBA, no interlacing, one filter chosen per row — the same five the
+ * reader above undoes. Choosing matters here: the colormap is flat vertical
+ * bands, which Sub flattens to runs of zeroes, and writing every row unfiltered
+ * would double the file for nothing. The choice is the usual one, the filter
+ * whose output has the smallest absolute sum. */
+export function writePng(path, { width, height, pixels }) {
+  const stride = width * 4;
+  const raw = Buffer.alloc(height * (stride + 1));
+  const candidate = Buffer.alloc(stride);
+  let previous = Buffer.alloc(stride);
+
+  for (let y = 0; y < height; y++) {
+    const row = Buffer.from(pixels.buffer, pixels.byteOffset + y * stride, stride);
+    let bestFilter = 0;
+    let bestScore = Infinity;
+    let best = null;
+
+    for (let filter = 0; filter <= 4; filter++) {
+      let score = 0;
+      for (let x = 0; x < stride; x++) {
+        const a = x >= 4 ? row[x - 4] : 0;
+        const b = previous[x];
+        const c = x >= 4 ? previous[x - 4] : 0;
+        const value =
+          filter === 0 ? row[x]
+          : filter === 1 ? row[x] - a
+          : filter === 2 ? row[x] - b
+          : filter === 3 ? row[x] - Math.floor((a + b) / 2)
+          : row[x] - paeth(a, b, c);
+        candidate[x] = value & 0xff;
+        score += Math.min(candidate[x], 256 - candidate[x]);
+      }
+      if (score < bestScore) {
+        bestScore = score;
+        bestFilter = filter;
+        best = Buffer.from(candidate);
+      }
+    }
+
+    raw[y * (stride + 1)] = bestFilter;
+    best.copy(raw, y * (stride + 1) + 1);
+    previous = row;
+  }
+
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(width, 0);
+  ihdr.writeUInt32BE(height, 4);
+  ihdr.writeUInt8(8, 8);
+  ihdr.writeUInt8(6, 9);
+
+  const chunk = (type, data) => {
+    const head = Buffer.alloc(8);
+    head.writeUInt32BE(data.length, 0);
+    head.write(type, 4, 'ascii');
+    const crc = Buffer.alloc(4);
+    crc.writeUInt32BE(crc32(Buffer.concat([head.subarray(4), data])), 0);
+    return Buffer.concat([head, data, crc]);
+  };
+
+  writeFileSync(path, Buffer.concat([
+    SIGNATURE,
+    chunk('IHDR', ihdr),
+    chunk('IDAT', deflateSync(raw, { level: 9 })),
+    chunk('IEND', Buffer.alloc(0)),
+  ]));
+}
+
+const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
+  let c = n;
+  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  return c >>> 0;
+});
+
+function crc32(buf) {
+  let c = 0xffffffff;
+  for (const byte of buf) c = CRC_TABLE[(c ^ byte) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
 }

@@ -1,0 +1,150 @@
+{
+ "generated": "node tools/recolor.mjs",
+ "atlas": "textures/colormap.png",
+ "surfaces": {
+  "Cliff Face": {
+   "hex": "#88796d",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.7509765625
+   ],
+   "shadedByHeight": {
+    "layer-top": [
+     13,
+     38
+    ],
+    "layer-mid": [
+     51,
+     51
+    ],
+    "layer-base": [
+     64,
+     90
+    ],
+    "layer-under": [
+     90,
+     115
+    ],
+    "layer-none": [
+     13,
+     115
+    ]
+   },
+   "packColor": "#b3aa9a",
+   "packMaterial": "Terrain/Cliff.mat",
+   "packAlbedo": "Cliff.png",
+   "distance": 46
+  },
+  "Cliff": {
+   "hex": "#88796d",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.7509765625
+   ],
+   "shadedByHeight": {
+    "layer-top": [
+     13,
+     38
+    ],
+    "layer-mid": [
+     51,
+     51
+    ],
+    "layer-base": [
+     64,
+     90
+    ],
+    "layer-under": [
+     90,
+     115
+    ],
+    "layer-none": [
+     13,
+     115
+    ]
+   },
+   "packColor": "#b3aa9a",
+   "packMaterial": "Terrain/Cliff.mat",
+   "packAlbedo": "Cliff.png",
+   "distance": 46
+  },
+  "Dirt": {
+   "hex": "#bca176",
+   "cell": [
+    14,
+    0
+   ],
+   "uv": [
+    0.9072265625,
+    0.0009765625
+   ],
+   "packColor": "#ccb688",
+   "packMaterial": "Terrain/Dirt.mat",
+   "packAlbedo": "dirt texture.png",
+   "distance": 57
+  },
+  "Grass": {
+   "hex": "#228b22",
+   "cell": [
+    4,
+    1
+   ],
+   "uv": [
+    0.2822265625,
+    0.2509765625
+   ],
+   "packColor": "#509346",
+   "packMaterial": "Terrain/Grass.mat",
+   "packAlbedo": "grass texture.png",
+   "distance": 92
+  },
+  "Ice": {
+   "hex": "#aedbfe",
+   "cell": [
+    7,
+    2
+   ],
+   "uv": [
+    0.4697265625,
+    0.6201171875
+   ],
+   "packColor": "#addcfe",
+   "packMaterial": "Terrain/Ice.mat",
+   "packAlbedo": "ice.png",
+   "distance": 3
+  },
+  "Waterfall Crest": {
+   "hex": "#00edf9",
+   "cell": [
+    6,
+    2
+   ],
+   "uv": [
+    0.4072265625,
+    0.5009765625
+   ],
+   "packColor": "#00edf9",
+   "packMaterial": "Water/Waterfall Crest.mat",
+   "packAlbedo": "Waterfall Crest Overlay.png",
+   "distance": 0
+  }
+ },
+ "keepsTexture": [
+  "Rope",
+  "Water Lake",
+  "Water River",
+  "Waterfall",
+  "Wood Dark",
+  "Wood Light",
+  "Wood Light End",
+  "Wood Medium"
+ ]
+}

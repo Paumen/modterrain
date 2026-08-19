@@ -79,7 +79,7 @@ function nodeMatrix(node) {
   ];
 }
 
-const transformPoint = (m, x, y, z) => [
+export const transformPoint = (m, x, y, z) => [
   m[0] * x + m[4] * y + m[8] * z + m[12],
   m[1] * x + m[5] * y + m[9] * z + m[13],
   m[2] * x + m[6] * y + m[10] * z + m[14],
@@ -111,8 +111,9 @@ export function readAccessor({ json, bin }, index) {
 
 export const UNITS_PER_CELL = 100;
 
-export function measureScene(glb) {
-  const { json } = glb;
+/* Where each node ends up once its parents have had their say. Indexed like
+ * `json.nodes`; a node the scene never reaches stays null. */
+export function nodeWorldMatrices(json) {
   const nodes = json.nodes ?? [];
   const scene = json.scenes?.[json.scene ?? 0];
 
@@ -125,6 +126,13 @@ export function measureScene(glb) {
     for (const child of node.children ?? []) setWorld(child, world[index]);
   };
   for (const index of scene?.nodes ?? []) setWorld(index, IDENTITY_MATRIX);
+  return world;
+}
+
+export function measureScene(glb) {
+  const { json } = glb;
+  const nodes = json.nodes ?? [];
+  const world = nodeWorldMatrices(json);
 
   const min = [Infinity, Infinity, Infinity];
   const max = [-Infinity, -Infinity, -Infinity];
