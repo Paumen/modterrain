@@ -13,13 +13,6 @@ const UNITS_PER_CELL = 100;
  * from the view with no way back to it. */
 const REACH = 12;
 
-const VERDICT = {
-  mated: 0x3f8f5f,
-  partial: 0xc9a227,
-  clash: 0xc9422f,
-  open: 0x9a958a,
-  abut: 0x4f7a9e,
-};
 
 const loader = new GLTFLoader();
 const cache = new Map();
@@ -105,10 +98,9 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
   scene.add(deck);
 
   const pieces = new THREE.Group();
-  const seams = new THREE.Group();
   const preview = new THREE.Group();
   const marks = new THREE.Group();
-  scene.add(pieces, seams, preview, marks);
+  scene.add(pieces, preview, marks);
 
   // The cell under the pointer, so a placement is never a guess about where
   // the piece is going to land.
@@ -533,7 +525,7 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
     controls.update();
   }
 
-  async function sync(placements, sockets, selected) {
+  async function sync(placements, selected) {
     const loaded = await Promise.all(placements.map((placement) => loadPiece(placement.piece, placement)));
     pieces.clear();
 
@@ -554,29 +546,6 @@ export function createViewport(canvas, { onTap, onHover, colorOf }) {
       pieces.add(model);
     });
 
-    seams.clear();
-    for (const socket of sockets) {
-      const verdict = socket.verdict === 'open' && socket.abuts ? 'abut' : socket.verdict;
-      const length = socket.to - socket.from;
-      const height = Math.max(socket.height, 0.02);
-      const geometry = new THREE.PlaneGeometry(length, height);
-      const material = new THREE.MeshBasicMaterial({
-        color: VERDICT[verdict],
-        transparent: true,
-        opacity: socket.owner === selected ? 0.85 : 0.5,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      });
-      const quad = new THREE.Mesh(geometry, material);
-      const mid = (socket.from + socket.to) / 2;
-      if (socket.axis === 'x') {
-        quad.position.set(socket.at, socket.floor + height / 2, mid);
-        quad.rotation.y = Math.PI / 2;
-      } else {
-        quad.position.set(mid, socket.floor + height / 2, socket.at);
-      }
-      seams.add(quad);
-    }
 
     // The pivot and the framing both follow the build, whether or not the
     // camera does.

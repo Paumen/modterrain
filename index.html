@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Modular Terrain — 3D Catalog</title>
 <meta name="description" content="Browsable catalog of 270 models from a modular terrain pack: cliffs, walls, cracked cliffs, terrain paths, grass, sand, water, and props — by part, shape, layer, and grid size, plus the pack's own assemblies rebuilt from those pieces.">
-<meta name="catalog-version" content="9aa53cc576">
-<link rel="stylesheet" href="catalog/catalog.css?v=9aa53cc576">
-<link rel="stylesheet" href="catalog/builder.css?v=9aa53cc576">
+<meta name="catalog-version" content="de0590e2d3">
+<link rel="stylesheet" href="catalog/catalog.css?v=de0590e2d3">
+<link rel="stylesheet" href="catalog/builder.css?v=de0590e2d3">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⛰️</text></svg>">
 </head>
 <body>
@@ -81,17 +81,10 @@
     <button type="button" data-role="zoom-out" data-icon aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg></button>
   </div>
 
-  <ul class="legend">
-    <li><i class="key mated"></i>mates</li>
-    <li><i class="key partial"></i>part</li>
-    <li><i class="key clash"></i>clashes</li>
-    <li><i class="key open"></i>open</li>
-  </ul>
-
   <div class="drawer" data-role="drawer" data-height="half">
     <div class="drawer-tabs" role="tablist">
       <button type="button" role="tab" data-role="tab-pieces" aria-selected="true">Pieces</button>
-      <button type="button" role="tab" data-role="tab-seams" aria-selected="false">Seams</button>
+      <button type="button" role="tab" data-role="tab-inspect" aria-selected="false">Piece</button>
       <select data-role="family" aria-label="Filter pieces"></select>
       <button type="button" data-role="drawer-size" data-icon aria-label="Resize the panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
     </div>
@@ -101,7 +94,7 @@
         <ul class="palette-list" data-role="list"></ul>
       </section>
 
-      <section class="inspect" data-role="panel-seams" role="tabpanel" hidden></section>
+      <section class="inspect" data-role="panel-inspect" role="tabpanel" hidden></section>
     </div>
   </div>
 </template>
@@ -135,6 +128,6 @@
 { "imports": { "three": "./vendor/three/build/three.module.min.js" } }
 </script>
 <script src="vendor/model-viewer.min.js" type="module"></script>
-<script src="catalog/catalog.js?v=9aa53cc576" type="module"></script>
+<script src="catalog/catalog.js?v=de0590e2d3" type="module"></script>
 </body>
 </html>
