@@ -32,10 +32,18 @@ Practical facts about the kit:
   opening GLBs. Browse the pieces visually via `index.html`.
 - **Color:** visible surfaces take their color from `textures/colormap.png`,
   the shared map the Taalei kits use — a 16 × 4 raster of vertical bands, one
-  color per band. A surface points all of its UVs at one spot on that map, so
-  the color is not a number in the material and repainting the pack is one
-  edit to one file. `catalog/palette.json` records which surface sits on which
-  cell, and `tools/recolor.mjs` is what put it there and can do it again.
+  color per band, each running light at the top to dark at the bottom. A
+  surface points its UVs at that map, so the color is not a number in the
+  material and repainting the pack is one edit to one file.
+  `catalog/palette.json` records which surface sits on which cell, and
+  `tools/recolor.mjs` is what put it there and can do it again.
+- **Shading:** cliff faces are shaded by height, the way the Kenney kits do
+  it — light where they face the sky, dark where they meet the ground, from
+  the two ends of one band with the rasterizer filling in between. The four
+  layers share the band, so `Top` sits in its lightest quarter and `Under` in
+  its darkest and a full stack reads as one gradient. A run of several `Mid`
+  pieces repeats its own quarter; that is the cost of the piece being
+  repeatable. Everything else takes one flat color.
   Wood, rope and water are the exception: their UVs tile far outside 0–1, so
   they keep their own texture (`tools/textures.mjs`). The `Hidden` faces keep
   their own colors too — those are socket identity, not decoration.

@@ -28,7 +28,8 @@
  *     map would be sampled across half the atlas. They keep their own texture,
  *     with the grain and ripple that earns them one.
  *   - geometry. Not a vertex moves; only the UVs of the surfaces listed in
- *     PALETTE_SOURCES change, and only to a single point each.
+ *     PALETTE_SOURCES change — to one point on the map, or, for a cliff face,
+ *     to two ends of one cell's band so the face is shaded by height.
  *
  * The scenes are the one place a surface takes the colour as a number rather
  * than from the map: they were exported without any UVs at all. Same colour,
@@ -38,11 +39,12 @@
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readGlb, writeGlb } from './glb.mjs';
+import { readGlb, writeGlb, nodeWorldMatrices, transformPoint } from './glb.mjs';
+import { determineLayer } from './taxonomy.mjs';
 import { decodePng } from './png.mjs';
 import { readZip } from './zip.mjs';
 import {
-  readAtlas, writeAtlas, atlasPoints, filledCells, fillCell, nearestPoint, toHex,
+  readAtlas, writeAtlas, atlasPoints, filledCells, fillCell, nearestPoint, toHex, ROWS, COLUMNS,
 } from './colormap.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -104,6 +106,57 @@ const KEEPS_TEXTURE = new Set([
 const ADDED_CELLS = [
   { cell: [6, 2], name: 'crest cyan', top: [0, 237, 249], bottom: [0, 237, 249] },
 ];
+
+/**
+ * The band as shading, which is what the kits use it for.
+ *
+ * A cell is not one colour but a run from light at the top to dark at the
+ * bottom, and Kenney's own models sample it by height: light where a surface
+ * faces the sky, dark where it meets the ground, the rasteriser filling in
+ * between. It is not a free ramp either. Across 89,226 vertices of the kits
+ * Taalei ships unaltered — pirate, platformer, fantasy-town, mini-forest,
+ * mini-dungeon — the rows cluster on five steps, and on stacking pieces the
+ * darker of two UVs sits on the lower vertex every single time.
+ * `fantasy-town-kit/wall-wood-block` is the whole idea in one model: row 38 on
+ * its top vertices, row 90 on its bottom ones, nothing in between.
+ */
+const LADDER = [13, 38, 64, 90, 115];
+
+/**
+ * Cliff faces, and only cliff faces.
+ *
+ * They are the surfaces that stack into something tall enough for shading to
+ * read as form. Grass caps a piece and is horizontal, dirt is a band a few
+ * centimetres deep, and ice is a slab — a ramp across any of those is a
+ * gradient with nothing to describe.
+ *
+ * `Cliff` is the scenes' cliff face. It cannot be shaded — the scenes have no
+ * UVs — but naming it here gets it the colour a shaded cliff averages to,
+ * rather than the light end of the band, so a diorama sits at the same tone as
+ * the pieces.
+ */
+const SHADED = new Set(['Cliff Face', 'Cliff']);
+
+/**
+ * Which step of the ladder each layer gets.
+ *
+ * Kenney ramps every module over the same rows, so a stack of them repeats the
+ * gradient at every seam — fine for a wall two blocks high, less so for a cliff
+ * that runs Under, Base, Mid, Top. This pack names the layer in every file, so
+ * the four of them can share the ladder instead: a piece ramps inside its own
+ * step, and a full stack reads as one gradient from the crest to the foot.
+ *
+ * A piece with no layer spans the lot. There are five of those with a cliff
+ * face — the two paths, the bridge and the two cracks — and each of them runs
+ * down the whole height of a cliff rather than sitting at one level of it.
+ */
+const LAYER_ROWS = {
+  'layer-top': [LADDER[0], LADDER[1]],
+  'layer-mid': [LADDER[1], LADDER[2]],
+  'layer-base': [LADDER[2], LADDER[3]],
+  'layer-under': [LADDER[3], LADDER[4]],
+  'layer-none': [LADDER[0], LADDER[4]],
+};
 
 /**
  * How far a surface may sit from the nearest colour on the map before it earns
@@ -187,6 +240,18 @@ for (const { cell, name, top, bottom } of ADDED_CELLS) {
 }
 
 const points = atlasPoints(atlas);
+const CELL_ROWS = atlas.height / ROWS;
+
+/* A UV that lands on `row` of a cell's band. Half a pixel in, so it sits on the
+ * row rather than on the seam between two. */
+const rowUv = (cellRow, row) => (cellRow * CELL_ROWS + row + 0.5) / atlas.height;
+
+const colorAtRow = ([column, row], step) => {
+  const x = Math.floor((column + 0.5) * (atlas.width / COLUMNS));
+  const y = Math.floor(row * CELL_ROWS) + step;
+  const i = (y * atlas.width + x) * 4;
+  return [atlas.pixels[i], atlas.pixels[i + 1], atlas.pixels[i + 2]];
+};
 const colors = packColors();
 
 /* -- where each surface lands --------------------------------------------- */
@@ -194,7 +259,10 @@ const colors = packColors();
 const placement = new Map();
 for (const [surface, source] of colors) {
   const point = nearestPoint(points, source.rgb);
-  placement.set(surface, { source, point });
+  // What the surface is where it cannot be shaded: a cliff runs down its band,
+  // so the one colour that stands for it is the middle of the ladder.
+  const flat = SHADED.has(surface) ? colorAtRow(point.cell, LADDER[2]) : point.rgb;
+  placement.set(surface, { source, point, flat });
 }
 
 console.log(`\n${placement.size} surfaces on textures/colormap.png:`);
@@ -224,10 +292,13 @@ writeAtlas(ATLAS, atlas);
 writeFileSync(PALETTE, `${JSON.stringify({
   generated: 'node tools/recolor.mjs',
   atlas: 'textures/colormap.png',
-  surfaces: Object.fromEntries([...placement].map(([surface, { source, point }]) => [surface, {
-    hex: toHex(point.rgb),
+  surfaces: Object.fromEntries([...placement].map(([surface, { source, point, flat }]) => [surface, {
+    // A shaded surface has no single colour: it runs down its cell's band. The
+    // swatch is the middle of the ladder, which is what a cliff averages out to.
+    hex: toHex(flat),
     cell: point.cell,
     uv: point.uv,
+    ...(SHADED.has(surface) ? { shadedByHeight: LAYER_ROWS } : {}),
     packColor: toHex(source.rgb),
     packMaterial: source.material,
     packAlbedo: source.albedo,
@@ -263,6 +334,69 @@ function colormapTexture(json) {
   json.samplers.push({ ...SAMPLER });
   json.textures.push({ source: json.images.length - 1, sampler: json.samplers.length - 1, name: 'colormap' });
   return json.textures.length - 1;
+}
+
+/**
+ * Where each mesh sits in its piece.
+ *
+ * Every file in the pack puts its meshes under a node with a transform, so the
+ * height in a mesh is not the height in the piece. UVs belong to the mesh, so a
+ * mesh placed at two heights could only carry one ramp — two assemblies do that
+ * for the sheets of a two-storey waterfall, but a waterfall keeps its own
+ * texture and is never shaded. If a shaded mesh is ever placed twice, this says
+ * so rather than shading it at the wrong height.
+ */
+function meshHeights(json, shaded) {
+  const world = nodeWorldMatrices(json);
+  const byMesh = new Map();
+  (json.nodes ?? []).forEach((node, index) => {
+    if (node.mesh === undefined || !world[index]) return;
+    if (!json.meshes[node.mesh].primitives.some((p) => shaded.includes(p.material))) return;
+    const seen = byMesh.get(node.mesh);
+    if (seen && seen[13] !== world[index][13]) {
+      throw new Error(`mesh ${node.mesh} carries a shaded surface and is placed at two heights`);
+    }
+    byMesh.set(node.mesh, world[index]);
+  });
+  return byMesh;
+}
+
+function worldY(json, bin, primitive, matrix) {
+  const accessor = json.accessors[primitive.attributes.POSITION];
+  const view = json.bufferViews[accessor.bufferView];
+  const stride = view.byteStride ?? 12;
+  const base = (view.byteOffset ?? 0) + (accessor.byteOffset ?? 0);
+  return Array.from({ length: accessor.count }, (_, i) => transformPoint(
+    matrix,
+    bin.readFloatLE(base + i * stride),
+    bin.readFloatLE(base + i * stride + 4),
+    bin.readFloatLE(base + i * stride + 8),
+  )[1]);
+}
+
+/* Light at the piece's top, dark at its foot, over the rows its layer owns.
+ * The vertices carry the two ends and the rasteriser draws the gradient
+ * between them, which is how the kits do it — no extra geometry, no texture
+ * beyond the one cell. */
+function rampUvsBy(json, bin, primitive, heights, [lo, hi], [u, cellRow], [light, dark]) {
+  const accessor = json.accessors[primitive.attributes.TEXCOORD_0];
+  if (accessor.type !== 'VEC2' || accessor.componentType !== 5126) {
+    throw new Error('UV accessor is not float VEC2');
+  }
+  const view = json.bufferViews[accessor.bufferView];
+  const stride = view.byteStride ?? 8;
+  const base = (view.byteOffset ?? 0) + (accessor.byteOffset ?? 0);
+
+  let min = Infinity, max = -Infinity;
+  for (let i = 0; i < accessor.count; i++) {
+    const t = hi === lo ? 1 : (heights[i] - lo) / (hi - lo);
+    const v = rowUv(cellRow, dark + (light - dark) * t);
+    bin.writeFloatLE(u, base + i * stride);
+    bin.writeFloatLE(v, base + i * stride + 4);
+    min = Math.min(min, v); max = Math.max(max, v);
+  }
+  accessor.min = [u, min];
+  accessor.max = [u, max];
 }
 
 /* Every vertex of the surface goes to the same spot, so the whole surface is
@@ -352,10 +486,12 @@ function pruneUnused(json) {
 
 let changed = 0;
 const counts = new Map();
+const ramped = new Set();
 
 for (const directory of DIRECTORIES) {
   for (const file of readdirSync(join(ROOT, directory)).filter((name) => name.endsWith('.glb')).sort()) {
     const path = join(ROOT, directory, file);
+    const id = file.replace(/\.glb$/, '');
     const { json, bin } = readGlb(path);
 
     const mapped = new Set();
@@ -371,6 +507,25 @@ for (const directory of DIRECTORIES) {
      * at the map, and giving 5828 primitives a UV attribute each would grow
      * three 14 MB files for a colour that is one number. It takes the colour
      * the map holds instead, which is the same colour by the same decision. */
+    const shaded = [...mapped].filter((index) => SHADED.has(json.materials[index].name));
+    const rows = LAYER_ROWS[determineLayer(id).id];
+    if (shaded.length && !rows) throw new Error(`${file}: no rows for layer ${determineLayer(id).id}`);
+
+    /* The whole piece shares one ramp, not one per primitive: a cliff face
+     * split over two draws is still one face, and shading the halves apart
+     * would put a step across the middle of it. */
+    const matrices = shaded.length ? meshHeights(json, shaded) : null;
+    const heights = new Map();
+    let lo = Infinity, hi = -Infinity;
+    for (const [index, mesh] of (json.meshes ?? []).entries()) {
+      for (const primitive of mesh.primitives) {
+        if (!shaded.includes(primitive.material) || primitive.attributes.TEXCOORD_0 === undefined) continue;
+        const y = worldY(json, bin, primitive, matrices.get(index));
+        heights.set(primitive, y);
+        lo = Math.min(lo, ...y); hi = Math.max(hi, ...y);
+      }
+    }
+
     const uvs = new Map();
     for (const mesh of json.meshes ?? []) {
       for (const primitive of mesh.primitives) {
@@ -381,7 +536,15 @@ for (const directory of DIRECTORIES) {
           throw new Error(`${file}: ${json.materials[primitive.material].name} has UVs on some primitives and not others`);
         }
         uvs.set(primitive.material, has);
-        if (has) pointUvsAt(json, bin, primitive.attributes.TEXCOORD_0, placement.get(json.materials[primitive.material].name).point.uv);
+        if (!has) continue;
+
+        const { point } = placement.get(json.materials[primitive.material].name);
+        if (heights.has(primitive)) {
+          rampUvsBy(json, bin, primitive, heights.get(primitive), [lo, hi], [point.uv[0], point.cell[1]], rows);
+          ramped.add(json.materials[primitive.material].name);
+        } else {
+          pointUvsAt(json, bin, primitive.attributes.TEXCOORD_0, point.uv);
+        }
       }
     }
 
@@ -391,7 +554,7 @@ for (const directory of DIRECTORIES) {
       const material = json.materials[index];
       const { baseColorFactor, roughnessFactor } = material.pbrMetallicRoughness ?? {};
       const alpha = baseColorFactor?.[3] ?? 1;
-      const rgb = placement.get(material.name).point.rgb.map((v) => toLinear(v / 255));
+      const rgb = placement.get(material.name).flat.map((v) => toLinear(v / 255));
 
       material.pbrMetallicRoughness = {
         // Transparent water stays transparent: the alpha is the material's own,
@@ -425,6 +588,6 @@ for (const directory of DIRECTORIES) {
 
 console.log(`\n${changed} models rewritten in ${DIRECTORIES.join(', ')}:`);
 for (const [surface, count] of [...counts].sort((a, b) => b[1] - a[1])) {
-  console.log(`  ${String(count).padStart(3)}  ${surface}`);
+  console.log(`  ${String(count).padStart(3)}  ${surface}${ramped.has(surface) ? '  (shaded by height)' : ''}`);
 }
 console.log('\nrun tools/build-catalog.mjs and tools/build-pieces.mjs next');

@@ -3,7 +3,7 @@
  "atlas": "textures/colormap.png",
  "surfaces": {
   "Cliff Face": {
-   "hex": "#a09083",
+   "hex": "#88796d",
    "cell": [
     14,
     3
@@ -12,13 +12,35 @@
     0.9072265625,
     0.7841796875
    ],
+   "shadedByHeight": {
+    "layer-top": [
+     13,
+     38
+    ],
+    "layer-mid": [
+     38,
+     64
+    ],
+    "layer-base": [
+     64,
+     90
+    ],
+    "layer-under": [
+     90,
+     115
+    ],
+    "layer-none": [
+     13,
+     115
+    ]
+   },
    "packColor": "#9d9381",
    "packMaterial": "Terrain/Cliff.mat",
    "packAlbedo": "Cliff.png",
    "distance": 8
   },
   "Cliff": {
-   "hex": "#a09083",
+   "hex": "#88796d",
    "cell": [
     14,
     3
@@ -27,6 +49,28 @@
     0.9072265625,
     0.7841796875
    ],
+   "shadedByHeight": {
+    "layer-top": [
+     13,
+     38
+    ],
+    "layer-mid": [
+     38,
+     64
+    ],
+    "layer-base": [
+     64,
+     90
+    ],
+    "layer-under": [
+     90,
+     115
+    ],
+    "layer-none": [
+     13,
+     115
+    ]
+   },
    "packColor": "#9d9381",
    "packMaterial": "Terrain/Cliff.mat",
    "packAlbedo": "Cliff.png",
