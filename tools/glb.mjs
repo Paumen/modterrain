@@ -46,22 +46,6 @@ export function writeGlb(path, json, bin) {
   writeFileSync(path, Buffer.concat([header, jsonChunkHeader, jsonChunk, binChunkHeader, binChunk]));
 }
 
-export function embedImage(glb, imageIndex, pngBytes) {
-  const json = structuredClone(glb.json);
-  // bufferView byteOffset must be 4-byte aligned, so pad before appending.
-  const pad = (4 - (glb.bin.length % 4)) % 4;
-  const bin = Buffer.concat([glb.bin, Buffer.alloc(pad), pngBytes]);
-
-  json.bufferViews.push({
-    buffer: 0,
-    byteOffset: glb.bin.length + pad,
-    byteLength: pngBytes.length,
-  });
-  json.images[imageIndex] = { mimeType: 'image/png', bufferView: json.bufferViews.length - 1 };
-
-  return { json, bin };
-}
-
 const IDENTITY_MATRIX = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
 function multiplyMatrix(a, b) {
