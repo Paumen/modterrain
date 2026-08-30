@@ -411,19 +411,17 @@ function toGrid(nav) {
   // follows the paths the island was built with instead of cutting across.
   const surf = { p: 1, g: 3.5 };
   const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
-  // Paced by distance, not by leg, so a long straight run takes as long as
-  // the cells it covers. A flat per-leg time made a straightened run of seven
-  // cells cross in the same third of a second as a single step, which reads
-  // as skipping rather than walking.
-  const legMs = (a, b) => Math.min(900, Math.max(200, dist3(nav.nodes[a], nav.nodes[b]) * 130));
-  // A cell-by-cell path is a stop at every metre. Legs are pulled straight
-  // where the ground between allows it, so crossing an open field is a few
-  // long glides instead of thirty short ones, and a path that bends round a
-  // rock still bends.
-  const LEG_MAX = 5;     // cells; longer and the camera reads as teleporting
+  // One cell per leg, so this is the pace of a single step. Short enough that
+  // thirty of them cross a field without dragging, long enough to read as a
+  // step rather than a jump.
+  const legMs = (a, b) => Math.min(400, Math.max(150, dist3(nav.nodes[a], nav.nodes[b]) * 150));
+  // Every cell on the path is a stop. The camera plants a foot in each one:
+  // an ease-out into it, an ease-in out of it, so you can see the ground you
+  // are crossing a metre at a time.
   let byCell = new Map();
   const cellKey = (c, r) => c * 100000 + r;
-  // Rebuilt per journey: the editor renumbers nodes as it adds and removes.
+  // Rebuilt whenever the grid changes: the editor renumbers cells as it adds
+  // and removes them, and the marker pass reads this every arrival.
   function indexCells() {
     byCell = new Map();
     nav.nodes.forEach((n, i) => {
@@ -432,40 +430,7 @@ function toGrid(nav) {
       byCell.get(k).push(i);
     });
   }
-  function straightRun(a, b) {
-    const A = nav.nodes[a].p, B = nav.nodes[b].p;
-    const dx = B[0] - A[0], dz = B[2] - A[2];
-    const len = Math.hypot(dx, dz);
-    if (len > LEG_MAX) return false;
-    const steps = Math.max(1, Math.ceil(len * 2));
-    for (let k = 1; k < steps; k++) {
-      const t = k / steps;
-      const x = A[0] + dx * t, z = A[2] + dz * t, y = A[1] + (B[1] - A[1]) * t;
-      const here = byCell.get(cellKey(Math.floor(x - nav.meta.origin.c), Math.floor(z - nav.meta.origin.r)));
-      if (!here || !here.some((i) => Math.abs(nav.nodes[i].p[1] - y) <= nav.meta.step)) return false;
-    }
-    // Walkable ground underneath is not enough: the camera target rides at eye
-    // height, and a straight line between two eye points can still clip the
-    // corner of a cliff the path itself goes round.
-    const ea = A[1] + (nav.nodes[a].e ?? eye), eb = B[1] + (nav.nodes[b].e ?? eye);
-    const vx = B[0] - A[0], vy = eb - ea, vz = B[2] - A[2];
-    const d = Math.hypot(vx, vy, vz);
-    return raycast(A[0], ea, A[2], vx / d, vy / d, vz / d, d) >= d;
-  }
-  function straighten(from, path) {
-    const out = [];
-    let anchor = from, i = 0;
-    while (i < path.length) {
-      let j = i;
-      // Only the next stretch is worth testing: a leg is capped at LEG_MAX
-      // cells, so nothing beyond that window can ever be reachable in one.
-      for (let k = Math.min(path.length - 1, i + LEG_MAX * 2); k > i; k--) if (straightRun(anchor, path[k])) { j = k; break; }
-      out.push(path[j]);
-      anchor = path[j];
-      i = j + 1;
-    }
-    return out;
-  }
+  indexCells();
   function travelTo(dest) {
     if (dest === cur) return;
     // A binary heap rather than scanning every node for the next cheapest:
@@ -517,11 +482,9 @@ function toGrid(nav) {
     // by stairs that were cut, or a second island). Travel there directly
     // rather than letting the tap do nothing.
     if (dist[dest] === Infinity) { route = []; return glideFacing(dest, 700); }
-    indexCells();
-    const full = [];
-    for (let n = dest; n !== -1; n = prev[n]) full.unshift(n);
-    full.shift();
-    route = straighten(cur, full);
+    route = [];
+    for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
+    route.shift();
     if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); }
   }
   // Tap targets are a fixed radius in screen pixels, so a node is easy to hit
@@ -751,15 +714,31 @@ function toGrid(nav) {
     const radius = editMode ? editWithin() : SHOW_WITHIN;
     const lists = { far: [], near: [], here: [], route: [], sel: [] };
     shown = new Set();
-    for (let i = 0; i < nav.nodes.length; i++) {
-      const kind = i === selected ? 'sel' : i === cur ? 'here' : onRoute.has(i) ? 'route' : near.has(i) ? 'near' : 'far';
-      if (kind === 'far') {
-        const p = nav.nodes[i].p;
-        if (Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) > radius) continue;
+    const kindOf = (i) => (i === selected ? 'sel' : i === cur ? 'here' : onRoute.has(i) ? 'route' : near.has(i) ? 'near' : 'far');
+    const add = (i) => { if (shown.has(i)) return; lists[kindOf(i)].push(i); shown.add(i); };
+    // Walk the square of cells around you rather than the whole island. This
+    // runs on every arrival, and a stop-per-cell walk arrives thirty times
+    // crossing one field; scanning all twelve thousand cells each time is what
+    // would turn that walk into a stutter.
+    const span = Math.ceil(radius);
+    const home = nav.nodes[cur];
+    for (let dc = -span; dc <= span; dc++) {
+      for (let dr = -span; dr <= span; dr++) {
+        const bucket = byCell.get(cellKey(home.c + dc, home.r + dr));
+        if (!bucket) continue;
+        for (const i of bucket) {
+          const p = nav.nodes[i].p;
+          if (Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) > radius) continue;
+          add(i);
+        }
       }
-      lists[kind].push(i);
-      shown.add(i);
     }
+    // The cells that must always show, wherever they are: the route can run
+    // off the edge of that square, and so can a selection you left behind.
+    add(cur);
+    for (const i of near) add(i);
+    for (const i of route) add(i);
+    if (selected >= 0) add(selected);
     for (const kind of Object.keys(lists)) setPads(kind, lists[kind], kind === 'far' ? 0.62 : 1.25);
     drawEdges();
   }
@@ -778,6 +757,7 @@ function toGrid(nav) {
   function undo() {
     if (!undoStack.length) return;
     nav.nodes = JSON.parse(undoStack.pop());
+    indexCells();
     if (cur >= nav.nodes.length) cur = 0;
     selected = -1; route = [];
     rebuildMarkers();
@@ -840,6 +820,7 @@ function toGrid(nav) {
       }
     });
     selected = i;
+    indexCells();
     updateMarkers();
   }
   // Splices one node without rebuilding every marker, so tapping through a
@@ -858,6 +839,7 @@ function toGrid(nav) {
     if (cur < 0) cur = 0;
     selected = -1;
     route = [];
+    indexCells();
     if (nav.nodes.length) { camera.target = eyePoint(cur); updateMarkers(); }
   }
   function exportNav() {

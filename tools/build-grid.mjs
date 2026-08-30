@@ -19,7 +19,7 @@ if (!input) {
 }
 const force = process.argv.includes('--force');
 const outPath = input.replace(/\.glb$/, '_grid.json');
-if (existsSync(outPath) && !force) {
+if (existsSync(outPath) && !force && !process.argv.includes('--probe')) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
 }
@@ -81,6 +81,30 @@ const isHidden = (i) => /^Hidden/.test(matName(i));
 const tris = []; // [x0,y0,z0, x1,y1,z1, x2,y2,z2, matIndex, ny]
 const cache = new Map();
 
+// Decking you are meant to walk along, by piece family. A rope bridge is loose
+// slats with air between them and ropes down each side, so point sampling only
+// ever catches part of it; knowing a cell holds a deck is what lets a thinner
+// sample still count. Railings, posts, braces and bumpers are structure, not
+// deck, and are deliberately not here.
+const DECK = /^(Prop_Bridge_|Path_Bridge_|Docks_Decking_|Docks_Ladder_Top)/;
+const decks = []; // world-space [minX, minY, minZ, maxX, maxY, maxZ] per piece
+
+function noteDeck(node, world) {
+  if (!DECK.test(node.name || '')) return;
+  for (const prim of json.meshes[node.mesh].primitives) {
+    const acc = json.accessors[prim.attributes.POSITION];
+    if (!acc?.min || !acc?.max) continue;
+    const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+    for (let corner = 0; corner < 8; corner++) {
+      const p = xformPoint(world,
+        (corner & 1 ? acc.max : acc.min)[0], (corner & 2 ? acc.max : acc.min)[1], (corner & 4 ? acc.max : acc.min)[2]);
+      for (let a = 0; a < 3; a++) { if (p[a] < lo[a]) lo[a] = p[a]; if (p[a] > hi[a]) hi[a] = p[a]; }
+    }
+    decks.push([...lo, ...hi]);
+    return;
+  }
+}
+
 function meshGeometry(prim) {
   const key = `${prim.attributes.POSITION}/${prim.indices ?? -1}`;
   let g = cache.get(key);
@@ -92,6 +116,7 @@ function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
+    noteDeck(node, world);
     for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
       const { pos, idx } = meshGeometry(prim);
@@ -124,7 +149,9 @@ const HEAD = 2.0;        // ceiling clearance a floor needs to be usable
 const STEP = 0.75;       // biggest height change you can walk between cells
 const FLAT = 0.5;        // |ny| below this is a wall, not a floor
 const CLUSTER = 0.3;     // surfaces within this height are the same floor
-const ROOM = 1.2;        // clear space the camera target needs on every side
+const ROOM = 1.2;        // room at least one orbit heading must have
+const EMBEDDED = 0.35;   // closer than this on all sides and the target is in rock
+const BETA = 1.5;        // the viewer's shallowest orbit pitch
 
 // Cave floors and rock ledges carry Cliff, so it is walkable where it faces
 // up; the vertical cliff faces of the same pieces never produce a floor.
@@ -217,6 +244,10 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
   return best;
 }
 
+// `--probe x,z` reports what the sampler sees under one world point, which is
+// the only practical way to ask why a particular cell did or did not open.
+const probeArg = process.argv.indexOf('--probe');
+
 // ---- floors ---------------------------------------------------------------
 
 // The floors under one sample point, topmost surface of each stack deciding
@@ -235,69 +266,127 @@ function floorsAt(x, z) {
 }
 
 // Nine samples per cell. Taking floors from the whole footprint rather than
-// the centre alone matters: bridge decks and dock planks butt to their
-// neighbours a couple of hundredths short of the cell line, so a centre-only
-// probe misses half of them.
+// the centre alone matters twice over: bridge decks and dock planks butt to
+// their neighbours a couple of hundredths short of the cell line, and a rope
+// bridge is loose slats with air between them, so a single probe drops through
+// the gap and reports no bridge at all.
 const OFFSETS = [[0, 0], [0.35, 0], [-0.35, 0], [0, 0.35], [0, -0.35],
   [0.3, 0.3], [0.3, -0.3], [-0.3, 0.3], [-0.3, -0.3]];
 const NEED = 5; // samples that must agree before a floor counts
 
+// Headroom, measured across the cell and taken as the median of the nine rays.
+// A single ray up the middle threads the gap between two slats of a rope
+// bridge and reports open sky, which then puts the camera target at full
+// height -- inside the bridge. Taking the lowest ray instead swings too far
+// the other way: any overhang clipping one corner of a cell would close it.
+// The median moves only when something really does span the cell.
+function ceilingAt(x, z, y) {
+  const rays = OFFSETS.map(([ox, oz]) => raycast(x + ox, y + 0.2, z + oz, 0, 1, 0, 0.001, 40));
+  rays.sort((a, b) => a - b);
+  const mid = rays[rays.length >> 1];
+  return mid === Infinity ? Infinity : mid + 0.2;
+}
+
 const reject = { support: 0, head: 0, buried: 0, wet: 0 };
+
+// Is this floor part of a deck? Cells a bridge or a dock crosses are walkable
+// at the deck's own height, which is the rule the scene is built to; the
+// sampler's job there is only to find how high the planks sit.
+const onDeck = (x, z, y) => decks.some((d) =>
+  x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5] && y >= d[1] - 0.1 && y <= d[4] + 0.1);
+
+// Everything you can stand on in one cell, lowest first. `note` reports why a
+// candidate floor was turned down, for --probe.
+function floorsIn(c, r, note) {
+  const x = C0 + c + 0.5, z = R0 + r + 0.5;
+  const samples = OFFSETS.map(([ox, oz]) => floorsAt(x + ox, z + oz));
+  const flat = [];
+  samples.forEach((list, s) => list.forEach((f) => flat.push({ ...f, s })));
+  if (!flat.length) return [];
+  flat.sort((a, b) => a.y - b.y);
+
+  // One cluster per floor. The gap has to stay well under a walkable step, or
+  // a bridge deck and the riverbed under it merge into one floor.
+  const clusters = [];
+  for (const f of flat) {
+    const last = clusters[clusters.length - 1];
+    if (last && f.y - last[last.length - 1].y <= 0.4) last.push(f);
+    else clusters.push([f]);
+  }
+
+  const here = [];
+  for (const k of clusters) {
+    // Each member is already the top of its own sample's stack, so a river
+    // over grass reads as water there; the cell is walkable when enough
+    // samples independently land on walkable ground.
+    const good = k.filter((f) => WALKABLE.has(matName(f.mat)));
+    const y = good.length ? good[Math.floor(good.length / 2)].y : k[k.length - 1].y;
+    const label = matName(k[k.length - 1].mat);
+    if (!good.length) { note?.(y, label, 'nothing walkable'); continue; }
+    const support = new Set(good.map((f) => f.s)).size;
+    const need = onDeck(x, z, y) ? 1 : NEED;
+    if (support < need) { reject.support++; note?.(y, label, `only ${support} of ${OFFSETS.length} samples`); continue; }
+    // Water standing on the floor drowns it; water below a bridge deck or a
+    // dock does not.
+    if (flat.some((f) => WET.has(matName(f.mat)) && f.y > y - 0.05 && f.y < y + WADE)) {
+      reject.wet++; note?.(y, label, 'under water'); continue;
+    }
+    const tally = new Map();
+    for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
+    const centre = good.find((f) => f.s === 0);
+    const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
+    const room = ceilingAt(x, z, y);
+    if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
+    const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
+    // Two different things can go wrong with the camera's look-at point, and
+    // they need different tests. It can sit inside rock, which makes the view
+    // clip whichever way you turn -- caught by a spray of rays finding
+    // something almost touching. Or it can sit somewhere with no room to pull
+    // back, which only matters if *every* heading is blocked: a gully floor or
+    // a cave has walls close on two sides and is perfectly fine to stand in,
+    // and demanding clearance all round deletes exactly those places.
+    let closest = Infinity;
+    for (let a = 0; a < 12; a++) {
+      for (const pitch of [-0.3, 0, 0.3]) {
+        const th = (a / 12) * Math.PI * 2;
+        const dy = Math.sin(pitch), h = Math.cos(pitch);
+        closest = Math.min(closest, raycast(x, y + eye, z, Math.cos(th) * h, dy, Math.sin(th) * h, 0.001, 6));
+      }
+    }
+    if (closest < EMBEDDED) { reject.buried++; note?.(y, name, `target in rock, ${closest.toFixed(2)} clear`); continue; }
+    // The six orbit headings the viewer actually uses, at its shallowest
+    // pitch. One with room is enough; the viewer turns to find it.
+    let roomiest = 0;
+    for (let k = 0; k < 6; k++) {
+      const alpha = (k / 6) * Math.PI * 2;
+      roomiest = Math.max(roomiest, raycast(x, y + eye, z,
+        Math.cos(alpha) * Math.sin(BETA), Math.cos(BETA), Math.sin(alpha) * Math.sin(BETA), 0.001, 8));
+    }
+    if (roomiest < ROOM) { reject.buried++; note?.(y, name, `no heading has room, best ${roomiest.toFixed(2)}`); continue; }
+    note?.(y, name, 'open');
+    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100 });
+  }
+  return here;
+}
+
+if (probeArg > 0) {
+  const [px, pz] = process.argv[probeArg + 1].split(',').map(Number);
+  const c = Math.floor(px) - C0, r = Math.floor(pz) - R0;
+  console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
+  console.log('surfaces under the centre:');
+  for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
+    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}`);
+  console.log('floors:');
+  floorsIn(c, r, (y, name, why) => console.log(`  y ${y.toFixed(3)}  ${name.padEnd(22)} ${why}`));
+  process.exit(0);
+}
+
 const nodes = [];      // { c, r, y, m, e }
 const byCell = new Map();
 
 for (let r = 0; r < ROWS; r++) {
   for (let c = 0; c < COLS; c++) {
-    const x = C0 + c + 0.5, z = R0 + r + 0.5;
-    const samples = OFFSETS.map(([ox, oz]) => floorsAt(x + ox, z + oz));
-    const flat = [];
-    samples.forEach((list, s) => list.forEach((f) => flat.push({ ...f, s })));
-    if (!flat.length) continue;
-    flat.sort((a, b) => a.y - b.y);
-
-    // One cluster per floor. The gap has to stay well under a walkable step,
-    // or a bridge deck and the riverbed under it merge into one floor.
-    const clusters = [];
-    for (const f of flat) {
-      const last = clusters[clusters.length - 1];
-      if (last && f.y - last[last.length - 1].y <= 0.4) last.push(f);
-      else clusters.push([f]);
-    }
-
-    const here = [];
-    for (const k of clusters) {
-      // Each member is already the top of its own sample's stack, so a river
-      // over grass reads as water there; the cell is walkable when enough
-      // samples independently land on walkable ground.
-      const good = k.filter((f) => WALKABLE.has(matName(f.mat)));
-      if (!good.length) continue;
-      const support = new Set(good.map((f) => f.s)).size;
-      if (support < NEED) { reject.support++; continue; }
-      const y = good[Math.floor(good.length / 2)].y;
-      // Water standing on the floor drowns it; water below a bridge deck or a
-      // dock does not.
-      if (flat.some((f) => WET.has(matName(f.mat)) && f.y > y - 0.05 && f.y < y + WADE)) { reject.wet++; continue; }
-      const tally = new Map();
-      for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
-      const centre = good.find((f) => f.s === 0);
-      const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
-      const ceiling = raycast(x, y + 0.2, z, 0, 1, 0, 0.001, 40);
-      const room = ceiling === Infinity ? Infinity : ceiling + 0.2;
-      if (room < HEAD) { reject.head++; continue; }
-      const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
-      // A target buried in rock makes the camera clip; a short spray of rays
-      // from the eye point catches those before they reach the viewer.
-      let closest = Infinity;
-      for (let a = 0; a < 12; a++) {
-        for (const pitch of [-0.3, 0, 0.3]) {
-          const th = (a / 12) * Math.PI * 2;
-          const dy = Math.sin(pitch), h = Math.cos(pitch);
-          closest = Math.min(closest, raycast(x, y + eye, z, Math.cos(th) * h, dy, Math.sin(th) * h, 0.001, 6));
-        }
-      }
-      if (closest < ROOM) { reject.buried++; continue; }
-      here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100 });
-    }
+    const here = floorsIn(c, r);
     if (!here.length) continue;
     byCell.set(c * ROWS + r, here.map((n) => { n.i = nodes.length; nodes.push(n); return n; }));
   }
