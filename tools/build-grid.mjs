@@ -89,6 +89,13 @@ const cache = new Map();
 const DECK = /^(Prop_Bridge_|Path_Bridge_|Docks_Decking_|Docks_Ladder_Top)/;
 const decks = []; // world-space [minX, minY, minZ, maxX, maxY, maxZ] per piece
 
+// A cliff piece always carries the Cliff material on its face, and a cell with
+// a cliff face in it is not somewhere you stand -- not on the ledge above it,
+// not in the gap below it. Faces are collected here as XZ footprints while the
+// triangles are gathered, and the cells they cover are closed outright.
+const faces = []; // [minX, minZ, maxX, maxZ] per near-vertical Cliff triangle
+const FACE_TILT = 0.5; // |normal.y| under this is a face, not a floor
+
 function noteDeck(node, world) {
   if (!DECK.test(node.name || '')) return;
   for (const prim of json.meshes[node.mesh].primitives) {
@@ -131,7 +138,12 @@ function emitNode(nodeIndex, parent) {
         const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         // Winding is unreliable across mirrored instances, so "up-facing" is
         // measured without a sign; the grid only ever needs the plane's tilt.
-        tris.push([...p0, ...p1, ...p2, prim.material, Math.abs(ny) / (Math.hypot(nx, ny, nz) || 1)]);
+        const tilt = Math.abs(ny) / (Math.hypot(nx, ny, nz) || 1);
+        if (tilt < FACE_TILT && matName(prim.material) === 'Cliff') {
+          faces.push([Math.min(p0[0], p1[0], p2[0]), Math.min(p0[2], p1[2], p2[2]),
+            Math.max(p0[0], p1[0], p2[0]), Math.max(p0[2], p1[2], p2[2])]);
+        }
+        tris.push([...p0, ...p1, ...p2, prim.material, tilt]);
       }
     }
   }
@@ -287,7 +299,17 @@ function ceilingAt(x, z, y) {
   return mid === Infinity ? Infinity : mid + 0.2;
 }
 
-const reject = { support: 0, head: 0, buried: 0, wet: 0 };
+const reject = { support: 0, head: 0, buried: 0, wet: 0, cliff: 0 };
+
+// Cells with a cliff face in them, closed before anything else is asked. A
+// face is counted into a cell when it crosses that cell at all, so the cell
+// the wall stands in goes, and so does the strip of ledge hanging over it.
+const cliffCells = new Set();
+for (const [x0, z0, x1, z1] of faces) {
+  for (let c = Math.floor(x0) - C0; c <= Math.floor(x1 - 1e-6) - C0; c++)
+    for (let r = Math.floor(z0) - R0; r <= Math.floor(z1 - 1e-6) - R0; r++)
+      cliffCells.add(c * ROWS + r);
+}
 
 // Is this floor part of a deck? Cells a bridge or a dock crosses are walkable
 // at the deck's own height, which is the rule the scene is built to; the
@@ -299,6 +321,12 @@ const onDeck = (x, z, y) => decks.some((d) =>
 // candidate floor was turned down, for --probe.
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
+  // A bridge is the one thing that crosses a cliff face, so it is the one
+  // exception: the deck stays walkable where it spans the drop.
+  if (cliffCells.has(c * ROWS + r) && !decks.some((d) => x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5])) {
+    reject.cliff++; note?.(0, 'Cliff', 'cell holds a cliff face');
+    return [];
+  }
   const samples = OFFSETS.map(([ox, oz]) => floorsAt(x + ox, z + oz));
   const flat = [];
   samples.forEach((list, s) => list.forEach((f) => flat.push({ ...f, s })));
