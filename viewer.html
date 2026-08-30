@@ -11,6 +11,7 @@
   .hud {
     position: fixed; top: 12px; left: 12px; color: #dfe7ee; font: 13px/1.5 system-ui, sans-serif;
     background: rgba(20, 26, 34, 0.7); padding: 8px 12px; border-radius: 8px; pointer-events: none;
+    max-width: 300px;
   }
   .hud b { font-size: 14px; }
   .hud small { opacity: 0.75; }
@@ -19,17 +20,16 @@
     display: flex; gap: 10px; background: rgba(20, 26, 34, 0.75); padding: 8px; border-radius: 14px;
   }
   .bar button {
-    width: 52px; height: 52px; border: 0; border-radius: 10px; background: #2c3644; color: #eef4fa;
-    font-size: 22px; cursor: pointer; touch-action: manipulation;
+    width: 50px; height: 50px; border: 0; border-radius: 10px; background: #2c3644; color: #eef4fa;
+    font-size: 21px; cursor: pointer; touch-action: manipulation;
   }
   .bar button:active { background: #3e4c5e; }
+  .bar button.on { background: #7a5c1e; }
 </style>
 </head>
 <body>
 <canvas id="view"></canvas>
-<div class="hud"><b>Walkthrough</b><br>
-<small>Tap a dot or any spot to travel there<br>
-Swipe &#8596; orbit · swipe &#8597; tilt · &#65291;/&#8722; zoom (3 levels)</small></div>
+<div class="hud" id="hud"></div>
 <div class="bar">
   <button id="rotL" title="Orbit left (&#8592;)">&#10226;</button>
   <button id="tiltU" title="View from higher up">&#9650;</button>
@@ -37,6 +37,8 @@ Swipe &#8596; orbit · swipe &#8597; tilt · &#65291;/&#8722; zoom (3 levels)</s
   <button id="zin" title="Zoom in">&#65291;</button>
   <button id="zout" title="Zoom out">&#8722;</button>
   <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
+  <button id="edit" title="Edit nodes (E)">&#9998;</button>
+  <button id="save" title="Download edited nav JSON" hidden>&#128190;</button>
 </div>
 <script src="vendor/babylon/babylon.js"></script>
 <script src="vendor/babylon/babylonjs.loaders.min.js"></script>
@@ -44,9 +46,21 @@ Swipe &#8596; orbit · swipe &#8597; tilt · &#65291;/&#8722; zoom (3 levels)</s
 'use strict';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
 const canvas = document.getElementById('view');
+const hud = document.getElementById('hud');
 
+const TAU = Math.PI * 2;
 const TAU8 = Math.PI / 4;
+const BETAS = [0.55, 0.95, 1.3]; // fixed pitches (from +Y): high, mid, low
+const ZOOMS = [0.45, 0.7, 1.0];  // near, mid, far
 const smooth = (t) => t * t * (3 - 2 * t);
+
+const VIEW_HELP = `<b>Walkthrough</b><br>
+<small>Tap a dot or any spot to travel there<br>
+Swipe &#8596; orbit &middot; swipe &#8597; tilt &middot; &#65291;/&#8722; zoom &middot; &#9998; edit nodes</small>`;
+const EDIT_HELP = `<b>Node editor</b><br>
+<small>Tap ground: add node (linked to selection) &middot; tap node: select / link<br>
+tap selected node: deselect &middot; Delete key: remove &middot; &#128190; download JSON<br>
+Save over scenes/${SCENE}_nav.json to keep</small>`;
 
 async function makeEngine() {
   if (navigator.gpu && BABYLON.WebGPUEngine) {
@@ -64,10 +78,12 @@ async function makeEngine() {
     makeEngine(),
     fetch(`scenes/${SCENE}_nav.json`).then((r) => r.json()),
   ]);
+  const { eye, cell } = nav.meta;
   const scene = new BABYLON.Scene(engine);
   scene.clearColor = BABYLON.Color4.FromHexString('#1a2028ff');
 
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
+  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0);
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
@@ -76,26 +92,121 @@ async function makeEngine() {
   sky.intensity = 1.2;
   sky.groundColor = new BABYLON.Color3(0.25, 0.22, 0.18);
 
-  // --- camera: snapped 8-heading orbit at 3 fixed pitches ------------------
-  const { eye, betas, cell, rays } = nav.meta;
-  const TAU = Math.PI * 2;
+  // --- collision: one ray per frame against the real triangles -------------
+  // All terrain triangles in camera space, binned by XZ cell; a ray walks the
+  // bins (2D DDA). This is the only collision mechanism: whatever state the
+  // camera is in - orbiting, tilting, zooming, gliding - the ray from the
+  // look-target to the wanted position is measured against the actual
+  // geometry every frame.
+  let tris, triBox, bins, BW, BH, bMinX, bMinZ;
+  const BIN = cell;
+  {
+    const arrs = [];
+    let total = 0;
+    for (const mesh of terrain) {
+      mesh.computeWorldMatrix(true);
+      const wm = mesh.getWorldMatrix();
+      const src = mesh.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+      const out = new Float32Array(src.length);
+      const v = new BABYLON.Vector3();
+      for (let i = 0; i < src.length; i += 3) {
+        BABYLON.Vector3.TransformCoordinatesFromFloatsToRef(src[i], src[i + 1], src[i + 2], wm, v);
+        out[i] = v.x; out[i + 1] = v.y; out[i + 2] = v.z;
+      }
+      arrs.push(out);
+      total += out.length;
+    }
+    tris = new Float32Array(total);
+    let o = 0;
+    for (const a of arrs) { tris.set(a, o); o += a.length; }
+    const nTris = tris.length / 9;
+    triBox = new Float32Array(nTris * 6);
+    bMinX = Infinity; bMinZ = Infinity;
+    let maxX = -Infinity, maxZ = -Infinity;
+    for (let t = 0; t < nTris; t++) {
+      const b = t * 9;
+      const x0 = Math.min(tris[b], tris[b + 3], tris[b + 6]), x1 = Math.max(tris[b], tris[b + 3], tris[b + 6]);
+      const y0 = Math.min(tris[b + 1], tris[b + 4], tris[b + 7]), y1 = Math.max(tris[b + 1], tris[b + 4], tris[b + 7]);
+      const z0 = Math.min(tris[b + 2], tris[b + 5], tris[b + 8]), z1 = Math.max(tris[b + 2], tris[b + 5], tris[b + 8]);
+      triBox.set([x0, y0, z0, x1, y1, z1], t * 6);
+      bMinX = Math.min(bMinX, x0); bMinZ = Math.min(bMinZ, z0);
+      maxX = Math.max(maxX, x1); maxZ = Math.max(maxZ, z1);
+    }
+    BW = Math.ceil((maxX - bMinX) / BIN) + 1;
+    BH = Math.ceil((maxZ - bMinZ) / BIN) + 1;
+    bins = Array.from({ length: BW * BH }, () => []);
+    const bx = (x) => Math.max(0, Math.min(BW - 1, Math.floor((x - bMinX) / BIN)));
+    const bz = (z) => Math.max(0, Math.min(BH - 1, Math.floor((z - bMinZ) / BIN)));
+    for (let t = 0; t < nTris; t++) {
+      const b = t * 6;
+      for (let iz = bz(triBox[b + 2]); iz <= bz(triBox[b + 5]); iz++)
+        for (let ix = bx(triBox[b]); ix <= bx(triBox[b + 3]); ix++) bins[iz * BW + ix].push(t);
+    }
+  }
+  const seen = new Int32Array(tris.length / 9);
+  let seenStamp = 0;
+  function raycast(ox, oy, oz, dx, dy, dz, tMax) {
+    let best = Infinity;
+    const stamp = ++seenStamp;
+    const testBin = (ix, iz) => {
+      if (ix < 0 || ix >= BW || iz < 0 || iz >= BH) return;
+      for (const t of bins[iz * BW + ix]) {
+        if (seen[t] === stamp) continue;
+        seen[t] = stamp;
+        const b = t * 9;
+        const e1x = tris[b + 3] - tris[b], e1y = tris[b + 4] - tris[b + 1], e1z = tris[b + 5] - tris[b + 2];
+        const e2x = tris[b + 6] - tris[b], e2y = tris[b + 7] - tris[b + 1], e2z = tris[b + 8] - tris[b + 2];
+        const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
+        const det = e1x * px + e1y * py + e1z * pz;
+        if (Math.abs(det) < 1e-12) continue;
+        const inv = 1 / det;
+        const tx = ox - tris[b], ty = oy - tris[b + 1], tz = oz - tris[b + 2];
+        const u = (tx * px + ty * py + tz * pz) * inv;
+        if (u < 0 || u > 1) continue;
+        const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
+        const v = (dx * qx + dy * qy + dz * qz) * inv;
+        if (v < 0 || u + v > 1) continue;
+        const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
+        if (hit > 0.001 && hit < tMax && hit < best) best = hit;
+      }
+    };
+    let ix = Math.floor((ox - bMinX) / BIN), iz = Math.floor((oz - bMinZ) / BIN);
+    const stepX = dx > 0 ? 1 : -1, stepZ = dz > 0 ? 1 : -1;
+    let tX = dx !== 0 ? ((bMinX + (ix + (dx > 0 ? 1 : 0)) * BIN) - ox) / dx : Infinity;
+    let tZ = dz !== 0 ? ((bMinZ + (iz + (dz > 0 ? 1 : 0)) * BIN) - oz) / dz : Infinity;
+    const dX = dx !== 0 ? Math.abs(BIN / dx) : Infinity, dZ = dz !== 0 ? Math.abs(BIN / dz) : Infinity;
+    let t = 0;
+    for (let i = 0; i < BW + BH && t <= tMax && t < best; i++) {
+      for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) testBin(ix + a, iz + b);
+      if (tX < tZ) { t = tX; tX += dX; ix += stepX; } else { t = tZ; tZ += dZ; iz += stepZ; }
+    }
+    return best;
+  }
+
+  // --- camera --------------------------------------------------------------
   const centroid = nav.nodes.reduce((a, n) => [a[0] + n.p[0], a[1] + n.p[2]], [0, 0]).map((v) => v / nav.nodes.length);
   const start = nav.nodes.reduce((best, n, i) =>
     Math.hypot(n.p[0] - centroid[0], n.p[2] - centroid[1]) < Math.hypot(nav.nodes[best].p[0] - centroid[0], nav.nodes[best].p[2] - centroid[1]) ? i : best, 0);
 
   let cur = start;
-  let stepCont = 0;               // unbounded heading counter, 8 snaps per turn
-  let betaIdx = 1;                // 0 = high view, 1 = mid, 2 = low
-  const ZOOMS = [0.45, 0.7, 1.0]; // near, mid, far
-  let zoomIdx = 1;
-  let zoom = ZOOMS[zoomIdx];
+  let stepCont = 0;
+  let betaIdx = 1, zoomIdx = 1;
+  const floorR = cell * 0.8, maxR = cell * 10, margin = cell * 0.5;
   const step = () => ((Math.round(stepCont) % 8) + 8) % 8;
-  const floorR = cell * 0.8;
-  const profile = (n, k) => nav.nodes[n].r[betaIdx][((k % rays) + rays) % rays];
-  const safeRadius = (n) => Math.max(floorR, profile(n, step() * rays / 8) * zoom);
   const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eye, nav.nodes[n].p[2]);
+  const dirAt = (alpha, beta) => [Math.cos(alpha) * Math.sin(beta), Math.cos(beta), Math.sin(alpha) * Math.sin(beta)];
 
-  const camera = new BABYLON.ArcRotateCamera('cam', 0, betas[betaIdx], 1, eyePoint(start), scene);
+  // Free camera distance from a node at a snapped heading, measured live.
+  function freeAt(n, k, bi = betaIdx) {
+    const p = eyePoint(n);
+    const [dx, dy, dz] = dirAt(k * TAU8, BETAS[bi]);
+    const hit = raycast(p.x, p.y, p.z, dx, dy, dz, maxR + margin);
+    return Math.min(maxR, hit - margin);
+  }
+  const wantRadius = (n) => Math.max(floorR, freeAt(n, step()) * ZOOMS[zoomIdx]);
+  const open = (n, k) => freeAt(n, ((k % 8) + 8) % 8) > cell * 1.8;
+
+  const camera = new BABYLON.ArcRotateCamera('cam', 0, BETAS[betaIdx], 1, eyePoint(start), scene);
   camera.minZ = cell * 0.1;
   camera.maxZ = cell * 400;
   camera.fov = 0.9;
@@ -103,99 +214,53 @@ async function makeEngine() {
 
   let tween = null;
   let route = [];
-  let prevBeta = 1;
   function glideTo(node, ms) {
-    const from = cur;
     cur = node;
-    const fromBeta = prevBeta;
-    prevBeta = betaIdx;
     tween = {
-      from, leg: from !== node, fromBeta,
       t0: performance.now(), ms,
       target0: camera.target.clone(), target1: eyePoint(node),
       alpha0: camera.alpha, alpha1: stepCont * TAU8,
-      beta0: camera.beta, beta1: betas[betaIdx],
-      radius0: camera.radius, radius1: safeRadius(node),
+      beta0: camera.beta, beta1: BETAS[betaIdx],
+      radius0: camera.radius, radius1: wantRadius(node),
     };
     updateMarkers();
   }
   scene.onBeforeRenderObservable.add(() => {
-    if (!tween) return;
-    const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
-    const s = smooth(t);
-    camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
-    camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * s;
-    camera.beta = tween.beta0 + (tween.beta1 - tween.beta0) * s;
-    camera.radius = tween.radius0 + (tween.radius1 - tween.radius0) * s;
-    if (t === 1) {
-      tween = null;
-      if (route.length) { const nxt = route.shift(); glideTo(nxt, legMs(cur, nxt)); } else updateMarkers();
+    if (tween) {
+      const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
+      const s = smooth(t);
+      camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
+      camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * s;
+      camera.beta = tween.beta0 + (tween.beta1 - tween.beta0) * s;
+      camera.radius = tween.radius0 + (tween.radius1 - tween.radius0) * s;
+      if (t === 1) {
+        tween = null;
+        if (route.length) { const nxt = route.shift(); glideTo(nxt, legMs(cur, nxt)); } else updateMarkers();
+      }
     }
   });
 
-  // Terrain clamp, every frame: pull the camera in whenever its position
-  // would dip below the top surface, so glides and orbit sweeps between the
-  // precomputed snap positions cannot pass through walls either.
-  const hm = nav.height;
-  function groundTop(x, z) {
-    const ix = Math.floor((x - hm.x0) / hm.step), iz = Math.floor((z - hm.z0) / hm.step);
-    let top = -1e4;
-    for (let a = 0; a <= 1; a++) for (let b = 0; b <= 1; b++) {
-      const cx = ix + a, cz = iz + b;
-      if (cx >= 0 && cx < hm.w && cz >= 0 && cz < hm.h) top = Math.max(top, hm.data[cz * hm.w + cx]);
-    }
-    return top;
-  }
-  function camPosAt(r) {
-    return {
-      x: camera.target.x + r * Math.cos(camera.alpha) * Math.sin(camera.beta),
-      y: camera.target.y + r * Math.cos(camera.beta),
-      z: camera.target.z + r * Math.sin(camera.alpha) * Math.sin(camera.beta),
-    };
-  }
-  // The camera radius is capped every frame by the ray-verified radial
-  // profile at the current heading, so an orbit sweep follows the measured
-  // wall contour and cannot pass through terrain between snap positions.
-  // While gliding between nodes the heightmap acts as an extra backstop.
-  function profileGuard() {
-    const f = (((camera.alpha % TAU) + TAU) % TAU) / (TAU / rays);
-    const i0 = Math.floor(f), i1 = Math.ceil(f), frac = f - i0;
-    const at = (n) => profile(n, i0) * (1 - frac) + profile(n, i1) * frac;
-    let g = at(cur);
-    if (tween && tween.leg) g = Math.min(g, at(tween.from));
-    if (tween && tween.fromBeta !== betaIdx) {
-      const keep = betaIdx;
-      betaIdx = tween.fromBeta; g = Math.min(g, at(cur)); betaIdx = keep;
-    }
-    return Math.max(floorR, g * zoom);
-  }
-  // Eased radius with a hard safety cap: the eased value follows the desired
-  // radius so collisions feel smooth, but it is clipped to the measured free
-  // distance every frame, so it can never lag into a wall.
+  // The collision pass runs after the tween so it sees the frame's wanted
+  // state. Eased so walls read as a smooth pull-in, but hard-capped by the
+  // measured free distance, so the camera can never end a frame inside a wall.
   let smoothR = null;
   scene.onBeforeRenderObservable.add(() => {
-    if (!tween) camera.radius = safeRadius(cur);
-    const guard = profileGuard();
-    let target = Math.min(camera.radius, guard);
-    if (tween && tween.leg) {
-      const clear = cell * 0.4;
-      for (let i = 0; i < 14 && target > floorR; i++) {
-        const p = camPosAt(target);
-        if (p.y >= groundTop(p.x, p.z) + clear) break;
-        target = Math.max(floorR, target * 0.85);
-      }
-    }
-    if (smoothR === null) smoothR = target;
-    const dt = Math.min(scene.getEngine().getDeltaTime(), 50) / 1000;
-    smoothR += (target - smoothR) * Math.min(1, dt * 12);
-    smoothR = Math.min(smoothR, guard);
-    camera.radius = smoothR;
+    const wanted = camera.radius;
+    const tgt = camera.target;
+    const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
+    const hit = raycast(tgt.x, tgt.y, tgt.z, dx, dy, dz, wanted + margin);
+    const cap = Math.max(floorR * 0.5, Math.min(wanted, hit - margin));
+    if (smoothR === null) smoothR = cap;
+    const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
+    smoothR += (Math.min(wanted, cap) - smoothR) * Math.min(1, dt * 10);
+    camera.radius = Math.min(smoothR, cap);
+    smoothR = camera.radius;
   });
 
   // --- travel: cheapest path, strongly preferring walkways and trails ------
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
   const surf = { p: 1, d: 3, g: 3.5 };
-  const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * ((surf[nav.nodes[a].s] + surf[nav.nodes[b].s]) / 2);
+  const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
   const legMs = (a, b) => Math.min(650, Math.max(280, dist3(nav.nodes[a], nav.nodes[b]) * 55));
   function travelTo(dest) {
     if (dest === cur) return;
@@ -227,7 +292,6 @@ async function makeEngine() {
     });
     return best;
   }
-  const open = (n, k) => profile(n, (((k % 8) + 8) % 8) * rays / 8) > cell * 1.8;
   const orbit = (dir) => {
     route = [];
     let steps = 0;
@@ -235,10 +299,9 @@ async function makeEngine() {
     glideTo(cur, Math.min(300 + 150 * steps, 800));
   };
   const tilt = (dir) => {
-    const next = Math.min(betas.length - 1, Math.max(0, betaIdx + dir));
+    const next = Math.min(BETAS.length - 1, Math.max(0, betaIdx + dir));
     if (next === betaIdx) return;
     betaIdx = next; route = [];
-    // If this pitch has no room at the current heading, swing to the nearest open one.
     if (!open(cur, Math.round(stepCont))) {
       for (let d = 1; d < 8; d++) {
         if (open(cur, Math.round(stepCont) + d)) { stepCont += d; break; }
@@ -246,6 +309,10 @@ async function makeEngine() {
       }
     }
     glideTo(cur, 400);
+  };
+  const setZoom = (d) => {
+    zoomIdx = Math.min(ZOOMS.length - 1, Math.max(0, zoomIdx + d));
+    if (!tween) glideTo(cur, 300);
   };
   function walk(sign) {
     route = [];
@@ -259,36 +326,101 @@ async function makeEngine() {
     if (best >= 0) glideTo(best, 500);
   }
 
-  // --- markers: every node always shown, neighbours highlighted ------------
-  const nearMat = new BABYLON.StandardMaterial('near', scene);
-  nearMat.emissiveColor = BABYLON.Color3.FromHexString('#ffd75e');
-  nearMat.disableLighting = true;
-  const farMat = new BABYLON.StandardMaterial('far', scene);
-  farMat.emissiveColor = BABYLON.Color3.FromHexString('#8aa3b8');
-  farMat.disableLighting = true;
-  farMat.alpha = 0.6;
-  const routeMat = new BABYLON.StandardMaterial('route', scene);
-  routeMat.emissiveColor = BABYLON.Color3.FromHexString('#ff9d47');
-  routeMat.disableLighting = true;
-  const hereMat = new BABYLON.StandardMaterial('here', scene);
-  hereMat.emissiveColor = BABYLON.Color3.FromHexString('#7ee081');
-  hereMat.disableLighting = true;
-
-  const markers = nav.nodes.map((node, i) => {
+  // --- markers -------------------------------------------------------------
+  const mat = (hex, alpha) => {
+    const m = new BABYLON.StandardMaterial('m' + hex, scene);
+    m.emissiveColor = BABYLON.Color3.FromHexString(hex);
+    m.disableLighting = true;
+    if (alpha) m.alpha = alpha;
+    return m;
+  };
+  const nearMat = mat('#ffd75e'), farMat = mat('#8aa3b8', 0.6), hereMat = mat('#7ee081');
+  const routeMat = mat('#ff9d47'), selMat = mat('#5ed7ff');
+  let markers = [];
+  function makeMarker(i) {
     const orb = BABYLON.MeshBuilder.CreateSphere(`nav${i}`, { diameter: cell * 0.45, segments: 10 }, scene);
-    orb.position = new BABYLON.Vector3(node.p[0], node.p[1] + cell * 0.35, node.p[2]);
+    orb.position = new BABYLON.Vector3(nav.nodes[i].p[0], nav.nodes[i].p[1] + cell * 0.35, nav.nodes[i].p[2]);
     orb.metadata = { node: i };
+    orb.isPickable = false;
     return orb;
-  });
+  }
+  function rebuildMarkers() {
+    for (const m of markers) m.dispose();
+    markers = nav.nodes.map((_, i) => makeMarker(i));
+    updateMarkers();
+  }
   function updateMarkers() {
     const near = new Set(nav.nodes[cur].n);
     const onRoute = new Set(route);
     markers.forEach((m, i) => {
-      m.material = i === cur ? hereMat : onRoute.has(i) ? routeMat : near.has(i) ? nearMat : farMat;
-      m.scaling.setAll(near.has(i) || onRoute.has(i) ? 1.25 : 1);
+      m.material = i === selected ? selMat : i === cur ? hereMat : onRoute.has(i) ? routeMat : near.has(i) ? nearMat : farMat;
+      m.scaling.setAll(editMode || near.has(i) || onRoute.has(i) ? 1.25 : 1);
     });
+    drawEdges();
   }
-  updateMarkers();
+
+  // --- node editor ---------------------------------------------------------
+  let editMode = false;
+  let selected = -1;
+  let edgeMesh = null;
+  function drawEdges() {
+    if (edgeMesh) { edgeMesh.dispose(); edgeMesh = null; }
+    if (!editMode) return;
+    const lines = [];
+    nav.nodes.forEach((n, i) => {
+      for (const j of n.n) if (j > i) lines.push([
+        new BABYLON.Vector3(n.p[0], n.p[1] + cell * 0.35, n.p[2]),
+        new BABYLON.Vector3(nav.nodes[j].p[0], nav.nodes[j].p[1] + cell * 0.35, nav.nodes[j].p[2]),
+      ]);
+    });
+    if (!lines.length) return;
+    edgeMesh = BABYLON.MeshBuilder.CreateLineSystem('edges', { lines }, scene);
+    edgeMesh.color = BABYLON.Color3.FromHexString('#5ed7ff');
+    edgeMesh.alpha = 0.7;
+    edgeMesh.isPickable = false;
+  }
+  function toggleEdge(a, b) {
+    const na = nav.nodes[a], nb = nav.nodes[b];
+    const i = na.n.indexOf(b);
+    if (i >= 0) { na.n.splice(i, 1); nb.n.splice(nb.n.indexOf(a), 1); }
+    else { na.n.push(b); nb.n.push(a); }
+  }
+  function addNode(point) {
+    nav.nodes.push({ p: [+point.x.toFixed(3), +point.y.toFixed(3), +point.z.toFixed(3)], s: 'p', n: [] });
+    const i = nav.nodes.length - 1;
+    markers.push(makeMarker(i));
+    if (selected >= 0) toggleEdge(selected, i);
+    selected = i;
+    updateMarkers();
+  }
+  function deleteNode(i) {
+    for (const nb of nav.nodes[i].n) {
+      const arr = nav.nodes[nb].n;
+      arr.splice(arr.indexOf(i), 1);
+    }
+    nav.nodes.splice(i, 1);
+    for (const n of nav.nodes) n.n = n.n.map((j) => (j > i ? j - 1 : j));
+    if (cur >= nav.nodes.length) cur = 0;
+    else if (cur > i) cur--;
+    selected = -1;
+    route = [];
+    rebuildMarkers();
+  }
+  function exportNav() {
+    const blob = new Blob([JSON.stringify({ meta: { cell, eye }, nodes: nav.nodes })], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${SCENE}_nav.json`;
+    a.click();
+  }
+  function setEditMode(on) {
+    editMode = on;
+    selected = -1;
+    hud.innerHTML = on ? EDIT_HELP : VIEW_HELP;
+    document.getElementById('edit').classList.toggle('on', on);
+    document.getElementById('save').hidden = !on;
+    updateMarkers();
+  }
 
   // --- input ---------------------------------------------------------------
   let down = null;
@@ -299,15 +431,29 @@ async function makeEngine() {
     const dx = e.clientX - down.x, dy = e.clientY - down.y;
     down = null;
     if (Math.hypot(dx, dy) < 30) {
-      // Prefer a marker under the tap; otherwise any terrain point.
+      for (const m of markers) m.isPickable = true;
       const marker = scene.pick(scene.pointerX, scene.pointerY, (m) => m.metadata?.node !== undefined);
+      for (const m of markers) m.isPickable = false;
+      if (editMode) {
+        if (marker?.hit) {
+          const i = marker.pickedMesh.metadata.node;
+          if (selected === -1) selected = i;
+          else if (selected === i) selected = -1;
+          else { toggleEdge(selected, i); selected = i; }
+          updateMarkers();
+        } else {
+          const ground = scene.pick(scene.pointerX, scene.pointerY);
+          if (ground?.hit) addNode(ground.pickedPoint);
+        }
+        return;
+      }
       if (marker?.hit) return travelTo(marker.pickedMesh.metadata.node);
       const ground = scene.pick(scene.pointerX, scene.pointerY);
       if (ground?.hit) travelTo(nearestNode(ground.pickedPoint));
     } else if (Math.abs(dx) > Math.abs(dy)) {
       orbit(dx > 0 ? -1 : 1);
     } else {
-      tilt(dy > 0 ? -1 : 1); // swipe down = view from higher up
+      tilt(dy > 0 ? -1 : 1);
     }
   });
   addEventListener('keydown', (e) => {
@@ -317,30 +463,31 @@ async function makeEngine() {
     if (e.key === 'ArrowDown') walk(-1);
     if (e.key === 'PageUp') tilt(-1);
     if (e.key === 'PageDown') tilt(1);
+    if (e.key === 'e' || e.key === 'E') setEditMode(!editMode);
+    if (editMode && (e.key === 'Delete' || e.key === 'Backspace') && selected >= 0) deleteNode(selected);
   });
-  const setZoom = (d) => {
-    zoomIdx = Math.min(ZOOMS.length - 1, Math.max(0, zoomIdx + d));
-    zoom = ZOOMS[zoomIdx];
-    if (!tween) glideTo(cur, 300);
-  };
   let wheelAt = 0;
   addEventListener('wheel', (e) => {
     if (performance.now() - wheelAt < 350) return;
     wheelAt = performance.now();
     setZoom(e.deltaY > 0 ? 1 : -1);
   }, { passive: true });
-  document.getElementById('zin').addEventListener('click', () => setZoom(-1));
-  document.getElementById('zout').addEventListener('click', () => setZoom(1));
   document.getElementById('rotL').addEventListener('click', () => orbit(1));
   document.getElementById('rotR').addEventListener('click', () => orbit(-1));
   document.getElementById('tiltU').addEventListener('click', () => tilt(-1));
   document.getElementById('tiltD').addEventListener('click', () => tilt(1));
+  document.getElementById('zin').addEventListener('click', () => setZoom(-1));
+  document.getElementById('zout').addEventListener('click', () => setZoom(1));
+  document.getElementById('edit').addEventListener('click', () => setEditMode(!editMode));
+  document.getElementById('save').addEventListener('click', exportNav);
 
+  hud.innerHTML = VIEW_HELP;
+  rebuildMarkers();
   glideTo(start, 1);
   engine.runRenderLoop(() => scene.render());
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
-  document.querySelector('.hud').innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
+  hud.innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
 Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>`;
   throw e;
 });

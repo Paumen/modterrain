@@ -220,9 +220,6 @@ const SAMPLE = 1.5 * cell;      // candidate sampling step
 const SPACING = [2.2, 3.0, 4.2]; // min node distance per priority class, in cells
 const EDGE_MAX = 5.2 * cell;    // maximum edge length
 const EYE = 1.2 * cell;         // camera target height above ground
-const BETAS = [0.55, 0.95, 1.3]; // fixed pitch angles (from +Y): high, mid, low
-const RAYS = 64;                // radial collision profile resolution per pitch
-const MAX_R = 10 * cell, MARGIN = 0.6 * cell, FLOOR_R = 0.8 * cell, MIN_R = 1.5 * cell;
 
 // ---- spatial index: triangles binned by XZ cell ---------------------------
 
@@ -407,45 +404,10 @@ const kept = [];
 for (let i = 0; i < nodes.length; i++) if (comp[i] === keepComp) { remap.set(i, kept.length); kept.push(nodes[i]); }
 for (const node of kept) node.n = node.n.map((i) => remap.get(i));
 
-// Radial collision profile: for each fixed pitch, the free camera distance at
-// RAYS headings around the node. The viewer clamps the orbit radius to this
-// contour continuously, so sweeping between headings cannot pass through a
-// wall that sits between two open snap positions. Direction matches an
-// ArcRotateCamera at (alpha, beta): target + r * (cos a sin b, cos b, sin a sin b).
-for (const node of kept) {
-  const [x, y, z] = node.p;
-  node.r = BETAS.map((beta) => {
-    const radii = [];
-    for (let k = 0; k < RAYS; k++) {
-      const a = (k * 2 * Math.PI) / RAYS;
-      const dx = Math.cos(a) * Math.sin(beta), dy = Math.cos(beta), dz = Math.sin(a) * Math.sin(beta);
-      const hit = raycast(x, y + EYE, z, dx, dy, dz, 0, MAX_R);
-      radii.push(Math.round(Math.min(Math.max(hit - MARGIN, FLOOR_R), MAX_R) * 100) / 100);
-    }
-    return radii;
-  });
-  node.p = node.p.map((v) => Math.round(v * 1000) / 1000);
-}
-
-// Top-surface heightmap, one cell per entry, conservative (max of 2x2
-// subsamples). The viewer uses it as a backstop while gliding between nodes.
-const hw = Math.ceil((maxX - minX) / cell), hh = Math.ceil((maxZ - minZ) / cell);
-const hdata = new Array(hw * hh).fill(-1e4);
-for (let iz = 0; iz < hh; iz++) {
-  for (let ix = 0; ix < hw; ix++) {
-    let top = -1e4;
-    for (const [fx, fz] of [[0.25, 0.25], [0.75, 0.25], [0.25, 0.75], [0.75, 0.75]]) {
-      for (const [y] of heightsAt(minX + (ix + fx) * cell, minZ + (iz + fz) * cell)) top = Math.max(top, y);
-    }
-    hdata[iz * hw + ix] = Math.round(top * 100) / 100;
-  }
-}
+// Round node positions for a compact file.
+for (const node of kept) node.p = node.p.map((v) => Math.round(v * 1000) / 1000);
 
 import('node:fs').then(({ writeFileSync }) => {
-  writeFileSync(outNav, JSON.stringify({
-    meta: { cell, eye: EYE, betas: BETAS, rays: RAYS, minR: MIN_R, maxR: MAX_R },
-    height: { x0: minX, z0: minZ, step: cell, w: hw, h: hh, data: hdata },
-    nodes: kept,
-  }));
+  writeFileSync(outNav, JSON.stringify({ meta: { cell, eye: EYE }, nodes: kept }));
   console.log(`${outNav}: ${kept.length} nodes (${candidates.length} candidates, largest of ${compCount} components), cell=${cell}`);
 });
