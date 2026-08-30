@@ -124,6 +124,7 @@ const HEAD = 2.0;        // ceiling clearance a floor needs to be usable
 const STEP = 0.75;       // biggest height change you can walk between cells
 const FLAT = 0.5;        // |ny| below this is a wall, not a floor
 const CLUSTER = 0.3;     // surfaces within this height are the same floor
+const ROOM = 1.2;        // clear space the camera target needs on every side
 
 // Cave floors and rock ledges carry Cliff, so it is walkable where it faces
 // up; the vertical cliff faces of the same pieces never produce a floor.
@@ -286,16 +287,15 @@ for (let r = 0; r < ROWS; r++) {
       const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
       // A target buried in rock makes the camera clip; a short spray of rays
       // from the eye point catches those before they reach the viewer.
-      let clear = 0, total = 0;
+      let closest = Infinity;
       for (let a = 0; a < 12; a++) {
         for (const pitch of [-0.3, 0, 0.3]) {
           const th = (a / 12) * Math.PI * 2;
           const dy = Math.sin(pitch), h = Math.cos(pitch);
-          total++;
-          if (raycast(x, y + eye, z, Math.cos(th) * h, dy, Math.sin(th) * h, 0.001, 2) >= 0.4) clear++;
+          closest = Math.min(closest, raycast(x, y + eye, z, Math.cos(th) * h, dy, Math.sin(th) * h, 0.001, 6));
         }
       }
-      if (clear < total * 0.5) { reject.buried++; continue; }
+      if (closest < ROOM) { reject.buried++; continue; }
       here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100 });
     }
     if (!here.length) continue;

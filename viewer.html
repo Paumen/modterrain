@@ -37,11 +37,11 @@
   <button id="tiltU" title="Wider, higher view">&#9650;</button>
   <button id="tiltD" title="Closer, lower view">&#9660;</button>
   <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
-  <button id="edit" title="Edit nodes (E)">&#9998;</button>
-  <button id="erase" title="Eraser: tap nodes to delete" hidden>&#9003;</button>
-  <button id="del" title="Delete selected node" hidden>&#128465;</button>
+  <button id="edit" title="Edit the walkable grid (E)">&#9998;</button>
+  <button id="erase" title="Eraser: tap cells to close them" hidden>&#9003;</button>
+  <button id="del" title="Close the selected cell" hidden>&#128465;</button>
   <button id="undo" title="Undo last edit" hidden>&#8634;</button>
-  <button id="save" title="Download edited nav JSON" hidden>&#128190;</button>
+  <button id="save" title="Download the edited grid JSON" hidden>&#128190;</button>
 </div>
 <script src="vendor/babylon/babylon.js"></script>
 <script src="vendor/babylon/babylonjs.loaders.min.js"></script>
@@ -71,13 +71,13 @@ const VIEWS = [
 const smooth = (t) => t * t * (3 - 2 * t);
 
 const VIEW_HELP = `<b>Walkthrough</b><br>
-<small>Tap a dot or any spot to travel there<br>
-Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; edit nodes</small>`;
-const EDIT_HELP = `<b>Node editor</b><br>
-<small>&#9003; eraser: tap a node to delete it, or tap a line to cut it<br>
-Otherwise tap open ground to add (snaps to the grid) &middot; tap two<br>
-neighbouring nodes to link &middot; &#8634; undo<br>
-&#128190; downloads JSON &mdash; save over scenes/${SCENE}_nav.json to keep</small>`;
+<small>Tap a cell or any spot to travel there<br>
+Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; edit grid</small>`;
+const EDIT_HELP = `<b>Grid editor</b><br>
+<small>&#9003; eraser: tap a cell to close it, or tap a line to cut it<br>
+Otherwise tap open ground to open that cell &middot; tap two<br>
+touching cells to link &middot; &#8634; undo<br>
+&#128190; downloads JSON &mdash; save over scenes/${SCENE}_grid.json to keep</small>`;
 
 async function makeEngine() {
   if (navigator.gpu && BABYLON.WebGPUEngine) {
@@ -90,11 +90,47 @@ async function makeEngine() {
   return new BABYLON.Engine(canvas, true);
 }
 
+// The grid file is compact on purpose: cells are integers, edges are a flat
+// list of index pairs. Expanded here into the world points and neighbour lists
+// the camera, the pathfinder and the editor all work in.
+function fromGrid(grid) {
+  const { origin, materials, path } = grid.meta;
+  const nodes = grid.nodes.map(([c, r, y, e, m]) => ({
+    c, r,
+    p: [origin.c + c + 0.5, y, origin.r + r + 0.5],
+    e,
+    s: path[m] ? 'p' : 'g',
+    n: [],
+  }));
+  for (let i = 0; i < grid.edges.length; i += 2) {
+    nodes[grid.edges[i]].n.push(grid.edges[i + 1]);
+    nodes[grid.edges[i + 1]].n.push(grid.edges[i]);
+  }
+  return { meta: { ...grid.meta, eye: grid.meta.eye, cell: grid.meta.cell }, nodes, materials };
+}
+// The inverse, so an edited grid saves back in the same shape the builder
+// writes and the two stay interchangeable.
+function toGrid(nav) {
+  const materials = nav.meta.materials;
+  const walk = materials.indexOf('Carved Stone Walkway');
+  const grass = Math.max(0, materials.indexOf('Grass'));
+  const edges = [];
+  nav.nodes.forEach((n, i) => { for (const j of n.n) if (j > i) edges.push(i, j); });
+  return {
+    meta: nav.meta,
+    nodes: nav.nodes.map((n) => [n.c, n.r, +n.p[1].toFixed(3), n.e, n.s === 'p' && walk >= 0 ? walk : grass]),
+    edges,
+  };
+}
+
 (async () => {
-  const [engine, nav] = await Promise.all([
+  const [engine, grid] = await Promise.all([
     makeEngine(),
-    fetch(`scenes/${SCENE}_nav.json`).then((r) => r.json()),
+    fetch(`scenes/${SCENE}_grid.json`).then((r) => r.json()),
   ]);
+  // The grid is stored as bare cell coordinates and a flat edge list; the rest
+  // of the page works in world points, so expand it once here.
+  const nav = fromGrid(grid);
   const { eye, cell } = nav.meta;
   const scene = new BABYLON.Scene(engine);
   // glTF is right-handed. Without this Babylon's loader wraps the model in a
@@ -207,8 +243,20 @@ async function makeEngine() {
 
   // --- camera --------------------------------------------------------------
   const centroid = nav.nodes.reduce((a, n) => [a[0] + n.p[0], a[1] + n.p[2]], [0, 0]).map((v) => v / nav.nodes.length);
-  const start = nav.nodes.reduce((best, n, i) =>
-    Math.hypot(n.p[0] - centroid[0], n.p[2] - centroid[1]) < Math.hypot(nav.nodes[best].p[0] - centroid[0], nav.nodes[best].p[2] - centroid[1]) ? i : best, 0);
+  // Start on open ground near the middle of the island. Cells under a low
+  // ceiling carry a shortened eye height, which is what tells a cave floor
+  // apart from a hillside, and a trail beats a field as an opening view.
+  const startScore = (n) => Math.hypot(n.p[0] - centroid[0], n.p[2] - centroid[1]) + (n.s === 'p' ? 0 : 30);
+  const start = (() => {
+    const order = nav.nodes.map((n, i) => i).sort((a, b) => startScore(nav.nodes[a]) - startScore(nav.nodes[b]));
+    // Under open sky, not under a hill: the shortened eye height only marks a
+    // low roof, and a big cave has plenty of headroom.
+    for (const i of order.slice(0, 400)) {
+      const p = nav.nodes[i].p;
+      if (raycast(p[0], p[1] + (nav.nodes[i].e ?? eye), p[2], 0, 1, 0, 80) === Infinity) return i;
+    }
+    return order[0];
+  })();
 
   const asked = parseInt(new URLSearchParams(location.search).get('node') ?? '', 10);
   let cur = Number.isInteger(asked) && asked >= 0 && asked < nav.nodes.length ? asked : start;
@@ -217,7 +265,9 @@ async function makeEngine() {
   let mapView = false;
   let mapZoom = 0.55;          // the editing map has its own zoom
   const view = () => (mapView ? MAP_VIEW : VIEWS[viewIdx]);
-  const floorR = cell * 0.8, maxR = cell * 22, margin = cell * 0.5;
+  // World units. The camera's reach is a property of the island's size, not
+  // of the grid: it pulls back tens of cells, never fractions of one.
+  const floorR = 2.4, maxR = 66, margin = 1.5;
   const step = () => ((Math.round(stepCont) % STEPS) + STEPS) % STEPS;
   // Nodes under a low roof carry their own eye height, so the camera target
   // ducks into the cave instead of sitting in the ceiling.
@@ -233,7 +283,7 @@ async function makeEngine() {
   // ray plus four rays offset by the near plane's corner radius.
   function nearRadius() {
     const h = camera.minZ * Math.tan(camera.fov / 2);
-    return Math.hypot(h, h * engine.getAspectRatio(camera)) + cell * 0.04;
+    return Math.hypot(h, h * engine.getAspectRatio(camera)) + 0.12;
   }
   const perp = (dx, dy, dz) => {
     const ax = Math.abs(dy) < 0.9 ? [0, 1, 0] : [1, 0, 0];
@@ -265,12 +315,12 @@ async function makeEngine() {
   // Enough room to be worth turning to. Kept low deliberately: in a cave no
   // heading has much space, and a demanding threshold makes orbit skip every
   // one of them and land back where it started.
-  const MIN_ROOM = cell * 0.9;
+  const MIN_ROOM = 2.7;
   const open = (n, k) => freeAt(n, ((k % STEPS) + STEPS) % STEPS) > MIN_ROOM;
 
   const camera = new BABYLON.ArcRotateCamera('cam', 0, view().beta, 1, eyePoint(start), scene);
-  camera.minZ = cell * 0.03;
-  camera.maxZ = cell * 400;
+  camera.minZ = 0.09;
+  camera.maxZ = 1200;
   camera.fov = 0.9;
   camera.inputs.clear();
 
@@ -350,16 +400,68 @@ async function makeEngine() {
     smoothR = camera.radius;
     // Squeezed into a cave the camera has nowhere to pull back to, so widen
     // the lens instead: a tight space shows far more through a wide angle.
-    const tight = Math.min(1, Math.max(0, 1 - camera.radius / (cell * 4)));
+    const tight = Math.min(1, Math.max(0, 1 - camera.radius / 12));
     const wantFov = 0.9 + 0.5 * tight;
     camera.fov += (wantFov - camera.fov) * Math.min(1, dt * 8);
   });
 
   // --- travel: cheapest path, strongly preferring walkways and trails ------
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
-  const surf = { p: 1, d: 3, g: 3.5 };
+  // Trails and decking are cheap to cross, open ground is not, so a route
+  // follows the paths the island was built with instead of cutting across.
+  const surf = { p: 1, g: 3.5 };
   const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
   const legMs = (a, b) => Math.min(650, Math.max(280, dist3(nav.nodes[a], nav.nodes[b]) * 55));
+  // A cell-by-cell path is a stop at every metre. Legs are pulled straight
+  // where the ground between allows it, so crossing an open field is a few
+  // long glides instead of thirty short ones, and a path that bends round a
+  // rock still bends.
+  const LEG_MAX = 7;     // cells; longer and the camera reads as teleporting
+  let byCell = new Map();
+  const cellKey = (c, r) => c * 100000 + r;
+  // Rebuilt per journey: the editor renumbers nodes as it adds and removes.
+  function indexCells() {
+    byCell = new Map();
+    nav.nodes.forEach((n, i) => {
+      const k = cellKey(n.c, n.r);
+      if (!byCell.has(k)) byCell.set(k, []);
+      byCell.get(k).push(i);
+    });
+  }
+  function straightRun(a, b) {
+    const A = nav.nodes[a].p, B = nav.nodes[b].p;
+    const dx = B[0] - A[0], dz = B[2] - A[2];
+    const len = Math.hypot(dx, dz);
+    if (len > LEG_MAX) return false;
+    const steps = Math.max(1, Math.ceil(len * 2));
+    for (let k = 1; k < steps; k++) {
+      const t = k / steps;
+      const x = A[0] + dx * t, z = A[2] + dz * t, y = A[1] + (B[1] - A[1]) * t;
+      const here = byCell.get(cellKey(Math.floor(x - nav.meta.origin.c), Math.floor(z - nav.meta.origin.r)));
+      if (!here || !here.some((i) => Math.abs(nav.nodes[i].p[1] - y) <= nav.meta.step)) return false;
+    }
+    // Walkable ground underneath is not enough: the camera target rides at eye
+    // height, and a straight line between two eye points can still clip the
+    // corner of a cliff the path itself goes round.
+    const ea = A[1] + (nav.nodes[a].e ?? eye), eb = B[1] + (nav.nodes[b].e ?? eye);
+    const vx = B[0] - A[0], vy = eb - ea, vz = B[2] - A[2];
+    const d = Math.hypot(vx, vy, vz);
+    return raycast(A[0], ea, A[2], vx / d, vy / d, vz / d, d) >= d;
+  }
+  function straighten(from, path) {
+    const out = [];
+    let anchor = from, i = 0;
+    while (i < path.length) {
+      let j = i;
+      // Only the next stretch is worth testing: a leg is capped at LEG_MAX
+      // cells, so nothing beyond that window can ever be reachable in one.
+      for (let k = Math.min(path.length - 1, i + LEG_MAX * 2); k > i; k--) if (straightRun(anchor, path[k])) { j = k; break; }
+      out.push(path[j]);
+      anchor = path[j];
+      i = j + 1;
+    }
+    return out;
+  }
   function travelTo(dest) {
     if (dest === cur) return;
     // A binary heap rather than scanning every node for the next cheapest:
@@ -411,9 +513,11 @@ async function makeEngine() {
     // by stairs that were cut, or a second island). Travel there directly
     // rather than letting the tap do nothing.
     if (dist[dest] === Infinity) { route = []; return glideFacing(dest, 700); }
-    route = [];
-    for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
-    route.shift();
+    indexCells();
+    const full = [];
+    for (let n = dest; n !== -1; n = prev[n]) full.unshift(n);
+    full.shift();
+    route = straighten(cur, full);
     if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); }
   }
   // Tap targets are a fixed radius in screen pixels, so a node is easy to hit
@@ -432,7 +536,7 @@ async function makeEngine() {
     let best = -1, bestScore = Infinity, bestRaw = Infinity;
     for (const i of shown) {
       const q = nav.nodes[i].p;
-      const p = BABYLON.Vector3.Project(new BABYLON.Vector3(q[0], q[1] + cell * 0.05, q[2]), ident, xform, vp);
+      const p = BABYLON.Vector3.Project(new BABYLON.Vector3(q[0], q[1] + LIFT, q[2]), ident, xform, vp);
       if (p.z <= 0 || p.z >= 1) continue;
       const d = Math.hypot(p.x - px * scale, p.y - py * scale);
       if (d > limit) continue;
@@ -455,7 +559,7 @@ async function makeEngine() {
     const scale = eng.getRenderWidth() / (canvas.clientWidth || eng.getRenderWidth());
     const tx = px * scale, ty = py * scale;
     const proj = nav.nodes.map((n) =>
-      BABYLON.Vector3.Project(new BABYLON.Vector3(n.p[0], n.p[1] + cell * 0.05, n.p[2]), ident, xform, vp));
+      BABYLON.Vector3.Project(new BABYLON.Vector3(n.p[0], n.p[1] + LIFT, n.p[2]), ident, xform, vp));
     let best = null, bestD = EDGE_PX * scale;
     for (let i = 0; i < nav.nodes.length; i++) {
       const a = proj[i];
@@ -499,8 +603,8 @@ async function makeEngine() {
     let bestK = base, bestScore = -Infinity;
     for (let d = 0; d <= STEPS / 2; d++) {
       for (const k of d === 0 ? [base] : [base + d, base - d]) {
-        const free = Math.min(freeAt(node, ((k % STEPS) + STEPS) % STEPS), cell * 8);
-        const score = free - d * cell * 0.35;
+        const free = Math.min(freeAt(node, ((k % STEPS) + STEPS) % STEPS), 24);
+        const score = free - d * 1.05;
         if (score > bestScore) { bestScore = score; bestK = k; }
       }
     }
@@ -575,30 +679,61 @@ async function makeEngine() {
   // Neighbours draw on top of terrain: inside a cave the way out is behind a
   // wall, and a marker you cannot see is a marker you cannot tap.
   for (const m of [nearMat, hereMat, routeMat, selMat]) m.disableDepthWrite = true;
-  let markers = [];
   // Flat pads lying on the surface: with no vertical extent they cannot poke
   // above a ridgeline and read as dots floating in the sky. Their drawn size
   // is independent of the tap target, which is measured in screen pixels.
-  // Only the nodes on show get a mesh, recycled as you move. One mesh per
-  // node meant well over a thousand of them on a dense graph, which is most
-  // of the page's start-up cost and a sixfold rise in per-frame work.
-  let shown = new Set();
-  function meshAt(slot) {
-    while (markers.length <= slot) {
-      const i = markers.length;
-      const orb = BABYLON.MeshBuilder.CreateCylinder(`nav${i}`, { diameter: cell * 0.7, height: cell * 0.04, tessellation: 14 }, scene);
-      orb.isPickable = false;
-      orb.metadata = { node: -1 };
-      markers.push(orb);
-    }
-    return markers[slot];
+  //
+  // One mesh per cell is not an option on a grid this dense - the island has
+  // fourteen thousand walkable cells - so each colour is a single mesh drawn
+  // as thin instances: five draw calls whatever the count, and no per-mesh
+  // world matrix or culling work. This is the same trick that merges the
+  // terrain into seventeen meshes, applied to the markers.
+  const PAD = 0.72;              // marker width, a little under one cell
+  const LIFT = 0.05;             // sits just clear of the ground it marks
+  const padOf = (material, key) => {
+    const m = BABYLON.MeshBuilder.CreateCylinder('pad', { diameter: PAD, height: 0.04, tessellation: 14 }, scene);
+    m.material = material;
+    m.isPickable = false;
+    m.renderingGroupId = key ? 1 : 0;
+    m.alwaysSelectAsActiveMesh = true;  // one batch covers the island; never cull it
+    m.thinInstanceCount = 0;
+    return m;
+  };
+  const pads = {
+    far: padOf(farMat, false),
+    near: padOf(nearMat, true),
+    here: padOf(hereMat, true),
+    route: padOf(routeMat, true),
+    sel: padOf(selMat, true),
+  };
+  const padBuf = {};
+  function setPads(kind, list, scale) {
+    const mesh = pads[kind];
+    let buf = padBuf[kind];
+    if (!buf || buf.length < list.length * 16) buf = padBuf[kind] = new Float32Array(Math.max(16, list.length * 16) * 2);
+    list.forEach((i, k) => {
+      const p = nav.nodes[i].p;
+      const o = k * 16;
+      buf[o] = scale; buf[o + 5] = scale; buf[o + 10] = scale; buf[o + 15] = 1;
+      buf[o + 1] = buf[o + 2] = buf[o + 3] = buf[o + 4] = buf[o + 6] = buf[o + 7] = 0;
+      buf[o + 8] = buf[o + 9] = buf[o + 11] = 0;
+      buf[o + 12] = p[0]; buf[o + 13] = p[1] + LIFT; buf[o + 14] = p[2];
+    });
+    mesh.thinInstanceSetBuffer('matrix', buf, 16, false);
+    mesh.thinInstanceCount = list.length;
+    mesh.setEnabled(list.length > 0);
   }
+
+  let shown = new Set();
   function rebuildMarkers() { updateMarkers(); }
-  const SHOW_WITHIN = cell * 9;
-  // Editing works on the patch around where you stand: the whole island's
-  // 1600-odd connections at once are impossible to aim at.
-  const EDIT_WITHIN_BASE = cell * 8;
-  const editWithin = () => Math.min(cell * 22, Math.max(cell * 4, EDIT_WITHIN_BASE * (mapZoom / 0.55)));
+  // How far the walkable field is drawn around you. On a one-cell grid this is
+  // a count of cells, not a vague distance: twelve cells out is roughly what
+  // fits on screen at the closest view.
+  const SHOW_WITHIN = 13;
+  // Editing works on the patch around where you stand: the whole island at
+  // once is impossible to aim at.
+  const EDIT_WITHIN_BASE = 11;
+  const editWithin = () => Math.min(30, Math.max(6, EDIT_WITHIN_BASE * (mapZoom / 0.55)));
   const nearCur = (i) => {
     const a = nav.nodes[i].p, b = nav.nodes[cur].p;
     return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= editWithin();
@@ -610,34 +745,18 @@ async function makeEngine() {
     const onRoute = new Set(route);
     const here = nav.nodes[cur].p;
     const radius = editMode ? editWithin() : SHOW_WITHIN;
-    // Distant markers stay hidden so the scene reads as terrain, not dots, and
-    // the count is capped: zooming the editing map right out would otherwise
-    // put a mesh on every node again, which is what made start-up slow.
-    const MAX_SHOWN = 550;
-    const cand = [];
-    for (let i = 0; i < nav.nodes.length; i++) {
-      const key = i === cur || near.has(i) || onRoute.has(i) || i === selected;
-      const p = nav.nodes[i].p;
-      const d = Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]);
-      if (!key && d > radius) continue;
-      cand.push({ i, d: key ? -1 : d });
-    }
-    if (cand.length > MAX_SHOWN) { cand.sort((a, b) => a.d - b.d); cand.length = MAX_SHOWN; }
+    const lists = { far: [], near: [], here: [], route: [], sel: [] };
     shown = new Set();
-    let slot = 0;
-    for (const { i } of cand) {
-      const key = i === cur || near.has(i) || onRoute.has(i) || i === selected;
-      const p = nav.nodes[i].p;
-      const m = meshAt(slot++);
-      m.metadata.node = i;
-      m.position.set(p[0], p[1] + cell * 0.05, p[2]);
-      m.material = i === selected ? selMat : i === cur ? hereMat : onRoute.has(i) ? routeMat : near.has(i) ? nearMat : farMat;
-      m.renderingGroupId = key ? 1 : 0;
-      m.scaling.setAll(key ? 1.3 : 1);
-      m.setEnabled(true);
+    for (let i = 0; i < nav.nodes.length; i++) {
+      const kind = i === selected ? 'sel' : i === cur ? 'here' : onRoute.has(i) ? 'route' : near.has(i) ? 'near' : 'far';
+      if (kind === 'far') {
+        const p = nav.nodes[i].p;
+        if (Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) > radius) continue;
+      }
+      lists[kind].push(i);
       shown.add(i);
     }
-    for (let k = slot; k < markers.length; k++) markers[k].setEnabled(false);
+    for (const kind of Object.keys(lists)) setPads(kind, lists[kind], kind === 'far' ? 0.62 : 1.25);
     drawEdges();
   }
 
@@ -666,8 +785,8 @@ async function makeEngine() {
     nav.nodes.forEach((n, i) => {
       if (!nearCur(i)) return;
       for (const j of n.n) if (j > i && nearCur(j)) lines.push([
-        new BABYLON.Vector3(n.p[0], n.p[1] + cell * 0.35, n.p[2]),
-        new BABYLON.Vector3(nav.nodes[j].p[0], nav.nodes[j].p[1] + cell * 0.35, nav.nodes[j].p[2]),
+        new BABYLON.Vector3(n.p[0], n.p[1] + 0.35, n.p[2]),
+        new BABYLON.Vector3(nav.nodes[j].p[0], nav.nodes[j].p[1] + 0.35, nav.nodes[j].p[2]),
       ]);
     });
     if (!lines.length) return;
@@ -676,10 +795,12 @@ async function makeEngine() {
     edgeMesh.alpha = 0.95;
     edgeMesh.isPickable = false;
   }
-  // A connection may only reach the next node along, never across the map.
-  const LINK_MAX = () => (nav.meta.lattice ? nav.meta.lattice.s * 1.3 : cell * 2);
-  const linkable = (a, b) =>
-    Math.hypot(nav.nodes[a].p[0] - nav.nodes[b].p[0], nav.nodes[a].p[2] - nav.nodes[b].p[2]) <= LINK_MAX();
+  // A connection may only reach a touching cell: the eight around this one,
+  // never across the map.
+  const linkable = (a, b) => {
+    const x = nav.nodes[a], y = nav.nodes[b];
+    return Math.abs(x.c - y.c) <= 1 && Math.abs(x.r - y.r) <= 1 && !(x.c === y.c && x.r === y.r);
+  };
   function toggleEdge(a, b) {
     if (!nav.nodes[a].n.includes(b) && !linkable(a, b)) return;
     pushUndo();
@@ -688,28 +809,32 @@ async function makeEngine() {
     if (i >= 0) { na.n.splice(i, 1); nb.n.splice(nb.n.indexOf(a), 1); }
     else { na.n.push(b); nb.n.push(a); }
   }
-  // Hand-placed nodes snap to the same triangular lattice the generator used,
-  // so a graph stays regular however much of it is placed by hand, and a tap
-  // that misses a dot lands on that dot's own cell and is refused below.
-  function snapToLattice(point) {
-    const g = nav.meta.lattice;
-    if (!g) return { x: point.x, y: point.y, z: point.z };
-    const row = Math.round((point.z - g.z0) / g.row);
-    const off = (((row % 2) + 2) % 2) * (g.s / 2);
-    const col = Math.round((point.x - g.x0 - off) / g.s);
-    const x = g.x0 + col * g.s + off;
-    const z = g.z0 + row * g.row;
-    const from = point.y + cell * 0.9;
-    const hit = raycast(x, from, z, 0, -1, 0, cell * 4);
-    return { x, y: hit === Infinity ? point.y : from - hit, z };
+  // A tap lands in a cell, so a hand-placed one takes that cell's centre and
+  // the ground height under it; there is nothing to snap to beyond the grid
+  // the scene is already built on.
+  const O = () => nav.meta.origin;
+  function cellOf(point) {
+    const c = Math.floor(point.x - O().c), r = Math.floor(point.z - O().r);
+    const x = O().c + c + 0.5, z = O().r + r + 0.5;
+    const from = point.y + 2.7;
+    const hit = raycast(x, from, z, 0, -1, 0, 12);
+    return { c, r, x, z, y: hit === Infinity ? point.y : from - hit };
   }
   function addNode(raw) {
-    const point = snapToLattice(raw);
-    if (nav.nodes.some((n) => Math.hypot(n.p[0] - point.x, n.p[1] - point.y, n.p[2] - point.z) < cell * 0.5)) return;
+    const at = cellOf(raw);
+    // One node per cell per level: a second tap on the same floor is a miss,
+    // not a request for a duplicate.
+    if (nav.nodes.some((n) => n.c === at.c && n.r === at.r && Math.abs(n.p[1] - at.y) < nav.meta.step)) return;
     pushUndo();
-    nav.nodes.push({ p: [+point.x.toFixed(3), +point.y.toFixed(3), +point.z.toFixed(3)], s: 'p', n: [] });
+    nav.nodes.push({ c: at.c, r: at.r, p: [at.x, +at.y.toFixed(3), at.z], e: nav.meta.eye, s: 'p', n: [] });
     const i = nav.nodes.length - 1;
-    if (selected >= 0) toggleEdge(selected, i);
+    // Joins up with whatever it touches, so a cell painted into a gap is
+    // walkable straight away instead of needing its links drawn by hand.
+    nav.nodes.forEach((n, j) => {
+      if (j !== i && linkable(i, j) && Math.abs(n.p[1] - at.y) <= nav.meta.step * 1.5) {
+        nav.nodes[i].n.push(j); n.n.push(i);
+      }
+    });
     selected = i;
     updateMarkers();
   }
@@ -732,10 +857,10 @@ async function makeEngine() {
     if (nav.nodes.length) { camera.target = eyePoint(cur); updateMarkers(); }
   }
   function exportNav() {
-    const blob = new Blob([JSON.stringify({ meta: nav.meta, nodes: nav.nodes })], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(toGrid(nav))], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${SCENE}_nav.json`;
+    a.download = `${SCENE}_grid.json`;
     a.click();
   }
   function setEditMode(on) {
@@ -839,7 +964,7 @@ async function makeEngine() {
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
   hud.innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
-Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>`;
+Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>`;
   throw e;
 });
 </script>
