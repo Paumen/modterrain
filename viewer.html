@@ -696,11 +696,16 @@ function toGrid(nav) {
   // How far the walkable field is drawn around you. On a one-cell grid this is
   // a count of cells, not a vague distance: twelve cells out is roughly what
   // fits on screen at the closest view.
-  const SHOW_WITHIN = 13;
+  const SHOW_WITHIN = 18;
   // Editing works on the patch around where you stand: the whole island at
   // once is impossible to aim at.
-  const EDIT_WITHIN_BASE = 11;
-  const editWithin = () => Math.min(30, Math.max(6, EDIT_WITHIN_BASE * (mapZoom / 0.55)));
+  // Zooming the map in must not shrink the patch below what is on screen:
+  // tying it to zoom alone meant zooming in to place a cell hid the cells
+  // around it, which reads as ground you cannot walk rather than ground that
+  // is simply not drawn. Thin instances make a wide patch cheap, so the floor
+  // is generous.
+  const EDIT_WITHIN_BASE = 22;
+  const editWithin = () => Math.min(48, Math.max(20, EDIT_WITHIN_BASE * (mapZoom / 0.55)));
   const nearCur = (i) => {
     const a = nav.nodes[i].p, b = nav.nodes[cur].p;
     return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= editWithin();

@@ -19,7 +19,7 @@ if (!input) {
 }
 const force = process.argv.includes('--force');
 const outPath = input.replace(/\.glb$/, '_grid.json');
-if (existsSync(outPath) && !force && !process.argv.includes('--probe')) {
+if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces')) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
 }
@@ -93,8 +93,25 @@ const decks = []; // world-space [minX, minY, minZ, maxX, maxY, maxZ] per piece
 // a cliff face in it is not somewhere you stand -- not on the ledge above it,
 // not in the gap below it. Faces are collected here as XZ footprints while the
 // triangles are gathered, and the cells they cover are closed outright.
-const faces = []; // [minX, minZ, maxX, maxZ] per near-vertical Cliff triangle
+const faceCells = new Set(); // XZ cells a near-vertical Cliff triangle crosses
 const FACE_TILT = 0.5; // |normal.y| under this is a face, not a floor
+
+// A cliff face is near-vertical, so seen from above it is a thin sliver, and
+// the cells it closes are the ones that sliver actually crosses. Its bounding
+// box is not those cells: a face running diagonally, which every curve and
+// esse piece has, boxes into a square many times its own footprint, and a long
+// merged run of wall boxes into a huge one. So walk the three edges instead
+// and take the cells they pass through.
+function markFace(p0, p1, p2, cell) {
+  for (const [a, b] of [[p0, p1], [p1, p2], [p2, p0]]) {
+    const dx = b[0] - a[0], dz = b[2] - a[2];
+    const steps = Math.max(1, Math.ceil(Math.hypot(dx, dz) * 8));
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      cell(Math.floor(a[0] + dx * t), Math.floor(a[2] + dz * t));
+    }
+  }
+}
 
 function noteDeck(node, world) {
   if (!DECK.test(node.name || '')) return;
@@ -140,8 +157,7 @@ function emitNode(nodeIndex, parent) {
         // measured without a sign; the grid only ever needs the plane's tilt.
         const tilt = Math.abs(ny) / (Math.hypot(nx, ny, nz) || 1);
         if (tilt < FACE_TILT && matName(prim.material) === 'Cliff') {
-          faces.push([Math.min(p0[0], p1[0], p2[0]), Math.min(p0[2], p1[2], p2[2]),
-            Math.max(p0[0], p1[0], p2[0]), Math.max(p0[2], p1[2], p2[2])]);
+          markFace(p0, p1, p2, (cx, cz) => faceCells.add(`${cx},${cz}`));
         }
         tris.push([...p0, ...p1, ...p2, prim.material, tilt]);
       }
@@ -305,10 +321,9 @@ const reject = { support: 0, head: 0, buried: 0, wet: 0, cliff: 0 };
 // face is counted into a cell when it crosses that cell at all, so the cell
 // the wall stands in goes, and so does the strip of ledge hanging over it.
 const cliffCells = new Set();
-for (const [x0, z0, x1, z1] of faces) {
-  for (let c = Math.floor(x0) - C0; c <= Math.floor(x1 - 1e-6) - C0; c++)
-    for (let r = Math.floor(z0) - R0; r <= Math.floor(z1 - 1e-6) - R0; r++)
-      cliffCells.add(c * ROWS + r);
+for (const key of faceCells) {
+  const [cx, cz] = key.split(',').map(Number);
+  cliffCells.add((cx - C0) * ROWS + (cz - R0));
 }
 
 // Is this floor part of a deck? Cells a bridge or a dock crosses are walkable
@@ -395,6 +410,17 @@ function floorsIn(c, r, note) {
     here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100 });
   }
   return here;
+}
+
+if (process.argv.includes('--faces')) {
+  const rows = [];
+  for (let r = 0; r < ROWS; r++) {
+    let line = '';
+    for (let c = 0; c < COLS; c++) line += cliffCells.has(c * ROWS + r) ? '#' : '.';
+    rows.push(line);
+  }
+  console.log(rows.join('\n'));
+  process.exit(0);
 }
 
 if (probeArg > 0) {
