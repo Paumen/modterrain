@@ -411,12 +411,16 @@ function toGrid(nav) {
   // follows the paths the island was built with instead of cutting across.
   const surf = { p: 1, g: 3.5 };
   const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
-  const legMs = (a, b) => Math.min(650, Math.max(280, dist3(nav.nodes[a], nav.nodes[b]) * 55));
+  // Paced by distance, not by leg, so a long straight run takes as long as
+  // the cells it covers. A flat per-leg time made a straightened run of seven
+  // cells cross in the same third of a second as a single step, which reads
+  // as skipping rather than walking.
+  const legMs = (a, b) => Math.min(900, Math.max(200, dist3(nav.nodes[a], nav.nodes[b]) * 130));
   // A cell-by-cell path is a stop at every metre. Legs are pulled straight
   // where the ground between allows it, so crossing an open field is a few
   // long glides instead of thirty short ones, and a path that bends round a
   // rock still bends.
-  const LEG_MAX = 7;     // cells; longer and the camera reads as teleporting
+  const LEG_MAX = 5;     // cells; longer and the camera reads as teleporting
   let byCell = new Map();
   const cellKey = (c, r) => c * 100000 + r;
   // Rebuilt per journey: the editor renumbers nodes as it adds and removes.
