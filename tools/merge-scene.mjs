@@ -222,8 +222,10 @@ const S = LATTICE * cell;                       // XZ distance between neighbour
 const ROW = (S * Math.sqrt(3)) / 2;             // row pitch of the lattice
 const EYE = 1.2 * cell;                         // camera target height above ground
 
+// Cliff is included because cave floors and rock ledges carry it; only
+// up-facing faces ever qualify, so cliff walls are still excluded.
 const WALKABLE = new Set([
-  'Carved Stone Walkway', 'Wood Dark', 'Wood Medium', 'Wood Light', 'Dirt', 'Grass',
+  'Carved Stone Walkway', 'Wood Dark', 'Wood Medium', 'Wood Light', 'Dirt', 'Grass', 'Cliff',
 ]);
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Dark', 'Wood Medium', 'Wood Light']);
 const walkableHit = ([, mat, ny]) => WALKABLE.has(matName(mat)) && ny > 0.7;
@@ -342,6 +344,12 @@ for (let r = 0; r < rows; r++) {
       last = y;
       const blocked = hits.some((h) => h[0] > y + 0.15 * cell && h[0] <= y + 1.1 * cell);
       if (blocked || !hasSupport(x, z, y)) continue;
+      // Under a cave roof the camera target has to duck, or it sits in the
+      // ceiling and the collision clamp leaves nothing to look at.
+      const ceiling = hits.filter((h) => h[2] < -0.3 && h[0] > y + 1 && h[0] < y + 18)
+        .map((h) => h[0]).sort((a, b) => a - b)[0];
+      const eyeHere = ceiling === undefined ? EYE
+        : Math.max(0.5 * cell, Math.min(EYE, ceiling - y - 0.6 * cell));
       // Surface class only steers routing cost; placement stays uniform.
       let grassAround = 0;
       for (let k = 0; k < 8; k++) {
@@ -351,7 +359,10 @@ for (let r = 0; r < rows; r++) {
       const name = matName(mat);
       const cls = PATHY.has(name) || (name === 'Dirt' && grassAround >= 3) ? 'p' : name === 'Dirt' ? 'd' : 'g';
       here.push(nodes.length);
-      nodes.push({ p: [x, y, z], s: cls, n: [] });
+      const node = { p: [x, y, z], s: cls, n: [] };
+      if (eyeHere < EYE - 1e-6) node.e = Math.round(eyeHere * 100) / 100;
+      if (ceiling !== undefined) node.cave = true;
+      nodes.push(node);
     }
     if (here.length) grid.set(`${r},${c}`, here);
   }
@@ -404,8 +415,81 @@ for (const node of kept) node.n = node.n.map((i) => remap.get(i)).filter((i) => 
 // Round node positions for a compact file.
 for (const node of kept) node.p = node.p.map((v) => Math.round(v * 1000) / 1000);
 
-import('node:fs').then(({ writeFileSync }) => {
-  writeFileSync(outNav, JSON.stringify({ meta: { cell, eye: EYE }, nodes: kept }));
+import('node:fs').then(({ writeFileSync, readFileSync }) => {
+  let out = kept;
+  // --caves keeps the existing hand-curated graph and only adds the nodes it
+  // is missing inside caves and under overhangs, linked by sightline.
+  if (process.argv.includes('--caves') && existsSync(navPath)) {
+    const prev = JSON.parse(readFileSync(navPath, 'utf8'));
+    const merged = prev.nodes.map((n) => ({ ...n, n: n.n.slice() }));
+    const near = (p, q) => Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
+    const added = [];
+    for (const cand of kept) {
+      if (!cand.cave) continue;
+      if (merged.some((m) => near(m.p, cand.p) < 0.8 * S)) continue;
+      const node = { p: cand.p, s: cand.s, n: [] };
+      if (cand.e !== undefined) node.e = cand.e;
+      merged.push(node);
+      added.push(merged.length - 1);
+    }
+    for (const i of added) {
+      for (let j = 0; j < merged.length; j++) {
+        if (j === i || merged[i].n.includes(j)) continue;
+        const a = merged[i].p, b = merged[j].p;
+        if (near(a, b) > 1.35 * S) continue;
+        const eyeA = merged[i].e ?? EYE, eyeB = merged[j].e ?? EYE;
+        const dx = b[0] - a[0], dy = (b[1] + eyeB) - (a[1] + eyeA), dz = b[2] - a[2];
+        if (raycast(a[0], a[1] + eyeA, a[2], dx, dy, dz, 0.02, 0.98) !== Infinity) continue;
+        merged[i].n.push(j);
+        merged[j].n.push(i);
+      }
+    }
+    // A cave pocket is useless if nothing outside reaches it, so each group
+    // that ended up on its own is tied to the nearest node it can actually
+    // see, widening the search until something connects.
+    const link = (i, j) => { merged[i].n.push(j); merged[j].n.push(i); };
+    const components = () => {
+      const comp = new Array(merged.length).fill(-1);
+      let c = 0;
+      for (let i = 0; i < merged.length; i++) {
+        if (comp[i] !== -1) continue;
+        const q = [i]; comp[i] = c;
+        while (q.length) for (const nb of merged[q.pop()].n) if (comp[nb] === -1) { comp[nb] = c; q.push(nb); }
+        c++;
+      }
+      return comp;
+    };
+    let bridged = 0;
+    for (let round = 0; round < 6; round++) {
+      const comp = components();
+      const sizes = {};
+      comp.forEach((c) => { sizes[c] = (sizes[c] || 0) + 1; });
+      const mainComp = Object.entries(sizes).sort((a, b) => b[1] - a[1])[0][0] | 0;
+      const stranded = added.filter((i) => comp[i] !== mainComp);
+      if (!stranded.length) break;
+      let did = false;
+      for (const i of stranded) {
+        let best = -1, bestD = Infinity;
+        for (let j = 0; j < merged.length; j++) {
+          if (comp[j] !== mainComp) continue;
+          const a = merged[i].p, b = merged[j].p;
+          const d = near(a, b);
+          if (d > 3.5 * S || d >= bestD) continue;
+          const eyeA = merged[i].e ?? EYE, eyeB = merged[j].e ?? EYE;
+          if (raycast(a[0], a[1] + eyeA, a[2], b[0] - a[0], (b[1] + eyeB) - (a[1] + eyeA), b[2] - a[2], 0.02, 0.98) !== Infinity) continue;
+          bestD = d; best = j;
+        }
+        if (best >= 0) { link(i, best); bridged++; did = true; }
+      }
+      if (!did) break;
+    }
+    console.log(`--caves: added ${added.length} cave nodes to the ${prev.nodes.length} already there, ${bridged} tied into the main graph`);
+    writeFileSync(navPath, JSON.stringify({ meta: { cell, eye: EYE }, nodes: merged }));
+    console.log(`${navPath}: ${merged.length} nodes`);
+    return;
+  }
+  for (const n of out) delete n.cave;
+  writeFileSync(outNav, JSON.stringify({ meta: { cell, eye: EYE }, nodes: out }));
   const degs = kept.map((n) => n.n.length);
   const six = degs.filter((d) => d === 6).length;
   if (outNav !== navPath) console.log(`note: ${navPath} exists and was kept; pass --force to replace it`);

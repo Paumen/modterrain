@@ -215,7 +215,10 @@ async function makeEngine() {
   const view = () => (mapView ? MAP_VIEW : VIEWS[viewIdx]);
   const floorR = cell * 0.8, maxR = cell * 22, margin = cell * 0.5;
   const step = () => ((Math.round(stepCont) % STEPS) + STEPS) % STEPS;
-  const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eye, nav.nodes[n].p[2]);
+  // Nodes under a low roof carry their own eye height, so the camera target
+  // ducks into the cave instead of sitting in the ceiling.
+  const eyeOf = (n) => nav.nodes[n].e ?? eye;
+  const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eyeOf(n), nav.nodes[n].p[2]);
   const dirAt = (alpha, beta) => [Math.cos(alpha) * Math.sin(beta), Math.cos(beta), Math.sin(alpha) * Math.sin(beta)];
 
   // Free camera distance from a node at a snapped heading, measured live.
