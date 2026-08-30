@@ -215,6 +215,7 @@ async function makeEngine() {
   let stepCont = 0;
   let viewIdx = 1;
   let mapView = false;
+  let mapZoom = 0.55;          // the editing map has its own zoom
   const view = () => (mapView ? MAP_VIEW : VIEWS[viewIdx]);
   const floorR = cell * 0.8, maxR = cell * 22, margin = cell * 0.5;
   const step = () => ((Math.round(stepCont) % STEPS) + STEPS) % STEPS;
@@ -259,7 +260,7 @@ async function makeEngine() {
     return Math.min(maxR, hit - margin);
   }
   const wantRadius = (n) => mapView
-    ? Math.max(floorR, maxR * MAP_VIEW.zoom)
+    ? Math.max(floorR, maxR * mapZoom)
     : Math.max(floorR, freeAt(n, step()) * view().zoom);
   // Enough room to be worth turning to. Kept low deliberately: in a cave no
   // heading has much space, and a demanding threshold makes orbit skip every
@@ -361,18 +362,49 @@ async function makeEngine() {
   const legMs = (a, b) => Math.min(650, Math.max(280, dist3(nav.nodes[a], nav.nodes[b]) * 55));
   function travelTo(dest) {
     if (dest === cur) return;
-    const dist = new Array(nav.nodes.length).fill(Infinity);
-    const prev = new Array(nav.nodes.length).fill(-1);
-    const done = new Array(nav.nodes.length).fill(false);
+    // A binary heap rather than scanning every node for the next cheapest:
+    // that scan is fine at a few hundred nodes and quadratic at a few thousand.
+    const dist = new Float64Array(nav.nodes.length).fill(Infinity);
+    const prev = new Int32Array(nav.nodes.length).fill(-1);
+    const done = new Uint8Array(nav.nodes.length);
+    const heap = [];
+    const push = (cost, node) => {
+      heap.push([cost, node]);
+      let i = heap.length - 1;
+      while (i > 0) {
+        const p = (i - 1) >> 1;
+        if (heap[p][0] <= heap[i][0]) break;
+        [heap[p], heap[i]] = [heap[i], heap[p]];
+        i = p;
+      }
+    };
+    const pop = () => {
+      const top = heap[0], last = heap.pop();
+      if (heap.length) {
+        heap[0] = last;
+        let i = 0;
+        for (;;) {
+          const l = i * 2 + 1, r = l + 1;
+          let m = i;
+          if (l < heap.length && heap[l][0] < heap[m][0]) m = l;
+          if (r < heap.length && heap[r][0] < heap[m][0]) m = r;
+          if (m === i) break;
+          [heap[m], heap[i]] = [heap[i], heap[m]];
+          i = m;
+        }
+      }
+      return top;
+    };
     dist[cur] = 0;
-    for (;;) {
-      let n = -1;
-      for (let i = 0; i < dist.length; i++) if (!done[i] && (n === -1 || dist[i] < dist[n])) n = i;
-      if (n === -1 || dist[n] === Infinity || n === dest) break;
-      done[n] = true;
+    push(0, cur);
+    while (heap.length) {
+      const [, n] = pop();
+      if (done[n]) continue;
+      done[n] = 1;
+      if (n === dest) break;
       for (const nb of nav.nodes[n].n) {
         const d = dist[n] + edgeCost(n, nb);
-        if (d < dist[nb]) { dist[nb] = d; prev[nb] = n; }
+        if (d < dist[nb]) { dist[nb] = d; prev[nb] = n; push(d, nb); }
       }
     }
     // A hand-curated graph can have separate pieces (a plateau reached only
@@ -492,6 +524,13 @@ async function makeEngine() {
   };
   // One ladder for both: higher up also pulls further back.
   const setView = (dir) => {
+    // While editing, the same control zooms the map instead of stepping the
+    // walkthrough ladder - leaving the map to change distance is no use.
+    if (mapView) {
+      mapZoom = Math.min(1.8, Math.max(0.18, mapZoom * (dir > 0 ? 1.4 : 1 / 1.4)));
+      glideTo(cur, 260);
+      return;
+    }
     const next = Math.min(VIEWS.length - 1, Math.max(0, viewIdx + dir));
     if (next === viewIdx && !mapView) return;
     viewIdx = next; mapView = false; route = [];
@@ -558,10 +597,11 @@ async function makeEngine() {
   const SHOW_WITHIN = cell * 9;
   // Editing works on the patch around where you stand: the whole island's
   // 1600-odd connections at once are impossible to aim at.
-  const EDIT_WITHIN = cell * 8;
+  const EDIT_WITHIN_BASE = cell * 8;
+  const editWithin = () => Math.min(cell * 22, Math.max(cell * 4, EDIT_WITHIN_BASE * (mapZoom / 0.55)));
   const nearCur = (i) => {
     const a = nav.nodes[i].p, b = nav.nodes[cur].p;
-    return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= EDIT_WITHIN;
+    return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= editWithin();
   };
   function updateMarkers() {
     const del = document.getElementById('del');
@@ -569,14 +609,25 @@ async function makeEngine() {
     const near = new Set(nav.nodes[cur].n);
     const onRoute = new Set(route);
     const here = nav.nodes[cur].p;
-    const radius = editMode ? EDIT_WITHIN : SHOW_WITHIN;
-    shown = new Set();
-    let slot = 0;
+    const radius = editMode ? editWithin() : SHOW_WITHIN;
+    // Distant markers stay hidden so the scene reads as terrain, not dots, and
+    // the count is capped: zooming the editing map right out would otherwise
+    // put a mesh on every node again, which is what made start-up slow.
+    const MAX_SHOWN = 550;
+    const cand = [];
     for (let i = 0; i < nav.nodes.length; i++) {
       const key = i === cur || near.has(i) || onRoute.has(i) || i === selected;
       const p = nav.nodes[i].p;
-      // Distant markers stay hidden so the scene reads as terrain, not dots.
-      if (!key && Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) > radius) continue;
+      const d = Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]);
+      if (!key && d > radius) continue;
+      cand.push({ i, d: key ? -1 : d });
+    }
+    if (cand.length > MAX_SHOWN) { cand.sort((a, b) => a.d - b.d); cand.length = MAX_SHOWN; }
+    shown = new Set();
+    let slot = 0;
+    for (const { i } of cand) {
+      const key = i === cur || near.has(i) || onRoute.has(i) || i === selected;
+      const p = nav.nodes[i].p;
       const m = meshAt(slot++);
       m.metadata.node = i;
       m.position.set(p[0], p[1] + cell * 0.05, p[2]);
@@ -690,6 +741,7 @@ async function makeEngine() {
   function setEditMode(on) {
     editMode = on;
     mapView = on;
+    if (on) mapZoom = 0.55;
     if (!on) eraseMode = false;
     selected = -1;
     hud.innerHTML = on ? EDIT_HELP : VIEW_HELP;
