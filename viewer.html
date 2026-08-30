@@ -478,10 +478,22 @@ function toGrid(nav) {
         if (d < dist[nb]) { dist[nb] = d; prev[nb] = n; push(d, nb); }
       }
     }
-    // A hand-curated graph can have separate pieces (a plateau reached only
-    // by stairs that were cut, or a second island). Travel there directly
-    // rather than letting the tap do nothing.
-    if (dist[dest] === Infinity) { route = []; return glideFacing(dest, 700); }
+    // Somewhere with no route -- an offshore island, a plateau whose stairs
+    // were cut -- is not travelled to directly. Flying the camera straight
+    // there takes it through whatever is in the way and can leave you standing
+    // inside a hill. Walk to the reachable cell nearest it instead.
+    if (dist[dest] === Infinity) {
+      const to = nav.nodes[dest].p;
+      let best = -1, bestD = Infinity;
+      for (let i = 0; i < nav.nodes.length; i++) {
+        if (dist[i] === Infinity) continue;
+        const p = nav.nodes[i].p;
+        const d = Math.hypot(p[0] - to[0], p[1] - to[1], p[2] - to[2]);
+        if (d < bestD) { bestD = d; best = i; }
+      }
+      if (best < 0 || best === cur) { route = []; return; }
+      dest = best;
+    }
     route = [];
     for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
     route.shift();

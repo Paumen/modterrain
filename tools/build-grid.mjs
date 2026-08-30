@@ -19,7 +19,7 @@ if (!input) {
 }
 const force = process.argv.includes('--force');
 const outPath = input.replace(/\.glb$/, '_grid.json');
-if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces')) {
+if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces') && !process.argv.includes('--components')) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
 }
@@ -89,32 +89,50 @@ const cache = new Map();
 const DECK = /^(Prop_Bridge_|Path_Bridge_|Docks_Decking_|Docks_Ladder_Top)/;
 const decks = []; // world-space [minX, minY, minZ, maxX, maxY, maxZ] per piece
 
+// Cave floors, by piece family. Terrain pieces are hollow shells, so the
+// inside of a hill offers walkable-looking ground with a ceiling over it that
+// is indistinguishable from a cave by geometry alone. The pieces tell them
+// apart: a cave has floor built for it, a shell's inside has nothing.
+const CAVE = /^(Cave_|Floor_)/;
+const caves = [];
+
 // A cliff piece always carries the Cliff material on its face, and a cell with
 // a cliff face in it is not somewhere you stand -- not on the ledge above it,
 // not in the gap below it. Faces are collected here as XZ footprints while the
 // triangles are gathered, and the cells they cover are closed outright.
-const faceCells = new Set(); // XZ cells a near-vertical Cliff triangle crosses
-const FACE_TILT = 0.5; // |normal.y| under this is a face, not a floor
+// Cliff faces, per cell, as the height band each one spans.
+const faces = new Map(); // "cx,cz" -> [[minY, maxY], ...]
+const FACE_TILT = 0.5;   // |normal.y| under this is a face, not a floor
 
-// A cliff face is near-vertical, so seen from above it is a thin sliver, and
-// the cells it closes are the ones that sliver actually crosses. Its bounding
-// box is not those cells: a face running diagonally, which every curve and
-// esse piece has, boxes into a square many times its own footprint, and a long
-// merged run of wall boxes into a huge one. So walk the three edges instead
-// and take the cells they pass through.
-function markFace(p0, p1, p2, cell) {
+// A face belongs to the cell of the piece it is the skin of, which is the cell
+// on the solid side -- behind the normal. That side is the whole distinction
+// between a cliff and a cave: the outward face of a mesa has its rock, and so
+// its walkable top, on the far side from you, while the face of a cave wall
+// has its rock behind the wall and the cave floor in front. Closing the cell
+// the sliver merely touches would close both.
+//
+// Walking the edges rather than taking a bounding box matters too: a face
+// running diagonally, which every curve and esse piece has, boxes into a
+// square many times its own footprint.
+function markFace(p0, p1, p2, nx, nz) {
+  const len = Math.hypot(nx, nz) || 1;
+  const bx = -(nx / len) * 0.3, bz = -(nz / len) * 0.3; // a step into the rock
+  const minY = Math.min(p0[1], p1[1], p2[1]), maxY = Math.max(p0[1], p1[1], p2[1]);
   for (const [a, b] of [[p0, p1], [p1, p2], [p2, p0]]) {
     const dx = b[0] - a[0], dz = b[2] - a[2];
     const steps = Math.max(1, Math.ceil(Math.hypot(dx, dz) * 8));
     for (let i = 0; i <= steps; i++) {
       const t = i / steps;
-      cell(Math.floor(a[0] + dx * t), Math.floor(a[2] + dz * t));
+      const key = `${Math.floor(a[0] + dx * t + bx)},${Math.floor(a[2] + dz * t + bz)}`;
+      const band = faces.get(key);
+      if (band) band.push([minY, maxY]); else faces.set(key, [[minY, maxY]]);
     }
   }
 }
 
-function noteDeck(node, world) {
-  if (!DECK.test(node.name || '')) return;
+function notePiece(node, world) {
+  const into = DECK.test(node.name || '') ? decks : CAVE.test(node.name || '') ? caves : null;
+  if (!into) return;
   for (const prim of json.meshes[node.mesh].primitives) {
     const acc = json.accessors[prim.attributes.POSITION];
     if (!acc?.min || !acc?.max) continue;
@@ -124,7 +142,7 @@ function noteDeck(node, world) {
         (corner & 1 ? acc.max : acc.min)[0], (corner & 2 ? acc.max : acc.min)[1], (corner & 4 ? acc.max : acc.min)[2]);
       for (let a = 0; a < 3; a++) { if (p[a] < lo[a]) lo[a] = p[a]; if (p[a] > hi[a]) hi[a] = p[a]; }
     }
-    decks.push([...lo, ...hi]);
+    into.push([...lo, ...hi]);
     return;
   }
 }
@@ -140,7 +158,7 @@ function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
-    noteDeck(node, world);
+    notePiece(node, world);
     for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
       const { pos, idx } = meshGeometry(prim);
@@ -153,13 +171,14 @@ function emitNode(nodeIndex, parent) {
         const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
         const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
         const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
-        // Winding is unreliable across mirrored instances, so "up-facing" is
-        // measured without a sign; the grid only ever needs the plane's tilt.
-        const tilt = Math.abs(ny) / (Math.hypot(nx, ny, nz) || 1);
-        if (tilt < FACE_TILT && matName(prim.material) === 'Cliff') {
-          markFace(p0, p1, p2, (cx, cz) => faceCells.add(`${cx},${cz}`));
-        }
-        tris.push([...p0, ...p1, ...p2, prim.material, tilt]);
+        // Signed, not absolute. Every node in these scenes has a positive
+        // determinant, so winding is trustworthy and a surface's normal says
+        // which way it faces. Taking the absolute value made every ceiling
+        // read as a floor, which is what put walkable ground inside mountains.
+        const len = Math.hypot(nx, ny, nz) || 1;
+        const up = ny / len;
+        if (Math.abs(up) < FACE_TILT && matName(prim.material) === 'Cliff') markFace(p0, p1, p2, nx, nz);
+        tris.push([...p0, ...p1, ...p2, prim.material, up]);
       }
     }
   }
@@ -177,9 +196,6 @@ const HEAD = 2.0;        // ceiling clearance a floor needs to be usable
 const STEP = 0.75;       // biggest height change you can walk between cells
 const FLAT = 0.5;        // |ny| below this is a wall, not a floor
 const CLUSTER = 0.3;     // surfaces within this height are the same floor
-const ROOM = 1.2;        // room at least one orbit heading must have
-const EMBEDDED = 0.35;   // closer than this on all sides and the target is in rock
-const BETA = 1.5;        // the viewer's shallowest orbit pitch
 
 // Cave floors and rock ledges carry Cliff, so it is walkable where it faces
 // up; the vertical cliff faces of the same pieces never produce a floor.
@@ -315,33 +331,32 @@ function ceilingAt(x, z, y) {
   return mid === Infinity ? Infinity : mid + 0.2;
 }
 
-const reject = { support: 0, head: 0, buried: 0, wet: 0, cliff: 0 };
+const reject = { support: 0, head: 0, wet: 0, cliff: 0 };
 
 // Cells with a cliff face in them, closed before anything else is asked. A
 // face is counted into a cell when it crosses that cell at all, so the cell
 // the wall stands in goes, and so does the strip of ledge hanging over it.
-const cliffCells = new Set();
-for (const key of faceCells) {
-  const [cx, cz] = key.split(',').map(Number);
-  cliffCells.add((cx - C0) * ROWS + (cz - R0));
+// Does a cliff face stand in this cell at this height? A floor resting on top
+// of a face counts as being at its level: the ledge along the brink of a drop
+// is the cliff piece's own top, and that is the cell being closed.
+function cliffAt(c, r, y) {
+  const band = faces.get(`${c + C0},${r + R0}`);
+  return !!band && band.some(([lo, hi]) => y > lo + 0.1 && y < hi - 0.1);
 }
 
 // Is this floor part of a deck? Cells a bridge or a dock crosses are walkable
 // at the deck's own height, which is the rule the scene is built to; the
 // sampler's job there is only to find how high the planks sit.
-const onDeck = (x, z, y) => decks.some((d) =>
+const inBox = (list, x, z, y) => list.some((d) =>
   x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5] && y >= d[1] - 0.1 && y <= d[4] + 0.1);
+const onDeck = (x, z, y) => inBox(decks, x, z, y);
+const inCave = (x, z, y) => inBox(caves, x, z, y);
 
 // Everything you can stand on in one cell, lowest first. `note` reports why a
 // candidate floor was turned down, for --probe.
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
-  // A bridge is the one thing that crosses a cliff face, so it is the one
-  // exception: the deck stays walkable where it spans the drop.
-  if (cliffCells.has(c * ROWS + r) && !decks.some((d) => x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5])) {
-    reject.cliff++; note?.(0, 'Cliff', 'cell holds a cliff face');
-    return [];
-  }
+
   const samples = OFFSETS.map(([ox, oz]) => floorsAt(x + ox, z + oz));
   const flat = [];
   samples.forEach((list, s) => list.forEach((f) => flat.push({ ...f, s })));
@@ -378,34 +393,12 @@ function floorsIn(c, r, note) {
     for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
     const centre = good.find((f) => f.s === 0);
     const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
+    // A bridge is the one thing built to cross a cliff face, so it is the one
+    // exception: the deck stays walkable where it spans the drop.
+    if (cliffAt(c, r, y) && !onDeck(x, z, y)) { reject.cliff++; note?.(y, name, 'cliff face at this height'); continue; }
     const room = ceilingAt(x, z, y);
     if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
     const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
-    // Two different things can go wrong with the camera's look-at point, and
-    // they need different tests. It can sit inside rock, which makes the view
-    // clip whichever way you turn -- caught by a spray of rays finding
-    // something almost touching. Or it can sit somewhere with no room to pull
-    // back, which only matters if *every* heading is blocked: a gully floor or
-    // a cave has walls close on two sides and is perfectly fine to stand in,
-    // and demanding clearance all round deletes exactly those places.
-    let closest = Infinity;
-    for (let a = 0; a < 12; a++) {
-      for (const pitch of [-0.3, 0, 0.3]) {
-        const th = (a / 12) * Math.PI * 2;
-        const dy = Math.sin(pitch), h = Math.cos(pitch);
-        closest = Math.min(closest, raycast(x, y + eye, z, Math.cos(th) * h, dy, Math.sin(th) * h, 0.001, 6));
-      }
-    }
-    if (closest < EMBEDDED) { reject.buried++; note?.(y, name, `target in rock, ${closest.toFixed(2)} clear`); continue; }
-    // The six orbit headings the viewer actually uses, at its shallowest
-    // pitch. One with room is enough; the viewer turns to find it.
-    let roomiest = 0;
-    for (let k = 0; k < 6; k++) {
-      const alpha = (k / 6) * Math.PI * 2;
-      roomiest = Math.max(roomiest, raycast(x, y + eye, z,
-        Math.cos(alpha) * Math.sin(BETA), Math.cos(BETA), Math.sin(alpha) * Math.sin(BETA), 0.001, 8));
-    }
-    if (roomiest < ROOM) { reject.buried++; note?.(y, name, `no heading has room, best ${roomiest.toFixed(2)}`); continue; }
     note?.(y, name, 'open');
     here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100 });
   }
@@ -505,8 +498,36 @@ for (let i = 0; i < nodes.length; i++) {
 }
 const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
+// Terrain pieces are hollow shells, so the underside of a hill has floors
+// buried in it that look exactly like a cave from close up: walkable ground
+// with a ceiling over it. What tells them apart is whether you could ever get
+// there. A cave is joined to the island through its mouth; a shell's inside is
+// sealed. So a patch survives only if it is part of the main island, or is
+// somewhere with open sky above it -- an offshore island, say.
+const real = new Array(compCount).fill(false);
+nodes.forEach((n, i) => {
+  if (real[comp[i]]) return;
+  const x = C0 + n.c + 0.5, z = R0 + n.r + 0.5;
+  if (inCave(x, z, n.y) || raycast(x, n.y + 0.2, z, 0, 1, 0, 0.001, 60) === Infinity) real[comp[i]] = true;
+});
+const main = sizes.indexOf(Math.max(...sizes));
 const MIN_COMP = 8;
-const keep = nodes.map((_, i) => sizes[comp[i]] >= MIN_COMP);
+const keep = nodes.map((_, i) => comp[i] === main || (real[comp[i]] && sizes[comp[i]] >= MIN_COMP));
+// `--components` lists the separate walkable patches, largest first. A patch
+// that is not the main island is either somewhere you reach another way or
+// somewhere the grid has cut off by mistake, and this is how you tell.
+if (process.argv.includes('--components')) {
+  const box = new Map();
+  nodes.forEach((n, i) => {
+    const b = box.get(comp[i]) || { n: 0, x0: 1e9, x1: -1e9, z0: 1e9, z1: -1e9, y0: 1e9, y1: -1e9 };
+    b.n++; b.x0 = Math.min(b.x0, C0 + n.c); b.x1 = Math.max(b.x1, C0 + n.c);
+    b.z0 = Math.min(b.z0, R0 + n.r); b.z1 = Math.max(b.z1, R0 + n.r);
+    b.y0 = Math.min(b.y0, n.y); b.y1 = Math.max(b.y1, n.y);
+    box.set(comp[i], b);
+  });
+  [...box.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 14).forEach(([k, b]) =>
+    console.log(`comp ${k}: ${b.n} cells  x ${b.x0}..${b.x1}  z ${b.z0}..${b.z1}  y ${b.y0.toFixed(1)}..${b.y1.toFixed(1)}  real ${real[k]}  ${k === main ? 'MAIN' : ''}`));
+}
 
 const remap = new Map();
 const outNodes = [];
