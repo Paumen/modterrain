@@ -55,6 +55,8 @@ const STEPS = 6;                 // orbit snaps: 6 isometric headings, 60 apart
 const STEP_ANGLE = TAU / STEPS;
 // Angle and distance move together: one ladder from close-and-low (eye level,
 // in among the pieces) to far-and-high (overview of the island).
+// Editing wants to look down on the graph; walking around it does not.
+const MAP_VIEW = { beta: 0.42, zoom: 1.35 };
 const VIEWS = [
   { beta: 1.50, zoom: 0.45 },
   { beta: 1.42, zoom: 0.70 },
@@ -68,8 +70,8 @@ const VIEW_HELP = `<b>Walkthrough</b><br>
 <small>Tap a dot or any spot to travel there<br>
 Swipe &#8596; orbit (6 views) &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#9998; edit nodes</small>`;
 const EDIT_HELP = `<b>Node editor</b><br>
-<small>&#9003; eraser: tap nodes to delete them one by one<br>
-Otherwise tap ground to add &middot; tap two nodes to link/unlink &middot; &#8634; undo<br>
+<small>&#9003; eraser: tap a node to delete it, or tap a line to cut it<br>
+Otherwise tap ground to add &middot; tap two nodes to link &middot; &#8634; undo<br>
 &#128190; downloads JSON &mdash; save over scenes/${SCENE}_nav.json to keep</small>`;
 
 async function makeEngine() {
@@ -206,6 +208,8 @@ async function makeEngine() {
   let cur = start;
   let stepCont = 0;
   let viewIdx = 1;
+  let mapView = false;
+  const view = () => (mapView ? MAP_VIEW : VIEWS[viewIdx]);
   const floorR = cell * 0.8, maxR = cell * 22, margin = cell * 0.5;
   const step = () => ((Math.round(stepCont) % STEPS) + STEPS) % STEPS;
   const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eye, nav.nodes[n].p[2]);
@@ -238,17 +242,17 @@ async function makeEngine() {
     return best;
   }
 
-  function freeAt(n, k, vi = viewIdx) {
+  function freeAt(n, k, vi = mapView ? -1 : viewIdx) {
     const p = eyePoint(n);
-    const [dx, dy, dz] = dirAt(k * STEP_ANGLE, VIEWS[vi].beta);
+    const [dx, dy, dz] = dirAt(k * STEP_ANGLE, vi === -1 ? MAP_VIEW.beta : VIEWS[vi].beta);
     const probe = nearRadius();
     const hit = thickCast(p.x, p.y, p.z, dx, dy, dz, maxR + margin, probe);
     return Math.min(maxR, hit - margin);
   }
-  const wantRadius = (n) => Math.max(floorR, freeAt(n, step()) * VIEWS[viewIdx].zoom);
+  const wantRadius = (n) => Math.max(floorR, freeAt(n, step()) * view().zoom);
   const open = (n, k) => freeAt(n, ((k % STEPS) + STEPS) % STEPS) > cell * 1.8;
 
-  const camera = new BABYLON.ArcRotateCamera('cam', 0, VIEWS[viewIdx].beta, 1, eyePoint(start), scene);
+  const camera = new BABYLON.ArcRotateCamera('cam', 0, view().beta, 1, eyePoint(start), scene);
   camera.minZ = cell * 0.03;
   camera.maxZ = cell * 400;
   camera.fov = 0.9;
@@ -262,7 +266,7 @@ async function makeEngine() {
       t0: performance.now(), ms,
       target0: camera.target.clone(), target1: eyePoint(node),
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
-      beta0: camera.beta, beta1: VIEWS[viewIdx].beta,
+      beta0: camera.beta, beta1: view().beta,
       radius0: camera.radius, radius1: wantRadius(node),
     };
     updateMarkers();
@@ -335,6 +339,7 @@ async function makeEngine() {
   // however small it draws at distance. Ties go to whichever is nearer the
   // camera, so a foreground node wins over one behind it.
   const TAP_PX = 44;
+  let lastTapDist = Infinity;
   function markerAtScreen(px, py) {
     const eng = engine;
     const vp = camera.viewport.toGlobal(eng.getRenderWidth(), eng.getRenderHeight());
@@ -342,7 +347,7 @@ async function makeEngine() {
     const ident = BABYLON.Matrix.Identity();
     const scale = eng.getRenderWidth() / (canvas.clientWidth || eng.getRenderWidth());
     const limit = TAP_PX * scale;
-    let best = -1, bestScore = Infinity;
+    let best = -1, bestScore = Infinity, bestRaw = Infinity;
     for (let i = 0; i < markers.length; i++) {
       if (!markers[i].isEnabled()) continue;
       const p = BABYLON.Vector3.Project(markers[i].position, ident, xform, vp);
@@ -350,9 +355,50 @@ async function makeEngine() {
       const d = Math.hypot(p.x - px * scale, p.y - py * scale);
       if (d > limit) continue;
       const score = d + p.z * limit; // nearer to camera breaks ties
-      if (score < bestScore) { bestScore = score; best = i; }
+      if (score < bestScore) { bestScore = score; best = i; bestRaw = d / scale; }
     }
+    lastTapDist = best >= 0 ? bestRaw : Infinity;
     return best;
+  }
+
+  // Connections are tapped directly: the eraser removes whichever edge the
+  // finger lands on, so unlinking is one tap instead of selecting both ends.
+  const EDGE_PX = 26;
+  let lastEdgeDist = Infinity;
+  function edgeAtScreen(px, py) {
+    const eng = engine;
+    const vp = camera.viewport.toGlobal(eng.getRenderWidth(), eng.getRenderHeight());
+    const xform = scene.getTransformMatrix();
+    const ident = BABYLON.Matrix.Identity();
+    const scale = eng.getRenderWidth() / (canvas.clientWidth || eng.getRenderWidth());
+    const tx = px * scale, ty = py * scale;
+    const proj = nav.nodes.map((n) =>
+      BABYLON.Vector3.Project(new BABYLON.Vector3(n.p[0], n.p[1] + cell * 0.05, n.p[2]), ident, xform, vp));
+    let best = null, bestD = EDGE_PX * scale;
+    for (let i = 0; i < nav.nodes.length; i++) {
+      const a = proj[i];
+      if (a.z <= 0 || a.z >= 1 || !nearCur(i)) continue;
+      for (const j of nav.nodes[i].n) {
+        if (j <= i || !nearCur(j)) continue;
+        const b = proj[j];
+        if (b.z <= 0 || b.z >= 1) continue;
+        const vx = b.x - a.x, vy = b.y - a.y;
+        const len2 = vx * vx + vy * vy;
+        const t = len2 ? Math.max(0, Math.min(1, ((tx - a.x) * vx + (ty - a.y) * vy) / len2)) : 0;
+        const d = Math.hypot(a.x + vx * t - tx, a.y + vy * t - ty);
+        if (d < bestD) { bestD = d; best = [i, j]; }
+      }
+    }
+    lastEdgeDist = best ? bestD / scale : Infinity;
+    return best;
+  }
+  function removeEdge(i, j) {
+    pushUndo();
+    const a = nav.nodes[i].n, b = nav.nodes[j].n;
+    const ka = a.indexOf(j); if (ka >= 0) a.splice(ka, 1);
+    const kb = b.indexOf(i); if (kb >= 0) b.splice(kb, 1);
+    route = [];
+    updateMarkers();
   }
 
   function nearestNode(point) {
@@ -392,8 +438,8 @@ async function makeEngine() {
   // One ladder for both: higher up also pulls further back.
   const setView = (dir) => {
     const next = Math.min(VIEWS.length - 1, Math.max(0, viewIdx + dir));
-    if (next === viewIdx) return;
-    viewIdx = next; route = [];
+    if (next === viewIdx && !mapView) return;
+    viewIdx = next; mapView = false; route = [];
     if (!open(cur, Math.round(stepCont))) {
       for (let d = 1; d < STEPS; d++) {
         if (open(cur, Math.round(stepCont) + d)) { stepCont += d; break; }
@@ -442,6 +488,13 @@ async function makeEngine() {
     updateMarkers();
   }
   const SHOW_WITHIN = cell * 9;
+  // Editing works on the patch around where you stand: the whole island's
+  // 1600-odd connections at once are impossible to aim at.
+  const EDIT_WITHIN = cell * 12;
+  const nearCur = (i) => {
+    const a = nav.nodes[i].p, b = nav.nodes[cur].p;
+    return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= EDIT_WITHIN;
+  };
   function updateMarkers() {
     const del = document.getElementById('del');
     if (del) del.hidden = !editMode || selected < 0;
@@ -452,7 +505,8 @@ async function makeEngine() {
       const key = i === cur || near.has(i) || onRoute.has(i) || i === selected;
       const p = nav.nodes[i].p;
       // Distant markers are hidden so the scene reads as terrain, not dots.
-      m.setEnabled(key || editMode || Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) <= SHOW_WITHIN);
+      const d = Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]);
+      m.setEnabled(key || d <= (editMode ? EDIT_WITHIN : SHOW_WITHIN));
       m.material = i === selected ? selMat : i === cur ? hereMat : onRoute.has(i) ? routeMat : near.has(i) ? nearMat : farMat;
       m.scaling.setAll(key ? 1.3 : 1);
     });
@@ -482,15 +536,16 @@ async function makeEngine() {
     if (!editMode) return;
     const lines = [];
     nav.nodes.forEach((n, i) => {
-      for (const j of n.n) if (j > i) lines.push([
+      if (!nearCur(i)) return;
+      for (const j of n.n) if (j > i && nearCur(j)) lines.push([
         new BABYLON.Vector3(n.p[0], n.p[1] + cell * 0.35, n.p[2]),
         new BABYLON.Vector3(nav.nodes[j].p[0], nav.nodes[j].p[1] + cell * 0.35, nav.nodes[j].p[2]),
       ]);
     });
     if (!lines.length) return;
     edgeMesh = BABYLON.MeshBuilder.CreateLineSystem('edges', { lines }, scene);
-    edgeMesh.color = BABYLON.Color3.FromHexString('#5ed7ff');
-    edgeMesh.alpha = 0.7;
+    edgeMesh.color = BABYLON.Color3.FromHexString('#7fe4ff');
+    edgeMesh.alpha = 0.95;
     edgeMesh.isPickable = false;
   }
   function toggleEdge(a, b) {
@@ -539,6 +594,7 @@ async function makeEngine() {
   }
   function setEditMode(on) {
     editMode = on;
+    mapView = on;
     if (!on) eraseMode = false;
     selected = -1;
     hud.innerHTML = on ? EDIT_HELP : VIEW_HELP;
@@ -547,6 +603,7 @@ async function makeEngine() {
     for (const id of ['save', 'erase', 'undo']) document.getElementById(id).hidden = !on;
     document.getElementById('undo').disabled = !undoStack.length;
     updateMarkers();
+    glideTo(cur, 450);
   }
 
   // --- input ---------------------------------------------------------------
@@ -560,14 +617,23 @@ async function makeEngine() {
     if (Math.hypot(dx, dy) < 40) {
       const tapped = markerAtScreen(scene.pointerX, scene.pointerY);
       if (editMode) {
+        if (eraseMode) {
+          // Nodes and their connections overlap on screen, so the eraser acts
+          // on whichever the finger actually landed nearest to.
+          const nodeDist = tapped >= 0 ? lastTapDist : Infinity;
+          const edge = edgeAtScreen(scene.pointerX, scene.pointerY);
+          const edgeDist = edge ? lastEdgeDist : Infinity;
+          if (nodeDist === Infinity && edgeDist === Infinity) return;
+          if (nodeDist <= edgeDist) return deleteNode(tapped);
+          return removeEdge(edge[0], edge[1]);
+        }
         if (tapped >= 0) {
           const i = tapped;
-          if (eraseMode) return deleteNode(i);
           if (selected === -1) selected = i;
           else if (selected === i) selected = -1;
           else { toggleEdge(selected, i); selected = i; }
           updateMarkers();
-        } else if (!eraseMode) {
+        } else {
           const ground = scene.pick(scene.pointerX, scene.pointerY);
           if (ground?.hit) addNode(ground.pickedPoint);
         }
