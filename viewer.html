@@ -57,7 +57,7 @@ const STEP_ANGLE = TAU / STEPS;
 // Angle and distance move together: one ladder from close-and-low (eye level,
 // in among the pieces) to far-and-high (overview of the island).
 // Editing wants to look down on the graph; walking around it does not.
-const MAP_VIEW = { beta: 0.42, zoom: 1.35 };
+const MAP_VIEW = { beta: 0.42, zoom: 0.95 };
 // Five rungs from closest-and-lowest to widest-and-highest. Distance steps
 // are geometric (each rung is 1.81x the last), which is what reads as an
 // even step when zooming; the pitch steps are an even 0.12 rad apart.
@@ -257,7 +257,9 @@ async function makeEngine() {
     const hit = thickCast(p.x, p.y, p.z, dx, dy, dz, maxR + margin, probe);
     return Math.min(maxR, hit - margin);
   }
-  const wantRadius = (n) => Math.max(floorR, freeAt(n, step()) * view().zoom);
+  const wantRadius = (n) => mapView
+    ? Math.max(floorR, maxR * MAP_VIEW.zoom)
+    : Math.max(floorR, freeAt(n, step()) * view().zoom);
   // Enough room to be worth turning to. Kept low deliberately: in a cave no
   // heading has much space, and a demanding threshold makes orbit skip every
   // one of them and land back where it started.
@@ -327,6 +329,9 @@ async function makeEngine() {
   let smoothR = null;
   scene.onBeforeRenderObservable.add(() => {
     const wanted = camera.radius;
+    // Looking down on the graph to edit it means looking through whatever is
+    // overhead; clamping to the roof would drop the map onto the node.
+    if (mapView) { smoothR = wanted; camera.fov += (0.9 - camera.fov) * 0.2; return; }
     const tgt = camera.target;
     const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
     const probe = nearRadius();
@@ -541,7 +546,7 @@ async function makeEngine() {
   function meshAt(slot) {
     while (markers.length <= slot) {
       const i = markers.length;
-      const orb = BABYLON.MeshBuilder.CreateCylinder(`nav${i}`, { diameter: cell * 0.85, height: cell * 0.04, tessellation: 14 }, scene);
+      const orb = BABYLON.MeshBuilder.CreateCylinder(`nav${i}`, { diameter: cell * 0.7, height: cell * 0.04, tessellation: 14 }, scene);
       orb.isPickable = false;
       orb.metadata = { node: -1 };
       markers.push(orb);
