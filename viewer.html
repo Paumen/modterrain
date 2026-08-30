@@ -57,12 +57,15 @@ const STEP_ANGLE = TAU / STEPS;
 // in among the pieces) to far-and-high (overview of the island).
 // Editing wants to look down on the graph; walking around it does not.
 const MAP_VIEW = { beta: 0.42, zoom: 1.35 };
+// Five rungs from closest-and-lowest to widest-and-highest. Distance steps
+// are geometric (each rung is 1.81x the last), which is what reads as an
+// even step when zooming; the pitch steps are an even 0.12 rad apart.
 const VIEWS = [
-  { beta: 1.50, zoom: 0.45 },
-  { beta: 1.42, zoom: 0.70 },
-  { beta: 1.32, zoom: 1.00 },
-  { beta: 1.18, zoom: 1.45 },
-  { beta: 1.02, zoom: 2.10 },
+  { beta: 1.50, zoom: 0.28 },
+  { beta: 1.38, zoom: 0.51 },
+  { beta: 1.26, zoom: 0.92 },
+  { beta: 1.14, zoom: 1.66 },
+  { beta: 1.02, zoom: 3.00 },
 ];
 const smooth = (t) => t * t * (3 - 2 * t);
 
