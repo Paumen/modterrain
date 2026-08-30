@@ -8,6 +8,7 @@
 // per-angle orbit radii, precomputed so the viewer needs no collision code).
 
 import { readGlb, writeGlb } from './glb.mjs';
+import { existsSync } from 'node:fs';
 
 const input = process.argv[2];
 if (!input) {
@@ -15,7 +16,12 @@ if (!input) {
   process.exit(1);
 }
 const outGlb = input.replace(/\.glb$/, '_merged.glb');
-const outNav = input.replace(/\.glb$/, '_nav.json');
+// A nav graph that already exists has probably been curated by hand in the
+// viewer's editor, so it is never overwritten without --force: the fresh one
+// is written alongside it instead.
+const force = process.argv.includes('--force');
+const navPath = input.replace(/\.glb$/, '_nav.json');
+const outNav = !force && existsSync(navPath) ? input.replace(/\.glb$/, '_nav.generated.json') : navPath;
 
 const { json, bin } = readGlb(input);
 
@@ -402,6 +408,7 @@ import('node:fs').then(({ writeFileSync }) => {
   writeFileSync(outNav, JSON.stringify({ meta: { cell, eye: EYE }, nodes: kept }));
   const degs = kept.map((n) => n.n.length);
   const six = degs.filter((d) => d === 6).length;
+  if (outNav !== navPath) console.log(`note: ${navPath} exists and was kept; pass --force to replace it`);
   console.log(`${outNav}: ${kept.length} nodes, spacing ${S.toFixed(1)} (${LATTICE} cells), ` +
     `avg degree ${(degs.reduce((a, b) => a + b, 0) / kept.length).toFixed(2)}, ${six} with the full six`);
 });

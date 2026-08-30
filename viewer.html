@@ -329,7 +329,10 @@ async function makeEngine() {
         if (d < dist[nb]) { dist[nb] = d; prev[nb] = n; }
       }
     }
-    if (dist[dest] === Infinity) return;
+    // A hand-curated graph can have separate pieces (a plateau reached only
+    // by stairs that were cut, or a second island). Travel there directly
+    // rather than letting the tap do nothing.
+    if (dist[dest] === Infinity) { route = []; return glideFacing(dest, 700); }
     route = [];
     for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
     route.shift();
