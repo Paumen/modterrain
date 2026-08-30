@@ -211,7 +211,7 @@ for (let i = 0; i < json.nodes.length; i++) {
 // Camera nodes sit on a triangular lattice: every interior node has exactly
 // six neighbours, all the same distance away, so the graph is uniform and
 // stays predictable as nodes are pruned by hand in the viewer's editor.
-const LATTICE = Number(process.argv[3]) || 2;   // spacing in grid cells
+const LATTICE = Number(process.argv[3]) || 1.5; // spacing in grid cells
 const S = LATTICE * cell;                       // XZ distance between neighbours
 const ROW = (S * Math.sqrt(3)) / 2;             // row pitch of the lattice
 const EYE = 1.2 * cell;                         // camera target height above ground
@@ -222,12 +222,15 @@ const WALKABLE = new Set([
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Dark', 'Wood Medium', 'Wood Light']);
 const walkableHit = ([, mat, ny]) => WALKABLE.has(matName(mat)) && ny > 0.7;
 
+// Enough ground around the point to stand on, without demanding a full
+// neighbourhood: narrow walkways and ledges keep their nodes.
 function hasSupport(x, z, y) {
   const d = 0.35 * cell;
+  let ok = 0;
   for (const [ox, oz] of [[d, 0], [-d, 0], [0, d], [0, -d]]) {
-    if (!heightsAt(x + ox, z + oz).some((h) => walkableHit(h) && Math.abs(h[0] - y) <= 0.7 * cell)) return false;
+    if (heightsAt(x + ox, z + oz).some((h) => walkableHit(h) && Math.abs(h[0] - y) <= 0.7 * cell)) ok++;
   }
-  return true;
+  return ok >= 2;
 }
 
 // ---- spatial index: triangles binned by XZ cell ---------------------------
@@ -331,7 +334,7 @@ for (let r = 0; r < rows; r++) {
     for (const [y, mat] of levels) {
       if (y - last < 0.5 * cell) continue;
       last = y;
-      const blocked = hits.some((h) => h[0] > y + 0.15 * cell && h[0] <= y + 1.6 * cell);
+      const blocked = hits.some((h) => h[0] > y + 0.15 * cell && h[0] <= y + 1.1 * cell);
       if (blocked || !hasSupport(x, z, y)) continue;
       // Surface class only steers routing cost; placement stays uniform.
       let grassAround = 0;
@@ -389,7 +392,7 @@ const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
 const remap = new Map();
 const kept = [];
-for (let i = 0; i < nodes.length; i++) if (sizes[comp[i]] >= 4) { remap.set(i, kept.length); kept.push(nodes[i]); }
+for (let i = 0; i < nodes.length; i++) if (sizes[comp[i]] >= 3) { remap.set(i, kept.length); kept.push(nodes[i]); }
 for (const node of kept) node.n = node.n.map((i) => remap.get(i)).filter((i) => i !== undefined);
 
 // Round node positions for a compact file.

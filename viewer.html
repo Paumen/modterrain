@@ -90,6 +90,11 @@ async function makeEngine() {
   ]);
   const { eye, cell } = nav.meta;
   const scene = new BABYLON.Scene(engine);
+  // glTF is right-handed. Without this Babylon's loader wraps the model in a
+  // __root__ that flips handedness by negating X, so the terrain renders
+  // mirrored against the nav graph's coordinates: nodes land in mid-air or
+  // inside rock, and the camera orbits a mirror image of the island.
+  scene.useRightHandedSystem = true;
   scene.clearColor = BABYLON.Color4.FromHexString('#1a2028ff');
 
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
@@ -272,7 +277,7 @@ async function makeEngine() {
       camera.radius = tween.radius0 + (tween.radius1 - tween.radius0) * s;
       if (t === 1) {
         tween = null;
-        if (route.length) { const nxt = route.shift(); glideTo(nxt, legMs(cur, nxt)); } else updateMarkers();
+        if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); } else updateMarkers();
       }
     }
   });
@@ -324,8 +329,32 @@ async function makeEngine() {
     route = [];
     for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
     route.shift();
-    if (route.length) { const nxt = route.shift(); glideTo(nxt, legMs(cur, nxt)); }
+    if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); }
   }
+  // Tap targets are a fixed radius in screen pixels, so a node is easy to hit
+  // however small it draws at distance. Ties go to whichever is nearer the
+  // camera, so a foreground node wins over one behind it.
+  const TAP_PX = 44;
+  function markerAtScreen(px, py) {
+    const eng = engine;
+    const vp = camera.viewport.toGlobal(eng.getRenderWidth(), eng.getRenderHeight());
+    const xform = scene.getTransformMatrix();
+    const ident = BABYLON.Matrix.Identity();
+    const scale = eng.getRenderWidth() / (canvas.clientWidth || eng.getRenderWidth());
+    const limit = TAP_PX * scale;
+    let best = -1, bestScore = Infinity;
+    for (let i = 0; i < markers.length; i++) {
+      if (!markers[i].isEnabled()) continue;
+      const p = BABYLON.Vector3.Project(markers[i].position, ident, xform, vp);
+      if (p.z <= 0 || p.z >= 1) continue;
+      const d = Math.hypot(p.x - px * scale, p.y - py * scale);
+      if (d > limit) continue;
+      const score = d + p.z * limit; // nearer to camera breaks ties
+      if (score < bestScore) { bestScore = score; best = i; }
+    }
+    return best;
+  }
+
   function nearestNode(point) {
     let best = 0, bestD = Infinity;
     nav.nodes.forEach((n, i) => {
@@ -334,6 +363,26 @@ async function makeEngine() {
     });
     return best;
   }
+  // On arrival, face the way that actually has room: keep the current heading
+  // when it is open, otherwise turn to the nearest one that is. Without this a
+  // node in a tight spot leaves the camera pressed against rock.
+  function bestHeading(node) {
+    const base = Math.round(stepCont);
+    let bestK = base, bestScore = -Infinity;
+    for (let d = 0; d <= STEPS / 2; d++) {
+      for (const k of d === 0 ? [base] : [base + d, base - d]) {
+        const free = Math.min(freeAt(node, ((k % STEPS) + STEPS) % STEPS), cell * 8);
+        const score = free - d * cell * 0.35;
+        if (score > bestScore) { bestScore = score; bestK = k; }
+      }
+    }
+    return bestK;
+  }
+  function glideFacing(node, ms) {
+    stepCont = bestHeading(node);
+    glideTo(node, ms);
+  }
+
   const orbit = (dir) => {
     route = [];
     let steps = 0;
@@ -362,7 +411,7 @@ async function makeEngine() {
       const d = sign * BABYLON.Vector3.Dot(to.normalize(), fwd);
       if (d > bestDot) { bestDot = d; best = nb; }
     }
-    if (best >= 0) glideTo(best, 500);
+    if (best >= 0) glideFacing(best, 500);
   }
 
   // --- markers -------------------------------------------------------------
@@ -373,14 +422,18 @@ async function makeEngine() {
     if (alpha) m.alpha = alpha;
     return m;
   };
-  const nearMat = mat('#ffd75e'), farMat = mat('#8aa3b8', 0.6), hereMat = mat('#7ee081');
+  const nearMat = mat('#ffd75e'), farMat = mat('#b9c8d6', 0.5), hereMat = mat('#7ee081');
   const routeMat = mat('#ff9d47'), selMat = mat('#5ed7ff');
   let markers = [];
+  // Flat pads lying on the surface: with no vertical extent they cannot poke
+  // above a ridgeline and read as dots floating in the sky. Their drawn size
+  // is independent of the tap target, which is measured in screen pixels.
   function makeMarker(i) {
-    const orb = BABYLON.MeshBuilder.CreateSphere(`nav${i}`, { diameter: cell * 0.45, segments: 10 }, scene);
-    orb.position = new BABYLON.Vector3(nav.nodes[i].p[0], nav.nodes[i].p[1] + cell * 0.35, nav.nodes[i].p[2]);
+    const orb = BABYLON.MeshBuilder.CreateCylinder(`nav${i}`, { diameter: cell * 0.85, height: cell * 0.04, tessellation: 14 }, scene);
+    orb.position = new BABYLON.Vector3(nav.nodes[i].p[0], nav.nodes[i].p[1] + cell * 0.05, nav.nodes[i].p[2]);
     orb.metadata = { node: i };
     orb.isPickable = false;
+    orb.freezeWorldMatrix();
     return orb;
   }
   function rebuildMarkers() {
@@ -388,14 +441,20 @@ async function makeEngine() {
     markers = nav.nodes.map((_, i) => makeMarker(i));
     updateMarkers();
   }
+  const SHOW_WITHIN = cell * 9;
   function updateMarkers() {
     const del = document.getElementById('del');
     if (del) del.hidden = !editMode || selected < 0;
     const near = new Set(nav.nodes[cur].n);
     const onRoute = new Set(route);
+    const here = nav.nodes[cur].p;
     markers.forEach((m, i) => {
+      const key = i === cur || near.has(i) || onRoute.has(i) || i === selected;
+      const p = nav.nodes[i].p;
+      // Distant markers are hidden so the scene reads as terrain, not dots.
+      m.setEnabled(key || editMode || Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) <= SHOW_WITHIN);
       m.material = i === selected ? selMat : i === cur ? hereMat : onRoute.has(i) ? routeMat : near.has(i) ? nearMat : farMat;
-      m.scaling.setAll(editMode || near.has(i) || onRoute.has(i) ? 1.25 : 1);
+      m.scaling.setAll(key ? 1.3 : 1);
     });
     drawEdges();
   }
@@ -499,12 +558,10 @@ async function makeEngine() {
     const dx = e.clientX - down.x, dy = e.clientY - down.y;
     down = null;
     if (Math.hypot(dx, dy) < 40) {
-      for (const m of markers) m.isPickable = true;
-      const marker = scene.pick(scene.pointerX, scene.pointerY, (m) => m.metadata?.node !== undefined);
-      for (const m of markers) m.isPickable = false;
+      const tapped = markerAtScreen(scene.pointerX, scene.pointerY);
       if (editMode) {
-        if (marker?.hit) {
-          const i = marker.pickedMesh.metadata.node;
+        if (tapped >= 0) {
+          const i = tapped;
           if (eraseMode) return deleteNode(i);
           if (selected === -1) selected = i;
           else if (selected === i) selected = -1;
@@ -516,7 +573,7 @@ async function makeEngine() {
         }
         return;
       }
-      if (marker?.hit) return travelTo(marker.pickedMesh.metadata.node);
+      if (tapped >= 0) return travelTo(tapped);
       const ground = scene.pick(scene.pointerX, scene.pointerY);
       if (ground?.hit) travelTo(nearestNode(ground.pickedPoint));
     } else if (Math.abs(dx) > Math.abs(dy)) {
@@ -559,7 +616,7 @@ async function makeEngine() {
 
   hud.innerHTML = VIEW_HELP;
   rebuildMarkers();
-  glideTo(start, 1);
+  glideFacing(start, 1);
   engine.runRenderLoop(() => scene.render());
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
