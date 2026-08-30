@@ -3,11 +3,43 @@
 // The scene is laid out on the kit's grid: one cell is exactly one world unit
 // (piece nodes translate to cell centres and scale by whole cells), so the grid
 // this emits is integer-indexed and every cell is 1x1. A cell can hold more
-// than one walkable floor -- a bridge over a river, a cave under a hill -- so
-// the output is a flat list of (column, row, height) nodes plus the edges
-// between them.
+// than one floor -- a bridge over a river, a cave under a hill -- so the output
+// is a flat list of (column, row, height) cells plus the edges between them.
 //
 //   node tools/build-grid.mjs scenes/Foo.glb [--force]
+//
+// ONE RULE: whether you can stand somewhere depends on the terrain type at
+// that level in that cell. In full, every reason a cell can be closed:
+//
+//   material   Grass, Dirt and the wood of decking are walkable, as is Cliff
+//              where it faces up -- cave floors and rock ledges. Everything
+//              else is not: water, rope, stone walls, fence timber.
+//   slope      Steeper than FLAT is a hillside, not a floor.
+//   water      Water standing on a floor drowns it, up to WADE above.
+//              Water under a bridge deck does not.
+//   cliff face A cliff face standing in the cell at that height closes it. A
+//              face belongs to the cell on its solid side, so a mesa's rim
+//              closes and the floor of a cave does not. Bridges are exempt.
+//   headroom   Less than HEAD of ceiling and you cannot stand up.
+//   coverage   Fewer than NEED of the nine samples agreeing and there is not
+//              enough floor there to stand on. Cells a deck crosses need one.
+//
+// And every reason two open cells can end up unlinked:
+//
+//   step       A height change over STEP is a climb, not a walk.
+//   corridor   Most of the width of the opening, at body height, must be
+//              clear: fences, railings, posts and walls block.
+//   corner     A diagonal needs both orthogonal cells open.
+//   reach      A patch that is neither part of the main island, nor under open
+//              sky, nor standing on cave floor is dropped -- terrain pieces are
+//              hollow shells, and the inside of a hill would otherwise read as
+//              a cave.
+//
+// Whether the CAMERA has room is not on that list. That is the viewer's
+// business, decided per frame against the real triangles.
+//
+// To see why one cell went the way it did: --probe x,z. To see the walkable
+// patches: --components. The cliff-face mask: --faces. Floor slopes: --slopes.
 
 import { readGlb } from './glb.mjs';
 import { writeFileSync, existsSync } from 'node:fs';
@@ -19,7 +51,7 @@ if (!input) {
 }
 const force = process.argv.includes('--force');
 const outPath = input.replace(/\.glb$/, '_grid.json');
-if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces') && !process.argv.includes('--components')) {
+if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces') && !process.argv.includes('--components') && !process.argv.includes('--slopes')) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
 }
@@ -194,7 +226,7 @@ const EYE = 3.6;         // camera target height above the floor
 const MIN_EYE = 1.5;     // lowest the target drops under a low ceiling
 const HEAD = 2.0;        // ceiling clearance a floor needs to be usable
 const STEP = 0.75;       // biggest height change you can walk between cells
-const FLAT = 0.5;        // |ny| below this is a wall, not a floor
+const FLAT = 0.86;      // steeper than about 30 degrees is a hillside, not a floor
 const CLUSTER = 0.3;     // surfaces within this height are the same floor
 
 // Cave floors and rock ledges carry Cliff, so it is walkable where it faces
@@ -303,7 +335,7 @@ function floorsAt(x, z) {
   for (let i = 0; i < hits.length;) {
     let j = i;
     while (j + 1 < hits.length && hits[j + 1][0] - hits[j][0] <= CLUSTER) j++;
-    out.push({ y: hits[j][0], mat: hits[j][1] });
+    out.push({ y: hits[j][0], mat: hits[j][1], up: hits[j][2] });
     i = j + 1;
   }
   return out;
@@ -400,7 +432,7 @@ function floorsIn(c, r, note) {
     if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
     const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
     note?.(y, name, 'open');
-    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100 });
+    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100, tilt: Math.min(...good.map((f) => f.up)) });
   }
   return here;
 }
@@ -444,16 +476,31 @@ for (let r = 0; r < ROWS; r++) {
 // Two floors connect when the height change is walkable and a body-height
 // corridor between the cell centres is clear, so fences, posts, railings and
 // retaining walls block the way even though the ground either side is fine.
+// Is the way between two cells open? A single line between the two centres is
+// not enough to answer that: a fence rarely runs down the middle of the cells
+// it divides, so a line probe only catches the few that happen to. The whole
+// width of the opening is swept instead, at three heights, and the way counts
+// as blocked when most of it is -- which a fence, a railing or a wall is along
+// its length, while a lone post leaves the rest of the gap open.
+const CORRIDOR = [-0.35, 0, 0.35];   // across the opening
+const BODY = [0.3, 0.7, 1.1];        // and up it
 function corridorClear(a, b) {
   const ax = C0 + a.c + 0.5, az = R0 + a.r + 0.5;
-  const bx2 = C0 + b.c + 0.5, bz2 = R0 + b.r + 0.5;
-  for (const h of [0.35, 0.85]) {
-    const ox = ax, oy = a.y + h, oz = az;
-    const dx = bx2 - ox, dy = (b.y + h) - oy, dz = bz2 - oz;
-    const len = Math.hypot(dx, dy, dz);
-    if (raycast(ox, oy, oz, dx / len, dy / len, dz / len, 0.05, len - 0.05) < len - 0.05) return false;
+  const bx = C0 + b.c + 0.5, bz = R0 + b.r + 0.5;
+  const dx = bx - ax, dz = bz - az;
+  const flat = Math.hypot(dx, dz) || 1;
+  const px = -dz / flat, pz = dx / flat;  // across the direction of travel
+  let blocked = 0, total = 0;
+  for (const off of CORRIDOR) {
+    for (const h of BODY) {
+      const ox = ax + px * off, oy = a.y + h, oz = az + pz * off;
+      const vx = bx + px * off - ox, vy = (b.y + h) - oy, vz = bz + pz * off - oz;
+      const len = Math.hypot(vx, vy, vz);
+      total++;
+      if (raycast(ox, oy, oz, vx / len, vy / len, vz / len, 0.05, len - 0.05) < len - 0.05) blocked++;
+    }
   }
-  return true;
+  return blocked * 2 < total;
 }
 
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
@@ -540,6 +587,17 @@ for (let e = 0; e < edges.length; e += 2) {
 
 const mats = [...new Set(outNodes.map((n) => n.m))].sort();
 const matIndex = new Map(mats.map((m, i) => [m, i]));
+
+if (process.argv.includes('--slopes')) {
+  const by = new Map();
+  for (const n of outNodes) {
+    const deg = Math.round(Math.acos(Math.min(1, n.tilt)) * 180 / Math.PI / 5) * 5;
+    const k = `${n.m} ${String(deg).padStart(2)}deg`;
+    by.set(k, (by.get(k) || 0) + 1);
+  }
+  console.log([...by.entries()].sort().map((e) => `${e[0]}: ${e[1]}`).join('\n'));
+  process.exit(0);
+}
 
 const doc = {
   meta: {

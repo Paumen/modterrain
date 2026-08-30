@@ -61,12 +61,17 @@ const MAP_VIEW = { beta: 0.42, zoom: 0.55 };
 // Five rungs from closest-and-lowest to widest-and-highest. Distance steps
 // are geometric (each rung is 1.81x the last), which is what reads as an
 // even step when zooming; the pitch steps are an even 0.12 rad apart.
+// Five rungs from closest-and-lowest to widest-and-highest. Pitch steps evenly
+// and distance geometrically, which is what reads as an even step when
+// zooming. The far rung sits as high as it ever did but stands closer in: it
+// looks down more steeply, so the same height comes with a shorter reach
+// across the ground.
 const VIEWS = [
-  { beta: 1.50, zoom: 0.28 },
-  { beta: 1.38, zoom: 0.51 },
-  { beta: 1.26, zoom: 0.92 },
-  { beta: 1.14, zoom: 1.66 },
-  { beta: 1.02, zoom: 3.00 },
+  { beta: 1.500, zoom: 0.18 },
+  { beta: 1.325, zoom: 0.34 },
+  { beta: 1.150, zoom: 0.64 },
+  { beta: 0.975, zoom: 1.19 },
+  { beta: 0.800, zoom: 2.24 },
 ];
 const smooth = (t) => t * t * (3 - 2 * t);
 
@@ -353,6 +358,10 @@ function toGrid(nav) {
     cur = node;
     tween = {
       t0: performance.now(), ms,
+      // The heading runs on its own clock, so turning mid-journey glides over
+      // its own time rather than having to finish inside whatever is left of
+      // the current step.
+      aT0: performance.now(), aMs: ms,
       target0: camera.target.clone(), target1: eyePoint(node),
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
       beta0: camera.beta, beta1: view().beta,
@@ -365,7 +374,8 @@ function toGrid(nav) {
       const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
       const s = smooth(t);
       camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
-      camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * s;
+      const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
+      camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
       camera.beta = tween.beta0 + (tween.beta1 - tween.beta0) * s;
       camera.radius = tween.radius0 + (tween.radius1 - tween.radius0) * s;
       if (t === 1) {
@@ -595,7 +605,6 @@ function toGrid(nav) {
   }
 
   const orbit = (dir) => {
-    route = [];
     const from = Math.round(stepCont);
     // One step per press, skipping only headings jammed hard against a
     // surface, and never so many that it wraps back to where it started.
@@ -603,6 +612,16 @@ function toGrid(nav) {
     while (steps < STEPS - 1 && !open(cur, k)) { k += dir; steps++; }
     if (!open(cur, k)) { k = from + dir; steps = 1; }
     stepCont = k;
+    // Turning mid-journey does not end the journey: the leg in flight is
+    // re-aimed and the rest of the route stands. Arriving picks the heading up
+    // from here, so the turn holds rather than snapping back.
+    if (tween && route.length) {
+      tween.alpha0 = camera.alpha;
+      tween.alpha1 = stepCont * STEP_ANGLE;
+      tween.aT0 = performance.now();
+      tween.aMs = 320;
+      return;
+    }
     glideTo(cur, Math.min(300 + 120 * steps, 700));
   };
   // One ladder for both: higher up also pulls further back.
