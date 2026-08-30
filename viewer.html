@@ -32,6 +32,7 @@
 <canvas id="view"></canvas>
 <div class="hud" id="hud"></div>
 <div class="bar">
+  <button id="back" title="Back to where you came from (Backspace)" disabled>&#8617;</button>
   <button id="rotL" title="Orbit left (&#8592;)">&#10226;</button>
   <button id="tiltU" title="Wider, higher view">&#9650;</button>
   <button id="tiltD" title="Closer, lower view">&#9660;</button>
@@ -71,7 +72,7 @@ const smooth = (t) => t * t * (3 - 2 * t);
 
 const VIEW_HELP = `<b>Walkthrough</b><br>
 <small>Tap a dot or any spot to travel there<br>
-Swipe &#8596; orbit (6 views) &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#9998; edit nodes</small>`;
+Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; edit nodes</small>`;
 const EDIT_HELP = `<b>Node editor</b><br>
 <small>&#9003; eraser: tap a node to delete it, or tap a line to cut it<br>
 Otherwise tap ground to add &middot; tap two nodes to link &middot; &#8634; undo<br>
@@ -271,7 +272,30 @@ async function makeEngine() {
 
   let tween = null;
   let route = [];
+  // A node whose only neighbour is out of sight would otherwise be a trap,
+  // so every arrival is remembered and Back always leads out.
+  const history = [];
+  let recording = true;
+  function pushHistory(from) {
+    if (history[history.length - 1] === from) return;
+    history.push(from);
+    if (history.length > 60) history.shift();
+    const b = document.getElementById('back');
+    if (b) b.disabled = false;
+  }
+  function goBack() {
+    if (!history.length) return;
+    route = [];
+    const to = history.pop();
+    const b = document.getElementById('back');
+    if (b) b.disabled = !history.length;
+    recording = false;
+    stepCont = bestHeading(to);
+    glideTo(to, 420);
+    recording = true;
+  }
   function glideTo(node, ms) {
+    if (recording && cur !== node) pushHistory(cur);
     cur = node;
     tween = {
       t0: performance.now(), ms,
@@ -481,7 +505,15 @@ async function makeEngine() {
       const d = sign * BABYLON.Vector3.Dot(to.normalize(), fwd);
       if (d > bestDot) { bestDot = d; best = nb; }
     }
-    if (best >= 0) glideFacing(best, 500);
+    if (best >= 0) {
+      // Walking must never turn the camera around: the roomiest heading at
+      // the destination is usually the open ground you just came from, and
+      // facing it flips "forward" so the next step walks straight back.
+      // Keep the heading, or at most turn one notch to find room.
+      const k = Math.round(stepCont);
+      stepCont = open(best, k) ? k : open(best, k + 1) ? k + 1 : open(best, k - 1) ? k - 1 : k;
+      glideTo(best, 500);
+    }
   }
 
   // --- markers -------------------------------------------------------------
@@ -683,6 +715,7 @@ async function makeEngine() {
     if (e.key === 'ArrowDown') walk(-1);
     if (e.key === 'PageUp') setView(1);
     if (e.key === 'PageDown') setView(-1);
+    if (e.key === 'Backspace' && !editMode) { e.preventDefault(); goBack(); }
     if (e.key === 'e' || e.key === 'E') setEditMode(!editMode);
     if (editMode && (e.key === 'Delete' || e.key === 'Backspace') && selected >= 0) deleteNode(selected);
     if (editMode && (e.key === 'z' || e.key === 'Z')) undo();
@@ -693,6 +726,7 @@ async function makeEngine() {
     wheelAt = performance.now();
     setView(e.deltaY > 0 ? 1 : -1);
   }, { passive: true });
+  document.getElementById('back').addEventListener('click', goBack);
   document.getElementById('rotL').addEventListener('click', () => orbit(1));
   document.getElementById('rotR').addEventListener('click', () => orbit(-1));
   document.getElementById('tiltU').addEventListener('click', () => setView(1));

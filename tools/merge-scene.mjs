@@ -412,6 +412,48 @@ const kept = [];
 for (let i = 0; i < nodes.length; i++) if (sizes[comp[i]] >= 3) { remap.set(i, kept.length); kept.push(nodes[i]); }
 for (const node of kept) node.n = node.n.map((i) => remap.get(i)).filter((i) => i !== undefined);
 
+// Tie stranded pockets to the nearest node they can actually see: a group
+// nothing reaches is a group you can only be stuck in.
+{
+  const near = (p, q) => Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
+  const components = () => {
+    const comp = new Array(kept.length).fill(-1);
+    let c = 0;
+    for (let i = 0; i < kept.length; i++) {
+      if (comp[i] !== -1) continue;
+      const q = [i]; comp[i] = c;
+      while (q.length) for (const nb of kept[q.pop()].n) if (comp[nb] === -1) { comp[nb] = c; q.push(nb); }
+      c++;
+    }
+    return comp;
+  };
+  let bridged = 0;
+  for (let round = 0; round < 8; round++) {
+    const comp = components();
+    const sizes = {};
+    comp.forEach((c) => { sizes[c] = (sizes[c] || 0) + 1; });
+    const main = Object.entries(sizes).sort((a, b) => b[1] - a[1])[0][0] | 0;
+    const stranded = kept.map((_, i) => i).filter((i) => comp[i] !== main);
+    if (!stranded.length) break;
+    let did = false;
+    for (const i of stranded) {
+      let best = -1, bestD = Infinity;
+      for (let j = 0; j < kept.length; j++) {
+        if (comp[j] !== main) continue;
+        const d = near(kept[i].p, kept[j].p);
+        if (d > 4 * S || d >= bestD) continue;
+        const a = kept[i].p, b = kept[j].p;
+        const ea = kept[i].e ?? EYE, eb = kept[j].e ?? EYE;
+        if (raycast(a[0], a[1] + ea, a[2], b[0] - a[0], (b[1] + eb) - (a[1] + ea), b[2] - a[2], 0.02, 0.98) !== Infinity) continue;
+        bestD = d; best = j;
+      }
+      if (best >= 0) { kept[i].n.push(best); kept[best].n.push(i); bridged++; did = true; }
+    }
+    if (!did) break;
+  }
+  if (bridged) console.log(`bridged ${bridged} stranded node(s) into the main graph`);
+}
+
 // Round node positions for a compact file.
 for (const node of kept) node.p = node.p.map((v) => Math.round(v * 1000) / 1000);
 
