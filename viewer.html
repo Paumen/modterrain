@@ -381,8 +381,8 @@ async function makeEngine() {
   // Tap targets are a fixed radius in screen pixels, so a node is easy to hit
   // however small it draws at distance. Ties go to whichever is nearer the
   // camera, so a foreground node wins over one behind it.
-  const TAP_PX = 44;
-  const ON_DOT_PX = 18;   // inside this the finger is on the dot, not a line
+  const TAP_PX = 32;
+  const ON_DOT_PX = 14;   // inside this the finger is on the dot, not a line
   let lastTapDist = Infinity;
   function markerAtScreen(px, py) {
     const eng = engine;
