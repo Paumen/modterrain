@@ -208,18 +208,27 @@ for (let i = 0; i < json.nodes.length; i++) {
   break;
 }
 
-// Camera nodes prefer built paths over open ground: walkways and wood decking
-// first, then dirt, then grass. Sampling is dense and thinned by spacing so
-// nodes follow the paths instead of landing on an arbitrary grid.
-const PRIORITY = new Map([
-  ['Carved Stone Walkway', 0], ['Wood Dark', 0], ['Wood Medium', 0], ['Wood Light', 0],
-  ['Dirt', 1],
-  ['Grass', 2],
+// Camera nodes sit on a triangular lattice: every interior node has exactly
+// six neighbours, all the same distance away, so the graph is uniform and
+// stays predictable as nodes are pruned by hand in the viewer's editor.
+const LATTICE = Number(process.argv[3]) || 2;   // spacing in grid cells
+const S = LATTICE * cell;                       // XZ distance between neighbours
+const ROW = (S * Math.sqrt(3)) / 2;             // row pitch of the lattice
+const EYE = 1.2 * cell;                         // camera target height above ground
+
+const WALKABLE = new Set([
+  'Carved Stone Walkway', 'Wood Dark', 'Wood Medium', 'Wood Light', 'Dirt', 'Grass',
 ]);
-const SAMPLE = 1.5 * cell;      // candidate sampling step
-const SPACING = [2.2, 3.0, 4.2]; // min node distance per priority class, in cells
-const EDGE_MAX = 5.2 * cell;    // maximum edge length
-const EYE = 1.2 * cell;         // camera target height above ground
+const PATHY = new Set(['Carved Stone Walkway', 'Wood Dark', 'Wood Medium', 'Wood Light']);
+const walkableHit = ([, mat, ny]) => WALKABLE.has(matName(mat)) && ny > 0.7;
+
+function hasSupport(x, z, y) {
+  const d = 0.35 * cell;
+  for (const [ox, oz] of [[d, 0], [-d, 0], [0, d], [0, -d]]) {
+    if (!heightsAt(x + ox, z + oz).some((h) => walkableHit(h) && Math.abs(h[0] - y) <= 0.7 * cell)) return false;
+  }
+  return true;
+}
 
 // ---- spatial index: triangles binned by XZ cell ---------------------------
 
@@ -304,89 +313,69 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
   return best;
 }
 
-// ---- node candidates ------------------------------------------------------
-
-const walkableHit = ([, mat, ny]) => PRIORITY.has(matName(mat)) && ny > 0.7;
-
-function hasSupport(x, z, y) {
-  const d = 0.35 * cell;
-  for (const [ox, oz] of [[d, 0], [-d, 0], [0, d], [0, -d]]) {
-    if (!heightsAt(x + ox, z + oz).some((h) => walkableHit(h) && Math.abs(h[0] - y) <= 0.7 * cell)) return false;
-  }
-  return true;
-}
-
-const candidates = [];
-for (let x = minX + SAMPLE / 2; x < maxX; x += SAMPLE) {
-  for (let z = minZ + SAMPLE / 2; z < maxZ; z += SAMPLE) {
+// One node per walkable level at each lattice point, so bridges, cave floors
+// and the ground beneath them each get their own.
+const nodes = [];
+const grid = new Map();
+const cols = Math.ceil((maxX - minX) / S) + 1;
+const rows = Math.ceil((maxZ - minZ) / ROW) + 1;
+for (let r = 0; r < rows; r++) {
+  for (let c = 0; c < cols; c++) {
+    const x = minX + c * S + (r % 2) * (S / 2);
+    const z = minZ + r * ROW;
+    if (x > maxX || z > maxZ) continue;
     const hits = heightsAt(x, z);
-    const walk = hits.filter(walkableHit).sort((a, b) => a[0] - b[0]);
+    const levels = hits.filter(walkableHit).sort((p, q) => p[0] - q[0]);
+    const here = [];
     let last = -Infinity;
-    for (const [y, mat] of walk) {
+    for (const [y, mat] of levels) {
       if (y - last < 0.5 * cell) continue;
       last = y;
       const blocked = hits.some((h) => h[0] > y + 0.15 * cell && h[0] <= y + 1.6 * cell);
       if (blocked || !hasSupport(x, z, y)) continue;
-      // Narrowness: how many of 8 directions stay walkable nearby. Paths,
-      // bridges, stairs, ridge lips and coastlines score low and get dense
-      // nodes; open fields and beach interiors score high and stay sparse.
-      let open8 = 0, grassAround = 0;
+      // Surface class only steers routing cost; placement stays uniform.
+      let grassAround = 0;
       for (let k = 0; k < 8; k++) {
         const ox = Math.cos((k * Math.PI) / 4) * 2 * cell, oz = Math.sin((k * Math.PI) / 4) * 2 * cell;
-        const near = heightsAt(x + ox, z + oz).filter((h) => walkableHit(h) && Math.abs(h[0] - y) <= 0.9 * cell);
-        if (near.length) open8++;
-        if (near.some((h) => matName(h[1]) === 'Grass')) grassAround++;
+        if (heightsAt(x + ox, z + oz).some((h) => walkableHit(h) && matName(h[1]) === 'Grass' && Math.abs(h[0] - y) <= 0.9 * cell)) grassAround++;
       }
-      // Surface class steers routing: walkways/wood decking are paths, and so
-      // is a dirt ribbon threading through grass (a trail); beach dirt and
-      // grass are open ground the router should prefer to avoid.
       const name = matName(mat);
-      const isTrail = name === 'Dirt' && grassAround >= 3;
-      const cls = PRIORITY.get(name) === 0 || isTrail ? 'p' : name === 'Dirt' ? 'd' : 'g';
-      const byShape = open8 <= 5 ? 0 : open8 <= 7 ? 1 : 2;
-      candidates.push({ p: [x, y, z], cls, prio: cls === 'p' ? 0 : byShape });
+      const cls = PATHY.has(name) || (name === 'Dirt' && grassAround >= 3) ? 'p' : name === 'Dirt' ? 'd' : 'g';
+      here.push(nodes.length);
+      nodes.push({ p: [x, y, z], s: cls, n: [] });
+    }
+    if (here.length) grid.set(`${r},${c}`, here);
+  }
+}
+
+// Edges to the three "forward" lattice neighbours (the other three come from
+// the neighbours' own passes), so every interior node ends up with six.
+// The only test is whether the straight line between the two camera targets
+// is actually clear: no rules about how steep a link may be or what the
+// ground does under it. Everything geometry allows is offered, and unwanted
+// links are pruned by hand in the viewer.
+function link(i, j) {
+  const a = nodes[i].p, b = nodes[j].p;
+  if (nodes[i].n.includes(j)) return;
+  if (raycast(a[0], a[1] + EYE, a[2], b[0] - a[0], b[1] - a[1], b[2] - a[2], 0.02, 0.98) !== Infinity) return;
+  nodes[i].n.push(j);
+  nodes[j].n.push(i);
+}
+for (let r = 0; r < rows; r++) {
+  for (let c = 0; c < cols; c++) {
+    const here = grid.get(`${r},${c}`);
+    if (!here) continue;
+    const odd = r % 2;
+    for (const [nr, nc] of [[r, c + 1], [r + 1, c + (odd ? 0 : -1)], [r + 1, c + (odd ? 1 : 0)]]) {
+      const there = grid.get(`${nr},${nc}`);
+      if (!there) continue;
+      // Every level pair is offered; the sightline decides.
+      for (const i of here) for (const j of there) link(i, j);
     }
   }
 }
 
-// Thin by spacing, paths first, so walkways keep a chain of nodes and open
-// grass stays sparse.
-candidates.sort((a, b) => a.prio - b.prio || a.p[0] - b.p[0] || a.p[2] - b.p[2]);
-const nodes = [];
-for (const c of candidates) {
-  const spacing = SPACING[c.prio] * cell;
-  let ok = true;
-  for (const n of nodes) {
-    if (Math.hypot(n.p[0] - c.p[0], n.p[1] - c.p[1], n.p[2] - c.p[2]) < spacing) { ok = false; break; }
-  }
-  if (ok) nodes.push({ p: c.p, s: c.cls, n: [] });
-}
-
-// Edges: near neighbours with a clear line of sight at eye height. Gentle
-// edges need only the sightline; steeper ones (stairs, ramps, inclines) also
-// need the ground to follow the climb, so cliff tops connect through their
-// stairways but never straight over a ledge.
-function groundFollows(a, b) {
-  for (const f of [0.25, 0.5, 0.75]) {
-    const x = a[0] + (b[0] - a[0]) * f, z = a[2] + (b[2] - a[2]) * f;
-    const y = a[1] + (b[1] - a[1]) * f;
-    if (!heightsAt(x, z).some((h) => walkableHit(h) && Math.abs(h[0] - y) <= 1.0 * cell)) return false;
-  }
-  return true;
-}
-for (let i = 0; i < nodes.length; i++) {
-  for (let j = i + 1; j < nodes.length; j++) {
-    const a = nodes[i].p, b = nodes[j].p;
-    const dy = Math.abs(b[1] - a[1]);
-    if (Math.hypot(b[0] - a[0], b[2] - a[2]) > EDGE_MAX || dy > 2.6 * cell) continue;
-    if (dy > 1.3 * cell && !groundFollows(a, b)) continue;
-    if (raycast(a[0], a[1] + EYE, a[2], b[0] - a[0], b[1] - a[1], b[2] - a[2], 0.02, 0.98) !== Infinity) continue;
-    nodes[i].n.push(j);
-    nodes[j].n.push(i);
-  }
-}
-
-// Keep the largest connected component.
+// Drop strays: a handful of disconnected nodes can never be travelled to.
 const comp = new Array(nodes.length).fill(-1);
 let compCount = 0;
 for (let i = 0; i < nodes.length; i++) {
@@ -398,16 +387,18 @@ for (let i = 0; i < nodes.length; i++) {
 }
 const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
-const keepComp = sizes.indexOf(Math.max(...sizes));
 const remap = new Map();
 const kept = [];
-for (let i = 0; i < nodes.length; i++) if (comp[i] === keepComp) { remap.set(i, kept.length); kept.push(nodes[i]); }
-for (const node of kept) node.n = node.n.map((i) => remap.get(i));
+for (let i = 0; i < nodes.length; i++) if (sizes[comp[i]] >= 4) { remap.set(i, kept.length); kept.push(nodes[i]); }
+for (const node of kept) node.n = node.n.map((i) => remap.get(i)).filter((i) => i !== undefined);
 
 // Round node positions for a compact file.
 for (const node of kept) node.p = node.p.map((v) => Math.round(v * 1000) / 1000);
 
 import('node:fs').then(({ writeFileSync }) => {
   writeFileSync(outNav, JSON.stringify({ meta: { cell, eye: EYE }, nodes: kept }));
-  console.log(`${outNav}: ${kept.length} nodes (${candidates.length} candidates, largest of ${compCount} components), cell=${cell}`);
+  const degs = kept.map((n) => n.n.length);
+  const six = degs.filter((d) => d === 6).length;
+  console.log(`${outNav}: ${kept.length} nodes, spacing ${S.toFixed(1)} (${LATTICE} cells), ` +
+    `avg degree ${(degs.reduce((a, b) => a + b, 0) / kept.length).toFixed(2)}, ${six} with the full six`);
 });
