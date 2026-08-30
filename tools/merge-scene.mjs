@@ -198,32 +198,58 @@ for (let i = 0; i < json.nodes.length; i++) {
   if (!/_1x1_/.test(node.name || '') || node.mesh == null) continue;
   const prim = json.meshes[node.mesh].primitives[0];
   const { pos } = meshGeometry(prim);
-  let minX = Infinity, maxX = -Infinity;
+  let minPX = Infinity, maxPX = -Infinity;
   for (let v = 0; v < pos.length; v += 3) {
     const p = xformPoint(node.matrix || localMatrix(node), pos[v], pos[v + 1], pos[v + 2]);
-    if (p[0] < minX) minX = p[0];
-    if (p[0] > maxX) maxX = p[0];
+    if (p[0] < minPX) minPX = p[0];
+    if (p[0] > maxPX) maxPX = p[0];
   }
-  cell = maxX - minX;
+  cell = maxPX - minPX;
   break;
 }
 
-const WALKABLE = new Set(['Grass', 'Dirt', 'Carved Stone Walkway', 'Wood Dark', 'Wood Medium', 'Wood Light']);
-const STEP = 3 * cell;          // node spacing
+// Camera nodes prefer built paths over open ground: walkways and wood decking
+// first, then dirt, then grass. Sampling is dense and thinned by spacing so
+// nodes follow the paths instead of landing on an arbitrary grid.
+const PRIORITY = new Map([
+  ['Carved Stone Walkway', 0], ['Wood Dark', 0], ['Wood Medium', 0], ['Wood Light', 0],
+  ['Dirt', 1],
+  ['Grass', 2],
+]);
+const SAMPLE = 1.5 * cell;      // candidate sampling step
+const SPACING = [2.2, 3.0, 4.2]; // min node distance per priority class, in cells
+const EDGE_MAX = 5.2 * cell;    // maximum edge length
 const EYE = 1.2 * cell;         // camera target height above ground
 const BETAS = [0.55, 0.95, 1.3]; // fixed pitch angles (from +Y): high, mid, low
-const MIN_R = 1.5 * cell, MAX_R = 10 * cell, MARGIN = 0.6 * cell, FLOOR_R = 0.8 * cell;
+const RAYS = 64;                // radial collision profile resolution per pitch
+const MAX_R = 10 * cell, MARGIN = 0.6 * cell, FLOOR_R = 0.8 * cell, MIN_R = 1.5 * cell;
 
-// Per-triangle AABBs for quick rejection.
+// ---- spatial index: triangles binned by XZ cell ---------------------------
+
+let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+for (const [x0, , z0, x1, , z1, x2, , z2] of tris) {
+  minX = Math.min(minX, x0, x1, x2); maxX = Math.max(maxX, x0, x1, x2);
+  minZ = Math.min(minZ, z0, z1, z2); maxZ = Math.max(maxZ, z0, z1, z2);
+}
+const BIN = cell;
+const BW = Math.ceil((maxX - minX) / BIN) + 1, BH = Math.ceil((maxZ - minZ) / BIN) + 1;
+const bx = (x) => Math.max(0, Math.min(BW - 1, Math.floor((x - minX) / BIN)));
+const bz = (z) => Math.max(0, Math.min(BH - 1, Math.floor((z - minZ) / BIN)));
+const bins = Array.from({ length: BW * BH }, () => []);
 const triBox = tris.map(([x0, y0, z0, x1, y1, z1, x2, y2, z2]) => [
   Math.min(x0, x1, x2), Math.min(y0, y1, y2), Math.min(z0, z1, z2),
   Math.max(x0, x1, x2), Math.max(y0, y1, y2), Math.max(z0, z1, z2),
 ]);
+tris.forEach((_, t) => {
+  const b = triBox[t];
+  for (let iz = bz(b[2]); iz <= bz(b[5]); iz++)
+    for (let ix = bx(b[0]); ix <= bx(b[3]); ix++) bins[iz * BW + ix].push(t);
+});
 
 // All surface heights at (x, z): [y, matIndex, ny] per covering triangle.
 function heightsAt(x, z) {
   const hits = [];
-  for (let t = 0; t < tris.length; t++) {
+  for (const t of bins[bz(z) * BW + bx(x)]) {
     const b = triBox[t];
     if (x < b[0] || x > b[3] || z < b[2] || z > b[5]) continue;
     const [x0, y0, z0, x1, y1, z1, x2, y2, z2, mat, ny] = tris[t];
@@ -238,7 +264,52 @@ function heightsAt(x, z) {
   return hits;
 }
 
-const walkableHit = ([, mat, ny]) => WALKABLE.has(matName(mat)) && ny > 0.7;
+// Nearest ray hit (Moller-Trumbore), walking the XZ bins along the ray.
+const seen = new Int32Array(tris.length);
+let seenStamp = 0;
+function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
+  let best = Infinity;
+  const stamp = ++seenStamp;
+  const testBin = (ix, iz) => {
+    if (ix < 0 || ix >= BW || iz < 0 || iz >= BH) return;
+    for (const t of bins[iz * BW + ix]) {
+      if (seen[t] === stamp) continue;
+      seen[t] = stamp;
+      const [x0, y0, z0, x1, y1, z1, x2, y2, z2] = tris[t];
+      const e1x = x1 - x0, e1y = y1 - y0, e1z = z1 - z0;
+      const e2x = x2 - x0, e2y = y2 - y0, e2z = z2 - z0;
+      const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
+      const det = e1x * px + e1y * py + e1z * pz;
+      if (Math.abs(det) < 1e-12) continue;
+      const inv = 1 / det;
+      const tx = ox - x0, ty = oy - y0, tz = oz - z0;
+      const u = (tx * px + ty * py + tz * pz) * inv;
+      if (u < 0 || u > 1) continue;
+      const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
+      const v = (dx * qx + dy * qy + dz * qz) * inv;
+      if (v < 0 || u + v > 1) continue;
+      const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
+      if (hit > tMin && hit < tMax && hit < best) best = hit;
+    }
+  };
+  let ix = bx(ox), iz = bz(oz);
+  const stepX = dx > 0 ? 1 : -1, stepZ = dz > 0 ? 1 : -1;
+  const nextX = () => dx !== 0 ? ((minX + (ix + (dx > 0 ? 1 : 0)) * BIN) - ox) / dx : Infinity;
+  const nextZ = () => dz !== 0 ? ((minZ + (iz + (dz > 0 ? 1 : 0)) * BIN) - oz) / dz : Infinity;
+  let tX = nextX(), tZ = nextZ();
+  const dX = dx !== 0 ? Math.abs(BIN / dx) : Infinity, dZ = dz !== 0 ? Math.abs(BIN / dz) : Infinity;
+  let t = 0;
+  for (let i = 0; i < BW + BH && t <= tMax && t < best; i++) {
+    // widen by one bin so triangles straddling the ray's corridor are tested
+    for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) testBin(ix + a, iz + b);
+    if (tX < tZ) { t = tX; tX += dX; ix += stepX; } else { t = tZ; tZ += dZ; iz += stepZ; }
+  }
+  return best;
+}
+
+// ---- node candidates ------------------------------------------------------
+
+const walkableHit = ([, mat, ny]) => PRIORITY.has(matName(mat)) && ny > 0.7;
 
 function hasSupport(x, z, y) {
   const d = 0.35 * cell;
@@ -248,79 +319,71 @@ function hasSupport(x, z, y) {
   return true;
 }
 
-// Nearest ray hit against the whole scene (Moller-Trumbore), t in (tMin, tMax).
-function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
-  let best = Infinity;
-  for (let t = 0; t < tris.length; t++) {
-    const b = triBox[t];
-    // slab test
-    let lo = tMin, hi = Math.min(tMax, best);
-    let ok = true;
-    for (let a = 0; a < 3; a++) {
-      const o = a === 0 ? ox : a === 1 ? oy : oz;
-      const d = a === 0 ? dx : a === 1 ? dy : dz;
-      if (Math.abs(d) < 1e-12) {
-        if (o < b[a] || o > b[a + 3]) { ok = false; break; }
-      } else {
-        let t0 = (b[a] - o) / d, t1 = (b[a + 3] - o) / d;
-        if (t0 > t1) [t0, t1] = [t1, t0];
-        lo = Math.max(lo, t0); hi = Math.min(hi, t1);
-        if (lo > hi) { ok = false; break; }
-      }
-    }
-    if (!ok) continue;
-    const [x0, y0, z0, x1, y1, z1, x2, y2, z2] = tris[t];
-    const e1x = x1 - x0, e1y = y1 - y0, e1z = z1 - z0;
-    const e2x = x2 - x0, e2y = y2 - y0, e2z = z2 - z0;
-    const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
-    const det = e1x * px + e1y * py + e1z * pz;
-    if (Math.abs(det) < 1e-12) continue;
-    const inv = 1 / det;
-    const tx = ox - x0, ty = oy - y0, tz = oz - z0;
-    const u = (tx * px + ty * py + tz * pz) * inv;
-    if (u < 0 || u > 1) continue;
-    const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
-    const v = (dx * qx + dy * qy + dz * qz) * inv;
-    if (v < 0 || u + v > 1) continue;
-    const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
-    if (hit > tMin && hit < tMax && hit < best) best = hit;
-  }
-  return best;
-}
-
-// Sample a grid over the scene for walkable spots (all height levels, so
-// bridges and cave floors get their own nodes).
-let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-for (const b of triBox) {
-  if (b[0] < minX) minX = b[0];
-  if (b[3] > maxX) maxX = b[3];
-  if (b[2] < minZ) minZ = b[2];
-  if (b[5] > maxZ) maxZ = b[5];
-}
-
-const nodes = [];
-for (let x = minX + STEP / 2; x < maxX; x += STEP) {
-  for (let z = minZ + STEP / 2; z < maxZ; z += STEP) {
+const candidates = [];
+for (let x = minX + SAMPLE / 2; x < maxX; x += SAMPLE) {
+  for (let z = minZ + SAMPLE / 2; z < maxZ; z += SAMPLE) {
     const hits = heightsAt(x, z);
-    const levels = hits.filter(walkableHit).map((h) => h[0]).sort((a, b) => a - b);
+    const walk = hits.filter(walkableHit).sort((a, b) => a[0] - b[0]);
     let last = -Infinity;
-    for (const y of levels) {
+    for (const [y, mat] of walk) {
       if (y - last < 0.5 * cell) continue;
       last = y;
       const blocked = hits.some((h) => h[0] > y + 0.15 * cell && h[0] <= y + 1.6 * cell);
       if (blocked || !hasSupport(x, z, y)) continue;
-      nodes.push({ p: [x, y, z], n: [] });
+      // Narrowness: how many of 8 directions stay walkable nearby. Paths,
+      // bridges, stairs, ridge lips and coastlines score low and get dense
+      // nodes; open fields and beach interiors score high and stay sparse.
+      let open8 = 0, grassAround = 0;
+      for (let k = 0; k < 8; k++) {
+        const ox = Math.cos((k * Math.PI) / 4) * 2 * cell, oz = Math.sin((k * Math.PI) / 4) * 2 * cell;
+        const near = heightsAt(x + ox, z + oz).filter((h) => walkableHit(h) && Math.abs(h[0] - y) <= 0.9 * cell);
+        if (near.length) open8++;
+        if (near.some((h) => matName(h[1]) === 'Grass')) grassAround++;
+      }
+      // Surface class steers routing: walkways/wood decking are paths, and so
+      // is a dirt ribbon threading through grass (a trail); beach dirt and
+      // grass are open ground the router should prefer to avoid.
+      const name = matName(mat);
+      const isTrail = name === 'Dirt' && grassAround >= 3;
+      const cls = PRIORITY.get(name) === 0 || isTrail ? 'p' : name === 'Dirt' ? 'd' : 'g';
+      const byShape = open8 <= 5 ? 0 : open8 <= 7 ? 1 : 2;
+      candidates.push({ p: [x, y, z], cls, prio: cls === 'p' ? 0 : byShape });
     }
   }
 }
 
-// Edges: near neighbours with a clear line of sight at eye height.
+// Thin by spacing, paths first, so walkways keep a chain of nodes and open
+// grass stays sparse.
+candidates.sort((a, b) => a.prio - b.prio || a.p[0] - b.p[0] || a.p[2] - b.p[2]);
+const nodes = [];
+for (const c of candidates) {
+  const spacing = SPACING[c.prio] * cell;
+  let ok = true;
+  for (const n of nodes) {
+    if (Math.hypot(n.p[0] - c.p[0], n.p[1] - c.p[1], n.p[2] - c.p[2]) < spacing) { ok = false; break; }
+  }
+  if (ok) nodes.push({ p: c.p, s: c.cls, n: [] });
+}
+
+// Edges: near neighbours with a clear line of sight at eye height. Gentle
+// edges need only the sightline; steeper ones (stairs, ramps, inclines) also
+// need the ground to follow the climb, so cliff tops connect through their
+// stairways but never straight over a ledge.
+function groundFollows(a, b) {
+  for (const f of [0.25, 0.5, 0.75]) {
+    const x = a[0] + (b[0] - a[0]) * f, z = a[2] + (b[2] - a[2]) * f;
+    const y = a[1] + (b[1] - a[1]) * f;
+    if (!heightsAt(x, z).some((h) => walkableHit(h) && Math.abs(h[0] - y) <= 1.0 * cell)) return false;
+  }
+  return true;
+}
 for (let i = 0; i < nodes.length; i++) {
   for (let j = i + 1; j < nodes.length; j++) {
-    const [ax, ay, az] = nodes[i].p, [bx, by, bz] = nodes[j].p;
-    if (Math.hypot(bx - ax, bz - az) > 1.7 * STEP || Math.abs(by - ay) > 1.2 * cell) continue;
-    const dx = bx - ax, dy = by - ay, dz = bz - az;
-    if (raycast(ax, ay + EYE, az, dx, dy, dz, 0.02, 0.98) !== Infinity) continue;
+    const a = nodes[i].p, b = nodes[j].p;
+    const dy = Math.abs(b[1] - a[1]);
+    if (Math.hypot(b[0] - a[0], b[2] - a[2]) > EDGE_MAX || dy > 2.6 * cell) continue;
+    if (dy > 1.3 * cell && !groundFollows(a, b)) continue;
+    if (raycast(a[0], a[1] + EYE, a[2], b[0] - a[0], b[1] - a[1], b[2] - a[2], 0.02, 0.98) !== Infinity) continue;
     nodes[i].n.push(j);
     nodes[j].n.push(i);
   }
@@ -338,21 +401,23 @@ for (let i = 0; i < nodes.length; i++) {
 }
 const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
-const keep = sizes.indexOf(Math.max(...sizes));
+const keepComp = sizes.indexOf(Math.max(...sizes));
 const remap = new Map();
 const kept = [];
-for (let i = 0; i < nodes.length; i++) if (comp[i] === keep) { remap.set(i, kept.length); kept.push(nodes[i]); }
+for (let i = 0; i < nodes.length; i++) if (comp[i] === keepComp) { remap.set(i, kept.length); kept.push(nodes[i]); }
 for (const node of kept) node.n = node.n.map((i) => remap.get(i));
 
-// Orbit radii: for each fixed pitch and each of the 8 headings, how far back
-// the camera can pull before hitting something. Direction matches an
+// Radial collision profile: for each fixed pitch, the free camera distance at
+// RAYS headings around the node. The viewer clamps the orbit radius to this
+// contour continuously, so sweeping between headings cannot pass through a
+// wall that sits between two open snap positions. Direction matches an
 // ArcRotateCamera at (alpha, beta): target + r * (cos a sin b, cos b, sin a sin b).
 for (const node of kept) {
   const [x, y, z] = node.p;
   node.r = BETAS.map((beta) => {
     const radii = [];
-    for (let k = 0; k < 8; k++) {
-      const a = (k * Math.PI) / 4;
+    for (let k = 0; k < RAYS; k++) {
+      const a = (k * 2 * Math.PI) / RAYS;
       const dx = Math.cos(a) * Math.sin(beta), dy = Math.cos(beta), dz = Math.sin(a) * Math.sin(beta);
       const hit = raycast(x, y + EYE, z, dx, dy, dz, 0, MAX_R);
       radii.push(Math.round(Math.min(Math.max(hit - MARGIN, FLOOR_R), MAX_R) * 100) / 100);
@@ -363,8 +428,7 @@ for (const node of kept) {
 }
 
 // Top-surface heightmap, one cell per entry, conservative (max of 2x2
-// subsamples). The viewer clamps the camera above it every frame so glides
-// and orbit sweeps cannot pass through terrain either.
+// subsamples). The viewer uses it as a backstop while gliding between nodes.
 const hw = Math.ceil((maxX - minX) / cell), hh = Math.ceil((maxZ - minZ) / cell);
 const hdata = new Array(hw * hh).fill(-1e4);
 for (let iz = 0; iz < hh; iz++) {
@@ -379,9 +443,9 @@ for (let iz = 0; iz < hh; iz++) {
 
 import('node:fs').then(({ writeFileSync }) => {
   writeFileSync(outNav, JSON.stringify({
-    meta: { cell, eye: EYE, betas: BETAS, minR: MIN_R, maxR: MAX_R },
+    meta: { cell, eye: EYE, betas: BETAS, rays: RAYS, minR: MIN_R, maxR: MAX_R },
     height: { x0: minX, z0: minZ, step: cell, w: hw, h: hh, data: hdata },
     nodes: kept,
   }));
-  console.log(`${outNav}: ${kept.length} nodes (${nodes.length} sampled, kept largest of ${compCount} components), cell=${cell}`);
+  console.log(`${outNav}: ${kept.length} nodes (${candidates.length} candidates, largest of ${compCount} components), cell=${cell}`);
 });

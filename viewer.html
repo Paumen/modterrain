@@ -29,11 +29,13 @@
 <canvas id="view"></canvas>
 <div class="hud"><b>Walkthrough</b><br>
 <small>Tap a dot or any spot to travel there<br>
-Swipe &#8596; orbit · swipe &#8597; tilt · scroll to zoom</small></div>
+Swipe &#8596; orbit · swipe &#8597; tilt · &#65291;/&#8722; zoom (3 levels)</small></div>
 <div class="bar">
   <button id="rotL" title="Orbit left (&#8592;)">&#10226;</button>
   <button id="tiltU" title="View from higher up">&#9650;</button>
   <button id="tiltD" title="View from lower down">&#9660;</button>
+  <button id="zin" title="Zoom in">&#65291;</button>
+  <button id="zout" title="Zoom out">&#8722;</button>
   <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
 </div>
 <script src="vendor/babylon/babylon.js"></script>
@@ -75,7 +77,8 @@ async function makeEngine() {
   sky.groundColor = new BABYLON.Color3(0.25, 0.22, 0.18);
 
   // --- camera: snapped 8-heading orbit at 3 fixed pitches ------------------
-  const { eye, betas, cell, minR } = nav.meta;
+  const { eye, betas, cell, rays } = nav.meta;
+  const TAU = Math.PI * 2;
   const centroid = nav.nodes.reduce((a, n) => [a[0] + n.p[0], a[1] + n.p[2]], [0, 0]).map((v) => v / nav.nodes.length);
   const start = nav.nodes.reduce((best, n, i) =>
     Math.hypot(n.p[0] - centroid[0], n.p[2] - centroid[1]) < Math.hypot(nav.nodes[best].p[0] - centroid[0], nav.nodes[best].p[2] - centroid[1]) ? i : best, 0);
@@ -83,9 +86,13 @@ async function makeEngine() {
   let cur = start;
   let stepCont = 0;               // unbounded heading counter, 8 snaps per turn
   let betaIdx = 1;                // 0 = high view, 1 = mid, 2 = low
-  let zoom = 0.7;
+  const ZOOMS = [0.45, 0.7, 1.0]; // near, mid, far
+  let zoomIdx = 1;
+  let zoom = ZOOMS[zoomIdx];
   const step = () => ((Math.round(stepCont) % 8) + 8) % 8;
-  const safeRadius = (n) => Math.max(minR, nav.nodes[n].r[betaIdx][step()] * zoom);
+  const floorR = cell * 0.8;
+  const profile = (n, k) => nav.nodes[n].r[betaIdx][((k % rays) + rays) % rays];
+  const safeRadius = (n) => Math.max(floorR, profile(n, step() * rays / 8) * zoom);
   const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eye, nav.nodes[n].p[2]);
 
   const camera = new BABYLON.ArcRotateCamera('cam', 0, betas[betaIdx], 1, eyePoint(start), scene);
@@ -96,11 +103,14 @@ async function makeEngine() {
 
   let tween = null;
   let route = [];
+  let prevBeta = 1;
   function glideTo(node, ms) {
     const from = cur;
     cur = node;
+    const fromBeta = prevBeta;
+    prevBeta = betaIdx;
     tween = {
-      from,
+      from, leg: from !== node, fromBeta,
       t0: performance.now(), ms,
       target0: camera.target.clone(), target1: eyePoint(node),
       alpha0: camera.alpha, alpha1: stepCont * TAU8,
@@ -117,7 +127,10 @@ async function makeEngine() {
     camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * s;
     camera.beta = tween.beta0 + (tween.beta1 - tween.beta0) * s;
     camera.radius = tween.radius0 + (tween.radius1 - tween.radius0) * s;
-    if (t === 1) { tween = null; if (route.length) glideTo(route.shift(), 320); }
+    if (t === 1) {
+      tween = null;
+      if (route.length) { const nxt = route.shift(); glideTo(nxt, legMs(cur, nxt)); } else updateMarkers();
+    }
   });
 
   // Terrain clamp, every frame: pull the camera in whenever its position
@@ -140,43 +153,71 @@ async function makeEngine() {
       z: camera.target.z + r * Math.sin(camera.alpha) * Math.sin(camera.beta),
     };
   }
-  // The clamp never pulls in past the ray-verified radius at the bracketing
-  // snap headings: the heightmap is a coarse upper surface and would
-  // otherwise collapse sightlines that thread gaps (pit exits, cave mouths).
-  function snapGuard() {
-    const a = camera.alpha / TAU8;
-    const k0 = ((Math.floor(a) % 8) + 8) % 8, k1 = ((Math.ceil(a) % 8) + 8) % 8;
-    let g = Math.min(nav.nodes[cur].r[betaIdx][k0], nav.nodes[cur].r[betaIdx][k1]);
-    if (tween && tween.from !== cur) g = Math.min(g, nav.nodes[tween.from].r[betaIdx][k0], nav.nodes[tween.from].r[betaIdx][k1]);
-    return Math.max(cell * 0.8, g * zoom);
+  // The camera radius is capped every frame by the ray-verified radial
+  // profile at the current heading, so an orbit sweep follows the measured
+  // wall contour and cannot pass through terrain between snap positions.
+  // While gliding between nodes the heightmap acts as an extra backstop.
+  function profileGuard() {
+    const f = (((camera.alpha % TAU) + TAU) % TAU) / (TAU / rays);
+    const i0 = Math.floor(f), i1 = Math.ceil(f), frac = f - i0;
+    const at = (n) => profile(n, i0) * (1 - frac) + profile(n, i1) * frac;
+    let g = at(cur);
+    if (tween && tween.leg) g = Math.min(g, at(tween.from));
+    if (tween && tween.fromBeta !== betaIdx) {
+      const keep = betaIdx;
+      betaIdx = tween.fromBeta; g = Math.min(g, at(cur)); betaIdx = keep;
+    }
+    return Math.max(floorR, g * zoom);
   }
+  // Eased radius with a hard safety cap: the eased value follows the desired
+  // radius so collisions feel smooth, but it is clipped to the measured free
+  // distance every frame, so it can never lag into a wall.
+  let smoothR = null;
   scene.onBeforeRenderObservable.add(() => {
     if (!tween) camera.radius = safeRadius(cur);
-    const desired = camera.radius;
-    const clear = cell * 0.4, floor = cell * 0.8;
-    let r = desired;
-    for (let i = 0; i < 14 && r > floor; i++) {
-      const p = camPosAt(r);
-      if (p.y >= groundTop(p.x, p.z) + clear) break;
-      r = Math.max(floor, r * 0.85);
+    const guard = profileGuard();
+    let target = Math.min(camera.radius, guard);
+    if (tween && tween.leg) {
+      const clear = cell * 0.4;
+      for (let i = 0; i < 14 && target > floorR; i++) {
+        const p = camPosAt(target);
+        if (p.y >= groundTop(p.x, p.z) + clear) break;
+        target = Math.max(floorR, target * 0.85);
+      }
     }
-    camera.radius = Math.max(r, Math.min(snapGuard(), desired));
+    if (smoothR === null) smoothR = target;
+    const dt = Math.min(scene.getEngine().getDeltaTime(), 50) / 1000;
+    smoothR += (target - smoothR) * Math.min(1, dt * 12);
+    smoothR = Math.min(smoothR, guard);
+    camera.radius = smoothR;
   });
 
-  // --- travel: BFS through the graph, glide leg by leg ---------------------
+  // --- travel: cheapest path, strongly preferring walkways and trails ------
+  const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
+  const surf = { p: 1, d: 3, g: 3.5 };
+  const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * ((surf[nav.nodes[a].s] + surf[nav.nodes[b].s]) / 2);
+  const legMs = (a, b) => Math.min(650, Math.max(280, dist3(nav.nodes[a], nav.nodes[b]) * 55));
   function travelTo(dest) {
     if (dest === cur) return;
-    const prev = new Map([[cur, -1]]);
-    const q = [cur];
-    while (q.length && !prev.has(dest)) {
-      const n = q.shift();
-      for (const nb of nav.nodes[n].n) if (!prev.has(nb)) { prev.set(nb, n); q.push(nb); }
+    const dist = new Array(nav.nodes.length).fill(Infinity);
+    const prev = new Array(nav.nodes.length).fill(-1);
+    const done = new Array(nav.nodes.length).fill(false);
+    dist[cur] = 0;
+    for (;;) {
+      let n = -1;
+      for (let i = 0; i < dist.length; i++) if (!done[i] && (n === -1 || dist[i] < dist[n])) n = i;
+      if (n === -1 || dist[n] === Infinity || n === dest) break;
+      done[n] = true;
+      for (const nb of nav.nodes[n].n) {
+        const d = dist[n] + edgeCost(n, nb);
+        if (d < dist[nb]) { dist[nb] = d; prev[nb] = n; }
+      }
     }
-    if (!prev.has(dest)) return;
+    if (dist[dest] === Infinity) return;
     route = [];
-    for (let n = dest; n !== -1; n = prev.get(n)) route.unshift(n);
+    for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
     route.shift();
-    if (route.length) glideTo(route.shift(), 320);
+    if (route.length) { const nxt = route.shift(); glideTo(nxt, legMs(cur, nxt)); }
   }
   function nearestNode(point) {
     let best = 0, bestD = Infinity;
@@ -186,7 +227,7 @@ async function makeEngine() {
     });
     return best;
   }
-  const open = (n, k) => nav.nodes[n].r[betaIdx][((k % 8) + 8) % 8] > cell * 1.2;
+  const open = (n, k) => profile(n, (((k % 8) + 8) % 8) * rays / 8) > cell * 1.8;
   const orbit = (dir) => {
     route = [];
     let steps = 0;
@@ -226,6 +267,9 @@ async function makeEngine() {
   farMat.emissiveColor = BABYLON.Color3.FromHexString('#8aa3b8');
   farMat.disableLighting = true;
   farMat.alpha = 0.6;
+  const routeMat = new BABYLON.StandardMaterial('route', scene);
+  routeMat.emissiveColor = BABYLON.Color3.FromHexString('#ff9d47');
+  routeMat.disableLighting = true;
   const hereMat = new BABYLON.StandardMaterial('here', scene);
   hereMat.emissiveColor = BABYLON.Color3.FromHexString('#7ee081');
   hereMat.disableLighting = true;
@@ -238,9 +282,10 @@ async function makeEngine() {
   });
   function updateMarkers() {
     const near = new Set(nav.nodes[cur].n);
+    const onRoute = new Set(route);
     markers.forEach((m, i) => {
-      m.material = i === cur ? hereMat : near.has(i) ? nearMat : farMat;
-      m.scaling.setAll(near.has(i) ? 1.25 : 1);
+      m.material = i === cur ? hereMat : onRoute.has(i) ? routeMat : near.has(i) ? nearMat : farMat;
+      m.scaling.setAll(near.has(i) || onRoute.has(i) ? 1.25 : 1);
     });
   }
   updateMarkers();
@@ -273,9 +318,19 @@ async function makeEngine() {
     if (e.key === 'PageUp') tilt(-1);
     if (e.key === 'PageDown') tilt(1);
   });
+  const setZoom = (d) => {
+    zoomIdx = Math.min(ZOOMS.length - 1, Math.max(0, zoomIdx + d));
+    zoom = ZOOMS[zoomIdx];
+    if (!tween) glideTo(cur, 300);
+  };
+  let wheelAt = 0;
   addEventListener('wheel', (e) => {
-    zoom = Math.min(1, Math.max(0.35, zoom * (1 + e.deltaY * 0.001)));
+    if (performance.now() - wheelAt < 350) return;
+    wheelAt = performance.now();
+    setZoom(e.deltaY > 0 ? 1 : -1);
   }, { passive: true });
+  document.getElementById('zin').addEventListener('click', () => setZoom(-1));
+  document.getElementById('zout').addEventListener('click', () => setZoom(1));
   document.getElementById('rotL').addEventListener('click', () => orbit(1));
   document.getElementById('rotR').addEventListener('click', () => orbit(-1));
   document.getElementById('tiltU').addEventListener('click', () => tilt(-1));
