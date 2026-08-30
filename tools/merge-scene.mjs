@@ -324,6 +324,9 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
   return best;
 }
 
+// Recorded so the viewer can snap hand-placed nodes onto the same lattice.
+const lattice = { s: S, row: ROW, x0: minX + S / 2, z0: minZ + ROW / 2 };
+
 // One node per walkable level at each lattice point, so bridges, cave floors
 // and the ground beneath them each get their own.
 const nodes = [];
@@ -332,8 +335,8 @@ const cols = Math.ceil((maxX - minX) / S) + 1;
 const rows = Math.ceil((maxZ - minZ) / ROW) + 1;
 for (let r = 0; r < rows; r++) {
   for (let c = 0; c < cols; c++) {
-    const x = minX + c * S + (r % 2) * (S / 2);
-    const z = minZ + r * ROW;
+    const x = lattice.x0 + c * S + (r % 2) * (S / 2);
+    const z = lattice.z0 + r * ROW;
     if (x > maxX || z > maxZ) continue;
     const hits = heightsAt(x, z);
     const levels = hits.filter(walkableHit).sort((p, q) => p[0] - q[0]);
@@ -411,6 +414,37 @@ const remap = new Map();
 const kept = [];
 for (let i = 0; i < nodes.length; i++) if (sizes[comp[i]] >= 3) { remap.set(i, kept.length); kept.push(nodes[i]); }
 for (const node of kept) node.n = node.n.map((i) => remap.get(i)).filter((i) => i !== undefined);
+
+// A node whose eye point is buried in a surface is not a viewpoint: the
+// camera then grazes that surface whichever way it turns, and the view cuts
+// through the wall. Measured at the camera target, not assumed from layout.
+{
+  const before = kept.length;
+  const usable = kept.filter((node) => {
+    const [x, y, z] = node.p;
+    const eyeY = y + (node.e ?? EYE);
+    let closest = Infinity;
+    for (let k = 0; k < 12; k++) {
+      const a = (k * Math.PI) / 6;
+      for (const up of [0.34, 0, -0.2]) {
+        const s = Math.sqrt(1 - up * up);
+        closest = Math.min(closest, raycast(x, eyeY, z, Math.cos(a) * s, up, Math.sin(a) * s, 0.001, 6 * cell));
+      }
+    }
+    return closest >= 0.4 * cell;
+  });
+  if (usable.length !== before) {
+    const keepSet = new Set(usable);
+    const remap2 = new Map();
+    kept.forEach((n) => { if (keepSet.has(n)) remap2.set(kept.indexOf(n), remap2.size); });
+    const idx = new Map();
+    kept.forEach((n, i) => { if (keepSet.has(n)) idx.set(i, idx.size); });
+    for (const n of usable) n.n = n.n.map((j) => idx.get(j)).filter((j) => j !== undefined);
+    kept.length = 0;
+    kept.push(...usable);
+    console.log(`dropped ${before - usable.length} node(s) with no room for the camera`);
+  }
+}
 
 // Tie stranded pockets to the nearest node they can actually see: a group
 // nothing reaches is a group you can only be stuck in.
@@ -526,12 +560,12 @@ import('node:fs').then(({ writeFileSync, readFileSync }) => {
       if (!did) break;
     }
     console.log(`--caves: added ${added.length} cave nodes to the ${prev.nodes.length} already there, ${bridged} tied into the main graph`);
-    writeFileSync(navPath, JSON.stringify({ meta: { cell, eye: EYE }, nodes: merged }));
+    writeFileSync(navPath, JSON.stringify({ meta: { cell, eye: EYE, lattice }, nodes: merged }));
     console.log(`${navPath}: ${merged.length} nodes`);
     return;
   }
   for (const n of out) delete n.cave;
-  writeFileSync(outNav, JSON.stringify({ meta: { cell, eye: EYE }, nodes: out }));
+  writeFileSync(outNav, JSON.stringify({ meta: { cell, eye: EYE, lattice }, nodes: out }));
   const degs = kept.map((n) => n.n.length);
   const six = degs.filter((d) => d === 6).length;
   if (outNav !== navPath) console.log(`note: ${navPath} exists and was kept; pass --force to replace it`);
