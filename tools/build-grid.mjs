@@ -66,16 +66,12 @@ const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
 const CAVE_FLOOR = /^Floor_/;
-const OBSTACLE = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_)/;
-const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
-const GROUND = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/;
+const WALKABLE = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_|Floor_)/;
+const BLOCKING = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Terrain_Water_|Water_|Waterfall_)/;
 
-const GROUNDS = 0, CAVE = 1, BLOCKS = 2, WET = 3;
-function kindOf(piece) {
-  if (CAVE_FLOOR.test(piece)) return CAVE;
-  if (OBSTACLE.test(piece)) return BLOCKS;
-  if (WATER.test(piece)) return WET;
-  if (GROUND.test(piece)) return GROUNDS;
+function classify(piece) {
+  if (WALKABLE.test(piece)) return { blocking: false, cave: CAVE_FLOOR.test(piece) };
+  if (BLOCKING.test(piece)) return { blocking: true, cave: false };
   return null;
 }
 const unknown = new Set();
@@ -87,16 +83,12 @@ const CLUSTER = 0.3;
 const REACH = 0.1;
 const KNEE = 0.5;
 const HEAD = 1.6;
-const WADE = 1.0;
-const FLAT = 0.5;
-const RAIL = 0.3;
-
-const isRail = (kind, up, low, high) => kind === GROUNDS && Math.abs(up) < FLAT && high - low >= RAIL;
 
 const pos = [];
 const triMat = [];
 const triUp = [];
-const triKind = [];
+const triBlocking = [];
+const triCave = [];
 const triPiece = [];
 const cache = new Map();
 
@@ -112,7 +104,7 @@ function emitNode(nodeIndex, parent) {
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
-    const kind = kindOf(piece);
+    const kind = classify(piece);
     if (kind === null) unknown.add(piece);
     else for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
@@ -127,11 +119,11 @@ function emitNode(nodeIndex, parent) {
         const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
         const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         const up = ny / (Math.hypot(nx, ny, nz) || 1);
-        const low = Math.min(p0[1], p1[1], p2[1]), high = Math.max(p0[1], p1[1], p2[1]);
         pos.push(...p0, ...p1, ...p2);
         triMat.push(prim.material);
         triUp.push(up);
-        triKind.push(isRail(kind, up, low, high) ? BLOCKS : kind);
+        triBlocking.push(kind.blocking);
+        triCave.push(kind.cave);
         triPiece.push(piece);
       }
     }
@@ -142,7 +134,7 @@ function emitNode(nodeIndex, parent) {
 for (const root of json.scenes[json.scene ?? 0].nodes) emitNode(root, IDENTITY);
 
 if (unknown.size) {
-  console.error(`unclassified pieces -- add them to OBSTACLE, WATER or GROUND:\n  ${[...unknown].join('\n  ')}`);
+  console.error(`unclassified pieces -- add them to WALKABLE or BLOCKING:\n  ${[...unknown].join('\n  ')}`);
   process.exit(1);
 }
 
@@ -154,7 +146,7 @@ const { box, bins, cols: BW, bx, bz } = index;
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 
 let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-for (let t = 0; t < triKind.length; t++) {
+for (let t = 0; t < triBlocking.length; t++) {
   const b = t * 6;
   minX = Math.min(minX, box[b]); maxX = Math.max(maxX, box[b + 3]);
   minZ = Math.min(minZ, box[b + 2]); maxZ = Math.max(maxZ, box[b + 5]);
@@ -166,7 +158,7 @@ function inTheWay(x, z, y) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
     for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (triKind[t] !== BLOCKS) continue;
+        if (!triBlocking[t]) continue;
         const b = t * 6;
         if (box[b + 3] < x - REACH || box[b] > x + REACH || box[b + 5] < z - REACH || box[b + 2] > z + REACH) continue;
         if (box[b + 4] > y + KNEE && box[b + 1] < y + HEAD) return true;
@@ -198,7 +190,8 @@ function heightsAt(x, z) {
     const w1 = ((z2 - z0) * (x - x2) + (x0 - x2) * (z - z2)) / d;
     const w2 = 1 - w0 - w1;
     if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-    hits.push([w0 * y0 + w1 * y1 + w2 * y2, triMat[t], triUp[t], triKind[t], t]);
+    if (triUp[t] <= 0) continue;
+    hits.push([w0 * y0 + w1 * y1 + w2 * y2, triMat[t], triUp[t], triBlocking[t], triCave[t], t]);
   }
   return hits;
 }
@@ -213,44 +206,27 @@ function cluster(hits, y) {
   return out;
 }
 
-function floorsAt(x, z) {
-  const hits = heightsAt(x, z).filter((h) => h[2] > FLAT && h[3] <= CAVE).sort((a, b) => a[0] - b[0]);
-  return cluster(hits, (h) => h[0]).map((k) => {
-    const top = k[k.length - 1];
-    return { y: top[0], mat: top[1], up: top[2], kind: top[3] };
-  });
+function floorAt(x, z) {
+  const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
+  return cluster(hits, (h) => h[0])
+    .map((k) => {
+      const top = k[k.length - 1];
+      return { y: top[0], mat: top[1], blocking: top[3], cave: top[4] };
+    })
+    .filter((f) => !f.blocking);
 }
 
-const OFFSETS = [[0, 0], [0.35, 0], [-0.35, 0], [0, 0.35], [0, -0.35],
-  [0.3, 0.3], [0.3, -0.3], [-0.3, 0.3], [-0.3, -0.3]];
-const NEED = 5;
-
-const reject = { hole: 0, obstacle: 0, wet: 0 };
+const reject = { obstacle: 0 };
 
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
-
-  const flat = [];
-  OFFSETS.forEach(([ox, oz], s) => floorsAt(x + ox, z + oz).forEach((f) => flat.push({ ...f, s })));
-  if (!flat.length) return [];
-  flat.sort((a, b) => a.y - b.y);
-
   const here = [];
-  for (const k of cluster(flat, (f) => f.y)) {
-    const y = k[Math.floor(k.length / 2)].y;
-    const centre = k.find((f) => f.s === 0);
-    const name = matName((centre || k[k.length - 1]).mat);
-
-    const support = new Set(k.map((f) => f.s)).size;
-    if (support < NEED) { reject.hole++; note?.(y, name, `only ${support} of ${OFFSETS.length} samples`); continue; }
-    if (inTheWay(x, z, y)) { reject.obstacle++; note?.(y, name, 'an obstacle stands here'); continue; }
-    if (heightsAt(x, z).some((h) => h[3] === WET && h[0] > y - 0.05 && h[0] < y + WADE)) {
-      reject.wet++; note?.(y, name, 'under water'); continue;
-    }
-
-    note?.(y, name, 'open');
-    here.push({ c, r, y, m: name,
-      home: raycast(index, x, y + 0.2, z, 0, 1, 0, 40) === Infinity || k.some((f) => f.kind === CAVE) });
+  for (const f of floorAt(x, z)) {
+    const name = matName(f.mat);
+    if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
+    note?.(f.y, name, 'open');
+    here.push({ c, r, y: f.y, m: name,
+      home: raycast(index, x, f.y + 0.2, z, 0, 1, 0, 40) === Infinity || f.cave });
   }
   return here;
 }
@@ -262,12 +238,12 @@ if (probeArg > 0) {
   console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
   console.log('surfaces under the centre:');
   for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
-    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${['ground', 'cave floor', 'obstacle', 'water'][h[3]].padEnd(11)} ${triPiece[h[4]]}`);
+    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${(h[3] ? 'blocking' : h[4] ? 'cave floor' : 'walkable').padEnd(11)} ${triPiece[h[5]]}`);
   console.log('in the way of the point itself:');
   for (let iz = bz(pz - REACH); iz <= bz(pz + REACH); iz++)
     for (let ix = bx(px - REACH); ix <= bx(px + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (triKind[t] !== BLOCKS) continue;
+        if (!triBlocking[t]) continue;
         const b = t * 6;
         if (box[b + 3] < px - REACH || box[b] > px + REACH || box[b + 5] < pz - REACH || box[b + 2] > pz + REACH) continue;
         console.log(`  ${triPiece[t].padEnd(44)} y ${box[b + 1].toFixed(2)}..${box[b + 4].toFixed(2)}`);
