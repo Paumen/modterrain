@@ -166,9 +166,6 @@ const CLUSTER = 0.3;
 const WALKABLE = new Set(['Grass', 'Dirt', 'Cliff', 'Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 
-const WET = new Set(['Water River', 'Waterfall', 'Waterfall Crest', 'Cave Pool']);
-const WADE = 1.0;
-
 let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
 for (const [x0, , z0, x1, , z1, x2, , z2] of tris) {
   minX = Math.min(minX, x0, x1, x2); maxX = Math.max(maxX, x0, x1, x2);
@@ -273,7 +270,7 @@ function ceilingAt(x, z, y) {
   return mid === Infinity ? Infinity : mid + 0.2;
 }
 
-const reject = { support: 0, head: 0, wet: 0 };
+const reject = { support: 0, head: 0 };
 
 const inBox = (list, x, z, y) => list.some((d) =>
   x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5] && y >= d[1] - 0.1 && y <= d[4] + 0.1);
@@ -307,9 +304,6 @@ function floorsIn(c, r, note) {
     const need = onDeck(x, z, y) ? 1 : NEED;
     if (support < need) { reject.support++; note?.(y, label, `only ${support} of ${OFFSETS.length} samples`); continue; }
 
-    if (flat.some((f) => WET.has(matName(f.mat)) && f.y > y - 0.05 && f.y < y + WADE)) {
-      reject.wet++; note?.(y, label, 'under water'); continue;
-    }
     const tally = new Map();
     for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
     const centre = good.find((f) => f.s === 0);
