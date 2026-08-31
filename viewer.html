@@ -45,8 +45,10 @@
 </div>
 <script src="vendor/babylon/babylon.js"></script>
 <script src="vendor/babylon/babylonjs.loaders.min.js"></script>
-<script>
-'use strict';
+<script type="module">
+import { buildIndex, raycast as castRay } from './tools/ray.mjs';
+import { isSeeThrough } from './tools/see-through.mjs';
+
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
 const canvas = document.getElementById('view');
 const hud = document.getElementById('hud');
@@ -77,8 +79,30 @@ const VIEWS = [
 const LEVEL = 1.55;   // as flat as the camera is allowed to lie
 const BACK = 1.6;     // the distance it tries to keep behind the eye
 const RATE = 9;       // units a second its distance may change
-const AHEAD = 4;      // cells of route it plans over
 const smooth = (t) => t * t * (3 - 2 * t);
+
+// One damped value. Left alone it closes on its target at a fixed rate a
+// second; given an ease it runs a smoothstep over a fixed time instead, so
+// several of them eased together set off and arrive together. Unset, it
+// simply starts wherever its target is.
+function damped(v, rate) {
+  return {
+    v, rate, easing: null,
+    ease(ms) { if (this.v !== null) this.easing = { t0: performance.now(), ms, from: this.v }; },
+    step(target, dt, rate = this.rate) {
+      if (this.v === null) { this.v = target; this.easing = null; return this.v; }
+      if (this.easing) {
+        const t = Math.min((performance.now() - this.easing.t0) / this.easing.ms, 1);
+        this.v = this.easing.from + (target - this.easing.from) * smooth(t);
+        if (t === 1) this.easing = null;
+      } else {
+        const d = rate * dt;
+        this.v += Math.max(-d, Math.min(d, target - this.v));
+      }
+      return this.v;
+    },
+  };
+}
 
 const VIEW_HELP = `<b>Walkthrough</b><br>
 <small>Tap a cell or any spot to travel there<br>
@@ -108,10 +132,9 @@ async function makeEngine() {
 // the camera, the pathfinder and the editor all work in.
 function fromGrid(grid) {
   const { origin, materials, path } = grid.meta;
-  const nodes = grid.nodes.map(([c, r, y, e, m]) => ({
+  const nodes = grid.nodes.map(([c, r, y, m]) => ({
     c, r,
     p: [origin.c + c + 0.5, y, origin.r + r + 0.5],
-    e,
     s: path[m] ? 'p' : 'g',
     n: [],
   }));
@@ -119,7 +142,7 @@ function fromGrid(grid) {
     nodes[grid.edges[i]].n.push(grid.edges[i + 1]);
     nodes[grid.edges[i + 1]].n.push(grid.edges[i]);
   }
-  return { meta: { ...grid.meta, eye: grid.meta.eye, cell: grid.meta.cell }, nodes, materials };
+  return { meta: grid.meta, nodes, materials };
 }
 // The inverse, so an edited grid saves back in the same shape the builder
 // writes and the two stay interchangeable.
@@ -131,7 +154,7 @@ function toGrid(nav) {
   nav.nodes.forEach((n, i) => { for (const j of n.n) if (j > i) edges.push(i, j); });
   return {
     meta: nav.meta,
-    nodes: nav.nodes.map((n) => [n.c, n.r, +n.p[1].toFixed(3), n.e, n.s === 'p' && walk >= 0 ? walk : grass]),
+    nodes: nav.nodes.map((n) => [n.c, n.r, +n.p[1].toFixed(3), n.s === 'p' && walk >= 0 ? walk : grass]),
     edges,
   };
 }
@@ -158,7 +181,7 @@ function toGrid(nav) {
   // their own meshes by the merge step, and the camera ignores them: you look
   // straight over a waist-high fence, and a camera that flinches at one is
   // worse than no collision at all.
-  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !/\(see through\)$/.test(m.name));
+  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
@@ -168,15 +191,13 @@ function toGrid(nav) {
   sky.groundColor = new BABYLON.Color3(0.25, 0.22, 0.18);
 
   // --- collision: one ray per frame against the real triangles -------------
-  // All terrain triangles in camera space, binned by XZ cell; a ray walks the
-  // bins (2D DDA). This is the only collision mechanism: whatever state the
-  // camera is in - orbiting, tilting, zooming, gliding - the ray from the
-  // look-target to the wanted position is measured against the actual
-  // geometry every frame.
-  let tris, triBox, bins, BW, BH, bMinX, bMinZ;
-  const BIN = cell;
-  {
-    const arrs = [];
+  // Every terrain triangle in world space, handed to the same index and
+  // raycaster the grid builder uses. This is the only collision mechanism:
+  // whatever state the camera is in - orbiting, tilting, zooming, gliding -
+  // the ray from the look-target to the wanted position is measured against
+  // the actual geometry every frame.
+  const index = buildIndex((() => {
+    const parts = [];
     let total = 0;
     for (const mesh of terrain) {
       mesh.computeWorldMatrix(true);
@@ -188,111 +209,34 @@ function toGrid(nav) {
         BABYLON.Vector3.TransformCoordinatesFromFloatsToRef(src[i], src[i + 1], src[i + 2], wm, v);
         out[i] = v.x; out[i + 1] = v.y; out[i + 2] = v.z;
       }
-      arrs.push(out);
+      parts.push(out);
       total += out.length;
     }
-    tris = new Float32Array(total);
+    const all = new Float32Array(total);
     let o = 0;
-    for (const a of arrs) { tris.set(a, o); o += a.length; }
-    const nTris = tris.length / 9;
-    triBox = new Float32Array(nTris * 6);
-    bMinX = Infinity; bMinZ = Infinity;
-    let maxX = -Infinity, maxZ = -Infinity;
-    for (let t = 0; t < nTris; t++) {
-      const b = t * 9;
-      const x0 = Math.min(tris[b], tris[b + 3], tris[b + 6]), x1 = Math.max(tris[b], tris[b + 3], tris[b + 6]);
-      const y0 = Math.min(tris[b + 1], tris[b + 4], tris[b + 7]), y1 = Math.max(tris[b + 1], tris[b + 4], tris[b + 7]);
-      const z0 = Math.min(tris[b + 2], tris[b + 5], tris[b + 8]), z1 = Math.max(tris[b + 2], tris[b + 5], tris[b + 8]);
-      triBox.set([x0, y0, z0, x1, y1, z1], t * 6);
-      bMinX = Math.min(bMinX, x0); bMinZ = Math.min(bMinZ, z0);
-      maxX = Math.max(maxX, x1); maxZ = Math.max(maxZ, z1);
-    }
-    BW = Math.ceil((maxX - bMinX) / BIN) + 1;
-    BH = Math.ceil((maxZ - bMinZ) / BIN) + 1;
-    bins = Array.from({ length: BW * BH }, () => []);
-    const bx = (x) => Math.max(0, Math.min(BW - 1, Math.floor((x - bMinX) / BIN)));
-    const bz = (z) => Math.max(0, Math.min(BH - 1, Math.floor((z - bMinZ) / BIN)));
-    for (let t = 0; t < nTris; t++) {
-      const b = t * 6;
-      for (let iz = bz(triBox[b + 2]); iz <= bz(triBox[b + 5]); iz++)
-        for (let ix = bx(triBox[b]); ix <= bx(triBox[b + 3]); ix++) bins[iz * BW + ix].push(t);
-    }
-  }
-  const seen = new Int32Array(tris.length / 9);
-  let seenStamp = 0;
-  function raycast(ox, oy, oz, dx, dy, dz, tMax) {
-    let best = Infinity;
-    const stamp = ++seenStamp;
-    const testBin = (ix, iz) => {
-      if (ix < 0 || ix >= BW || iz < 0 || iz >= BH) return;
-      for (const t of bins[iz * BW + ix]) {
-        if (seen[t] === stamp) continue;
-        seen[t] = stamp;
-        const b = t * 9;
-        const e1x = tris[b + 3] - tris[b], e1y = tris[b + 4] - tris[b + 1], e1z = tris[b + 5] - tris[b + 2];
-        const e2x = tris[b + 6] - tris[b], e2y = tris[b + 7] - tris[b + 1], e2z = tris[b + 8] - tris[b + 2];
-        const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
-        const det = e1x * px + e1y * py + e1z * pz;
-        if (Math.abs(det) < 1e-12) continue;
-        const inv = 1 / det;
-        const tx = ox - tris[b], ty = oy - tris[b + 1], tz = oz - tris[b + 2];
-        const u = (tx * px + ty * py + tz * pz) * inv;
-        if (u < 0 || u > 1) continue;
-        const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
-        const v = (dx * qx + dy * qy + dz * qz) * inv;
-        if (v < 0 || u + v > 1) continue;
-        const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
-        if (hit > 0.001 && hit < tMax && hit < best) best = hit;
-      }
-    };
-    let ix = Math.floor((ox - bMinX) / BIN), iz = Math.floor((oz - bMinZ) / BIN);
-    const stepX = dx > 0 ? 1 : -1, stepZ = dz > 0 ? 1 : -1;
-    let tX = dx !== 0 ? ((bMinX + (ix + (dx > 0 ? 1 : 0)) * BIN) - ox) / dx : Infinity;
-    let tZ = dz !== 0 ? ((bMinZ + (iz + (dz > 0 ? 1 : 0)) * BIN) - oz) / dz : Infinity;
-    const dX = dx !== 0 ? Math.abs(BIN / dx) : Infinity, dZ = dz !== 0 ? Math.abs(BIN / dz) : Infinity;
-    let t = 0;
-    for (let i = 0; i < BW + BH && t <= tMax && t < best; i++) {
-      for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) testBin(ix + a, iz + b);
-      if (tX < tZ) { t = tX; tX += dX; ix += stepX; } else { t = tZ; tZ += dZ; iz += stepZ; }
-    }
-    return best;
-  }
+    for (const a of parts) { all.set(a, o); o += a.length; }
+    return all;
+  })(), cell);
+  const raycast = (ox, oy, oz, dx, dy, dz, tMax) => castRay(index, ox, oy, oz, dx, dy, dz, tMax);
 
   // --- camera --------------------------------------------------------------
   const centroid = nav.nodes.reduce((a, n) => [a[0] + n.p[0], a[1] + n.p[2]], [0, 0]).map((v) => v / nav.nodes.length);
-  // Start on open ground near the middle of the island. Cells under a low
-  // ceiling carry a shortened eye height, which is what tells a cave floor
-  // apart from a hillside, and a trail beats a field as an opening view.
+  // Start on open ground near the middle of the island, and a trail beats a
+  // field as an opening view.
   const startScore = (n) => Math.hypot(n.p[0] - centroid[0], n.p[2] - centroid[1]) + (n.s === 'p' ? 0 : 30);
   // The grid can hold patches you cannot walk out of -- an offshore rock, a
   // terrace with no route onto it. Starting on one of those leaves you with a
-  // single step to take and nothing else, so the walk starts in the biggest
-  // patch there is.
-  const patch = new Int32Array(nav.nodes.length).fill(-1);
-  const patchSize = [];
-  for (let i = 0; i < nav.nodes.length; i++) {
-    if (patch[i] >= 0) continue;
-    const id = patchSize.length;
-    let n = 0;
-    const stack = [i];
-    patch[i] = id;
-    while (stack.length) {
-      const c = stack.pop();
-      n++;
-      for (const m of nav.nodes[c].n) if (patch[m] < 0) { patch[m] = id; stack.push(m); }
-    }
-    patchSize.push(n);
-  }
-  const biggest = patchSize.indexOf(Math.max(...patchSize));
+  // single step to take and nothing else, so the walk starts in the main
+  // patch, which the builder writes first and counts in the meta.
+  const mainPatch = nav.meta.main ?? nav.nodes.length;
   const start = (() => {
     const order = nav.nodes.map((n, i) => i)
-      .filter((i) => patch[i] === biggest)
+      .filter((i) => i < mainPatch)
       .sort((a, b) => startScore(nav.nodes[a]) - startScore(nav.nodes[b]));
-    // Under open sky, not under a hill: the shortened eye height only marks a
-    // low roof, and a big cave has plenty of headroom.
+    // Under open sky rather than inside a hill.
     for (const i of order.slice(0, 400)) {
       const p = nav.nodes[i].p;
-      if (raycast(p[0], p[1] + (nav.nodes[i].e ?? eye), p[2], 0, 1, 0, 80) === Infinity) return i;
+      if (raycast(p[0], p[1] + eye, p[2], 0, 1, 0, 80) === Infinity) return i;
     }
     return order[0];
   })();
@@ -308,10 +252,7 @@ function toGrid(nav) {
   // of the grid: it pulls back tens of cells, never fractions of one.
   const maxR = 66, margin = 0.3;
   const step = () => ((Math.round(stepCont) % STEPS) + STEPS) % STEPS;
-  // Nodes under a low roof carry their own eye height, so the camera target
-  // ducks into the cave instead of sitting in the ceiling.
-  const eyeOf = (n) => nav.nodes[n].e ?? eye;
-  const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eyeOf(n), nav.nodes[n].p[2]);
+  const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eye, nav.nodes[n].p[2]);
   const dirAt = (alpha, beta) => [Math.cos(alpha) * Math.sin(beta), Math.cos(beta), Math.sin(alpha) * Math.sin(beta)];
 
   // How much room the camera has behind the eye: the centre ray plus four
@@ -339,36 +280,24 @@ function toGrid(nav) {
     return best;
   }
 
-  // Room behind a cell at one heading and pitch, measured from the height the
-  // camera is looking from -- not the cell's own eye height, which is not
-  // where the view is yet while it is still ducking into a cave.
-  function roomAt(n, k, beta, lift = smoothEye) {
+  // Room behind a cell at one heading and pitch, measured from eye height.
+  function roomAt(n, k, beta) {
     const p = nav.nodes[n].p;
     const [dx, dy, dz] = dirAt(k * STEP_ANGLE, beta);
-    return Math.min(maxR, thickCast(p[0], p[1] + lift, p[2], dx, dy, dz, maxR + margin, nearRadius()) - margin);
+    return Math.min(maxR, thickCast(p[0], p[1] + eye, p[2], dx, dy, dz, maxR + margin, nearRadius()) - margin);
   }
   // The pitch to use: the ladder's own, unless the roof is too low for it, in
   // which case flatten towards level until the camera fits in under it.
-  function fitBeta(n, k, lift) {
+  function fitBeta(n, k) {
     const want = view().beta;
-    for (let b = want; b <= LEVEL + 1e-6; b += 0.09) if (roomAt(n, k, b, lift) >= BACK) return b;
+    for (let b = want; b <= LEVEL + 1e-6; b += 0.09) if (roomAt(n, k, b) >= BACK) return b;
     return LEVEL;
   }
-  // What the camera wants over the next few cells as well as this one, so it
-  // ducks before the bridge arrives rather than being caught under it. Every
-  // part of the plan -- how low to look from, how flat to lie, how far back --
-  // is the tightest answer anywhere in that window.
-  function planned() {
-    const cells = [cur, ...route.slice(0, AHEAD)];
-    let radius = Infinity, beta = -Infinity, lift = Infinity;
-    for (const n of cells) lift = Math.min(lift, eyeOf(n));
-    const at = Math.min(smoothEye, lift);
-    for (const n of cells) {
-      const b = fitBeta(n, step(), at);
-      radius = Math.min(radius, Math.min(view().far, roomAt(n, step(), b, at)));
-      beta = Math.max(beta, b);
-    }
-    return { radius, beta, lift };
+  // What the camera wants where you are standing: how flat to lie, and how far
+  // back it can sit without ending up inside whatever is behind it.
+  function plan() {
+    const beta = fitBeta(cur, step());
+    return { beta, radius: Math.min(view().far, roomAt(cur, step(), beta)) };
   }
   const open = (n, k) => roomAt(n, ((k % STEPS) + STEPS) % STEPS, view().beta) > BACK;
 
@@ -379,8 +308,9 @@ function toGrid(nav) {
   camera.inputs.clear();
 
   let tween = null;
-  let smoothEye = eye;
-  let held = null, heldBeta = null, ease = null;
+  // How far back the camera sits and how flat it lies. Both are damped, and
+  // stepping the view ladder eases them together on one clock.
+  const held = damped(null, RATE), heldBeta = damped(null, 2);
   let route = [];
   // A node whose only neighbour is out of sight would otherwise be a trap,
   // so every arrival is remembered and Back always leads out.
@@ -400,7 +330,7 @@ function toGrid(nav) {
     const b = document.getElementById('back');
     if (b) b.disabled = !history.length;
     recording = false;
-    stepCont = bestHeading(to);
+    stepCont = headingNear(to, Math.round(stepCont)) ?? Math.round(stepCont);
     glideTo(to, 420);
     recording = true;
   }
@@ -415,7 +345,7 @@ function toGrid(nav) {
       // the current step.
       aT0: performance.now(), aMs: ms,
       target0: camera.target.clone(), target1: eyePoint(node),
-      ground0: camera.target.y - smoothEye, ground1: nav.nodes[node].p[1],
+      ground0: camera.target.y - eye, ground1: nav.nodes[node].p[1],
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
     };
     updateMarkers();
@@ -426,7 +356,7 @@ function toGrid(nav) {
       const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
       const s = smooth(t);
       camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
-      camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + smoothEye;
+      camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + eye;
       const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
       camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
       if (t === 1) {
@@ -440,40 +370,28 @@ function toGrid(nav) {
       camera.beta += (MAP_VIEW.beta - camera.beta) * Math.min(1, dt * 6);
       const want = Math.max(2.4, maxR * mapZoom);
       camera.radius += (want - camera.radius) * Math.min(1, dt * 6);
-      held = heldBeta = null;
+      held.v = heldBeta.v = null;
       return;
     }
-    const plan = planned();
-    if (held === null) { held = plan.radius; heldBeta = plan.beta; }
-    smoothEye += Math.max(-3 * dt, Math.min(3 * dt, plan.lift - smoothEye));
-    const rate = (RATE + view().far) * dt;
-    if (ease) {
-      // Stepping the ladder is something you asked for, so it is eased on one
-      // clock: distance and pitch set off and arrive together, and both ends
-      // are soft. Holding them to a fixed rate instead let the pitch finish
-      // long before the distance had, which is the lurch in a zoom.
-      const t = Math.min((performance.now() - ease.t0) / ease.ms, 1), k = smooth(t);
-      held = ease.r0 + (plan.radius - ease.r0) * k;
-      heldBeta = ease.b0 + (plan.beta - ease.b0) * k;
-      if (t === 1) ease = null;
-    } else {
-      // What the terrain does to the camera is not something you asked for, so
-      // it is held to a fixed rate a second instead: how suddenly the world
-      // changes never decides how suddenly the camera does.
-      held += Math.max(-rate, Math.min(rate, plan.radius - held));
-      heldBeta += Math.max(-2 * dt, Math.min(2 * dt, plan.beta - heldBeta));
-    }
-    camera.beta = heldBeta;
-    if (!tween) camera.target.y = nav.nodes[cur].p[1] + smoothEye;
+    // Stepping the ladder is something you asked for, so both values ease on
+    // one clock and arrive together. What the terrain does to the camera is
+    // not something you asked for, so between eases they are held to a fixed
+    // rate a second: how suddenly the world changes never decides how
+    // suddenly the camera does.
+    const want = plan();
+    const rate = RATE + view().far;
+    camera.beta = heldBeta.step(want.beta, dt);
+    const back = held.step(want.radius, dt, rate);
+    if (!tween) camera.target.y = nav.nodes[cur].p[1] + eye;
     // Whatever it planned, it never ends a frame further out than the room it
-    // has right now. The plan is for smoothness; this is for not standing in a
-    // wall. With the plan looking ahead, it rarely has anything left to do.
+    // has right now. The plan is for smoothness; this is for not standing in
+    // a wall.
     const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
     const probe = nearRadius();
-    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, held + margin, probe)
+    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe)
       - Math.hypot(camera.minZ, probe) * 1.3;
-    camera.radius = Math.max(0, Math.min(held, room));
-    held = Math.min(held, camera.radius + rate);
+    camera.radius = Math.max(0, Math.min(back, room));
+    held.v = Math.min(held.v, camera.radius + rate * dt);
   });
 
   // --- travel: cheapest path, strongly preferring walkways and trails ------
@@ -645,23 +563,20 @@ function toGrid(nav) {
     });
     return best;
   }
-  // On arrival, face the way that actually has room: keep the current heading
-  // when it is open, otherwise turn to the nearest one that is. Without this a
-  // node in a tight spot leaves the camera pressed against rock.
-  function bestHeading(node) {
-    const base = Math.round(stepCont);
-    let bestK = base, bestScore = -Infinity;
-    for (let d = 0; d <= STEPS / 2; d++) {
-      for (const k of d === 0 ? [base] : [base + d, base - d]) {
-        const free = Math.min(roomAt(node, ((k % STEPS) + STEPS) % STEPS, view().beta), 24);
-        const score = free - d * 1.05;
-        if (score > bestScore) { bestScore = score; bestK = k; }
-      }
-    }
-    return bestK;
+  // The one heading rule: keep the heading you have when it has room,
+  // otherwise turn to the nearest one that does, out to maxTurn notches.
+  // A dir of -1 or 1 searches only that way round, which is what an orbit
+  // press wants -- a turn, not the roomiest view on offer. Null if nothing in
+  // range is open; every caller decides for itself what to do then.
+  function headingNear(node, from, maxTurn = STEPS / 2, dir = 0) {
+    for (let d = dir ? 1 : 0; d <= maxTurn; d++)
+      for (const k of d === 0 ? [from] : dir ? [from + dir * d] : [from + d, from - d])
+        if (open(node, k)) return k;
+    return null;
   }
   function glideFacing(node, ms) {
-    stepCont = bestHeading(node);
+    const from = Math.round(stepCont);
+    stepCont = headingNear(node, from) ?? from;
     glideTo(node, ms);
   }
 
@@ -669,9 +584,8 @@ function toGrid(nav) {
     const from = Math.round(stepCont);
     // One step per press, skipping only headings jammed hard against a
     // surface, and never so many that it wraps back to where it started.
-    let k = from + dir, steps = 1;
-    while (steps < STEPS - 1 && !open(cur, k)) { k += dir; steps++; }
-    if (!open(cur, k)) { k = from + dir; steps = 1; }
+    const k = headingNear(cur, from, STEPS - 1, dir) ?? from + dir;
+    const steps = Math.abs(k - from);
     stepCont = k;
     // Turning mid-journey does not end the journey: the leg in flight is
     // re-aimed and the rest of the route stands. Arriving picks the heading up
@@ -697,13 +611,8 @@ function toGrid(nav) {
     const next = Math.min(VIEWS.length - 1, Math.max(0, viewIdx + dir));
     if (next === viewIdx && !mapView) return;
     viewIdx = next; mapView = false; route = [];
-    if (held !== null) ease = { t0: performance.now(), ms: 420, r0: held, b0: heldBeta };
-    if (!open(cur, Math.round(stepCont))) {
-      for (let d = 1; d < STEPS; d++) {
-        if (open(cur, Math.round(stepCont) + d)) { stepCont += d; break; }
-        if (open(cur, Math.round(stepCont) - d)) { stepCont -= d; break; }
-      }
-    }
+    held.ease(420); heldBeta.ease(420);
+    stepCont = headingNear(cur, Math.round(stepCont), STEPS - 1) ?? stepCont;
     glideTo(cur, 400);
   };
   function walk(sign) {
@@ -721,7 +630,7 @@ function toGrid(nav) {
       // facing it flips "forward" so the next step walks straight back.
       // Keep the heading, or at most turn one notch to find room.
       const k = Math.round(stepCont);
-      stepCont = open(best, k) ? k : open(best, k + 1) ? k + 1 : open(best, k - 1) ? k - 1 : k;
+      stepCont = headingNear(best, k, 1) ?? k;
       glideTo(best, 500);
     }
   }
@@ -908,7 +817,7 @@ function toGrid(nav) {
     // not a request for a duplicate.
     if (nav.nodes.some((n) => n.c === at.c && n.r === at.r && Math.abs(n.p[1] - at.y) < nav.meta.step)) return;
     pushUndo();
-    nav.nodes.push({ c: at.c, r: at.r, p: [at.x, +at.y.toFixed(3), at.z], e: nav.meta.eye, s: 'p', n: [] });
+    nav.nodes.push({ c: at.c, r: at.r, p: [at.x, +at.y.toFixed(3), at.z], s: 'p', n: [] });
     const i = nav.nodes.length - 1;
     // Joins up with whatever it touches, so a cell painted into a gap is
     // walkable straight away instead of needing its links drawn by hand.
