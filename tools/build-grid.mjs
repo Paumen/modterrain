@@ -374,6 +374,9 @@ for (let r = 0; r < ROWS; r++) {
 // nothing stands between them -- the same question the cell itself was asked,
 // put to every point along the way across.
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+const corner = (c, r, a, b) =>
+  (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
+  || inTheWay(C0 + c + 0.5, R0 + r + 0.5, (a.y + b.y) / 2);
 const edges = [];
 const links = nodes.map(() => new Set());
 for (const list of byCell.values()) {
@@ -386,6 +389,12 @@ for (const list of byCell.values()) {
         if (b.i <= a.i) continue;
         if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
         if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
+        // A diagonal cuts a corner, and what sits in that corner decides
+        // whether it may. Ground you could have walked round by, or rock
+        // standing in the way: fine, you are squeezing past it. Open air is
+        // not -- that corner is a brink, and cutting it walks you along the
+        // edge of a cliff or round the end of a railing.
+        if (diag && !(corner(a.c + dc, a.r, a, b) && corner(a.c, a.r + dr, a, b))) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
         edges.push(a.i, b.i);
       }
