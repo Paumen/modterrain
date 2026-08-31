@@ -83,6 +83,9 @@ const smooth = (t) => t * t * (3 - 2 * t);
 const VIEW_HELP = `<b>Walkthrough</b><br>
 <small>Tap a cell or any spot to travel there<br>
 Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; edit grid</small>`;
+// Where you are, in the builder's own coordinates, so a place that looks
+// wrong on screen can be named rather than described.
+const WHERE = (n) => `<br><small>at ${n.p[0]},${n.p[2]} &middot; height ${n.p[1].toFixed(2)} &middot; ${n.n.length} way${n.n.length === 1 ? '' : 's'} out</small>`;
 const EDIT_HELP = `<b>Grid editor</b><br>
 <small>&#9003; eraser: tap a cell to close it, or tap a line to cut it<br>
 Otherwise tap open ground to open that cell &middot; tap two<br>
@@ -404,6 +407,7 @@ function toGrid(nav) {
   function glideTo(node, ms) {
     if (recording && cur !== node) pushHistory(cur);
     cur = node;
+    hud.innerHTML = (editMode ? EDIT_HELP : VIEW_HELP) + WHERE(nav.nodes[cur]);
     tween = {
       t0: performance.now(), ms,
       // The heading runs on its own clock, so turning mid-journey glides over
@@ -949,7 +953,7 @@ function toGrid(nav) {
     if (on) mapZoom = 0.55;
     if (!on) eraseMode = false;
     selected = -1;
-    hud.innerHTML = on ? EDIT_HELP : VIEW_HELP;
+    hud.innerHTML = (on ? EDIT_HELP : VIEW_HELP) + WHERE(nav.nodes[cur]);
     document.getElementById('edit').classList.toggle('on', on);
     document.getElementById('erase').classList.toggle('on', eraseMode);
     for (const id of ['save', 'erase', 'undo']) document.getElementById(id).hidden = !on;
@@ -1037,7 +1041,7 @@ function toGrid(nav) {
   });
   document.getElementById('save').addEventListener('click', exportNav);
 
-  hud.innerHTML = VIEW_HELP;
+  hud.innerHTML = VIEW_HELP + WHERE(nav.nodes[cur]);
   rebuildMarkers();
   glideFacing(cur, 1);
   engine.runRenderLoop(() => scene.render());
