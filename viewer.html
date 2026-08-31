@@ -667,12 +667,12 @@ function toGrid(nav) {
   }
   function addNode(raw) {
     const at = cellOf(raw);
-    if (nav.nodes.some((n) => n.c === at.c && n.r === at.r)) return;
+    if (nav.nodes.some((n) => n.c === at.c && n.r === at.r && Math.abs(n.p[1] - at.y) < nav.meta.step)) return;
     pushUndo();
     nav.nodes.push({ c: at.c, r: at.r, p: [at.x, +at.y.toFixed(3), at.z], s: 'p', n: [] });
     const i = nav.nodes.length - 1;
     nav.nodes.forEach((n, j) => {
-      if (j !== i && linkable(i, j)) {
+      if (j !== i && linkable(i, j) && Math.abs(n.p[1] - at.y) <= nav.meta.step * 1.5) {
         nav.nodes[i].n.push(j); n.n.push(i);
       }
     });

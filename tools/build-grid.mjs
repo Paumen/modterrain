@@ -80,6 +80,7 @@ const unknown = new Set();
 
 const CELL = 1;
 const EYE = 1.5;
+const STEP = 0.75;
 const REACH = 0.2;
 const KNEE = 0.5;
 const HEAD = 1.6;
@@ -285,7 +286,7 @@ for (let r = 0; r < ROWS; r++) {
 
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const corner = (c, r, a, b) =>
-  (byCell.get(c * ROWS + r) || []).length > 0
+  (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
   || inTheWay(C0 + c + PX, R0 + r + PZ, (a.y + b.y) / 2);
 const edges = [];
 const links = nodes.map(() => new Set());
@@ -297,6 +298,7 @@ for (const list of byCell.values()) {
       const diag = dc !== 0 && dr !== 0;
       for (const b of other) {
         if (b.i <= a.i) continue;
+        if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
         if (inTheWayBetween(C0 + a.c + PX, R0 + a.r + PZ, a.y, C0 + b.c + PX, R0 + b.r + PZ, b.y)) continue;
         if (diag && !(corner(a.c + dc, a.r, a, b) && corner(a.c, a.r + dr, a, b))) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
@@ -364,6 +366,7 @@ const doc = {
     phase: { x: PX, z: PZ },
     size: { cols: COLS, rows: ROWS },
     eye: EYE,
+    step: STEP,
     main: mainCount,
     materials: mats,
     path: mats.map((m) => (PATHY.has(m) ? 1 : 0)),
