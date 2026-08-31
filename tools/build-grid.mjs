@@ -73,11 +73,10 @@ const decks = [];
 const CAVE = /^(Cave_|Floor_)/;
 const caves = [];
 
-const CLIFF = /^(Basic_|Wall_|Cracked_)/;
-const cliffs = [];
+const ROCK = /^(Basic_|Wall_|Cracked_|Prop_Column_|Prop_Stalagmite_)/;
 
 function notePiece(node, world) {
-  const into = DECK.test(node.name || '') ? decks : CAVE.test(node.name || '') ? caves : CLIFF.test(node.name || '') ? cliffs : null;
+  const into = DECK.test(node.name || '') ? decks : CAVE.test(node.name || '') ? caves : null;
   if (!into) return;
   for (const prim of json.meshes[node.mesh].primitives) {
     const acc = json.accessors[prim.attributes.POSITION];
@@ -89,7 +88,7 @@ function notePiece(node, world) {
       for (let a = 0; a < 3; a++) { if (p[a] < lo[a]) lo[a] = p[a]; if (p[a] > hi[a]) hi[a] = p[a]; }
     }
     into.push([...lo, ...hi]);
-    if (into !== cliffs) return;
+    return;
   }
 }
 
@@ -139,10 +138,10 @@ function emitNode(nodeIndex, parent) {
         const railing = bridge && Math.abs(up) < 0.5;
         const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
 
-        const cliffFace = CLIFF.test(piece) && Math.abs(up) < 0.5;
-        const stops = !gateway && (kind === 'barrier' || railing || cliffFace);
+        const rock = ROCK.test(piece);
+        const stops = rock || (!gateway && (kind === 'barrier' || railing));
 
-        tris.push([...p0, ...p1, ...p2, prim.material, up, stops]);
+        tris.push([...p0, ...p1, ...p2, prim.material, up, stops, rock]);
       }
     }
   }
@@ -197,14 +196,14 @@ function heightsAt(x, z) {
   for (const t of bins[bz(z) * BW + bx(x)]) {
     const b = triBox[t];
     if (x < b[0] || x > b[3] || z < b[2] || z > b[5]) continue;
-    const [x0, y0, z0, x1, y1, z1, x2, y2, z2, mat, up] = tris[t];
+    const [x0, y0, z0, x1, y1, z1, x2, y2, z2, mat, up, , rock] = tris[t];
     const d = (z1 - z2) * (x0 - x2) + (x2 - x1) * (z0 - z2);
     if (Math.abs(d) < 1e-9) continue;
     const w0 = ((z1 - z2) * (x - x2) + (x2 - x1) * (z - z2)) / d;
     const w1 = ((z2 - z0) * (x - x2) + (x0 - x2) * (z - z2)) / d;
     const w2 = 1 - w0 - w1;
     if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-    hits.push([w0 * y0 + w1 * y1 + w2 * y2, mat, up]);
+    hits.push([w0 * y0 + w1 * y1 + w2 * y2, mat, up, rock]);
   }
   return hits;
 }
@@ -252,7 +251,7 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
 const probeArg = process.argv.indexOf('--probe');
 
 function floorsAt(x, z) {
-  const hits = heightsAt(x, z).filter((h) => h[2] > FLAT).sort((a, b) => a[0] - b[0]);
+  const hits = heightsAt(x, z).filter((h) => h[2] > FLAT && !h[3]).sort((a, b) => a[0] - b[0]);
   const out = [];
   for (let i = 0; i < hits.length;) {
     let j = i;
@@ -274,17 +273,12 @@ function ceilingAt(x, z, y) {
   return mid === Infinity ? Infinity : mid + 0.2;
 }
 
-const reject = { support: 0, head: 0, wet: 0, cliff: 0 };
+const reject = { support: 0, head: 0, wet: 0 };
 
 const inBox = (list, x, z, y) => list.some((d) =>
   x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5] && y >= d[1] - 0.1 && y <= d[4] + 0.1);
 const onDeck = (x, z, y) => inBox(decks, x, z, y);
 const inCave = (x, z, y) => inBox(caves, x, z, y);
-
-const CLIFF_EDGE = 0.05;
-const inCliff = (x, z, y) => cliffs.some((d) =>
-  x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5]
-  && y > d[1] + CLIFF_EDGE && y < d[4] - CLIFF_EDGE);
 
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
@@ -321,7 +315,6 @@ function floorsIn(c, r, note) {
     const centre = good.find((f) => f.s === 0);
     const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
 
-    if (inCliff(x, z, y) && !onDeck(x, z, y)) { reject.cliff++; note?.(y, name, 'inside a cliff piece'); continue; }
     const room = ceilingAt(x, z, y);
     if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
     const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
@@ -337,7 +330,7 @@ if (probeArg > 0) {
   console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
   console.log('surfaces under the centre:');
   for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
-    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}`);
+    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}${h[3] ? '  rock' : ''}`);
   console.log('floors:');
   floorsIn(c, r, (y, name, why) => console.log(`  y ${y.toFixed(3)}  ${name.padEnd(22)} ${why}`));
   process.exit(0);
