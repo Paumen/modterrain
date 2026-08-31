@@ -7,6 +7,7 @@
 // tools/build-grid.mjs against the same source scene.
 
 import { readGlb, writeGlb } from './glb.mjs';
+import { markSeeThrough } from './see-through.mjs';
 
 const input = process.argv[2];
 if (!input) {
@@ -186,8 +187,7 @@ for (const [, bucket] of ordered) {
   const posAcc = addAccessor(new Float32Array(bucket.pos), 'VEC3', true);
   const nrmAcc = addAccessor(new Float32Array(bucket.nrm), 'VEC3', false);
   out.materials.push(structuredClone(json.materials[bucket.mat]));
-  // The suffix is what the viewer reads to leave a mesh out of collision.
-  const name = matName(bucket.mat) + (bucket.thin ? ' (see through)' : '');
+  const name = bucket.thin ? markSeeThrough(matName(bucket.mat)) : matName(bucket.mat);
   out.meshes.push({
     name,
     primitives: [{ attributes: { POSITION: posAcc, NORMAL: nrmAcc }, material: out.materials.length - 1 }],

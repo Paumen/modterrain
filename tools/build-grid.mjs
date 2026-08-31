@@ -1,4 +1,5 @@
 import { readGlb } from './glb.mjs';
+import { buildIndex, raycast } from './ray.mjs';
 import { writeFileSync, existsSync } from 'node:fs';
 
 const input = process.argv[2];
@@ -72,43 +73,38 @@ const OBSTACLE = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|R
 const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
 const GROUND = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/;
 
-// The one piece that is both: a bridge carries its own handrails, so its deck
-// is ground and only what stands up off the deck -- a post, not the edge of a
-// plank -- is an obstacle.
-const RAILED = /^Prop_Bridge_/;
-const RAIL = 0.3;
-
 const GROUNDS = 0, CAVE = 1, BLOCKS = 2, WET = 3;
-const unknown = new Set();
 function kindOf(piece) {
   if (CAVE_FLOOR.test(piece)) return CAVE;
   if (OBSTACLE.test(piece)) return BLOCKS;
   if (WATER.test(piece)) return WET;
   if (GROUND.test(piece)) return GROUNDS;
-  unknown.add(piece);
-  return BLOCKS;
+  return null;
 }
+const unknown = new Set();
 
-// A gate is an obstacle only while it is shut. A shut leaf hangs in line with
-// the frame it is hinged to; an open one has swung away from it.
-const yawOf = (m) => Math.atan2(m[8], m[0]);
-const hinges = [];
-for (const node of json.nodes || []) {
-  if (/^Path_Fence_Gate_Frame_Hinged_/.test(node.name || '') && node.matrix)
-    hinges.push([node.matrix[12], node.matrix[14], yawOf(node.matrix)]);
-}
-function gateShut(m) {
-  let best = null, bestD = Infinity;
-  for (const h of hinges) {
-    const d = Math.hypot(h[0] - m[12], h[1] - m[14]);
-    if (d < bestD) { bestD = d; best = h; }
-  }
-  if (!best) return true;
-  const turn = Math.abs(((yawOf(m) - best[2] + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI);
-  return turn < 0.26;
-}
+const CELL = 1;
+const EYE = 1.5;
+const STEP = 0.75;
+const CLUSTER = 0.3;   // surfaces this close together are one floor
+const REACH = 0.1;
+const KNEE = 0.5;
+const HEAD = 1.6;
+const WADE = 1.0;
+const FLAT = 0.5;      // above this an upward normal counts as floor
+const RAIL = 0.3;      // an upright this tall on a floor is something to bump into
 
-const tris = [];
+// A floor piece can carry its own railing -- a bridge does, a dock does -- and
+// the railing has no name of its own to be classified by. What tells it from
+// the deck is its shape: on a piece that is ground, anything near-vertical
+// standing a rail's height off the floor is an obstacle, and the flat of a
+// plank never is.
+const isRail = (kind, up, low, high) => kind === GROUNDS && Math.abs(up) < FLAT && high - low >= RAIL;
+
+const pos = [];        // world-space triangles, nine floats each
+const triMat = [];
+const triUp = [];      // the y of the unit normal: 1 is flat, 0 is a wall
+const triKind = [];
 const triPiece = [];
 const cache = new Map();
 
@@ -119,32 +115,33 @@ function meshGeometry(prim) {
   return g;
 }
 
-const FLAT = 0.5;
-
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
-    const open = /^Path_Fence_Gate_Door_/.test(piece) && !gateShut(world);
     const kind = kindOf(piece);
-    const railed = RAILED.test(piece);
-    if (!open) for (const prim of json.meshes[node.mesh].primitives) {
+    // Nothing downstream has to cope with a piece we cannot name, because a
+    // scene with one in it does not get built at all.
+    if (kind === null) unknown.add(piece);
+    else for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
-      const { pos, idx } = meshGeometry(prim);
-      const count = idx ? idx.length : pos.length / 3;
+      const { pos: src, idx } = meshGeometry(prim);
+      const count = idx ? idx.length : src.length / 3;
       for (let t = 0; t < count; t += 3) {
         const i0 = idx ? idx[t] : t, i1 = idx ? idx[t + 1] : t + 1, i2 = idx ? idx[t + 2] : t + 2;
-        const p0 = xformPoint(world, pos[i0 * 3], pos[i0 * 3 + 1], pos[i0 * 3 + 2]);
-        const p1 = xformPoint(world, pos[i1 * 3], pos[i1 * 3 + 1], pos[i1 * 3 + 2]);
-        const p2 = xformPoint(world, pos[i2 * 3], pos[i2 * 3 + 1], pos[i2 * 3 + 2]);
+        const p0 = xformPoint(world, src[i0 * 3], src[i0 * 3 + 1], src[i0 * 3 + 2]);
+        const p1 = xformPoint(world, src[i1 * 3], src[i1 * 3 + 1], src[i1 * 3 + 2]);
+        const p2 = xformPoint(world, src[i2 * 3], src[i2 * 3 + 1], src[i2 * 3 + 2]);
         const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
         const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
         const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         const up = ny / (Math.hypot(nx, ny, nz) || 1);
-        const post = railed && Math.abs(up) < FLAT
-          && Math.max(p0[1], p1[1], p2[1]) - Math.min(p0[1], p1[1], p2[1]) >= RAIL;
-        tris.push([...p0, ...p1, ...p2, prim.material, up, post ? BLOCKS : kind]);
+        const low = Math.min(p0[1], p1[1], p2[1]), high = Math.max(p0[1], p1[1], p2[1]);
+        pos.push(...p0, ...p1, ...p2);
+        triMat.push(prim.material);
+        triUp.push(up);
+        triKind.push(isRail(kind, up, low, high) ? BLOCKS : kind);
         triPiece.push(piece);
       }
     }
@@ -159,39 +156,21 @@ if (unknown.size) {
   process.exit(1);
 }
 
-const CELL = 1;
-const EYE = 1.5;
-const MIN_EYE = 0.5;
-const STEP = 0.75;
-const CLUSTER = 0.3;
-const REACH = 0.1;
-const KNEE = 0.5;
-const HEAD = 1.6;
-const WADE = 1.0;
+const tris = Float64Array.from(pos);
+pos.length = 0;
+const index = buildIndex(tris, CELL);
+const { box, bins, cols: BW, bx, bz } = index;
 
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 
 let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-for (const [x0, , z0, x1, , z1, x2, , z2] of tris) {
-  minX = Math.min(minX, x0, x1, x2); maxX = Math.max(maxX, x0, x1, x2);
-  minZ = Math.min(minZ, z0, z1, z2); maxZ = Math.max(maxZ, z0, z1, z2);
+for (let t = 0; t < triKind.length; t++) {
+  const b = t * 6;
+  minX = Math.min(minX, box[b]); maxX = Math.max(maxX, box[b + 3]);
+  minZ = Math.min(minZ, box[b + 2]); maxZ = Math.max(maxZ, box[b + 5]);
 }
 const C0 = Math.floor(minX), R0 = Math.floor(minZ);
 const COLS = Math.ceil(maxX) - C0, ROWS = Math.ceil(maxZ) - R0;
-
-const BW = COLS + 2, BH = ROWS + 2;
-const bx = (x) => Math.max(0, Math.min(BW - 1, Math.floor(x - C0) + 1));
-const bz = (z) => Math.max(0, Math.min(BH - 1, Math.floor(z - R0) + 1));
-const bins = Array.from({ length: BW * BH }, () => []);
-const triBox = tris.map(([x0, y0, z0, x1, y1, z1, x2, y2, z2]) => [
-  Math.min(x0, x1, x2), Math.min(y0, y1, y2), Math.min(z0, z1, z2),
-  Math.max(x0, x1, x2), Math.max(y0, y1, y2), Math.max(z0, z1, z2),
-]);
-tris.forEach((_, t) => {
-  const b = triBox[t];
-  for (let iz = bz(b[2]); iz <= bz(b[5]); iz++)
-    for (let ix = bx(b[0]); ix <= bx(b[3]); ix++) bins[iz * BW + ix].push(t);
-});
 
 // The one thing that stops you: an obstacle standing where you want to be. It
 // has to stand more than knee high over your feet to count -- every kerb in
@@ -204,10 +183,10 @@ function inTheWay(x, z, y) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
     for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (tris[t][11] !== BLOCKS) continue;
-        const b = triBox[t];
-        if (b[3] < x - REACH || b[0] > x + REACH || b[5] < z - REACH || b[2] > z + REACH) continue;
-        if (b[4] > y + KNEE && b[1] < y + HEAD) return true;
+        if (triKind[t] !== BLOCKS) continue;
+        const b = t * 6;
+        if (box[b + 3] < x - REACH || box[b] > x + REACH || box[b + 5] < z - REACH || box[b + 2] > z + REACH) continue;
+        if (box[b + 4] > y + KNEE && box[b + 1] < y + HEAD) return true;
       }
   return false;
 }
@@ -226,70 +205,42 @@ function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
 function heightsAt(x, z) {
   const hits = [];
   for (const t of bins[bz(z) * BW + bx(x)]) {
-    const b = triBox[t];
-    if (x < b[0] || x > b[3] || z < b[2] || z > b[5]) continue;
-    const [x0, y0, z0, x1, y1, z1, x2, y2, z2, mat, up, kind] = tris[t];
+    const b = t * 6;
+    if (x < box[b] || x > box[b + 3] || z < box[b + 2] || z > box[b + 5]) continue;
+    const a = t * 9;
+    const x0 = tris[a], y0 = tris[a + 1], z0 = tris[a + 2];
+    const x1 = tris[a + 3], y1 = tris[a + 4], z1 = tris[a + 5];
+    const x2 = tris[a + 6], y2 = tris[a + 7], z2 = tris[a + 8];
     const d = (z1 - z2) * (x0 - x2) + (x2 - x1) * (z0 - z2);
     if (Math.abs(d) < 1e-9) continue;
     const w0 = ((z1 - z2) * (x - x2) + (x2 - x1) * (z - z2)) / d;
     const w1 = ((z2 - z0) * (x - x2) + (x0 - x2) * (z - z2)) / d;
     const w2 = 1 - w0 - w1;
     if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-    hits.push([w0 * y0 + w1 * y1 + w2 * y2, mat, up, kind, t]);
+    hits.push([w0 * y0 + w1 * y1 + w2 * y2, triMat[t], triUp[t], triKind[t], t]);
   }
   return hits;
 }
 
-const seen = new Int32Array(tris.length);
-let seenStamp = 0;
-function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
-  let best = Infinity;
-  const stamp = ++seenStamp;
-  const testBin = (ix, iz) => {
-    if (ix < 0 || ix >= BW || iz < 0 || iz >= BH) return;
-    for (const t of bins[iz * BW + ix]) {
-      if (seen[t] === stamp) continue;
-      seen[t] = stamp;
-      const [x0, y0, z0, x1, y1, z1, x2, y2, z2] = tris[t];
-      const e1x = x1 - x0, e1y = y1 - y0, e1z = z1 - z0;
-      const e2x = x2 - x0, e2y = y2 - y0, e2z = z2 - z0;
-      const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
-      const det = e1x * px + e1y * py + e1z * pz;
-      if (Math.abs(det) < 1e-12) continue;
-      const inv = 1 / det;
-      const tx = ox - x0, ty = oy - y0, tz = oz - z0;
-      const u = (tx * px + ty * py + tz * pz) * inv;
-      if (u < 0 || u > 1) continue;
-      const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
-      const v = (dx * qx + dy * qy + dz * qz) * inv;
-      if (v < 0 || u + v > 1) continue;
-      const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
-      if (hit > tMin && hit < tMax && hit < best) best = hit;
-    }
-  };
-  let ix = bx(ox), iz = bz(oz);
-  const stepX = dx > 0 ? 1 : -1, stepZ = dz > 0 ? 1 : -1;
-  let tX = dx !== 0 ? ((C0 + (ix - 1) + (dx > 0 ? 1 : 0)) - ox) / dx : Infinity;
-  let tZ = dz !== 0 ? ((R0 + (iz - 1) + (dz > 0 ? 1 : 0)) - oz) / dz : Infinity;
-  const dX = dx !== 0 ? Math.abs(1 / dx) : Infinity, dZ = dz !== 0 ? Math.abs(1 / dz) : Infinity;
-  let t = 0;
-  for (let i = 0; i < BW + BH && t <= tMax && t < best; i++) {
-    for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) testBin(ix + a, iz + b);
-    if (tX < tZ) { t = tX; tX += dX; ix += stepX; } else { t = tZ; tZ += dZ; iz += stepZ; }
+// Surfaces stacked within a cluster of each other are one floor, not several:
+// the top of the stack is what you stand on and the rest is the thickness of
+// the piece under it.
+function cluster(hits, y) {
+  const out = [];
+  for (const h of hits) {
+    const last = out[out.length - 1];
+    if (last && y(h) - y(last[last.length - 1]) <= CLUSTER) last.push(h);
+    else out.push([h]);
   }
-  return best;
+  return out;
 }
 
 function floorsAt(x, z) {
   const hits = heightsAt(x, z).filter((h) => h[2] > FLAT && h[3] <= CAVE).sort((a, b) => a[0] - b[0]);
-  const out = [];
-  for (let i = 0; i < hits.length;) {
-    let j = i;
-    while (j + 1 < hits.length && hits[j + 1][0] - hits[j][0] <= CLUSTER) j++;
-    out.push({ y: hits[j][0], mat: hits[j][1], up: hits[j][2], kind: hits[j][3] });
-    i = j + 1;
-  }
-  return out;
+  return cluster(hits, (h) => h[0]).map((k) => {
+    const top = k[k.length - 1];
+    return { y: top[0], mat: top[1], up: top[2], kind: top[3] };
+  });
 }
 
 // Nine samples over the cell: a floor has to be under most of it, so a cell
@@ -308,15 +259,8 @@ function floorsIn(c, r, note) {
   if (!flat.length) return [];
   flat.sort((a, b) => a.y - b.y);
 
-  const clusters = [];
-  for (const f of flat) {
-    const last = clusters[clusters.length - 1];
-    if (last && f.y - last[last.length - 1].y <= 0.4) last.push(f);
-    else clusters.push([f]);
-  }
-
   const here = [];
-  for (const k of clusters) {
+  for (const k of cluster(flat, (f) => f.y)) {
     const y = k[Math.floor(k.length / 2)].y;
     const centre = k.find((f) => f.s === 0);
     const name = matName((centre || k[k.length - 1]).mat);
@@ -328,11 +272,11 @@ function floorsIn(c, r, note) {
       reject.wet++; note?.(y, name, 'under water'); continue;
     }
 
-    const room = raycast(x, y + 0.2, z, 0, 1, 0, 0.001, 40);
-    const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 0.5));
     note?.(y, name, 'open');
-    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100,
-      home: room === Infinity || k.some((f) => f.kind === CAVE) });
+    // Sky overhead, or a floor the kit means to be roofed: either way this is
+    // somewhere to be rather than terrain sealed inside a mountain.
+    here.push({ c, r, y, m: name,
+      home: raycast(index, x, y + 0.2, z, 0, 1, 0, 40) === Infinity || k.some((f) => f.kind === CAVE) });
   }
   return here;
 }
@@ -349,10 +293,10 @@ if (probeArg > 0) {
   for (let iz = bz(pz - REACH); iz <= bz(pz + REACH); iz++)
     for (let ix = bx(px - REACH); ix <= bx(px + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (tris[t][11] !== BLOCKS) continue;
-        const b = triBox[t];
-        if (b[3] < px - REACH || b[0] > px + REACH || b[5] < pz - REACH || b[2] > pz + REACH) continue;
-        console.log(`  ${triPiece[t].padEnd(44)} y ${b[1].toFixed(2)}..${b[4].toFixed(2)}`);
+        if (triKind[t] !== BLOCKS) continue;
+        const b = t * 6;
+        if (box[b + 3] < px - REACH || box[b] > px + REACH || box[b + 5] < pz - REACH || box[b + 2] > pz + REACH) continue;
+        console.log(`  ${triPiece[t].padEnd(44)} y ${box[b + 1].toFixed(2)}..${box[b + 4].toFixed(2)}`);
       }
   console.log('floors:');
   floorsIn(c, r, (y, name, why) => console.log(`  y ${y.toFixed(3)}  ${name.padEnd(22)} ${why}`));
@@ -421,27 +365,32 @@ for (const c of comp) sizes[c]++;
 // floor is terrain sealed inside a mountain rather than a place to be.
 const real = new Array(compCount).fill(false);
 nodes.forEach((n, i) => { if (n.home) real[comp[i]] = true; });
-const main = sizes.indexOf(Math.max(...sizes));
+const main = sizes.reduce((best, n, i) => (n > sizes[best] ? i : best), 0);
 const MIN_COMP = 8;
 const keep = nodes.map((_, i) => comp[i] === main || (real[comp[i]] && sizes[comp[i]] >= MIN_COMP));
 
 if (process.argv.includes('--components')) {
-  const box = new Map();
+  const box2 = new Map();
   nodes.forEach((n, i) => {
-    const b = box.get(comp[i]) || { n: 0, x0: 1e9, x1: -1e9, z0: 1e9, z1: -1e9, y0: 1e9, y1: -1e9 };
+    const b = box2.get(comp[i]) || { n: 0, x0: 1e9, x1: -1e9, z0: 1e9, z1: -1e9, y0: 1e9, y1: -1e9 };
     b.n++; b.x0 = Math.min(b.x0, C0 + n.c); b.x1 = Math.max(b.x1, C0 + n.c);
     b.z0 = Math.min(b.z0, R0 + n.r); b.z1 = Math.max(b.z1, R0 + n.r);
     b.y0 = Math.min(b.y0, n.y); b.y1 = Math.max(b.y1, n.y);
-    box.set(comp[i], b);
+    box2.set(comp[i], b);
   });
-  [...box.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 14).forEach(([k, b]) =>
+  [...box2.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 14).forEach(([k, b]) =>
     console.log(`comp ${k}: ${b.n} cells  x ${b.x0}..${b.x1}  z ${b.z0}..${b.z1}  y ${b.y0.toFixed(1)}..${b.y1.toFixed(1)}  real ${real[k]}  ${k === main ? 'MAIN' : ''}`));
   process.exit(0);
 }
 
-const remap = new Map();
-const outNodes = [];
-nodes.forEach((n, i) => { if (keep[i]) { remap.set(i, outNodes.length); outNodes.push(n); } });
+// The main patch is written first and counted in the meta, so the viewer can
+// tell the island from the offshore rocks without walking the graph again.
+const order = [];
+nodes.forEach((_, i) => { if (keep[i] && comp[i] === main) order.push(i); });
+const mainCount = order.length;
+nodes.forEach((_, i) => { if (keep[i] && comp[i] !== main) order.push(i); });
+const remap = new Map(order.map((i, k) => [i, k]));
+const outNodes = order.map((i) => nodes[i]);
 const outEdges = [];
 for (let e = 0; e < edges.length; e += 2) {
   if (!keep[edges[e]] || !keep[edges[e + 1]]) continue;
@@ -459,11 +408,12 @@ const doc = {
     size: { cols: COLS, rows: ROWS },
     eye: EYE,
     step: STEP,
+    main: mainCount,
     materials: mats,
     path: mats.map((m) => (PATHY.has(m) ? 1 : 0)),
   },
 
-  nodes: outNodes.map((n) => [n.c, n.r, Math.round(n.y * 1000) / 1000, n.e, matIndex.get(n.m)]),
+  nodes: outNodes.map((n) => [n.c, n.r, Math.round(n.y * 1000) / 1000, matIndex.get(n.m)]),
   edges: outEdges,
 };
 
