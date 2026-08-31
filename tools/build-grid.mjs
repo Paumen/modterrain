@@ -65,10 +65,12 @@ const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
 // Every piece is either ground you can stand on, an obstacle standing in the
-// way, or water. Nothing else about a piece matters here.
+// way, or water. Nothing else about a piece matters here, except that a cave
+// floor is ground that is meant to have rock over it.
+const CAVE_FLOOR = /^Floor_/;
 const OBSTACLE = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Protrusion|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_)/;
 const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
-const GROUND = /^(Docks_(Decking|Ladder_Top)_|Floor_|Grass_|Path_(Bridge|Terrain)_|Prop_Bridge_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/;
+const GROUND = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_Bridge_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/;
 
 // The one piece that is both: a bridge carries its own handrails, so its deck
 // is ground and only what stands up off the deck -- a post, not the edge of a
@@ -76,13 +78,15 @@ const GROUND = /^(Docks_(Decking|Ladder_Top)_|Floor_|Grass_|Path_(Bridge|Terrain
 const RAILED = /^Prop_Bridge_/;
 const RAIL = 0.3;
 
+const GROUNDS = 0, CAVE = 1, BLOCKS = 2, WET = 3;
 const unknown = new Set();
 function kindOf(piece) {
-  if (OBSTACLE.test(piece)) return 1;
-  if (WATER.test(piece)) return 2;
-  if (GROUND.test(piece)) return 0;
+  if (CAVE_FLOOR.test(piece)) return CAVE;
+  if (OBSTACLE.test(piece)) return BLOCKS;
+  if (WATER.test(piece)) return WET;
+  if (GROUND.test(piece)) return GROUNDS;
   unknown.add(piece);
-  return 1;
+  return BLOCKS;
 }
 
 // A gate is an obstacle only while it is shut. A shut leaf hangs in line with
@@ -140,7 +144,7 @@ function emitNode(nodeIndex, parent) {
         const up = ny / (Math.hypot(nx, ny, nz) || 1);
         const post = railed && Math.abs(up) < FLAT
           && Math.max(p0[1], p1[1], p2[1]) - Math.min(p0[1], p1[1], p2[1]) >= RAIL;
-        tris.push([...p0, ...p1, ...p2, prim.material, up, post ? 1 : kind]);
+        tris.push([...p0, ...p1, ...p2, prim.material, up, post ? BLOCKS : kind]);
         triPiece.push(piece);
       }
     }
@@ -198,7 +202,7 @@ function inTheWay(x, z, y) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
     for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (tris[t][11] !== 1) continue;
+        if (tris[t][11] !== BLOCKS) continue;
         const b = triBox[t];
         if (b[3] < x - REACH || b[0] > x + REACH || b[5] < z - REACH || b[2] > z + REACH) continue;
         if (b[4] > y + KNEE && b[1] < y + HEAD) return true;
@@ -264,12 +268,12 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
 }
 
 function floorsAt(x, z) {
-  const hits = heightsAt(x, z).filter((h) => h[2] > FLAT && h[3] === 0).sort((a, b) => a[0] - b[0]);
+  const hits = heightsAt(x, z).filter((h) => h[2] > FLAT && h[3] <= CAVE).sort((a, b) => a[0] - b[0]);
   const out = [];
   for (let i = 0; i < hits.length;) {
     let j = i;
     while (j + 1 < hits.length && hits[j + 1][0] - hits[j][0] <= CLUSTER) j++;
-    out.push({ y: hits[j][0], mat: hits[j][1], up: hits[j][2] });
+    out.push({ y: hits[j][0], mat: hits[j][1], up: hits[j][2], kind: hits[j][3] });
     i = j + 1;
   }
   return out;
@@ -307,14 +311,15 @@ function floorsIn(c, r, note) {
     const support = new Set(k.map((f) => f.s)).size;
     if (support < NEED) { reject.hole++; note?.(y, name, `only ${support} of ${OFFSETS.length} samples`); continue; }
     if (inTheWay(x, z, y)) { reject.obstacle++; note?.(y, name, 'an obstacle stands here'); continue; }
-    if (heightsAt(x, z).some((h) => h[3] === 2 && h[0] > y - 0.05 && h[0] < y + WADE)) {
+    if (heightsAt(x, z).some((h) => h[3] === WET && h[0] > y - 0.05 && h[0] < y + WADE)) {
       reject.wet++; note?.(y, name, 'under water'); continue;
     }
 
     const room = raycast(x, y + 0.2, z, 0, 1, 0, 0.001, 40);
     const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.6));
     note?.(y, name, 'open');
-    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100, sky: room === Infinity });
+    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100,
+      home: room === Infinity || k.some((f) => f.kind === CAVE) });
   }
   return here;
 }
@@ -326,12 +331,12 @@ if (probeArg > 0) {
   console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
   console.log('surfaces under the centre:');
   for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
-    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${['ground', 'obstacle', 'water'][h[3]]}`);
+    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${['ground', 'cave floor', 'obstacle', 'water'][h[3]]}`);
   console.log('in the way of the point itself:');
   for (let iz = bz(pz - REACH); iz <= bz(pz + REACH); iz++)
     for (let ix = bx(px - REACH); ix <= bx(px + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (tris[t][11] !== 1) continue;
+        if (tris[t][11] !== BLOCKS) continue;
         const b = triBox[t];
         if (b[3] < px - REACH || b[0] > px + REACH || b[5] < pz - REACH || b[2] > pz + REACH) continue;
         console.log(`  ${triPiece[t].padEnd(44)} y ${b[1].toFixed(2)}..${b[4].toFixed(2)}`);
@@ -397,11 +402,10 @@ for (let i = 0; i < nodes.length; i++) {
 const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
 
-// Cut off patches: a patch that never sees the sky is ground sealed inside a
-// mountain rather than a place. A cave is not sealed -- it reaches the main
-// island through its mouth -- so it is kept by the main patch, not by this.
+// Cut off patches: a patch that neither sees the sky nor stands on a cave
+// floor is terrain sealed inside a mountain rather than a place to be.
 const real = new Array(compCount).fill(false);
-nodes.forEach((n, i) => { if (n.sky) real[comp[i]] = true; });
+nodes.forEach((n, i) => { if (n.home) real[comp[i]] = true; });
 const main = sizes.indexOf(Math.max(...sizes));
 const MIN_COMP = 8;
 const keep = nodes.map((_, i) => comp[i] === main || (real[comp[i]] && sizes[comp[i]] >= MIN_COMP));
