@@ -3,7 +3,9 @@
 //   node tools/build-grid.mjs scenes/Foo.glb [--force] [--probe x,z]
 //
 // Four rules, and nothing else:
-//   1. A cell has a floor at a level if terrain there gives it one.
+//   1. A cell has a floor at a level if terrain there gives it a surface you
+//      stand on. Both halves matter: a rope bridge is terrain, and its rope
+//      handrail is not something you stand on.
 //   2. Water on that floor means no floor.
 //   3. An object taller than TALL standing on that floor closes the cell.
 //   4. You can step to a touching cell whose floor is within STEP up or down.
@@ -15,6 +17,8 @@ import { readGlb } from './glb.mjs';
 import { writeFileSync, existsSync } from 'node:fs';
 
 const TERRAIN = /^(Grass_|Terrain_Sand_|Basic_|Cracked_|Wall_|Tiered_Grass_|Path_Terrain_|Path_Bridge_|Prop_Bridge_|Docks_Decking_|Docks_Ladder_Top|Tiered_Walkway_|Cave_|Floor_)/;
+const SURFACE = new Set(['Grass', 'Dirt', 'Cliff', 'Carved Stone Walkway',
+  'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 const WATER = new Set(['Water River', 'Waterfall', 'Waterfall Crest', 'Cave Pool']);
 const PATH = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 const TALL = 0.25;    // an object shorter than this you step over
@@ -100,7 +104,7 @@ function floorsIn(c, r, why) {
   const up = [], wet = [], solid = [];
   for (const t of here) {
     const tri = tris[t], mat = name(tri[9]), lo = Math.min(tri[1], tri[4], tri[7]);
-    if (tri[11] && tri[10] > FLAT) up.push([Math.max(tri[1], tri[4], tri[7]), mat]);
+    if (tri[11] && tri[10] > FLAT && SURFACE.has(mat)) up.push([Math.max(tri[1], tri[4], tri[7]), mat]);
     else if (WATER.has(mat)) wet.push(lo);
     else if (!tri[11]) solid.push([lo, Math.max(tri[1], tri[4], tri[7])]);
   }
