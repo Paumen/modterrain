@@ -386,13 +386,6 @@ for (const list of byCell.values()) {
         if (b.i <= a.i) continue;
         if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
         if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
-        // A diagonal cuts a corner, so both cells it cuts across have to be
-        // floor too -- otherwise you slip past the end of a fence.
-        if (diag) {
-          const s1 = byCell.get((a.c + dc) * ROWS + a.r), s2 = byCell.get(a.c * ROWS + (a.r + dr));
-          const near = (l) => l && l.some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP);
-          if (!near(s1) || !near(s2)) continue;
-        }
         links[a.i].add(b.i); links[b.i].add(a.i);
         edges.push(a.i, b.i);
       }
