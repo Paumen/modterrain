@@ -218,11 +218,14 @@ function heightsAt(x, z) {
 function floorAt(x, z) {
   const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
   const waterY = hits.filter((h) => triWater[h[5]]).reduce((max, h) => Math.max(max, h[0]), -Infinity);
-  return hits
-    .map((h) => ({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] }))
-    .filter((f) => !f.blocking)
-    .filter((f) => f.y >= waterY - 1e-3)
-    .filter((f, i, list) => i === 0 || f.y - list[i - 1].y > 1e-3);
+  const out = [];
+  for (const h of hits) {
+    if (h[3]) continue;
+    if (h[0] < waterY - 1e-3) continue;
+    if (out.length && h[0] - out[out.length - 1].y <= 1e-3) continue;
+    out.push({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] });
+  }
+  return out;
 }
 
 const reject = { obstacle: 0 };
@@ -231,21 +234,20 @@ const NUDGE = [[0, 0], [GAP, 0], [-GAP, 0], [0, GAP], [0, -GAP], [GAP, GAP], [-G
 
 function floorsIn(c, r, note) {
   const cx = C0 + c + PX, cz = R0 + r + PZ;
+  let best = [], x = cx, z = cz;
   for (const [dx, dz] of NUDGE) {
-    const x = cx + dx, z = cz + dz;
-    const found = floorAt(x, z);
-    if (!found.length) continue;
-    const here = [];
-    for (const f of found) {
-      const name = matName(f.mat);
-      if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
-      note?.(f.y, name, 'open');
-      here.push({ c, r, y: f.y, m: name,
-        home: raycast(index, x, f.y + 0.2, z, 0, 1, 0, 40) === Infinity || f.cave });
-    }
-    return here;
+    const found = floorAt(cx + dx, cz + dz);
+    if (found.length > best.length) { best = found; x = cx + dx; z = cz + dz; }
   }
-  return [];
+  const here = [];
+  for (const f of best) {
+    const name = matName(f.mat);
+    if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
+    note?.(f.y, name, 'open');
+    here.push({ c, r, y: f.y, m: name,
+      home: raycast(index, x, f.y + 0.2, z, 0, 1, 0, 40) === Infinity || f.cave });
+  }
+  return here;
 }
 
 const probeArg = process.argv.indexOf('--probe');
