@@ -164,7 +164,7 @@ const EYE = 1.0;
 const MIN_EYE = 0.5;
 const STEP = 0.75;
 const CLUSTER = 0.3;
-const REACH = 0.25;
+const REACH = 0.1;
 const KNEE = 0.5;
 const HEAD = 1.6;
 const WADE = 1.0;
@@ -196,8 +196,10 @@ tris.forEach((_, t) => {
 // The one thing that stops you: an obstacle standing where you want to be. It
 // has to stand more than knee high over your feet to count -- every kerb in
 // the kit is a quarter high and every fence four fifths -- and it is asked of
-// a point rather than of a cell, so a fence laid along a cell line blocks the
-// step across it without closing the cells to either side of it.
+// a point, a stride wide, rather than of a whole cell: a wall that leans into
+// a cell without reaching the middle of it still leaves you somewhere to
+// stand, and a fence laid along a cell line blocks the step across it without
+// closing the cells to either side.
 function inTheWay(x, z, y) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
     for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
@@ -207,6 +209,17 @@ function inTheWay(x, z, y) {
         if (b[3] < x - REACH || b[0] > x + REACH || b[5] < z - REACH || b[2] > z + REACH) continue;
         if (b[4] > y + KNEE && b[1] < y + HEAD) return true;
       }
+  return false;
+}
+
+// The same question asked the whole way from one cell to the next, close
+// enough together that nothing thin slips between two samples.
+function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
+  const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / REACH);
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    if (inTheWay(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
+  }
   return false;
 }
 
@@ -222,7 +235,7 @@ function heightsAt(x, z) {
     const w1 = ((z2 - z0) * (x - x2) + (x0 - x2) * (z - z2)) / d;
     const w2 = 1 - w0 - w1;
     if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-    hits.push([w0 * y0 + w1 * y1 + w2 * y2, mat, up, kind]);
+    hits.push([w0 * y0 + w1 * y1 + w2 * y2, mat, up, kind, t]);
   }
   return hits;
 }
@@ -331,7 +344,7 @@ if (probeArg > 0) {
   console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
   console.log('surfaces under the centre:');
   for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
-    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${['ground', 'cave floor', 'obstacle', 'water'][h[3]]}`);
+    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${['ground', 'cave floor', 'obstacle', 'water'][h[3]].padEnd(11)} ${triPiece[h[4]]}`);
   console.log('in the way of the point itself:');
   for (let iz = bz(pz - REACH); iz <= bz(pz + REACH); iz++)
     for (let ix = bx(px - REACH); ix <= bx(px + REACH); ix++)
@@ -359,7 +372,7 @@ for (let r = 0; r < ROWS; r++) {
 
 // Neighbouring floors join when the step between them is small enough and
 // nothing stands between them -- the same question the cell itself was asked,
-// put to the point halfway across.
+// put to every point along the way across.
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const edges = [];
 const links = nodes.map(() => new Set());
@@ -372,7 +385,7 @@ for (const list of byCell.values()) {
       for (const b of other) {
         if (b.i <= a.i) continue;
         if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
-        if (inTheWay(C0 + (a.c + b.c) / 2 + 0.5, R0 + (a.r + b.r) / 2 + 0.5, Math.min(a.y, b.y))) continue;
+        if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
         // A diagonal cuts a corner, so both cells it cuts across have to be
         // floor too -- otherwise you slip past the end of a fence.
         if (diag) {
