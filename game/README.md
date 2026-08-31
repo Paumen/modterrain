@@ -135,9 +135,16 @@ fences broken.
 - **The camera needs keeping out of the scenery.** Every surface is a
   one-sided shell, so a camera inside a hill does not go dark — it sees out
   through the hillside, which reads as the inside of the mountain. `camera.js`
-  walks its own sight line against the grid and pulls in when the ground is in
-  the way. Measured before the fix, the camera was inside terrain in 24 of 24
-  frames of a slow orbit at closest zoom; after, 3.
+  walks its own sight line against the grid and, where the ground is in the
+  way, *lifts* the camera over it. Pulling in alone is not enough: against a
+  cliff even the closest the camera may sit is still inside the rock. Over a
+  slow orbit at closest zoom, terrain stood between camera and character in
+  24 of 24 frames before, and 0 of 24 after.
+- **Aim at the chest, not the feet.** The camera follows the character's
+  position, which is the point it stands on. At arm's length that is nothing;
+  pulled in tight to a 1.7-unit body it frames the feet and puts the head off
+  the top of the screen. Measured, the character was off-screen in 42% of
+  frames at middle zoom; with the focus lifted, 0%.
 - **The `Hidden*` socket materials are dropped.** They are 56,635 of the
   scene's 190,412 triangles and, once winding is right, contribute nothing:
   rendering with and without them gives the same picture.

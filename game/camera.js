@@ -60,6 +60,16 @@ const CLEARANCE_SAMPLES = 14;
 const CLEARANCE_MARGIN = 0.9;
 // Never pull closer than this, however buried the camera would otherwise be.
 const CLEARANCE_FLOOR = 3.5;
+/* How near overhead the camera may be lifted when pulling in cannot clear an
+ * obstruction. Short of straight down, which loses all sense of direction. */
+const BETA_LIMIT = 0.34;
+
+/* The camera aims at the character's chest, not the point it stands on. At
+ * arm's length that difference is nothing; pulled in tight to a 1.7-unit body
+ * it is the difference between framing the character and framing its feet with
+ * the head off the top of the screen — measured, the character was off-screen
+ * in 42% of frames at middle zoom. */
+const FOCUS_LIFT = 1.0;
 
 export class CameraRig {
   #alpha;
@@ -108,38 +118,37 @@ export class CameraRig {
   /** The point the camera orbits. Followed with a lag so movement stays calm. */
   follow(position) {
     this.focus.copyFrom(position);
+    this.focus.y += FOCUS_LIFT;
   }
 
   snapTo(position) {
-    this.focus.copyFrom(position);
-    this.camera.target.copyFrom(position);
+    this.follow(position);
+    this.camera.target.copyFrom(this.focus);
   }
 
   /**
-   * How far the camera may sit down its own sight line before the ground gets
-   * in the way. Walks the line out from the character, asking the grid how high
-   * the ground is under each step.
+   * How far down a sight line the camera can sit before ground gets in the way,
+   * for a given elevation. Walks the line out from the character, asking the
+   * grid how high the ground is under each step.
+   *
+   * `flat` is the compass direction to hold, so raising the camera swings it up
+   * over an obstruction rather than around to somewhere else.
    */
-  #clearance(wanted) {
+  #clearance(wanted, beta, flat) {
     if (!this.#grid) return wanted;
 
-    const eye = this.camera.position;
     const target = this.camera.target;
-    const dx = eye.x - target.x;
-    const dy = eye.y - target.y;
-    const dz = eye.z - target.z;
-    const length = Math.hypot(dx, dy, dz);
-    if (length < 1e-3) return wanted;
+    const spread = Math.sin(beta);
+    const dx = flat.x * spread;
+    const dy = Math.cos(beta);
+    const dz = flat.z * spread;
 
     const step = wanted / CLEARANCE_SAMPLES;
     for (let i = 1; i <= CLEARANCE_SAMPLES; i++) {
       const along = step * i;
-      const t = along / length;
-      const ground = this.#grid.groundAt(target.x + dx * t, target.z + dz * t);
+      const ground = this.#grid.groundAt(target.x + dx * along, target.z + dz * along);
       if (ground === null) continue; // open water or off the map: nothing to hit
-      if (target.y + dy * t < ground + CLEARANCE_MARGIN) {
-        return Math.max(CLEARANCE_FLOOR, along - step);
-      }
+      if (target.y + dy * along < ground + CLEARANCE_MARGIN) return along - step;
     }
     return wanted;
   }
@@ -152,15 +161,41 @@ export class CameraRig {
 
     this.camera.alpha = Scalar.Lerp(this.camera.alpha, this.#alpha, camera);
     this.#zoom = Scalar.Lerp(this.#zoom, this.#radius, camera);
-    this.camera.beta = Scalar.Lerp(BETA_NEAR, BETA_FAR, this.zoomFraction);
+    Vector3.LerpToRef(this.camera.target, this.focus, focus, this.camera.target);
+
+    /* The compass bearing Babylon worked out from alpha last frame. Taking it
+     * from the camera rather than deriving it keeps this agreeing with whatever
+     * handedness convention the scene is in. */
+    const flat = this.camera.position.subtract(this.camera.target);
+    flat.y = 0;
+    const bearing = flat.length();
+    if (bearing > 1e-3) flat.scaleInPlace(1 / bearing);
+
+    const wanted = Scalar.Lerp(BETA_NEAR, BETA_FAR, this.zoomFraction);
+    let beta = wanted;
+    let room = this.#clearance(this.#zoom, beta, flat);
+
+    /* Pulling in is only half an answer: with the character against a cliff,
+     * even the closest the camera may sit is still inside the rock, and every
+     * surface here is a one-sided shell, so being inside it means looking out
+     * through the hillside. When shortening is not enough, lift the camera over
+     * the obstruction instead — the view goes overhead rather than indoors. */
+    if (room < this.#zoom) {
+      for (const lift of [0.18, 0.36, 0.56, 0.8]) {
+        const raised = Math.max(BETA_LIMIT, wanted - lift);
+        const gained = this.#clearance(this.#zoom, raised, flat);
+        if (gained > room) { room = gained; beta = raised; }
+        if (room >= this.#zoom || raised === BETA_LIMIT) break;
+      }
+    }
+
+    this.camera.beta = Scalar.Lerp(this.camera.beta, beta, camera);
+    room = Math.max(room, CLEARANCE_FLOOR);
 
     /* Pulling in is instant so the hillside never gets between camera and
      * character, but easing back out stops a doorway from flinging the view. */
-    const room = this.#clearance(this.#zoom);
     this.camera.radius = room < this.camera.radius
       ? room
       : Scalar.Lerp(this.camera.radius, room, camera);
-
-    Vector3.LerpToRef(this.camera.target, this.focus, focus, this.camera.target);
   }
 }
