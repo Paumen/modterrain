@@ -99,7 +99,7 @@ function meshGeometry(prim) {
   return g;
 }
 
-const BARRIER = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
+const BARRIER = /^(Path_Fence_|Path_Edging_|Docks_Railing_|Docks_Bumper_)/;
 const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
 const MASS = /^(Basic_|Cave_|Ceiling_|Docks_(Decking|Support|Ladder)_|Floor_|Grass_|Path_(Bridge|Edging|Terrain)_|Prop_|Terrain_Sand_|Tiered_|Wall_)/;
 const unknown = new Set();
@@ -341,7 +341,7 @@ for (let r = 0; r < ROWS; r++) {
   }
 }
 
-const DOOR_LOW = 0.5;
+const DOOR_LOW = 0.15;
 const DOOR_HIGH = 1.8;
 
 function doorwayClear(a, b) {
