@@ -200,10 +200,11 @@ function heightsAt(x, z) {
 
 function floorAt(x, z) {
   const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
-  if (hits.some((h) => triWater[h[5]])) return [];
+  const waterY = hits.filter((h) => triWater[h[5]]).reduce((max, h) => Math.max(max, h[0]), -Infinity);
   return hits
     .map((h) => ({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] }))
-    .filter((f) => !f.blocking);
+    .filter((f) => !f.blocking)
+    .filter((f) => f.y > waterY);
 }
 
 const reject = { obstacle: 0 };
