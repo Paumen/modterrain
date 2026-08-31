@@ -1,5 +1,7 @@
 Do not assume anything. If you doubt, ask for clarification.
 
+Never add comments to code files. 
+
 ## Building or adjusting terrain
 
 Never assume the kit is wrong or has bugs and adjust it. If something seems
