@@ -73,7 +73,7 @@ const decks = [];
 const CAVE = /^(Cave_|Floor_)/;
 const caves = [];
 
-const ROCK = /^(Basic_|Wall_|Cracked_|Prop_Column_|Prop_Stalagmite_)/;
+const ROCK = /^(Basic_|Wall_|Cracked_|Tiered_Retaining_Wall_|Prop_Column_|Prop_Stalagmite_)/;
 
 function notePiece(node, world) {
   const into = DECK.test(node.name || '') ? decks : CAVE.test(node.name || '') ? caves : null;
@@ -139,7 +139,7 @@ function emitNode(nodeIndex, parent) {
         const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
 
         const rock = ROCK.test(piece);
-        const stops = rock || (!gateway && (kind === 'barrier' || railing));
+        const stops = (rock && Math.abs(up) < 0.5) || (!gateway && (kind === 'barrier' || railing));
 
         tris.push([...p0, ...p1, ...p2, prim.material, up, stops, rock]);
       }
