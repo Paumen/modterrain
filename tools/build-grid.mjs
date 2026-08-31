@@ -31,8 +31,8 @@
 // And every reason two open cells can end up unlinked:
 //
 //   step       A height change over STEP is a climb, not a walk.
-//   corridor   Most of the width of the opening, at body height, must be
-//              clear: fences, railings, posts and walls block.
+//   corridor   The opening at body height must be clear: fences, railings,
+//              gate doors, and the faces of cliffs and walls all block.
 //   corner     A diagonal needs both orthogonal cells open.
 //   reach      A patch that is neither part of the main island, nor under open
 //              sky, nor standing on cave floor is dropped -- terrain pieces are
@@ -212,10 +212,12 @@ function emitNode(nodeIndex, parent) {
         const up = ny / len;
         const railing = bridge && Math.abs(up) < 0.5;
         const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
-        // Walls are mass, not barriers: Wall_ is a cliff family, so the cliff
-        // rule already closes the cells a wall stands in. Treating them as
-        // things to walk into as well cost the steps beside them.
-        const stops = !gateway && (kind === 'barrier' || railing);
+        // A cliff or wall face stops you as surely as a fence does. Closing the
+        // cells inside the piece is not enough on its own: where the floors on
+        // both sides sit clear of the box -- at the face's foot and its top --
+        // nothing stood between them, and 932 links ran straight through rock.
+        const cliffFace = CLIFF.test(piece) && Math.abs(up) < 0.5;
+        const stops = !gateway && (kind === 'barrier' || railing || cliffFace);
         // 11: stops you walking.
         tris.push([...p0, ...p1, ...p2, prim.material, up, stops]);
       }
