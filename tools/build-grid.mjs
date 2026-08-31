@@ -160,8 +160,8 @@ if (unknown.size) {
 }
 
 const CELL = 1;
-const EYE = 3.6;
-const MIN_EYE = 1.5;
+const EYE = 1.0;
+const MIN_EYE = 0.5;
 const STEP = 0.75;
 const CLUSTER = 0.3;
 const REACH = 0.25;
@@ -316,7 +316,7 @@ function floorsIn(c, r, note) {
     }
 
     const room = raycast(x, y + 0.2, z, 0, 1, 0, 0.001, 40);
-    const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.6));
+    const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 0.5));
     note?.(y, name, 'open');
     here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100,
       home: room === Infinity || k.some((f) => f.kind === CAVE) });

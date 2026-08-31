@@ -57,7 +57,10 @@ const STEP_ANGLE = TAU / STEPS;
 // Editing wants to look down on the graph; walking around it does not.
 const MAP_VIEW = { beta: 0.42, zoom: 0.55 };
 // Five rungs from closest-and-lowest to widest-and-highest, pitch stepping
-// evenly and distance geometrically.
+// evenly and distance geometrically. The eye stands a unit off the ground --
+// about the height of the fences -- so the ladder stays low with it: three
+// degrees of look-down at the bottom, twenty at the top, and the widest rung
+// half the island rather than the whole of it.
 //
 // The distances are fixed, not fractions of the room behind the camera. A
 // distance measured from the terrain changes every time the terrain does, so
@@ -65,11 +68,11 @@ const MAP_VIEW = { beta: 0.42, zoom: 0.55 };
 // tens of units in a single frame at the mouth of a cave. Fixed rungs move
 // only when something is actually in the way.
 const VIEWS = [
-  { beta: 1.500, far: 8 },
-  { beta: 1.325, far: 15 },
-  { beta: 1.150, far: 26 },
-  { beta: 0.975, far: 45 },
-  { beta: 0.800, far: 66 },
+  { beta: 1.520, far: 4 },
+  { beta: 1.470, far: 7 },
+  { beta: 1.400, far: 12 },
+  { beta: 1.310, far: 20 },
+  { beta: 1.220, far: 32 },
 ];
 const LEVEL = 1.55;   // as flat as the camera is allowed to lie
 const BACK = 1.6;     // the distance it tries to keep behind the eye
