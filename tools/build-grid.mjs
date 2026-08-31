@@ -204,7 +204,7 @@ function floorAt(x, z) {
   return hits
     .map((h) => ({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] }))
     .filter((f) => !f.blocking)
-    .filter((f) => f.y > waterY);
+    .filter((f) => f.y >= waterY - 1e-3);
 }
 
 const reject = { obstacle: 0 };
