@@ -22,8 +22,8 @@
 //              pieces are located the same way bridges and caves are: by the
 //              box the kit ships for them. Layers stack in the same cells, so
 //              a cell sits under several pieces; each is asked separately.
-//              Cells a bridge crosses are exempt at every height, because
-//              there a cliff piece's box spans open air rather than rock.
+//              A bridge deck is exempt at its own height: over a gorge a
+//              cliff piece's box spans open air rather than rock.
 //   headroom   Less than HEAD of ceiling and you cannot stand up.
 //   coverage   Fewer than NEED of the nine samples agreeing and there is not
 //              enough floor there to stand on. Cells a deck crosses need one.
@@ -387,11 +387,6 @@ const inBox = (list, x, z, y) => list.some((d) =>
 const onDeck = (x, z, y) => inBox(decks, x, z, y);
 const inCave = (x, z, y) => inBox(caves, x, z, y);
 
-// The cell sits under this piece, whatever the height.
-const spans = (list, x, z) => list.some((d) => x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5]);
-// A bridge exempts its cells from the cliff rule at every height: the deck
-// itself, and the ground you walk along underneath it.
-const deckCrosses = (x, z) => spans(decks, x, z);
 // Inside a cliff piece, clear of its own foot and its own walkable top.
 const CLIFF_EDGE = 0.05;
 const inCliff = (x, z, y) => cliffs.some((d) =>
@@ -439,7 +434,11 @@ function floorsIn(c, r, note) {
     for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
     const centre = good.find((f) => f.s === 0);
     const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
-    if (inCliff(x, z, y) && !deckCrosses(x, z)) { reject.cliff++; note?.(y, name, 'inside a cliff piece'); continue; }
+    // A deck spanning a gorge sits inside the boxes of the cliffs on either
+    // side, so it is exempt -- but only at its own height. Exempting the whole
+    // cell at every height reopened floors that really are inside the rock,
+    // and 30 links then ran through a cliff face.
+    if (inCliff(x, z, y) && !onDeck(x, z, y)) { reject.cliff++; note?.(y, name, 'inside a cliff piece'); continue; }
     const room = ceilingAt(x, z, y);
     if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
     const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
