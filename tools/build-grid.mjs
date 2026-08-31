@@ -83,6 +83,7 @@ const EYE = 1.5;
 const REACH = 0.2;
 const KNEE = 0.5;
 const HEAD = 1.6;
+const GAP = 0.12;
 
 const pos = [];
 const triMat = [];
@@ -91,6 +92,8 @@ const triBlocking = [];
 const triCave = [];
 const triWater = [];
 const triPiece = [];
+const originX = [];
+const originZ = [];
 const cache = new Map();
 
 function meshGeometry(prim) {
@@ -107,26 +110,30 @@ function emitNode(nodeIndex, parent) {
     const piece = (node.name || '').split('__')[0];
     const kind = classify(piece);
     if (kind === null) unknown.add(piece);
-    else for (const prim of json.meshes[node.mesh].primitives) {
-      if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
-      const { pos: src, idx } = meshGeometry(prim);
-      const count = idx ? idx.length : src.length / 3;
-      for (let t = 0; t < count; t += 3) {
-        const i0 = idx ? idx[t] : t, i1 = idx ? idx[t + 1] : t + 1, i2 = idx ? idx[t + 2] : t + 2;
-        const p0 = xformPoint(world, src[i0 * 3], src[i0 * 3 + 1], src[i0 * 3 + 2]);
-        const p1 = xformPoint(world, src[i1 * 3], src[i1 * 3 + 1], src[i1 * 3 + 2]);
-        const p2 = xformPoint(world, src[i2 * 3], src[i2 * 3 + 1], src[i2 * 3 + 2]);
-        const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
-        const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
-        const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
-        const up = ny / (Math.hypot(nx, ny, nz) || 1);
-        pos.push(...p0, ...p1, ...p2);
-        triMat.push(prim.material);
-        triUp.push(up);
-        triBlocking.push(kind.blocking);
-        triCave.push(kind.cave);
-        triWater.push(!!kind.water);
-        triPiece.push(piece);
+    else {
+      originX.push(world[12]);
+      originZ.push(world[14]);
+      for (const prim of json.meshes[node.mesh].primitives) {
+        if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
+        const { pos: src, idx } = meshGeometry(prim);
+        const count = idx ? idx.length : src.length / 3;
+        for (let t = 0; t < count; t += 3) {
+          const i0 = idx ? idx[t] : t, i1 = idx ? idx[t + 1] : t + 1, i2 = idx ? idx[t + 2] : t + 2;
+          const p0 = xformPoint(world, src[i0 * 3], src[i0 * 3 + 1], src[i0 * 3 + 2]);
+          const p1 = xformPoint(world, src[i1 * 3], src[i1 * 3 + 1], src[i1 * 3 + 2]);
+          const p2 = xformPoint(world, src[i2 * 3], src[i2 * 3 + 1], src[i2 * 3 + 2]);
+          const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
+          const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
+          const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
+          const up = ny / (Math.hypot(nx, ny, nz) || 1);
+          pos.push(...p0, ...p1, ...p2);
+          triMat.push(prim.material);
+          triUp.push(up);
+          triBlocking.push(kind.blocking);
+          triCave.push(kind.cave);
+          triWater.push(!!kind.water);
+          triPiece.push(piece);
+        }
       }
     }
   }
@@ -153,8 +160,18 @@ for (let t = 0; t < triBlocking.length; t++) {
   minX = Math.min(minX, box[b]); maxX = Math.max(maxX, box[b + 3]);
   minZ = Math.min(minZ, box[b + 2]); maxZ = Math.max(maxZ, box[b + 5]);
 }
+function modalPhase(values) {
+  const tally = new Map();
+  for (const v of values) {
+    const half = Math.round((((v % 1) + 1) % 1) * 2) % 2 ? 0.5 : 0;
+    tally.set(half, (tally.get(half) || 0) + 1);
+  }
+  return (tally.get(0.5) || 0) >= (tally.get(0) || 0) ? 0.5 : 0;
+}
+
+const PX = modalPhase(originX), PZ = modalPhase(originZ);
 const C0 = Math.floor(minX), R0 = Math.floor(minZ);
-const COLS = Math.ceil(maxX) - C0, ROWS = Math.ceil(maxZ) - R0;
+const COLS = Math.floor(maxX - PX - C0) + 1, ROWS = Math.floor(maxZ - PZ - R0) + 1;
 
 function inTheWay(x, z, y) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
@@ -204,29 +221,38 @@ function floorAt(x, z) {
   return hits
     .map((h) => ({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] }))
     .filter((f) => !f.blocking)
-    .filter((f) => f.y >= waterY - 1e-3);
+    .filter((f) => f.y >= waterY - 1e-3)
+    .filter((f, i, list) => i === 0 || f.y - list[i - 1].y > 1e-3);
 }
 
 const reject = { obstacle: 0 };
 
+const NUDGE = [[0, 0], [GAP, 0], [-GAP, 0], [0, GAP], [0, -GAP], [GAP, GAP], [-GAP, -GAP], [GAP, -GAP], [-GAP, GAP]];
+
 function floorsIn(c, r, note) {
-  const x = C0 + c + 0.5, z = R0 + r + 0.5;
-  const here = [];
-  for (const f of floorAt(x, z)) {
-    const name = matName(f.mat);
-    if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
-    note?.(f.y, name, 'open');
-    here.push({ c, r, y: f.y, m: name,
-      home: raycast(index, x, f.y + 0.2, z, 0, 1, 0, 40) === Infinity || f.cave });
+  const cx = C0 + c + PX, cz = R0 + r + PZ;
+  for (const [dx, dz] of NUDGE) {
+    const x = cx + dx, z = cz + dz;
+    const found = floorAt(x, z);
+    if (!found.length) continue;
+    const here = [];
+    for (const f of found) {
+      const name = matName(f.mat);
+      if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
+      note?.(f.y, name, 'open');
+      here.push({ c, r, y: f.y, m: name,
+        home: raycast(index, x, f.y + 0.2, z, 0, 1, 0, 40) === Infinity || f.cave });
+    }
+    return here;
   }
-  return here;
+  return [];
 }
 
 const probeArg = process.argv.indexOf('--probe');
 if (probeArg > 0) {
   const [px, pz] = process.argv[probeArg + 1].split(',').map(Number);
-  const c = Math.floor(px) - C0, r = Math.floor(pz) - R0;
-  console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
+  const c = Math.floor(px - C0 - PX + 0.5), r = Math.floor(pz - R0 - PZ + 0.5);
+  console.log(`cell ${c},${r} -- centred on ${C0 + c + PX}, ${R0 + r + PZ}`);
   console.log('surfaces under the centre:');
   for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
     console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${(h[3] ? 'blocking' : h[4] ? 'cave floor' : 'walkable').padEnd(11)} ${triPiece[h[5]]}`);
@@ -258,7 +284,7 @@ for (let r = 0; r < ROWS; r++) {
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const corner = (c, r, a, b) =>
   (byCell.get(c * ROWS + r) || []).length > 0
-  || inTheWay(C0 + c + 0.5, R0 + r + 0.5, (a.y + b.y) / 2);
+  || inTheWay(C0 + c + PX, R0 + r + PZ, (a.y + b.y) / 2);
 const edges = [];
 const links = nodes.map(() => new Set());
 for (const list of byCell.values()) {
@@ -269,7 +295,7 @@ for (const list of byCell.values()) {
       const diag = dc !== 0 && dr !== 0;
       for (const b of other) {
         if (b.i <= a.i) continue;
-        if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
+        if (inTheWayBetween(C0 + a.c + PX, R0 + a.r + PZ, a.y, C0 + b.c + PX, R0 + b.r + PZ, b.y)) continue;
         if (diag && !(corner(a.c + dc, a.r, a, b) && corner(a.c, a.r + dr, a, b))) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
         edges.push(a.i, b.i);
@@ -333,6 +359,7 @@ const doc = {
     scene: input.split('/').pop(),
     cell: CELL,
     origin: { c: C0, r: R0 },
+    phase: { x: PX, z: PZ },
     size: { cols: COLS, rows: ROWS },
     eye: EYE,
     main: mainCount,

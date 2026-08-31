@@ -111,9 +111,10 @@ async function makeEngine() {
 
 function fromGrid(grid) {
   const { origin, materials, path } = grid.meta;
+  const phase = grid.meta.phase || { x: 0.5, z: 0.5 };
   const nodes = grid.nodes.map(([c, r, y, m]) => ({
     c, r,
-    p: [origin.c + c + 0.5, y, origin.r + r + 0.5],
+    p: [origin.c + c + phase.x, y, origin.r + r + phase.z],
     s: path[m] ? 'p' : 'g',
     n: [],
   }));
@@ -656,9 +657,10 @@ function toGrid(nav) {
     else { na.n.push(b); nb.n.push(a); }
   }
   const O = () => nav.meta.origin;
+  const P = () => nav.meta.phase || { x: 0.5, z: 0.5 };
   function cellOf(point) {
-    const c = Math.floor(point.x - O().c), r = Math.floor(point.z - O().r);
-    const x = O().c + c + 0.5, z = O().r + r + 0.5;
+    const c = Math.round(point.x - O().c - P().x), r = Math.round(point.z - O().r - P().z);
+    const x = O().c + c + P().x, z = O().r + r + P().z;
     const from = point.y + 2.7;
     const hit = raycast(x, from, z, 0, -1, 0, 12);
     return { c, r, x, z, y: hit === Infinity ? point.y : from - hit };
