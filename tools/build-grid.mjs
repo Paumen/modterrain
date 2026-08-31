@@ -178,7 +178,7 @@ function inTheWay(x, z, y) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
     for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (!triBlocking[t]) continue;
+        if (!triBlocking[t] && triUp[t] >= 0) continue;
         const b = t * 6;
         if (box[b + 3] < x - REACH || box[b] > x + REACH || box[b + 5] < z - REACH || box[b + 2] > z + REACH) continue;
         if (box[b + 4] > y + KNEE && box[b + 1] < y + HEAD) return true;
@@ -218,12 +218,14 @@ function heightsAt(x, z) {
 
 function floorAt(x, z) {
   const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
-  const waterY = hits.filter((h) => triWater[h[5]]).reduce((max, h) => Math.max(max, h[0]), -Infinity);
   const out = [];
-  for (const h of hits) {
+  for (let i = 0; i < hits.length; i++) {
+    const h = hits[i];
     if (h[3]) continue;
-    if (h[0] < waterY - 1e-3) continue;
     if (out.length && h[0] - out[out.length - 1].y <= 1e-3) continue;
+    let j = i + 1;
+    while (j < hits.length && hits[j][0] - h[0] <= 1e-3) j++;
+    if (j < hits.length && triWater[hits[j][5]]) continue;
     out.push({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] });
   }
   return out;
