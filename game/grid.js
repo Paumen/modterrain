@@ -1,4 +1,5 @@
 import { Mesh, VertexData, StandardMaterial, Color3 } from '../vendor/babylon/babylon.js';
+import { Role } from './pieces.js';
 
 /* The 1x1 world grid.
  *
@@ -197,6 +198,10 @@ export function buildGrid(meshes, bounds) {
   const samples = []; // [cell, y, surface] triples, flat
 
   for (const mesh of meshes) {
+    // A fence rail is made of the same wood as a bridge deck, so the role
+    // decides whether this is ground and the material only names it.
+    const role = mesh.metadata?.role;
+    if (role !== Role.FLOOR && role !== Role.SPAN) continue;
     const surface = SURFACE_OF.get(mesh.name);
     if (surface === undefined) continue;
 

@@ -96,6 +96,35 @@ Raising `walkableClimb` to 1.2 units buys the same connectivity for less build
 time and is the wrong trade — it reconnects the island by letting the character
 walk up sheer 1-unit cliff faces.
 
+## Walkable is a property of the piece, not the material
+
+The kit's meaning lives in the piece name. "Wood Light" is a bridge deck *and*
+a fence rail; "Carved Stone 1" is a walkway *and* a retaining wall. Deciding
+navigation from the material therefore paved every fence: 91% of fence cells
+were walkable. `pieces.js` gives each piece a role instead, and `terrain.js`
+buckets geometry by material *and* role so the two can be told apart.
+
+Roles alone are not enough, because Recast judges by shape. A fence is about
+0.9 units tall, which is under the 1.7 the character needs but well within what
+Recast treats as a low obstacle to step onto — so it paved the fences anyway.
+Rivers fail the other way: the water is a flat plane with ordinary ground
+modelled beneath it, so the navmesh ran along the riverbed. `barriers.js` gives
+Recast what it needs to see: invisible curtains of vertical quads, too tall to
+step over and with no horizontal face for a floor to form on.
+
+`tools/audit-navigation.mjs` keeps score. It reads the piece names out of the
+GLB, turns them into per-cell expectations, drives the real page and asks the
+real navmesh whether it agrees:
+
+```
+node tools/audit-navigation.mjs
+```
+
+For a barrier it asks whether a route *passes through* it, not whether it
+occupies a cell — a fence sits on a cell edge and the ground beside it is meant
+to be walkable. That distinction matters: an occupancy test called correct
+fences broken.
+
 ## Gotchas that cost real time
 
 - **The scene must be right-handed and the winding flipped.** `terrain.js` emits
@@ -103,6 +132,12 @@ walk up sheer 1-unit cliff faces.
   but keeps its own front-face convention, so copying the file's winding culls
   exactly the faces meant to be seen and the kit's one-sided shells render
   inside-out — as a pale grey blob.
+- **The camera needs keeping out of the scenery.** Every surface is a
+  one-sided shell, so a camera inside a hill does not go dark — it sees out
+  through the hillside, which reads as the inside of the mountain. `camera.js`
+  walks its own sight line against the grid and pulls in when the ground is in
+  the way. Measured before the fix, the camera was inside terrain in 24 of 24
+  frames of a slow orbit at closest zoom; after, 3.
 - **The `Hidden*` socket materials are dropped.** They are 56,635 of the
   scene's 190,412 triangles and, once winding is right, contribute nothing:
   rendering with and without them gives the same picture.

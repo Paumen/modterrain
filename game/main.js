@@ -5,6 +5,7 @@ import {
 import { loadTerrain } from './terrain.js';
 import { buildGrid, Surface } from './grid.js';
 import { buildNavigation } from './navigation.js';
+import { buildBarriers } from './barriers.js';
 import { CameraRig } from './camera.js';
 import { attachInput } from './input.js';
 import { createCharacter, createDestinationMarker } from './character.js';
@@ -120,7 +121,13 @@ async function start() {
   progress('mapping the grid', 0.88);
   const grid = buildGrid(terrain.meshes, terrain.bounds);
 
-  const navigation = await buildNavigation(scene, terrain.meshes, { onProgress: progress });
+  /* Fences, railings, walls and rivers only become barriers if Recast is handed
+   * something wall-shaped; their own geometry is too low to read as one. */
+  const barriers = buildBarriers(terrain.cells, scene);
+  const navigation = await buildNavigation(scene, terrain.meshes, {
+    onProgress: progress,
+    barrier: barriers.mesh,
+  });
 
   progress('ready', 1);
 
@@ -138,7 +145,8 @@ async function start() {
   const character = createCharacter(scene, startPoint);
   const marker = createDestinationMarker(scene);
 
-  const rig = new CameraRig(scene);
+  // The rig needs the grid to keep itself out of the hillsides.
+  const rig = new CameraRig(scene, { grid });
   rig.snapTo(startPoint);
   navigation.attachAgent(character.root);
 
@@ -173,6 +181,7 @@ async function start() {
     ['grid', `${grid.width} x ${grid.depth} cells, ${grid.stats.buildMs} ms`],
     ['walkable', `${grid.stats.walkableCells.toLocaleString()} cells, ${grid.stats.multiLevelCells.toLocaleString()} multi-level`],
     ['navmesh', `${navigation.stats.buildMs} ms (wasm ${navigation.stats.wasmMs} ms)`],
+    ['barriers', `${barriers.stats.blockers.toLocaleString()} blocked cells, ${barriers.stats.water.toLocaleString()} water`],
     ['reachable', opening
       ? `${Math.round((opening.reachable / opening.sampled) * 100)}% of the island, ${opening.groups} separate areas`
       : 'unknown'],

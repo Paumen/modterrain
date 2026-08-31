@@ -1,4 +1,5 @@
 import { Mesh, VertexData, StandardMaterial, Color3 } from '../vendor/babylon/babylon.js';
+import { Role, roleOf, isFloorMaterial } from './pieces.js';
 
 /* Reading the GLB here rather than through Babylon's glTF loader is a
  * deliberate trade, measured on this scene:
@@ -173,14 +174,48 @@ export async function loadTerrain(url, scene, { onProgress } = {}) {
   /* One bucket per material. Vertices are copied per (node, primitive) and only
    * where an index actually references them, which is where the 3.7x drop in
    * vertex count against MergeMeshes comes from. */
-  const buckets = new Map(); // keyed by material index, not name: two materials
-  const bucketOf = (index, spec) => {   // may share a name and must not merge
-    let bucket = buckets.get(index);
+  /* Keyed by material *and* role, not by name: two materials may share a name
+   * and must not merge, and one material serves both floors and fences, which
+   * navigation has to be able to tell apart. Splitting here costs a handful of
+   * extra draw calls and saves navigation from guessing. */
+  const buckets = new Map();
+  const bucketOf = (index, role, spec) => {
+    const key = `${index}/${role}`;
+    let bucket = buckets.get(key);
     if (!bucket) {
-      bucket = { spec, positions: [], indices: [], count: 0 };
-      buckets.set(index, bucket);
+      bucket = { spec, role, positions: [], indices: [], count: 0 };
+      buckets.set(key, bucket);
     }
     return bucket;
+  };
+
+  /* What sits in each 1x1 cell, so navigation can put barriers where the kit
+   * means there to be barriers. Collected here because this is the only pass
+   * that sees piece names — merging by material throws them away. */
+  const cells = new Map();
+  const noteCell = (cx, cz, role, box) => {
+    const key = `${cx},${cz}`;
+    let record = cells.get(key);
+    if (!record) { record = {}; cells.set(key, record); }
+    /* The footprint is clipped to the cell as well as tracked, because a fence
+     * is a thin line through a cell and a barrier drawn round the whole cell
+     * takes the walkway next to it with it — measured, that emptied every dock
+     * of its decking. */
+    const minX = Math.max(box.minX, cx);
+    const maxX = Math.min(box.maxX, cx + 1);
+    const minZ = Math.max(box.minZ, cz);
+    const maxZ = Math.min(box.maxZ, cz + 1);
+
+    const slot = record[role];
+    if (!slot) record[role] = { low: box.minY, high: box.maxY, minX, maxX, minZ, maxZ };
+    else {
+      slot.low = Math.min(slot.low, box.minY);
+      slot.high = Math.max(slot.high, box.maxY);
+      slot.minX = Math.min(slot.minX, minX);
+      slot.maxX = Math.max(slot.maxX, maxX);
+      slot.minZ = Math.min(slot.minZ, minZ);
+      slot.maxZ = Math.max(slot.maxZ, maxZ);
+    }
   };
 
   let sourceTriangles = 0;
@@ -189,39 +224,70 @@ export async function loadTerrain(url, scene, { onProgress } = {}) {
     if (node.mesh === undefined || !world[index]) continue;
 
     const matrix = world[index];
+    const piece = (gltf.meshes[node.mesh].name ?? '').split('__')[0];
+    const pieceRole = roleOf(piece);
+
     for (const prim of gltf.meshes[node.mesh].primitives ?? []) {
       const spec = gltf.materials?.[prim.material];
       const name = spec?.name ?? `material_${prim.material}`;
       if (HIDDEN.test(name)) continue;
 
+      /* A rope handrail belongs to a walkable dock but is not itself floor,
+       * so the material gets the final say on that one question. */
+      const role = pieceRole === Role.FLOOR && !isFloorMaterial(name) ? Role.DECOR : pieceRole;
+
       const positions = accessor(prim.attributes.POSITION);
       const indices = prim.indices !== undefined ? accessor(prim.indices) : null;
       const total = indices ? indices.length : positions.length / 3;
 
-      const bucket = bucketOf(prim.material ?? -1, { ...spec, name });
+      const bucket = bucketOf(prim.material ?? -1, role, { ...spec, name });
       const remap = new Map();
+      const tracked = role === Role.WATER || role === Role.BLOCKER || role === Role.SPAN;
+      const corner = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
       for (let i = 0; i + 2 < total; i += 3) {
         sourceTriangles++;
         /* Wound backwards on purpose. Babylon treats these coordinates as
          * right-handed but keeps its own front-face convention, so copying the
          * file's winding culls exactly the faces meant to be seen — the kit's
          * one-sided shells then render inside-out, as a pale grey blob. */
+        let slot = 0;
         for (const step of [0, 2, 1]) {
           const source = indices ? indices[i + step] : i + step;
+          const x = positions[source * 3];
+          const y = positions[source * 3 + 1];
+          const z = positions[source * 3 + 2];
+          const wx = matrix[0] * x + matrix[4] * y + matrix[8] * z + matrix[12];
+          const wy = matrix[1] * x + matrix[5] * y + matrix[9] * z + matrix[13];
+          const wz = matrix[2] * x + matrix[6] * y + matrix[10] * z + matrix[14];
+
           let at = remap.get(source);
           if (at === undefined) {
-            const x = positions[source * 3];
-            const y = positions[source * 3 + 1];
-            const z = positions[source * 3 + 2];
             at = bucket.count++;
             remap.set(source, at);
-            bucket.positions.push(
-              matrix[0] * x + matrix[4] * y + matrix[8] * z + matrix[12],
-              matrix[1] * x + matrix[5] * y + matrix[9] * z + matrix[13],
-              matrix[2] * x + matrix[6] * y + matrix[10] * z + matrix[14],
-            );
+            bucket.positions.push(wx, wy, wz);
           }
           bucket.indices.push(at);
+
+          corner[slot * 3] = wx;
+          corner[slot * 3 + 1] = wy;
+          corner[slot * 3 + 2] = wz;
+          slot++;
+        }
+
+        if (!tracked) continue;
+        const box = {
+          minX: Math.min(corner[0], corner[3], corner[6]),
+          maxX: Math.max(corner[0], corner[3], corner[6]),
+          minY: Math.min(corner[1], corner[4], corner[7]),
+          maxY: Math.max(corner[1], corner[4], corner[7]),
+          minZ: Math.min(corner[2], corner[5], corner[8]),
+          maxZ: Math.max(corner[2], corner[5], corner[8]),
+        };
+        for (let cx = Math.floor(box.minX); cx <= Math.floor(box.maxX); cx++) {
+          for (let cz = Math.floor(box.minZ); cz <= Math.floor(box.maxZ); cz++) {
+            noteCell(cx, cz, role, box);
+          }
         }
       }
     }
@@ -255,6 +321,7 @@ export async function loadTerrain(url, scene, { onProgress } = {}) {
     data.normals = normals;
 
     const mesh = new Mesh(name, scene);
+    mesh.metadata = { role: bucket.role };
     data.applyToMesh(mesh, false);
 
     const material = new StandardMaterial(name, scene);
@@ -287,6 +354,7 @@ export async function loadTerrain(url, scene, { onProgress } = {}) {
   return {
     meshes,
     bounds,
+    cells,
     stats: {
       bytes: buffer.byteLength,
       sourceNodes: nodes.length,

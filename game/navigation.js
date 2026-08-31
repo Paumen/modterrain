@@ -1,6 +1,6 @@
 import { RecastJSPlugin, Vector3, StandardMaterial, Color3 } from '../vendor/babylon/babylon.js';
 import createRecast from '../vendor/babylon/recast.js';
-import { isWalkableSurface } from './grid.js';
+import { Role } from './pieces.js';
 
 /* Navigation is a Recast navmesh rather than A* over the grid.
  *
@@ -44,8 +44,10 @@ export const NAVMESH_PARAMETERS = {
   ch: CELL_HEIGHT,
   walkableSlopeAngle: 45,
   walkableHeight: Math.ceil(AGENT_HEIGHT / CELL_HEIGHT),
-  // Half a unit: the kit's steps and ramps are climbable, its 1-unit cliffs are not.
-  walkableClimb: Math.ceil(0.5 / CELL_HEIGHT),
+  /* Just under the kit's 1-unit layer step, so ramps, stairs and the lip of a
+   * dock or bridge deck are climbable while a sheer cliff face is not. At half
+   * a unit the decks were stranded: 0% of dock decking could be reached. */
+  walkableClimb: Math.round(0.8 / CELL_HEIGHT),
   walkableRadius: Math.ceil(AGENT_RADIUS / CELL_SIZE),
   maxEdgeLen: 12,
   maxSimplificationError: 1.3,
@@ -187,14 +189,13 @@ export class Navigation {
 }
 
 /**
- * Builds the navmesh from the terrain.
+ * Builds the navmesh from the terrain's floors plus the invisible barriers.
  *
- * Only the surfaces a body could stand on are fed in. Water is left out so
- * rivers stay barriers to be bridged rather than walked across, and the rope
- * railings are left out because 23,088 triangles of hanging cord voxelise into
- * noise. That also keeps the build well under a second.
+ * What goes in is chosen by the role terrain.js gave each mesh, not by its
+ * material. Floors and spans are the ground; barriers are the walls that make
+ * fences fence and rivers divide; rope, water and props are left out entirely.
  */
-export async function buildNavigation(scene, meshes, { onProgress, parameters } = {}) {
+export async function buildNavigation(scene, meshes, { onProgress, parameters, barrier } = {}) {
   const started = performance.now();
 
   onProgress?.('navigation', 0.9);
@@ -202,11 +203,16 @@ export async function buildNavigation(scene, meshes, { onProgress, parameters } 
   const ready = performance.now();
 
   const plugin = new RecastJSPlugin(recast);
-  const solid = meshes.filter((mesh) => isWalkableSurface(mesh.name));
-  plugin.createNavMesh(solid, { ...NAVMESH_PARAMETERS, ...parameters });
+  const floors = meshes.filter((mesh) => {
+    const role = mesh.metadata?.role;
+    return role === Role.FLOOR || role === Role.SPAN;
+  });
+  const input = barrier ? [...floors, barrier] : floors;
+  plugin.createNavMesh(input, { ...NAVMESH_PARAMETERS, ...parameters });
 
   return new Navigation(plugin, scene, {
-    inputMeshes: solid.length,
+    floors: floors.length,
+    barriers: barrier ? 1 : 0,
     wasmMs: Math.round(ready - started),
     buildMs: Math.round(performance.now() - ready),
   });
