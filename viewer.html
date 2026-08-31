@@ -54,25 +54,27 @@ const hud = document.getElementById('hud');
 const TAU = Math.PI * 2;
 const STEPS = 6;                 // orbit snaps: 6 isometric headings, 60 apart
 const STEP_ANGLE = TAU / STEPS;
-// Angle and distance move together: one ladder from close-and-low (eye level,
-// in among the pieces) to far-and-high (overview of the island).
 // Editing wants to look down on the graph; walking around it does not.
 const MAP_VIEW = { beta: 0.42, zoom: 0.55 };
-// Five rungs from closest-and-lowest to widest-and-highest. Distance steps
-// are geometric (each rung is 1.81x the last), which is what reads as an
-// even step when zooming; the pitch steps are an even 0.12 rad apart.
-// Five rungs from closest-and-lowest to widest-and-highest. Pitch steps evenly
-// and distance geometrically, which is what reads as an even step when
-// zooming. The far rung sits as high as it ever did but stands closer in: it
-// looks down more steeply, so the same height comes with a shorter reach
-// across the ground.
+// Five rungs from closest-and-lowest to widest-and-highest, pitch stepping
+// evenly and distance geometrically.
+//
+// The distances are fixed, not fractions of the room behind the camera. A
+// distance measured from the terrain changes every time the terrain does, so
+// the camera was pulling in and pushing out the whole way across the island --
+// tens of units in a single frame at the mouth of a cave. Fixed rungs move
+// only when something is actually in the way.
 const VIEWS = [
-  { beta: 1.500, zoom: 0.18 },
-  { beta: 1.325, zoom: 0.34 },
-  { beta: 1.150, zoom: 0.64 },
-  { beta: 0.975, zoom: 1.19 },
-  { beta: 0.800, zoom: 2.24 },
+  { beta: 1.500, far: 1.6 },
+  { beta: 1.325, far: 3 },
+  { beta: 1.150, far: 5.5 },
+  { beta: 0.975, far: 11 },
+  { beta: 0.800, far: 22 },
 ];
+const LEVEL = 1.55;   // as flat as the camera is allowed to lie
+const BACK = 1.6;     // the distance it tries to keep behind the eye
+const RATE = 9;       // units a second its distance may change
+const AHEAD = 4;      // cells of route it plans over
 const smooth = (t) => t * t * (3 - 2 * t);
 
 const VIEW_HELP = `<b>Walkthrough</b><br>
@@ -146,7 +148,11 @@ function toGrid(nav) {
   scene.clearColor = BABYLON.Color4.FromHexString('#1a2028ff');
 
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
-  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0);
+  // Fences, railings and rope are drawn like everything else but kept in
+  // their own meshes by the merge step, and the camera ignores them: you look
+  // straight over a waist-high fence, and a camera that flinches at one is
+  // worse than no collision at all.
+  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !/\(see through\)$/.test(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
@@ -272,7 +278,7 @@ function toGrid(nav) {
   const view = () => (mapView ? MAP_VIEW : VIEWS[viewIdx]);
   // World units. The camera's reach is a property of the island's size, not
   // of the grid: it pulls back tens of cells, never fractions of one.
-  const floorR = 2.4, maxR = 66, margin = 1.5;
+  const maxR = 66, margin = 0.3;
   const step = () => ((Math.round(stepCont) % STEPS) + STEPS) % STEPS;
   // Nodes under a low roof carry their own eye height, so the camera target
   // ducks into the cave instead of sitting in the ceiling.
@@ -280,12 +286,10 @@ function toGrid(nav) {
   const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eyeOf(n), nav.nodes[n].p[2]);
   const dirAt = (alpha, beta) => [Math.cos(alpha) * Math.sin(beta), Math.cos(beta), Math.sin(alpha) * Math.sin(beta)];
 
-  // Free camera distance from a node at a snapped heading, measured live.
-  // A camera is a volume, not a point: the near plane has corners, and
-  // terrain beside the camera slices through it even when nothing lies on the
-  // centre line - which reads as seeing straight through a wall, since the
-  // pieces are single-sided shells. So every cast is a cylinder: the centre
-  // ray plus four rays offset by the near plane's corner radius.
+  // How much room the camera has behind the eye: the centre ray plus four
+  // offset by the near plane's corner radius, because a camera is a volume and
+  // terrain beside it slices through the frustum even when the centre line is
+  // clear -- which reads as seeing through a wall, the pieces being one-sided.
   function nearRadius() {
     const h = camera.minZ * Math.tan(camera.fov / 2);
     return Math.hypot(h, h * engine.getAspectRatio(camera)) + 0.12;
@@ -307,21 +311,38 @@ function toGrid(nav) {
     return best;
   }
 
-  function freeAt(n, k, vi = mapView ? -1 : viewIdx) {
-    const p = eyePoint(n);
-    const [dx, dy, dz] = dirAt(k * STEP_ANGLE, vi === -1 ? MAP_VIEW.beta : VIEWS[vi].beta);
-    const probe = nearRadius();
-    const hit = thickCast(p.x, p.y, p.z, dx, dy, dz, maxR + margin, probe);
-    return Math.min(maxR, hit - margin);
+  // Room behind a cell at one heading and pitch, measured from the height the
+  // camera is looking from -- not the cell's own eye height, which is not
+  // where the view is yet while it is still ducking into a cave.
+  function roomAt(n, k, beta, lift = smoothEye) {
+    const p = nav.nodes[n].p;
+    const [dx, dy, dz] = dirAt(k * STEP_ANGLE, beta);
+    return Math.min(maxR, thickCast(p[0], p[1] + lift, p[2], dx, dy, dz, maxR + margin, nearRadius()) - margin);
   }
-  const wantRadius = (n) => mapView
-    ? Math.max(floorR, maxR * mapZoom)
-    : Math.max(floorR, freeAt(n, step()) * view().zoom);
-  // Enough room to be worth turning to. Kept low deliberately: in a cave no
-  // heading has much space, and a demanding threshold makes orbit skip every
-  // one of them and land back where it started.
-  const MIN_ROOM = 2.7;
-  const open = (n, k) => freeAt(n, ((k % STEPS) + STEPS) % STEPS) > MIN_ROOM;
+  // The pitch to use: the ladder's own, unless the roof is too low for it, in
+  // which case flatten towards level until the camera fits in under it.
+  function fitBeta(n, k, lift) {
+    const want = view().beta;
+    for (let b = want; b <= LEVEL + 1e-6; b += 0.09) if (roomAt(n, k, b, lift) >= BACK) return b;
+    return LEVEL;
+  }
+  // What the camera wants over the next few cells as well as this one, so it
+  // ducks before the bridge arrives rather than being caught under it. Every
+  // part of the plan -- how low to look from, how flat to lie, how far back --
+  // is the tightest answer anywhere in that window.
+  function planned() {
+    const cells = [cur, ...route.slice(0, AHEAD)];
+    let radius = Infinity, beta = -Infinity, lift = Infinity;
+    for (const n of cells) lift = Math.min(lift, eyeOf(n));
+    const at = Math.min(smoothEye, lift);
+    for (const n of cells) {
+      const b = fitBeta(n, step(), at);
+      radius = Math.min(radius, Math.min(view().far, roomAt(n, step(), b, at)));
+      beta = Math.max(beta, b);
+    }
+    return { radius, beta, lift };
+  }
+  const open = (n, k) => roomAt(n, ((k % STEPS) + STEPS) % STEPS, view().beta) > BACK;
 
   const camera = new BABYLON.ArcRotateCamera('cam', 0, view().beta, 1, eyePoint(start), scene);
   camera.minZ = 0.09;
@@ -331,6 +352,7 @@ function toGrid(nav) {
 
   let tween = null;
   let smoothEye = eye;
+  let held = null, heldBeta = null;
   let route = [];
   // A node whose only neighbour is out of sight would otherwise be a trap,
   // so every arrival is remembered and Back always leads out.
@@ -366,58 +388,54 @@ function toGrid(nav) {
       target0: camera.target.clone(), target1: eyePoint(node),
       ground0: camera.target.y - smoothEye, ground1: nav.nodes[node].p[1],
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
-      beta0: camera.beta, beta1: view().beta,
-      radius0: camera.radius, radius1: wantRadius(node),
     };
     updateMarkers();
   }
   scene.onBeforeRenderObservable.add(() => {
+    const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
     if (tween) {
       const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
       const s = smooth(t);
       camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
-      const dtE = Math.min(engine.getDeltaTime(), 50) / 1000;
-      smoothEye += (eyeOf(cur) - smoothEye) * Math.min(1, dtE * 3);
       camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + smoothEye;
       const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
       camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
-      camera.beta = tween.beta0 + (tween.beta1 - tween.beta0) * s;
-      camera.radius = tween.radius0 + (tween.radius1 - tween.radius0) * s;
       if (t === 1) {
         tween = null;
         if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); } else updateMarkers();
       }
     }
-  });
-
-  // The collision pass runs after the tween so it sees the frame's wanted
-  // state. Eased so walls read as a smooth pull-in, but hard-capped by the
-  // measured free distance, so the camera can never end a frame inside a wall.
-  let smoothR = null;
-  scene.onBeforeRenderObservable.add(() => {
-    const wanted = camera.radius;
     // Looking down on the graph to edit it means looking through whatever is
-    // overhead; clamping to the roof would drop the map onto the node.
-    if (mapView) { smoothR = wanted; camera.fov += (0.9 - camera.fov) * 0.2; return; }
-    const tgt = camera.target;
+    // overhead, so the map view keeps its own distance and no collision.
+    if (mapView) {
+      camera.beta += (MAP_VIEW.beta - camera.beta) * Math.min(1, dt * 6);
+      const want = Math.max(2.4, maxR * mapZoom);
+      camera.radius += (want - camera.radius) * Math.min(1, dt * 6);
+      held = heldBeta = null;
+      return;
+    }
+    const plan = planned();
+    if (held === null) { held = plan.radius; heldBeta = plan.beta; }
+    // Distance, pitch and eye height all move at a fixed rate, so how suddenly
+    // the world changes never decides how suddenly the camera does.
+    smoothEye += Math.max(-3 * dt, Math.min(3 * dt, plan.lift - smoothEye));
+    // A wide view has further to travel than a close one, so the rate goes
+    // with the rung: the ladder still feels immediate, while what the terrain
+    // does to the distance stays gentle.
+    const rate = (RATE + view().far) * dt;
+    held += Math.max(-rate, Math.min(rate, plan.radius - held));
+    heldBeta += Math.max(-2 * dt, Math.min(2 * dt, plan.beta - heldBeta));
+    camera.beta = heldBeta;
+    if (!tween) camera.target.y = nav.nodes[cur].p[1] + smoothEye;
+    // Whatever it planned, it never ends a frame further out than the room it
+    // has right now. The plan is for smoothness; this is for not standing in a
+    // wall. With the plan looking ahead, it rarely has anything left to do.
     const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
     const probe = nearRadius();
-    const hit = thickCast(tgt.x, tgt.y, tgt.z, dx, dy, dz, wanted + margin, probe);
-    // Clearance covers the near plane itself, so the frustum never crosses a
-    // surface; it is small (the near plane is tiny), which lets the camera
-    // tuck into narrow spots without the view punching through.
-    const clearance = Math.hypot(camera.minZ, probe) * 1.3;
-    const cap = Math.min(wanted, hit - clearance);
-    if (smoothR === null) smoothR = cap;
-    const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
-    smoothR += (cap - smoothR) * Math.min(1, dt * 10);
-    camera.radius = Math.max(camera.minZ, Math.min(smoothR, cap));
-    smoothR = camera.radius;
-    // Squeezed into a cave the camera has nowhere to pull back to, so widen
-    // the lens instead: a tight space shows far more through a wide angle.
-    const tight = Math.min(1, Math.max(0, 1 - camera.radius / 12));
-    const wantFov = 0.9 + 0.5 * tight;
-    camera.fov += (wantFov - camera.fov) * Math.min(1, dt * 8);
+    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, held + margin, probe)
+      - Math.hypot(camera.minZ, probe) * 1.3;
+    camera.radius = Math.max(0, Math.min(held, room));
+    held = Math.min(held, camera.radius + rate);
   });
 
   // --- travel: cheapest path, strongly preferring walkways and trails ------
@@ -597,7 +615,7 @@ function toGrid(nav) {
     let bestK = base, bestScore = -Infinity;
     for (let d = 0; d <= STEPS / 2; d++) {
       for (const k of d === 0 ? [base] : [base + d, base - d]) {
-        const free = Math.min(freeAt(node, ((k % STEPS) + STEPS) % STEPS), 24);
+        const free = Math.min(roomAt(node, ((k % STEPS) + STEPS) % STEPS, view().beta), 24);
         const score = free - d * 1.05;
         if (score > bestScore) { bestScore = score; bestK = k; }
       }

@@ -97,15 +97,21 @@ function meshGeometry(prim) {
   return g;
 }
 
+// Fences, railings and rope are things you see straight through. They are
+// drawn like everything else, but kept in their own meshes so the viewer can
+// leave them out of what the camera collides with -- a camera that flinches
+// at a waist-high fence you are looking over is worse than no collision.
+const SEE_THROUGH = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
+
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
     const flip = det3(world) < 0;
+    const piece = (node.name || '').split('__')[0];
+    const bridge = /^Prop_Bridge_/.test(piece);
     for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
-      let bucket = buckets.get(prim.material);
-      if (!bucket) buckets.set(prim.material, (bucket = { pos: [], nrm: [] }));
       const { pos, idx } = meshGeometry(prim);
       const count = idx ? idx.length : pos.length / 3;
       for (let t = 0; t < count; t += 3) {
@@ -121,6 +127,12 @@ function emitNode(nodeIndex, parent) {
         let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         const len = Math.hypot(nx, ny, nz) || 1;
         nx /= len; ny /= len; nz /= len;
+        // A rope bridge's handrails share the deck's material, so only their
+        // shape tells them apart: upright is rail, flat is deck.
+        const thin = SEE_THROUGH.test(piece) || (bridge && Math.abs(ny) < 0.5);
+        const key = `${prim.material}|${thin ? 1 : 0}`;
+        let bucket = buckets.get(key);
+        if (!bucket) buckets.set(key, (bucket = { pos: [], nrm: [], mat: prim.material, thin }));
         bucket.pos.push(...p0, ...p1, ...p2);
         bucket.nrm.push(nx, ny, nz, nx, ny, nz, nx, ny, nz);
         tris.push([...p0, ...p1, ...p2, prim.material, ny]);
@@ -170,15 +182,17 @@ function addAccessor(data, type, minMax) {
 }
 
 const ordered = [...buckets.entries()].sort((a, b) => b[1].pos.length - a[1].pos.length);
-for (const [mat, bucket] of ordered) {
+for (const [, bucket] of ordered) {
   const posAcc = addAccessor(new Float32Array(bucket.pos), 'VEC3', true);
   const nrmAcc = addAccessor(new Float32Array(bucket.nrm), 'VEC3', false);
-  out.materials.push(structuredClone(json.materials[mat]));
+  out.materials.push(structuredClone(json.materials[bucket.mat]));
+  // The suffix is what the viewer reads to leave a mesh out of collision.
+  const name = matName(bucket.mat) + (bucket.thin ? ' (see through)' : '');
   out.meshes.push({
-    name: matName(mat),
+    name,
     primitives: [{ attributes: { POSITION: posAcc, NORMAL: nrmAcc }, material: out.materials.length - 1 }],
   });
-  out.nodes.push({ name: matName(mat), mesh: out.meshes.length - 1 });
+  out.nodes.push({ name, mesh: out.meshes.length - 1 });
   out.scenes[0].nodes.push(out.nodes.length - 1);
 }
 out.buffers.push({ byteLength: byteOffset });
