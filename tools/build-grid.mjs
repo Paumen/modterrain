@@ -65,9 +65,6 @@ function localMatrix(node) {
 const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
-// Every piece is either ground you can stand on, an obstacle standing in the
-// way, or water. Nothing else about a piece matters here, except that a cave
-// floor is ground that is meant to have rock over it.
 const CAVE_FLOOR = /^Floor_/;
 const OBSTACLE = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_)/;
 const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
@@ -86,24 +83,19 @@ const unknown = new Set();
 const CELL = 1;
 const EYE = 1.5;
 const STEP = 0.75;
-const CLUSTER = 0.3;   // surfaces this close together are one floor
+const CLUSTER = 0.3;
 const REACH = 0.1;
 const KNEE = 0.5;
 const HEAD = 1.6;
 const WADE = 1.0;
-const FLAT = 0.5;      // above this an upward normal counts as floor
-const RAIL = 0.3;      // an upright this tall on a floor is something to bump into
+const FLAT = 0.5;
+const RAIL = 0.3;
 
-// A floor piece can carry its own railing -- a bridge does, a dock does -- and
-// the railing has no name of its own to be classified by. What tells it from
-// the deck is its shape: on a piece that is ground, anything near-vertical
-// standing a rail's height off the floor is an obstacle, and the flat of a
-// plank never is.
 const isRail = (kind, up, low, high) => kind === GROUNDS && Math.abs(up) < FLAT && high - low >= RAIL;
 
-const pos = [];        // world-space triangles, nine floats each
+const pos = [];
 const triMat = [];
-const triUp = [];      // the y of the unit normal: 1 is flat, 0 is a wall
+const triUp = [];
 const triKind = [];
 const triPiece = [];
 const cache = new Map();
@@ -121,8 +113,6 @@ function emitNode(nodeIndex, parent) {
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
     const kind = kindOf(piece);
-    // Nothing downstream has to cope with a piece we cannot name, because a
-    // scene with one in it does not get built at all.
     if (kind === null) unknown.add(piece);
     else for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
@@ -172,13 +162,6 @@ for (let t = 0; t < triKind.length; t++) {
 const C0 = Math.floor(minX), R0 = Math.floor(minZ);
 const COLS = Math.ceil(maxX) - C0, ROWS = Math.ceil(maxZ) - R0;
 
-// The one thing that stops you: an obstacle standing where you want to be. It
-// has to stand more than knee high over your feet to count -- every kerb in
-// the kit is a quarter high and every fence four fifths -- and it is asked of
-// a point, a stride wide, rather than of a whole cell: a wall that leans into
-// a cell without reaching the middle of it still leaves you somewhere to
-// stand, and a fence laid along a cell line blocks the step across it without
-// closing the cells to either side.
 function inTheWay(x, z, y) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
     for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
@@ -191,8 +174,6 @@ function inTheWay(x, z, y) {
   return false;
 }
 
-// The same question asked the whole way from one cell to the next, close
-// enough together that nothing thin slips between two samples.
 function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
   const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / REACH);
   for (let i = 0; i <= steps; i++) {
@@ -222,9 +203,6 @@ function heightsAt(x, z) {
   return hits;
 }
 
-// Surfaces stacked within a cluster of each other are one floor, not several:
-// the top of the stack is what you stand on and the rest is the thickness of
-// the piece under it.
 function cluster(hits, y) {
   const out = [];
   for (const h of hits) {
@@ -243,8 +221,6 @@ function floorsAt(x, z) {
   });
 }
 
-// Nine samples over the cell: a floor has to be under most of it, so a cell
-// with a hole in the middle of it is no floor at all.
 const OFFSETS = [[0, 0], [0.35, 0], [-0.35, 0], [0, 0.35], [0, -0.35],
   [0.3, 0.3], [0.3, -0.3], [-0.3, 0.3], [-0.3, -0.3]];
 const NEED = 5;
@@ -273,8 +249,6 @@ function floorsIn(c, r, note) {
     }
 
     note?.(y, name, 'open');
-    // Sky overhead, or a floor the kit means to be roofed: either way this is
-    // somewhere to be rather than terrain sealed inside a mountain.
     here.push({ c, r, y, m: name,
       home: raycast(index, x, y + 0.2, z, 0, 1, 0, 40) === Infinity || k.some((f) => f.kind === CAVE) });
   }
@@ -314,9 +288,6 @@ for (let r = 0; r < ROWS; r++) {
   }
 }
 
-// Neighbouring floors join when the step between them is small enough and
-// nothing stands between them -- the same question the cell itself was asked,
-// put to every point along the way across.
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const corner = (c, r, a, b) =>
   (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
@@ -333,11 +304,6 @@ for (const list of byCell.values()) {
         if (b.i <= a.i) continue;
         if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
         if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
-        // A diagonal cuts a corner, and what sits in that corner decides
-        // whether it may. Ground you could have walked round by, or rock
-        // standing in the way: fine, you are squeezing past it. Open air is
-        // not -- that corner is a brink, and cutting it walks you along the
-        // edge of a cliff or round the end of a railing.
         if (diag && !(corner(a.c + dc, a.r, a, b) && corner(a.c, a.r + dr, a, b))) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
         edges.push(a.i, b.i);
@@ -361,8 +327,6 @@ for (let i = 0; i < nodes.length; i++) {
 const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
 
-// Cut off patches: a patch that neither sees the sky nor stands on a cave
-// floor is terrain sealed inside a mountain rather than a place to be.
 const real = new Array(compCount).fill(false);
 nodes.forEach((n, i) => { if (n.home) real[comp[i]] = true; });
 const main = sizes.reduce((best, n, i) => (n > sizes[best] ? i : best), 0);
@@ -383,8 +347,6 @@ if (process.argv.includes('--components')) {
   process.exit(0);
 }
 
-// The main patch is written first and counted in the meta, so the viewer can
-// tell the island from the offshore rocks without walking the graph again.
 const order = [];
 nodes.forEach((_, i) => { if (keep[i] && comp[i] === main) order.push(i); });
 const mainCount = order.length;

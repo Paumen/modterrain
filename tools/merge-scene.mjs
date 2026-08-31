@@ -1,11 +1,3 @@
-// Collapse a scene GLB into one mesh per visible material, for viewer.html.
-//
-//   node tools/merge-scene.mjs scenes/Large_Island_v2_No_Ocean_No_Props.glb
-//
-// Writes <scene>_merged.glb: Hidden* faces dropped, transforms baked, flat
-// normals, de-indexed. Where you can walk is a separate question, answered by
-// tools/build-grid.mjs against the same source scene.
-
 import { readGlb, writeGlb } from './glb.mjs';
 import { markSeeThrough } from './see-through.mjs';
 
@@ -18,8 +10,6 @@ const outGlb = input.replace(/\.glb$/, '_merged.glb');
 
 const { json, bin } = readGlb(input);
 
-// ---- decode ---------------------------------------------------------------
-
 const CTOR = { 5120: Int8Array, 5121: Uint8Array, 5122: Int16Array, 5123: Uint16Array, 5125: Uint32Array, 5126: Float32Array };
 const NCOMP = { SCALAR: 1, VEC2: 2, VEC3: 3, VEC4: 4 };
 
@@ -30,8 +20,6 @@ function accessorData(i) {
   const Ctor = CTOR[a.componentType];
   return new Ctor(bin.buffer, bin.byteOffset + offset, a.count * NCOMP[a.type]);
 }
-
-// ---- matrix helpers (column-major, as glTF stores them) -------------------
 
 function xformPoint(m, x, y, z) {
   return [
@@ -61,7 +49,6 @@ const IDENTITY = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
 function localMatrix(node) {
   if (node.matrix) return node.matrix;
-  // The scenes this tool targets store matrices, but handle TRS for safety.
   const [tx, ty, tz] = node.translation || [0, 0, 0];
   const [qx, qy, qz, qw] = node.rotation || [0, 0, 0, 1];
   const [sx, sy, sz] = node.scale || [1, 1, 1];
@@ -77,13 +64,11 @@ function localMatrix(node) {
   ];
 }
 
-// ---- gather world-space triangles per material ----------------------------
-
 const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
-const buckets = new Map(); // material index -> { pos: number[], nrm: number[] }
-const tris = []; // every visible triangle, for the nav pass: [x0,y0,z0,...,z2, matIndex, ny]
+const buckets = new Map();
+const tris = [];
 const cache = new Map();
 
 function meshGeometry(prim) {
@@ -98,10 +83,6 @@ function meshGeometry(prim) {
   return g;
 }
 
-// Fences, railings and rope are things you see straight through. They are
-// drawn like everything else, but kept in their own meshes so the viewer can
-// leave them out of what the camera collides with -- a camera that flinches
-// at a waist-high fence you are looking over is worse than no collision.
 const SEE_THROUGH = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
 
 function emitNode(nodeIndex, parent) {
@@ -128,8 +109,6 @@ function emitNode(nodeIndex, parent) {
         let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         const len = Math.hypot(nx, ny, nz) || 1;
         nx /= len; ny /= len; nz /= len;
-        // A rope bridge's handrails share the deck's material, so only their
-        // shape tells them apart: upright is rail, flat is deck.
         const thin = SEE_THROUGH.test(piece) || (bridge && Math.abs(ny) < 0.5);
         const key = `${prim.material}|${thin ? 1 : 0}`;
         let bucket = buckets.get(key);
@@ -144,8 +123,6 @@ function emitNode(nodeIndex, parent) {
 }
 
 for (const root of json.scenes[json.scene ?? 0].nodes) emitNode(root, IDENTITY);
-
-// ---- write the merged GLB -------------------------------------------------
 
 const out = {
   asset: { version: '2.0', generator: 'modterrain merge-scene' },

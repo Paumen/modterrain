@@ -1,18 +1,5 @@
-// One raycaster, shared by the grid builder and the viewer.
-//
-// Triangles are laid out flat -- nine floats a triangle -- and each one is
-// listed in every XZ bin its bounding box touches. A ray then walks only the
-// bins it crosses (a 2D DDA) instead of testing every triangle in the scene.
-//
-// Because a triangle is listed in every bin it touches, the bin the ray is
-// currently in is the only one worth testing: anything reachable inside that
-// bin is already in its list. Sweeping the neighbours as well costs nine times
-// as much and finds nothing new.
-
 const clamp = (v, hi) => (v < 0 ? 0 : v > hi ? hi : v);
 
-// tris: 9 floats per triangle (x0,y0,z0, x1,y1,z1, x2,y2,z2), any array type.
-// cell: bin size in world units.
 export function buildIndex(tris, cell = 1) {
   const n = tris.length / 9;
   const box = new Float64Array(n * 6);
@@ -30,8 +17,6 @@ export function buildIndex(tris, cell = 1) {
     if (box[b + 2] < minZ) minZ = box[b + 2];
     if (box[b + 5] > maxZ) maxZ = box[b + 5];
   }
-  // A ring of empty bins around the terrain, so a query just off the edge
-  // still lands in a bin of its own rather than in the one beside it.
   const minBinX = Math.floor(minX / cell) * cell - cell;
   const minBinZ = Math.floor(minZ / cell) * cell - cell;
   const cols = Math.ceil((maxX - minBinX) / cell) + 1;
@@ -54,7 +39,6 @@ export function buildIndex(tris, cell = 1) {
   return index;
 }
 
-// Distance along the ray to the nearest triangle, or Infinity.
 export function raycast(index, ox, oy, oz, dx, dy, dz, tMax, tMin = 0.001) {
   const { tris, bins, cols, rows, cell, minX, minZ, seen } = index;
   const stamp = ++index.stamp;
