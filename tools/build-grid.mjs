@@ -217,7 +217,7 @@ function emitNode(nodeIndex, parent) {
         if (Math.abs(up) < FACE_TILT && matName(prim.material) === 'Cliff') markFace(p0, p1, p2, nx, nz);
         // Only things built on top of the ground stop you crossing. The ground
         // itself is governed by the step limit, and rays along a rise graze it.
-        const blocks = !gateway && (built || (bridge && /Rope|Wood Medium/.test(matName(prim.material))));
+        const blocks = !gateway && (built || (bridge && Math.abs(up) < 0.5));
         tris.push([...p0, ...p1, ...p2, prim.material, up, !blocks]);
       }
     }
@@ -234,7 +234,7 @@ const EYE = 3.6;         // camera target height above the floor
 const MIN_EYE = 1.5;     // lowest the target drops under a low ceiling
 const HEAD = 2.0;        // ceiling clearance a floor needs to be usable
 const STEP = 0.75;       // biggest height change you can walk between cells
-const FLAT = 0.86;      // steeper than about 30 degrees is a hillside, not a floor
+const FLAT = 0.5;
 const CLUSTER = 0.3;     // surfaces within this height are the same floor
 
 // Cave floors and rock ledges carry Cliff, so it is walkable where it faces
