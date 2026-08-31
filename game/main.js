@@ -62,32 +62,29 @@ async function createEngine(canvas) {
 
 // -------------------------------------------------------------- start point
 
-/** The walkable cell nearest the middle of the island, to open the game on. */
-function findStart(grid) {
-  const midX = grid.width / 2;
-  const midZ = grid.depth / 2;
-  let best = null;
-  let bestDistance = Infinity;
+/* Somewhere to open the game: open ground spread evenly over the island, for
+ * the navmesh to sort into connected stretches. Sampled on a lattice so the
+ * candidates cover the whole map rather than clustering on the biggest beach. */
+const START_CANDIDATES = 72;
 
-  for (let cell = 0; cell < grid.width * grid.depth; cell++) {
-    const top = grid.cellStart[cell + 1] - 1;
-    if (top < grid.cellStart[cell]) continue;
-    // Grass and sand are open ground; stone and wood are narrow paths and docks.
-    const surface = grid.levelSurface[top];
-    if (surface !== Surface.GRASS && surface !== Surface.SAND) continue;
+function startCandidates(grid) {
+  const stride = Math.max(1, Math.round(Math.sqrt((grid.width * grid.depth) / START_CANDIDATES)));
+  const candidates = [];
 
-    const gx = cell % grid.width;
-    const gz = Math.floor(cell / grid.width);
-    const distance = (gx - midX) ** 2 + (gz - midZ) ** 2;
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      best = cell;
+  for (let gz = Math.floor(stride / 2); gz < grid.depth; gz += stride) {
+    for (let gx = Math.floor(stride / 2); gx < grid.width; gx += stride) {
+      const cell = gz * grid.width + gx;
+      const top = grid.cellStart[cell + 1] - 1;
+      if (top < grid.cellStart[cell]) continue;
+      // Grass and sand are open ground; stone and wood are narrow paths and docks.
+      const surface = grid.levelSurface[top];
+      if (surface !== Surface.GRASS && surface !== Surface.SAND) continue;
+
+      const { x, z } = grid.cellCentre(cell);
+      candidates.push(new Vector3(x, grid.levelY[top], z));
     }
   }
-
-  if (best === null) return new Vector3(0, 0, 0);
-  const { x, z } = grid.cellCentre(best);
-  return new Vector3(x, grid.levelY[grid.cellStart[best + 1] - 1], z);
+  return candidates;
 }
 
 // ---------------------------------------------------------------- bootstrap
@@ -129,8 +126,15 @@ async function start() {
 
   // --- character, camera, input -------------------------------------------
 
-  const opening = findStart(grid);
-  const startPoint = navigation.nearestPoint(opening, 12) ?? opening;
+  /* Start on the largest connected stretch of navmesh, not the middle of the
+   * map. The geometric centre of this island is a high plateau that nothing
+   * reaches, and opening there strands the character on 4% of the world. */
+  const candidates = startCandidates(grid);
+  const opening = navigation.findOpenSpace(candidates);
+  const startPoint = opening?.point
+    ?? navigation.nearestPoint(candidates[0], 12)
+    ?? candidates[0]
+    ?? Vector3.Zero();
   const character = createCharacter(scene, startPoint);
   const marker = createDestinationMarker(scene);
 
@@ -169,6 +173,9 @@ async function start() {
     ['grid', `${grid.width} x ${grid.depth} cells, ${grid.stats.buildMs} ms`],
     ['walkable', `${grid.stats.walkableCells.toLocaleString()} cells, ${grid.stats.multiLevelCells.toLocaleString()} multi-level`],
     ['navmesh', `${navigation.stats.buildMs} ms (wasm ${navigation.stats.wasmMs} ms)`],
+    ['reachable', opening
+      ? `${Math.round((opening.reachable / opening.sampled) * 100)}% of the island, ${opening.groups} separate areas`
+      : 'unknown'],
   ];
   ui.stats.innerHTML = stats
     .map(([key, value]) => `<dt>${key}</dt><dd>${value}</dd>`)

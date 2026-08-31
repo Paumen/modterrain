@@ -71,6 +71,31 @@ a drag lands about `1/(1 - inertia)` times further than the finger travelled —
 measured 14 radians of orbit for a 220 px swipe. A touch camera has to track the
 finger, so the finger sets a target and the damping only smooths the approach.
 
+## The navmesh is not one surface
+
+Cliffs and water cut this island into separate stretches of walkable ground,
+and there is no path between two of them. That makes *where the character
+starts* a real decision rather than a cosmetic one.
+
+Opening on the cell nearest the middle of the map put the character on a high
+plateau holding **4% of the island**, with no way down. `main.js` now samples
+open ground on a lattice, hands it to `navigation.findOpenSpace()`, and starts
+on the biggest connected group — about **90%**. The panel reports the figure,
+so a scene that fragments badly says so instead of quietly stranding you.
+
+The navmesh's `cs` matters more than it looks for the same reason. The kit's
+paths, stairs and ramps are a single cell wide, and a coarse voxel grid rounds
+their connections away:
+
+| `cs` | largest region | pieces |
+| --- | --- | --- |
+| 0.3 | 79.3% | 15 |
+| 0.2 | 89.8% | 14 |
+
+Raising `walkableClimb` to 1.2 units buys the same connectivity for less build
+time and is the wrong trade — it reconnects the island by letting the character
+walk up sheer 1-unit cliff faces.
+
 ## Gotchas that cost real time
 
 - **The scene must be right-handed and the winding flipped.** `terrain.js` emits

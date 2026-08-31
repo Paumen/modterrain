@@ -18,18 +18,28 @@ import { isWalkableSurface } from './grid.js';
 
 /* Tuned for a world where one unit is one grid cell, so roughly one metre.
  *
- * walkableRadius is the load-bearing one. It erodes the walkable area away
- * from every edge, and the kit's paths are a single cell wide: at cs 0.3 a
- * radius of 1 voxel leaves 0.4 units of a 1-unit path walkable, while 2 voxels
- * erodes the path out of existence entirely.
+ * cs is the load-bearing one, and it is finer than it looks like it needs to
+ * be. The kit's paths, stairs and ramps are a single cell wide, so a coarse
+ * voxel grid rounds their connections away and the island falls into islands:
+ * measured over the whole scene, cs 0.3 left the largest walkable region at
+ * 79.3% of the navmesh in 15 pieces, and cs 0.2 lifts it to ~90% in 10. The
+ * high plateau in the middle of the island is one of the pieces that
+ * reconnects.
+ *
+ * Raising walkableClimb to 1.2 units buys the same connectivity for less
+ * build time, and is the wrong trade: it reconnects the island by letting the
+ * character walk up sheer 1-unit cliff faces.
  */
-const CELL_SIZE = 0.3;
+const CELL_SIZE = 0.2;
 const CELL_HEIGHT = 0.2;
 
-export const AGENT_RADIUS = 0.3;
+export const AGENT_RADIUS = 0.25;
 export const AGENT_HEIGHT = 1.7;
 
-const NAVMESH_PARAMETERS = {
+// How close a path's far end must land to count as having reached its target.
+const ARRIVAL = 1.5;
+
+export const NAVMESH_PARAMETERS = {
   cs: CELL_SIZE,
   ch: CELL_HEIGHT,
   walkableSlopeAngle: 45,
@@ -66,6 +76,70 @@ export class Navigation {
 
   computePath(from, to) {
     return this.plugin.computePath(from, to);
+  }
+
+  /** Whether a path from one point actually arrives at the other. */
+  reaches(from, to) {
+    const path = this.computePath(from, to);
+    if (!path?.length) return false;
+    const end = path[path.length - 1];
+    return Math.hypot(end.x - to.x, end.y - to.y, end.z - to.z) < ARRIVAL;
+  }
+
+  /**
+   * The most connected place to stand, given some candidate points.
+   *
+   * A navmesh is not one surface. Cliffs, water and drops cut this island into
+   * about ten separate stretches of walkable ground, and a path between two of
+   * them does not exist — so a character dropped on a small one is stuck on it
+   * however good the pathfinding is. This groups the candidates by what can
+   * reach what, then returns the member of the biggest group nearest that
+   * group's middle.
+   *
+   * Cost is a path query per candidate pair only until a group claims its
+   * members, so it is roughly candidates x groups, not candidates squared.
+   */
+  findOpenSpace(candidates) {
+    const points = [];
+    for (const candidate of candidates) {
+      const on = this.nearestPoint(candidate, 2);
+      if (on) points.push(on);
+    }
+    if (!points.length) return null;
+
+    const claimed = new Uint8Array(points.length);
+    let best = null;
+    let groups = 0;
+
+    for (let i = 0; i < points.length; i++) {
+      if (claimed[i]) continue;
+      groups++;
+      claimed[i] = 1;
+      const members = [points[i]];
+      for (let j = i + 1; j < points.length; j++) {
+        if (claimed[j]) continue;
+        if (this.reaches(points[i], points[j])) {
+          claimed[j] = 1;
+          members.push(points[j]);
+        }
+      }
+      if (!best || members.length > best.members.length) best = { members };
+    }
+
+    // Stand near the middle of that group rather than on whichever member
+    // happened to seed it, which is otherwise an arbitrary edge of the island.
+    const middle = best.members.reduce(
+      (sum, p) => ({ x: sum.x + p.x / best.members.length, y: sum.y + p.y / best.members.length, z: sum.z + p.z / best.members.length }),
+      { x: 0, y: 0, z: 0 },
+    );
+    let chosen = best.members[0];
+    let nearest = Infinity;
+    for (const point of best.members) {
+      const distance = Math.hypot(point.x - middle.x, point.y - middle.y, point.z - middle.z);
+      if (distance < nearest) { nearest = distance; chosen = point; }
+    }
+
+    return { point: chosen, reachable: best.members.length, sampled: points.length, groups };
   }
 
   attachAgent(transform, { speed = 4.5 } = {}) {
@@ -120,7 +194,7 @@ export class Navigation {
  * railings are left out because 23,088 triangles of hanging cord voxelise into
  * noise. That also keeps the build well under a second.
  */
-export async function buildNavigation(scene, meshes, { onProgress } = {}) {
+export async function buildNavigation(scene, meshes, { onProgress, parameters } = {}) {
   const started = performance.now();
 
   onProgress?.('navigation', 0.9);
@@ -129,7 +203,7 @@ export async function buildNavigation(scene, meshes, { onProgress } = {}) {
 
   const plugin = new RecastJSPlugin(recast);
   const solid = meshes.filter((mesh) => isWalkableSurface(mesh.name));
-  plugin.createNavMesh(solid, NAVMESH_PARAMETERS);
+  plugin.createNavMesh(solid, { ...NAVMESH_PARAMETERS, ...parameters });
 
   return new Navigation(plugin, scene, {
     inputMeshes: solid.length,
