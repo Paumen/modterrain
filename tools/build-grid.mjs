@@ -85,6 +85,7 @@ const REACH = 0.2;
 const KNEE = 0.5;
 const HEAD = 1.6;
 const GAP = 0.12;
+const SLOPE = 0.7;
 
 const pos = [];
 const triMat = [];
@@ -174,11 +175,11 @@ const PX = modalPhase(originX), PZ = modalPhase(originZ);
 const C0 = Math.floor(minX), R0 = Math.floor(minZ);
 const COLS = Math.floor(maxX - PX - C0) + 1, ROWS = Math.floor(maxZ - PZ - R0) + 1;
 
-function inTheWay(x, z, y) {
+function inTheWay(x, z, y, ceilings) {
   for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
     for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (!triBlocking[t] && triUp[t] >= 0) continue;
+        if (!triBlocking[t] && !(ceilings && triUp[t] < 0)) continue;
         const b = t * 6;
         if (box[b + 3] < x - REACH || box[b] > x + REACH || box[b + 5] < z - REACH || box[b + 2] > z + REACH) continue;
         if (box[b + 4] > y + KNEE && box[b + 1] < y + HEAD) return true;
@@ -190,7 +191,7 @@ function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
   const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / REACH);
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    if (inTheWay(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
+    if (inTheWay(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t, i > 0 && i < steps)) return true;
   }
   return false;
 }
@@ -221,7 +222,7 @@ function floorAt(x, z) {
   const out = [];
   for (let i = 0; i < hits.length; i++) {
     const h = hits[i];
-    if (h[3]) continue;
+    if (h[3] && (triWater[h[5]] || h[2] < SLOPE)) continue;
     if (out.length && h[0] - out[out.length - 1].y <= 1e-3) continue;
     let j = i + 1;
     while (j < hits.length && hits[j][0] - h[0] <= 1e-3) j++;
