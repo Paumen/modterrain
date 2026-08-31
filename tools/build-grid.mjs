@@ -1,50 +1,3 @@
-// Builds a walkable grid for a scene GLB.
-//
-// The scene is laid out on the kit's grid: one cell is exactly one world unit
-// (piece nodes translate to cell centres and scale by whole cells), so the grid
-// this emits is integer-indexed and every cell is 1x1. A cell can hold more
-// than one floor -- a bridge over a river, a cave under a hill -- so the output
-// is a flat list of (column, row, height) cells plus the edges between them.
-//
-//   node tools/build-grid.mjs scenes/Foo.glb [--force]
-//
-// ONE RULE: whether you can stand somewhere depends on the terrain type at
-// that level in that cell. In full, every reason a cell can be closed:
-//
-//   material   Grass, Dirt and the wood of decking are walkable, as is Cliff
-//              where it faces up -- cave floors and rock ledges. Everything
-//              else is not: water, rope, stone walls, fence timber.
-//   slope      Steeper than FLAT is a hillside, not a floor.
-//   water      Water standing on a floor drowns it, up to WADE above.
-//              Water under a bridge deck does not.
-//   cliff      A floor inside a cliff piece -- above its foot, below its top --
-//              is a floor buried in the terrain, not a place to stand. Cliff
-//              pieces are located the same way bridges and caves are: by the
-//              box the kit ships for them. Layers stack in the same cells, so
-//              a cell sits under several pieces; each is asked separately.
-//              A bridge deck is exempt at its own height: over a gorge a
-//              cliff piece's box spans open air rather than rock.
-//   headroom   Less than HEAD of ceiling and you cannot stand up.
-//   coverage   Fewer than NEED of the nine samples agreeing and there is not
-//              enough floor there to stand on. Cells a deck crosses need one.
-//
-// And every reason two open cells can end up unlinked:
-//
-//   step       A height change over STEP is a climb, not a walk.
-//   corridor   The opening at body height must be clear: fences, railings,
-//              gate doors, and the faces of cliffs and walls all block.
-//   corner     A diagonal needs both orthogonal cells open.
-//   reach      A patch that is neither part of the main island, nor under open
-//              sky, nor standing on cave floor is dropped -- terrain pieces are
-//              hollow shells, and the inside of a hill would otherwise read as
-//              a cave.
-//
-// Whether the CAMERA has room is not on that list. That is the viewer's
-// business, decided per frame against the real triangles.
-//
-// To see why one cell went the way it did: --probe x,z. To see the walkable
-// patches: --components. Floor slopes: --slopes.
-
 import { readGlb } from './glb.mjs';
 import { writeFileSync, existsSync } from 'node:fs';
 
@@ -62,8 +15,6 @@ if (existsSync(outPath) && !force && !READ_ONLY) {
 }
 
 const { json, bin } = readGlb(input);
-
-// ---- decode ---------------------------------------------------------------
 
 const CTOR = { 5120: Int8Array, 5121: Uint8Array, 5122: Int16Array, 5123: Uint16Array, 5125: Uint32Array, 5126: Float32Array };
 const NCOMP = { SCALAR: 1, VEC2: 2, VEC3: 3, VEC4: 4 };
@@ -113,29 +64,15 @@ function localMatrix(node) {
 const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
-// ---- world-space triangles ------------------------------------------------
-
-const tris = []; // [x0,y0,z0, x1,y1,z1, x2,y2,z2, matIndex, ny, stops]
+const tris = [];
 const cache = new Map();
 
-// Decking you are meant to walk along, by piece family. A rope bridge is loose
-// slats with air between them and ropes down each side, so point sampling only
-// ever catches part of it; knowing a cell holds a deck is what lets a thinner
-// sample still count. Railings, posts, braces and bumpers are structure, not
-// deck, and are deliberately not here.
 const DECK = /^(Prop_Bridge_|Path_Bridge_|Docks_Decking_|Docks_Ladder_Top)/;
-const decks = []; // world-space [minX, minY, minZ, maxX, maxY, maxZ] per piece
+const decks = [];
 
-// Cave floors, by piece family. Terrain pieces are hollow shells, so the
-// inside of a hill offers walkable-looking ground with a ceiling over it that
-// is indistinguishable from a cave by geometry alone. The pieces tell them
-// apart: a cave has floor built for it, a shell's inside has nothing.
 const CAVE = /^(Cave_|Floor_)/;
 const caves = [];
 
-// The families that exist to be a vertical drop. Their Cliff material also
-// appears on cave floors and rock props, where it is ground you walk on, so
-// the piece name decides this and the material does not.
 const CLIFF = /^(Basic_|Wall_|Cracked_)/;
 const cliffs = [];
 
@@ -163,12 +100,6 @@ function meshGeometry(prim) {
   return g;
 }
 
-// Every piece in the kit is one of three things, and its family name says
-// which. MASS you can neither walk through nor see through: ground, rock,
-// walls, decking. BARRIER you cannot walk through but can see straight over
-// and between: fences, railings, rope. WATER is neither. Anything the scene
-// contains that matches none of these is an error rather than a default, so a
-// piece added later cannot quietly pass for walkable air.
 const BARRIER = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
 const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
 const MASS = /^(Basic_|Cave_|Ceiling_|Docks_(Decking|Support|Ladder)_|Floor_|Grass_|Path_(Bridge|Edging|Terrain)_|Prop_|Terrain_Sand_|Tiered_|Wall_)/;
@@ -187,9 +118,7 @@ function emitNode(nodeIndex, parent) {
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
     const kind = kindOf(piece);
-    // A rope bridge's handrails carry the same material as the deck they
-    // stand on, so nothing but their shape tells them apart: a bridge face
-    // that is not roughly horizontal is something you walk between, not on.
+
     const bridge = /^Prop_Bridge_/.test(piece);
     notePiece(node, world);
     for (const prim of json.meshes[node.mesh].primitives) {
@@ -204,21 +133,15 @@ function emitNode(nodeIndex, parent) {
         const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
         const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
         const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
-        // Signed, not absolute. Every node in these scenes has a positive
-        // determinant, so winding is trustworthy and a surface's normal says
-        // which way it faces. Taking the absolute value made every ceiling
-        // read as a floor, which is what put walkable ground inside mountains.
+
         const len = Math.hypot(nx, ny, nz) || 1;
         const up = ny / len;
         const railing = bridge && Math.abs(up) < 0.5;
         const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
-        // A cliff or wall face stops you as surely as a fence does. Closing the
-        // cells inside the piece is not enough on its own: where the floors on
-        // both sides sit clear of the box -- at the face's foot and its top --
-        // nothing stood between them, and 932 links ran straight through rock.
+
         const cliffFace = CLIFF.test(piece) && Math.abs(up) < 0.5;
         const stops = !gateway && (kind === 'barrier' || railing || cliffFace);
-        // 11: stops you walking.
+
         tris.push([...p0, ...p1, ...p2, prim.material, up, stops]);
       }
     }
@@ -233,24 +156,19 @@ if (unknown.size) {
   process.exit(1);
 }
 
-// ---- grid geometry --------------------------------------------------------
-
-const CELL = 1;          // one grid cell, one world unit
-const EYE = 3.6;         // camera target height above the floor
-const MIN_EYE = 1.5;     // lowest the target drops under a low ceiling
-const HEAD = 2.0;        // ceiling clearance a floor needs to be usable
-const STEP = 0.75;       // biggest height change you can walk between cells
+const CELL = 1;
+const EYE = 3.6;
+const MIN_EYE = 1.5;
+const HEAD = 2.0;
+const STEP = 0.75;
 const FLAT = 0.5;
-const CLUSTER = 0.3;     // surfaces within this height are the same floor
+const CLUSTER = 0.3;
 
-// Cave floors and rock ledges carry Cliff, so it is walkable where it faces
-// up; the vertical cliff faces of the same pieces never produce a floor.
 const WALKABLE = new Set(['Grass', 'Dirt', 'Cliff', 'Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
-// Water drowns whatever is under it: a river laid over grass leaves that grass
-// unwalkable, and the surface itself is never walkable either.
+
 const WET = new Set(['Water River', 'Waterfall', 'Waterfall Crest', 'Cave Pool']);
-const WADE = 1.0; // water this far above a floor still covers it
+const WADE = 1.0;
 
 let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
 for (const [x0, , z0, x1, , z1, x2, , z2] of tris) {
@@ -259,8 +177,6 @@ for (const [x0, , z0, x1, , z1, x2, , z2] of tris) {
 }
 const C0 = Math.floor(minX), R0 = Math.floor(minZ);
 const COLS = Math.ceil(maxX) - C0, ROWS = Math.ceil(maxZ) - R0;
-
-// ---- spatial index --------------------------------------------------------
 
 const BW = COLS + 2, BH = ROWS + 2;
 const bx = (x) => Math.max(0, Math.min(BW - 1, Math.floor(x - C0) + 1));
@@ -276,7 +192,6 @@ tris.forEach((_, t) => {
     for (let ix = bx(b[0]); ix <= bx(b[3]); ix++) bins[iz * BW + ix].push(t);
 });
 
-// Every surface directly under (x, z): [y, matIndex, flatness].
 function heightsAt(x, z) {
   const hits = [];
   for (const t of bins[bz(z) * BW + bx(x)]) {
@@ -334,15 +249,8 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
   return best;
 }
 
-// `--probe x,z` reports what the sampler sees under one world point, which is
-// the only practical way to ask why a particular cell did or did not open.
 const probeArg = process.argv.indexOf('--probe');
 
-// ---- floors ---------------------------------------------------------------
-
-// The floors under one sample point, topmost surface of each stack deciding
-// what the floor is made of: a river laid over grass reads as water, so the
-// grass beneath it never becomes walkable.
 function floorsAt(x, z) {
   const hits = heightsAt(x, z).filter((h) => h[2] > FLAT).sort((a, b) => a[0] - b[0]);
   const out = [];
@@ -355,21 +263,10 @@ function floorsAt(x, z) {
   return out;
 }
 
-// Nine samples per cell. Taking floors from the whole footprint rather than
-// the centre alone matters twice over: bridge decks and dock planks butt to
-// their neighbours a couple of hundredths short of the cell line, and a rope
-// bridge is loose slats with air between them, so a single probe drops through
-// the gap and reports no bridge at all.
 const OFFSETS = [[0, 0], [0.35, 0], [-0.35, 0], [0, 0.35], [0, -0.35],
   [0.3, 0.3], [0.3, -0.3], [-0.3, 0.3], [-0.3, -0.3]];
-const NEED = 5; // samples that must agree before a floor counts
+const NEED = 5;
 
-// Headroom, measured across the cell and taken as the median of the nine rays.
-// A single ray up the middle threads the gap between two slats of a rope
-// bridge and reports open sky, which then puts the camera target at full
-// height -- inside the bridge. Taking the lowest ray instead swings too far
-// the other way: any overhang clipping one corner of a cell would close it.
-// The median moves only when something really does span the cell.
 function ceilingAt(x, z, y) {
   const rays = OFFSETS.map(([ox, oz]) => raycast(x + ox, y + 0.2, z + oz, 0, 1, 0, 0.001, 40));
   rays.sort((a, b) => a - b);
@@ -379,22 +276,16 @@ function ceilingAt(x, z, y) {
 
 const reject = { support: 0, head: 0, wet: 0, cliff: 0 };
 
-// Is this floor part of a deck? Cells a bridge or a dock crosses are walkable
-// at the deck's own height, which is the rule the scene is built to; the
-// sampler's job there is only to find how high the planks sit.
 const inBox = (list, x, z, y) => list.some((d) =>
   x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5] && y >= d[1] - 0.1 && y <= d[4] + 0.1);
 const onDeck = (x, z, y) => inBox(decks, x, z, y);
 const inCave = (x, z, y) => inBox(caves, x, z, y);
 
-// Inside a cliff piece, clear of its own foot and its own walkable top.
 const CLIFF_EDGE = 0.05;
 const inCliff = (x, z, y) => cliffs.some((d) =>
   x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5]
   && y > d[1] + CLIFF_EDGE && y < d[4] - CLIFF_EDGE);
 
-// Everything you can stand on in one cell, lowest first. `note` reports why a
-// candidate floor was turned down, for --probe.
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
 
@@ -404,8 +295,6 @@ function floorsIn(c, r, note) {
   if (!flat.length) return [];
   flat.sort((a, b) => a.y - b.y);
 
-  // One cluster per floor. The gap has to stay well under a walkable step, or
-  // a bridge deck and the riverbed under it merge into one floor.
   const clusters = [];
   for (const f of flat) {
     const last = clusters[clusters.length - 1];
@@ -415,9 +304,7 @@ function floorsIn(c, r, note) {
 
   const here = [];
   for (const k of clusters) {
-    // Each member is already the top of its own sample's stack, so a river
-    // over grass reads as water there; the cell is walkable when enough
-    // samples independently land on walkable ground.
+
     const good = k.filter((f) => WALKABLE.has(matName(f.mat)));
     const y = good.length ? good[Math.floor(good.length / 2)].y : k[k.length - 1].y;
     const label = matName(k[k.length - 1].mat);
@@ -425,8 +312,7 @@ function floorsIn(c, r, note) {
     const support = new Set(good.map((f) => f.s)).size;
     const need = onDeck(x, z, y) ? 1 : NEED;
     if (support < need) { reject.support++; note?.(y, label, `only ${support} of ${OFFSETS.length} samples`); continue; }
-    // Water standing on the floor drowns it; water below a bridge deck or a
-    // dock does not.
+
     if (flat.some((f) => WET.has(matName(f.mat)) && f.y > y - 0.05 && f.y < y + WADE)) {
       reject.wet++; note?.(y, label, 'under water'); continue;
     }
@@ -434,10 +320,7 @@ function floorsIn(c, r, note) {
     for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
     const centre = good.find((f) => f.s === 0);
     const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
-    // A deck spanning a gorge sits inside the boxes of the cliffs on either
-    // side, so it is exempt -- but only at its own height. Exempting the whole
-    // cell at every height reopened floors that really are inside the rock,
-    // and 30 links then ran through a cliff face.
+
     if (inCliff(x, z, y) && !onDeck(x, z, y)) { reject.cliff++; note?.(y, name, 'inside a cliff piece'); continue; }
     const room = ceilingAt(x, z, y);
     if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
@@ -460,7 +343,7 @@ if (probeArg > 0) {
   process.exit(0);
 }
 
-const nodes = [];      // { c, r, y, m, e }
+const nodes = [];
 const byCell = new Map();
 
 for (let r = 0; r < ROWS; r++) {
@@ -471,25 +354,8 @@ for (let r = 0; r < ROWS; r++) {
   }
 }
 
-// ---- edges ----------------------------------------------------------------
-
-// Two floors connect when the height change is walkable and the doorway
-// between them is clear. The doorway is a real rectangle, not a set of sample
-// rays: it stands on the line between the two cell centres, as wide as a body
-// and as tall as one, and anything that stops you -- a fence, a railing, a
-// gate's door, a wall -- is whatever has a triangle crossing it. Sampling was
-// the whole trouble before: a fence is thin rails with air between them, so
-// rays threaded the gaps and the fence read as open, exactly as a rope
-// bridge's slats did. An intersection test has no gaps to thread.
-//
-// The one exception is the gate frame: a doorway is a piece you are meant to
-// walk through, so its own posts do not bar the way. Its door does -- that is
-// a separate piece, and it is a barrier like any other.
-// From knee height, not from the floor: you step over a lip without thinking
-// about it, and the front edge of a bridge deck is exactly that. Starting at
-// the floor made every bridge end a wall.
 const DOOR_LOW = 0.5;
-const DOOR_HIGH = 1.8;    // to head height
+const DOOR_HIGH = 1.8;
 
 function doorwayClear(a, b) {
   const ax = C0 + a.c + 0.5, az = R0 + a.r + 0.5;
@@ -497,11 +363,10 @@ function doorwayClear(a, b) {
   let dx = cx2 - ax, dz = cz2 - az;
   const span = Math.hypot(dx, dz);
   dx /= span; dz /= span;
-  // Trim the ends so a link is judged by the gap between the cells, not by
-  // whatever stands in the middle of the cells themselves.
+
   const s0 = 0, s1 = span;
   const yLow = Math.min(a.y, b.y) + DOOR_LOW, yHigh = Math.max(a.y, b.y) + DOOR_HIGH;
-  const nx = -dz, nz = dx;                      // the doorway's own plane
+  const nx = -dz, nz = dx;
   const nd = nx * ax + nz * az;
 
   const cx = (ax + cx2) / 2, cz = (az + cz2) / 2;
@@ -516,7 +381,7 @@ function doorwayClear(a, b) {
     const box = triBox[t];
     if (box[4] < yLow || box[1] > yHigh) continue;
     const p = [[tris[t][0], tris[t][1], tris[t][2]], [tris[t][3], tris[t][4], tris[t][5]], [tris[t][6], tris[t][7], tris[t][8]]];
-    // Where the triangle crosses the doorway's plane: at most a segment.
+
     const d = p.map((v) => nx * v[0] + nz * v[2] - nd);
     if ((d[0] > 0 && d[1] > 0 && d[2] > 0) || (d[0] < 0 && d[1] < 0 && d[2] < 0)) continue;
     const pts = [];
@@ -530,8 +395,7 @@ function doorwayClear(a, b) {
       pts.push([(x - ax) * dx + (z - az) * dz, y]);
     }
     if (pts.length < 2) continue;
-    // The segment lies in the doorway's plane, so what is left is a 2D
-    // overlap: clip it to the rectangle and see whether anything survives.
+
     let t0 = 0, t1 = 1;
     const q = [pts[0][0], pts[0][1]], v = [pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]];
     let out = false;
@@ -548,15 +412,11 @@ function doorwayClear(a, b) {
   return true;
 }
 
-// `--door c,r c,r` asks the doorway test about one pair of cells and shows
-// what it found there, which is how a link that should have been blocked gets
-// tracked down without guessing.
 const doorArg = process.argv.indexOf('--door');
 if (doorArg > 0) {
   const [a1, a2] = process.argv.slice(doorArg + 1, doorArg + 3).map((s) => s.split(',').map(Number));
   const floors = (cr) => byCell.get((cr[0] - C0) * ROWS + (cr[1] - R0)) || [];
-  // A cell can hold several floors, so take the closest pair: the bridge deck
-  // and the deck it meets, not the deck and the riverbed under it.
+
   let a = null, b = null, gap = Infinity;
   for (const x of floors(a1)) for (const y of floors(a2))
     if (Math.abs(x.y - y.y) < gap) { gap = Math.abs(x.y - y.y); a = x; b = y; }
@@ -586,7 +446,7 @@ for (const list of byCell.values()) {
       for (const b of other) {
         if (b.i <= a.i) continue;
         if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
-        // No cutting corners: a diagonal needs both orthogonal cells open too.
+
         if (diag) {
           const s1 = byCell.get((a.c + dc) * ROWS + a.r), s2 = byCell.get(a.c * ROWS + (a.r + dr));
           const near = (l) => l && l.some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP);
@@ -599,8 +459,6 @@ for (const list of byCell.values()) {
     }
   }
 }
-
-// ---- keep only what you can actually reach --------------------------------
 
 const comp = new Int32Array(nodes.length).fill(-1);
 let compCount = 0;
@@ -616,12 +474,7 @@ for (let i = 0; i < nodes.length; i++) {
 }
 const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
-// Terrain pieces are hollow shells, so the underside of a hill has floors
-// buried in it that look exactly like a cave from close up: walkable ground
-// with a ceiling over it. What tells them apart is whether you could ever get
-// there. A cave is joined to the island through its mouth; a shell's inside is
-// sealed. So a patch survives only if it is part of the main island, or is
-// somewhere with open sky above it -- an offshore island, say.
+
 const real = new Array(compCount).fill(false);
 nodes.forEach((n, i) => {
   if (real[comp[i]]) return;
@@ -631,9 +484,7 @@ nodes.forEach((n, i) => {
 const main = sizes.indexOf(Math.max(...sizes));
 const MIN_COMP = 8;
 const keep = nodes.map((_, i) => comp[i] === main || (real[comp[i]] && sizes[comp[i]] >= MIN_COMP));
-// `--components` lists the separate walkable patches, largest first. A patch
-// that is not the main island is either somewhere you reach another way or
-// somewhere the grid has cut off by mistake, and this is how you tell.
+
 if (process.argv.includes('--components')) {
   const box = new Map();
   nodes.forEach((n, i) => {
@@ -682,7 +533,7 @@ const doc = {
     materials: mats,
     path: mats.map((m) => (PATHY.has(m) ? 1 : 0)),
   },
-  // c, r, y, eye, material index
+
   nodes: outNodes.map((n) => [n.c, n.r, Math.round(n.y * 1000) / 1000, n.e, matIndex.get(n.m)]),
   edges: outEdges,
 };
