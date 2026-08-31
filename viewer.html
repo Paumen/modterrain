@@ -65,11 +65,11 @@ const MAP_VIEW = { beta: 0.42, zoom: 0.55 };
 // tens of units in a single frame at the mouth of a cave. Fixed rungs move
 // only when something is actually in the way.
 const VIEWS = [
-  { beta: 1.500, far: 1.6 },
-  { beta: 1.325, far: 3 },
-  { beta: 1.150, far: 5.5 },
-  { beta: 0.975, far: 11 },
-  { beta: 0.800, far: 22 },
+  { beta: 1.500, far: 8 },
+  { beta: 1.325, far: 15 },
+  { beta: 1.150, far: 26 },
+  { beta: 0.975, far: 45 },
+  { beta: 0.800, far: 66 },
 ];
 const LEVEL = 1.55;   // as flat as the camera is allowed to lie
 const BACK = 1.6;     // the distance it tries to keep behind the eye
@@ -258,8 +258,30 @@ function toGrid(nav) {
   // ceiling carry a shortened eye height, which is what tells a cave floor
   // apart from a hillside, and a trail beats a field as an opening view.
   const startScore = (n) => Math.hypot(n.p[0] - centroid[0], n.p[2] - centroid[1]) + (n.s === 'p' ? 0 : 30);
+  // The grid can hold patches you cannot walk out of -- an offshore rock, a
+  // terrace with no route onto it. Starting on one of those leaves you with a
+  // single step to take and nothing else, so the walk starts in the biggest
+  // patch there is.
+  const patch = new Int32Array(nav.nodes.length).fill(-1);
+  const patchSize = [];
+  for (let i = 0; i < nav.nodes.length; i++) {
+    if (patch[i] >= 0) continue;
+    const id = patchSize.length;
+    let n = 0;
+    const stack = [i];
+    patch[i] = id;
+    while (stack.length) {
+      const c = stack.pop();
+      n++;
+      for (const m of nav.nodes[c].n) if (patch[m] < 0) { patch[m] = id; stack.push(m); }
+    }
+    patchSize.push(n);
+  }
+  const biggest = patchSize.indexOf(Math.max(...patchSize));
   const start = (() => {
-    const order = nav.nodes.map((n, i) => i).sort((a, b) => startScore(nav.nodes[a]) - startScore(nav.nodes[b]));
+    const order = nav.nodes.map((n, i) => i)
+      .filter((i) => patch[i] === biggest)
+      .sort((a, b) => startScore(nav.nodes[a]) - startScore(nav.nodes[b]));
     // Under open sky, not under a hill: the shortened eye height only marks a
     // low roof, and a big cave has plenty of headroom.
     for (const i of order.slice(0, 400)) {

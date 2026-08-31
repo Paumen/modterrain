@@ -538,7 +538,10 @@ for (let r = 0; r < ROWS; r++) {
 // walk through, so its own posts do not bar the way. Its door does -- that is
 // a separate piece, and it is a barrier like any other.
 const DOOR_INSET = 0;     // the whole walk between the two centres counts
-const DOOR_LOW = 0.05;    // from just above the floor
+// From knee height, not from the floor: you step over a lip without thinking
+// about it, and the front edge of a bridge deck is exactly that. Starting at
+// the floor made every bridge end a wall.
+const DOOR_LOW = 0.5;
 const DOOR_HIGH = 1.8;    // to head height
 
 function doorwayClear(a, b) {
@@ -609,9 +612,13 @@ function doorwayClear(a, b) {
 const doorArg = process.argv.indexOf('--door');
 if (doorArg > 0) {
   const [a1, a2] = process.argv.slice(doorArg + 1, doorArg + 3).map((s) => s.split(',').map(Number));
-  const pick = (cr) => (byCell.get((cr[0] - C0) * ROWS + (cr[1] - R0)) || [])[0];
-  const a = pick(a1), b = pick(a2);
-  if (!a || !b) { console.log('no floor in', a ? a2 : a1); process.exit(0); }
+  const floors = (cr) => byCell.get((cr[0] - C0) * ROWS + (cr[1] - R0)) || [];
+  // A cell can hold several floors, so take the closest pair: the bridge deck
+  // and the deck it meets, not the deck and the riverbed under it.
+  let a = null, b = null, gap = Infinity;
+  for (const x of floors(a1)) for (const y of floors(a2))
+    if (Math.abs(x.y - y.y) < gap) { gap = Math.abs(x.y - y.y); a = x; b = y; }
+  if (!a || !b) { console.log('no floor in', floors(a1).length ? a2 : a1); process.exit(0); }
   console.log(`${a1} y ${a.y.toFixed(2)} -> ${a2} y ${b.y.toFixed(2)}: ${doorwayClear(a, b) ? 'OPEN' : 'BLOCKED'}`);
   const near = [];
   for (let t = 0; t < tris.length; t++) {

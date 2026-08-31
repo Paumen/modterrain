@@ -169,12 +169,15 @@ bars.forEach((b, i) => {
       const k = `${x},${z}`; if (!BIN.has(k)) BIN.set(k, []); BIN.get(k).push(i);
     }
 });
-const LOW = 0.05, HIGH = 1.8;
-function crossesBarrier(a, b) {
+// Two bands: what a walk would have to climb over, and what it merely steps
+// over. A bridge's front lip and a kerb live in the low band; a fence rail,
+// a railing and a gate's door reach into the high one.
+const KNEE = 0.5, HIGH = 1.8, LOW = 0.05;
+function crossesBarrier(a, b, low) {
   const A = [a.c + 0.5, a.y, a.r + 0.5], B = [b.c + 0.5, b.y, b.r + 0.5];
   const quad = [
-    [[A[0], A[1]+LOW, A[2]], [B[0], B[1]+LOW, B[2]], [B[0], B[1]+HIGH, B[2]]],
-    [[A[0], A[1]+LOW, A[2]], [B[0], B[1]+HIGH, B[2]], [A[0], A[1]+HIGH, A[2]]],
+    [[A[0], A[1]+low, A[2]], [B[0], B[1]+low, B[2]], [B[0], B[1]+HIGH, B[2]]],
+    [[A[0], A[1]+low, A[2]], [B[0], B[1]+HIGH, B[2]], [A[0], A[1]+HIGH, A[2]]],
   ];
   const seen = new Set();
   for (const [x, z] of [[a.c, a.r], [b.c, b.r], [(a.c+b.c)/2, (a.r+b.r)/2]])
@@ -187,12 +190,12 @@ function crossesBarrier(a, b) {
 }
 
 const tally = new Map();
-let crossings = 0;
+let crossings = 0, stepped = 0;
 const examples = [];
 for (let e = 0; e < grid.edges.length; e += 2) {
   const a = nodes[grid.edges[e]], b = nodes[grid.edges[e+1]];
-  const fam = crossesBarrier(a, b);
-  if (!fam) continue;
+  const fam = crossesBarrier(a, b, KNEE);
+  if (!fam) { if (crossesBarrier(a, b, LOW)) stepped++; continue; }
   crossings++;
   tally.set(fam, (tally.get(fam) || 0) + 1);
   if (examples.length < 8) examples.push(`${fam}: (${a.c},${a.r},${a.y.toFixed(2)}) -> (${b.c},${b.r},${b.y.toFixed(2)})`);
@@ -206,7 +209,7 @@ const oneEach = (list) => [...new Map(list.map((g) => [`${g.x.toFixed(2)},${g.z.
 // you walk through it, which is across the frame's width.
 const at = new Map();
 nodes.forEach((n, i) => { const k = `${n.c},${n.r}`; if (!at.has(k)) at.set(k, []); at.get(k).push(i); });
-let openOk = 0, openTotal = 0, shutOk = 0, shutTotal = 0;
+let openOk = 0, openTotal = 0;
 for (const g of oneEach(gates)) {
   const c = Math.floor(g.x), r = Math.floor(g.z);
   const doored = doors.some((d) => Math.floor(d.x) === c && Math.floor(d.z) === r);
@@ -218,10 +221,12 @@ for (const g of oneEach(gates)) {
     const d = [nodes[j].c - nodes[i].c, nodes[j].r - nodes[i].r];
     if (Math.abs(d[0]) === Math.abs(dir[0]) && Math.abs(d[1]) === Math.abs(dir[1])) through = true;
   }
-  if (doored) { shutTotal++; if (!through) shutOk++; } else { openTotal++; if (through) openOk++; }
+  if (doored) continue;   // a shut gate blocks by having its door across the way, which is a crossing
+  openTotal++; if (through) openOk++;
 }
 
 console.log(`links: ${grid.edges.length / 2}`);
+console.log(`links stepping over something knee-high or lower: ${stepped}`);
 console.log(`fence crossings: ${crossings}${crossings ? '\n  ' + [...tally].sort((a,b)=>b[1]-a[1]).map(([k,v]) => `${String(v).padStart(4)} ${k}`).join('\n  ') : ''}`);
 let edges2 = 0;
 for (const n of nodes) {
@@ -230,4 +235,3 @@ for (const n of nodes) {
 }
 console.log(`open gates passable: ${openOk}/${openTotal}`);
 console.log(`cells on a cliff edge: ${edges2}`);
-console.log(`shut gates blocked:  ${shutOk}/${shutTotal}`);
