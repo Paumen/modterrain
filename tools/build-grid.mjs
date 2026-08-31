@@ -68,9 +68,9 @@ const isHidden = (i) => /^Hidden/.test(matName(i));
 // way, or water. Nothing else about a piece matters here, except that a cave
 // floor is ground that is meant to have rock over it.
 const CAVE_FLOOR = /^Floor_/;
-const OBSTACLE = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Protrusion|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_)/;
+const OBSTACLE = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_)/;
 const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
-const GROUND = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_Bridge_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/;
+const GROUND = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/;
 
 // The one piece that is both: a bridge carries its own handrails, so its deck
 // is ground and only what stands up off the deck -- a post, not the edge of a
