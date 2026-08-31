@@ -78,9 +78,7 @@ const unknown = new Set();
 
 const CELL = 1;
 const EYE = 1.5;
-const STEP = 0.75;
-const CLUSTER = 0.3;
-const REACH = 0.1;
+const REACH = 0.2;
 const KNEE = 0.5;
 const HEAD = 1.6;
 
@@ -196,23 +194,10 @@ function heightsAt(x, z) {
   return hits;
 }
 
-function cluster(hits, y) {
-  const out = [];
-  for (const h of hits) {
-    const last = out[out.length - 1];
-    if (last && y(h) - y(last[last.length - 1]) <= CLUSTER) last.push(h);
-    else out.push([h]);
-  }
-  return out;
-}
-
 function floorAt(x, z) {
   const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
-  return cluster(hits, (h) => h[0])
-    .map((k) => {
-      const top = k[k.length - 1];
-      return { y: top[0], mat: top[1], blocking: top[3], cave: top[4] };
-    })
+  return hits
+    .map((h) => ({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] }))
     .filter((f) => !f.blocking);
 }
 
@@ -266,7 +251,7 @@ for (let r = 0; r < ROWS; r++) {
 
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const corner = (c, r, a, b) =>
-  (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
+  (byCell.get(c * ROWS + r) || []).length > 0
   || inTheWay(C0 + c + 0.5, R0 + r + 0.5, (a.y + b.y) / 2);
 const edges = [];
 const links = nodes.map(() => new Set());
@@ -278,7 +263,6 @@ for (const list of byCell.values()) {
       const diag = dc !== 0 && dr !== 0;
       for (const b of other) {
         if (b.i <= a.i) continue;
-        if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
         if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
         if (diag && !(corner(a.c + dc, a.r, a, b) && corner(a.c, a.r + dr, a, b))) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
@@ -345,7 +329,6 @@ const doc = {
     origin: { c: C0, r: R0 },
     size: { cols: COLS, rows: ROWS },
     eye: EYE,
-    step: STEP,
     main: mainCount,
     materials: mats,
     path: mats.map((m) => (PATHY.has(m) ? 1 : 0)),
