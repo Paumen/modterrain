@@ -8,7 +8,7 @@ if (!input) {
 }
 const force = process.argv.includes('--force');
 const outPath = input.replace(/\.glb$/, '_grid.json');
-const READ_ONLY = ['--probe', '--slopes', '--door', '--components'].some((f) => process.argv.includes(f));
+const READ_ONLY = ['--probe', '--components'].some((f) => process.argv.includes(f));
 if (existsSync(outPath) && !force && !READ_ONLY) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
@@ -64,33 +64,53 @@ function localMatrix(node) {
 const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
-const tris = [];
-const cache = new Map();
+// Every piece is either ground you can stand on, an obstacle standing in the
+// way, or water. Nothing else about a piece matters here, except that a cave
+// floor is ground that is meant to have rock over it.
+const CAVE_FLOOR = /^Floor_/;
+const OBSTACLE = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_)/;
+const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
+const GROUND = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/;
 
-const DECK = /^(Prop_Bridge_|Path_Bridge_|Docks_Decking_|Docks_Ladder_Top)/;
-const decks = [];
+// The one piece that is both: a bridge carries its own handrails, so its deck
+// is ground and only what stands up off the deck -- a post, not the edge of a
+// plank -- is an obstacle.
+const RAILED = /^Prop_Bridge_/;
+const RAIL = 0.3;
 
-const CAVE = /^(Cave_|Floor_)/;
-const caves = [];
-
-const ROCK = /^(Basic_|Wall_|Cracked_|Tiered_Retaining_Wall_|Prop_Column_|Prop_Stalagmite_)/;
-
-function notePiece(node, world) {
-  const into = DECK.test(node.name || '') ? decks : CAVE.test(node.name || '') ? caves : null;
-  if (!into) return;
-  for (const prim of json.meshes[node.mesh].primitives) {
-    const acc = json.accessors[prim.attributes.POSITION];
-    if (!acc?.min || !acc?.max) continue;
-    const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
-    for (let corner = 0; corner < 8; corner++) {
-      const p = xformPoint(world,
-        (corner & 1 ? acc.max : acc.min)[0], (corner & 2 ? acc.max : acc.min)[1], (corner & 4 ? acc.max : acc.min)[2]);
-      for (let a = 0; a < 3; a++) { if (p[a] < lo[a]) lo[a] = p[a]; if (p[a] > hi[a]) hi[a] = p[a]; }
-    }
-    into.push([...lo, ...hi]);
-    return;
-  }
+const GROUNDS = 0, CAVE = 1, BLOCKS = 2, WET = 3;
+const unknown = new Set();
+function kindOf(piece) {
+  if (CAVE_FLOOR.test(piece)) return CAVE;
+  if (OBSTACLE.test(piece)) return BLOCKS;
+  if (WATER.test(piece)) return WET;
+  if (GROUND.test(piece)) return GROUNDS;
+  unknown.add(piece);
+  return BLOCKS;
 }
+
+// A gate is an obstacle only while it is shut. A shut leaf hangs in line with
+// the frame it is hinged to; an open one has swung away from it.
+const yawOf = (m) => Math.atan2(m[8], m[0]);
+const hinges = [];
+for (const node of json.nodes || []) {
+  if (/^Path_Fence_Gate_Frame_Hinged_/.test(node.name || '') && node.matrix)
+    hinges.push([node.matrix[12], node.matrix[14], yawOf(node.matrix)]);
+}
+function gateShut(m) {
+  let best = null, bestD = Infinity;
+  for (const h of hinges) {
+    const d = Math.hypot(h[0] - m[12], h[1] - m[14]);
+    if (d < bestD) { bestD = d; best = h; }
+  }
+  if (!best) return true;
+  const turn = Math.abs(((yawOf(m) - best[2] + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI);
+  return turn < 0.26;
+}
+
+const tris = [];
+const triPiece = [];
+const cache = new Map();
 
 function meshGeometry(prim) {
   const key = `${prim.attributes.POSITION}/${prim.indices ?? -1}`;
@@ -99,28 +119,17 @@ function meshGeometry(prim) {
   return g;
 }
 
-const BARRIER = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
-const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
-const MASS = /^(Basic_|Cave_|Ceiling_|Docks_(Decking|Support|Ladder)_|Floor_|Grass_|Path_(Bridge|Edging|Terrain)_|Prop_|Terrain_Sand_|Tiered_|Wall_)/;
-const unknown = new Set();
-function kindOf(piece) {
-  if (BARRIER.test(piece)) return 'barrier';
-  if (WATER.test(piece)) return 'water';
-  if (MASS.test(piece)) return 'mass';
-  unknown.add(piece);
-  return 'mass';
-}
+const FLAT = 0.5;
 
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
+    const open = /^Path_Fence_Gate_Door_/.test(piece) && !gateShut(world);
     const kind = kindOf(piece);
-
-    const bridge = /^Prop_Bridge_/.test(piece);
-    notePiece(node, world);
-    for (const prim of json.meshes[node.mesh].primitives) {
+    const railed = RAILED.test(piece);
+    if (!open) for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
       const { pos, idx } = meshGeometry(prim);
       const count = idx ? idx.length : pos.length / 3;
@@ -132,16 +141,11 @@ function emitNode(nodeIndex, parent) {
         const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
         const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
         const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
-
-        const len = Math.hypot(nx, ny, nz) || 1;
-        const up = ny / len;
-        const railing = bridge && Math.abs(up) < 0.5;
-        const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
-
-        const rock = ROCK.test(piece);
-        const stops = (rock && Math.abs(up) < 0.5) || (!gateway && (kind === 'barrier' || railing));
-
-        tris.push([...p0, ...p1, ...p2, prim.material, up, stops, rock]);
+        const up = ny / (Math.hypot(nx, ny, nz) || 1);
+        const post = railed && Math.abs(up) < FLAT
+          && Math.max(p0[1], p1[1], p2[1]) - Math.min(p0[1], p1[1], p2[1]) >= RAIL;
+        tris.push([...p0, ...p1, ...p2, prim.material, up, post ? BLOCKS : kind]);
+        triPiece.push(piece);
       }
     }
   }
@@ -151,23 +155,21 @@ function emitNode(nodeIndex, parent) {
 for (const root of json.scenes[json.scene ?? 0].nodes) emitNode(root, IDENTITY);
 
 if (unknown.size) {
-  console.error(`unclassified pieces -- add them to BARRIER, WATER or MASS:\n  ${[...unknown].join('\n  ')}`);
+  console.error(`unclassified pieces -- add them to OBSTACLE, WATER or GROUND:\n  ${[...unknown].join('\n  ')}`);
   process.exit(1);
 }
 
 const CELL = 1;
-const EYE = 3.6;
-const MIN_EYE = 1.5;
-const HEAD = 2.0;
+const EYE = 1.5;
+const MIN_EYE = 0.5;
 const STEP = 0.75;
-const FLAT = 0.5;
 const CLUSTER = 0.3;
-
-const WALKABLE = new Set(['Grass', 'Dirt', 'Cliff', 'Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
-const PATHY = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
-
-const WET = new Set(['Water River', 'Waterfall', 'Waterfall Crest', 'Cave Pool']);
+const REACH = 0.1;
+const KNEE = 0.5;
+const HEAD = 1.6;
 const WADE = 1.0;
+
+const PATHY = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 
 let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
 for (const [x0, , z0, x1, , z1, x2, , z2] of tris) {
@@ -191,19 +193,49 @@ tris.forEach((_, t) => {
     for (let ix = bx(b[0]); ix <= bx(b[3]); ix++) bins[iz * BW + ix].push(t);
 });
 
+// The one thing that stops you: an obstacle standing where you want to be. It
+// has to stand more than knee high over your feet to count -- every kerb in
+// the kit is a quarter high and every fence four fifths -- and it is asked of
+// a point, a stride wide, rather than of a whole cell: a wall that leans into
+// a cell without reaching the middle of it still leaves you somewhere to
+// stand, and a fence laid along a cell line blocks the step across it without
+// closing the cells to either side.
+function inTheWay(x, z, y) {
+  for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
+    for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
+      for (const t of bins[iz * BW + ix]) {
+        if (tris[t][11] !== BLOCKS) continue;
+        const b = triBox[t];
+        if (b[3] < x - REACH || b[0] > x + REACH || b[5] < z - REACH || b[2] > z + REACH) continue;
+        if (b[4] > y + KNEE && b[1] < y + HEAD) return true;
+      }
+  return false;
+}
+
+// The same question asked the whole way from one cell to the next, close
+// enough together that nothing thin slips between two samples.
+function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
+  const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / REACH);
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    if (inTheWay(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
+  }
+  return false;
+}
+
 function heightsAt(x, z) {
   const hits = [];
   for (const t of bins[bz(z) * BW + bx(x)]) {
     const b = triBox[t];
     if (x < b[0] || x > b[3] || z < b[2] || z > b[5]) continue;
-    const [x0, y0, z0, x1, y1, z1, x2, y2, z2, mat, up, , rock] = tris[t];
+    const [x0, y0, z0, x1, y1, z1, x2, y2, z2, mat, up, kind] = tris[t];
     const d = (z1 - z2) * (x0 - x2) + (x2 - x1) * (z0 - z2);
     if (Math.abs(d) < 1e-9) continue;
     const w0 = ((z1 - z2) * (x - x2) + (x2 - x1) * (z - z2)) / d;
     const w1 = ((z2 - z0) * (x - x2) + (x0 - x2) * (z - z2)) / d;
     const w2 = 1 - w0 - w1;
     if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-    hits.push([w0 * y0 + w1 * y1 + w2 * y2, mat, up, rock]);
+    hits.push([w0 * y0 + w1 * y1 + w2 * y2, mat, up, kind, t]);
   }
   return hits;
 }
@@ -248,44 +280,31 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
   return best;
 }
 
-const probeArg = process.argv.indexOf('--probe');
-
 function floorsAt(x, z) {
-  const hits = heightsAt(x, z).filter((h) => h[2] > FLAT && !h[3]).sort((a, b) => a[0] - b[0]);
+  const hits = heightsAt(x, z).filter((h) => h[2] > FLAT && h[3] <= CAVE).sort((a, b) => a[0] - b[0]);
   const out = [];
   for (let i = 0; i < hits.length;) {
     let j = i;
     while (j + 1 < hits.length && hits[j + 1][0] - hits[j][0] <= CLUSTER) j++;
-    out.push({ y: hits[j][0], mat: hits[j][1], up: hits[j][2] });
+    out.push({ y: hits[j][0], mat: hits[j][1], up: hits[j][2], kind: hits[j][3] });
     i = j + 1;
   }
   return out;
 }
 
+// Nine samples over the cell: a floor has to be under most of it, so a cell
+// with a hole in the middle of it is no floor at all.
 const OFFSETS = [[0, 0], [0.35, 0], [-0.35, 0], [0, 0.35], [0, -0.35],
   [0.3, 0.3], [0.3, -0.3], [-0.3, 0.3], [-0.3, -0.3]];
 const NEED = 5;
 
-function ceilingAt(x, z, y) {
-  const rays = OFFSETS.map(([ox, oz]) => raycast(x + ox, y + 0.2, z + oz, 0, 1, 0, 0.001, 40));
-  rays.sort((a, b) => a - b);
-  const mid = rays[rays.length >> 1];
-  return mid === Infinity ? Infinity : mid + 0.2;
-}
-
-const reject = { support: 0, head: 0, wet: 0 };
-
-const inBox = (list, x, z, y) => list.some((d) =>
-  x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5] && y >= d[1] - 0.1 && y <= d[4] + 0.1);
-const onDeck = (x, z, y) => inBox(decks, x, z, y);
-const inCave = (x, z, y) => inBox(caves, x, z, y);
+const reject = { hole: 0, obstacle: 0, wet: 0 };
 
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
 
-  const samples = OFFSETS.map(([ox, oz]) => floorsAt(x + ox, z + oz));
   const flat = [];
-  samples.forEach((list, s) => list.forEach((f) => flat.push({ ...f, s })));
+  OFFSETS.forEach(([ox, oz], s) => floorsAt(x + ox, z + oz).forEach((f) => flat.push({ ...f, s })));
   if (!flat.length) return [];
   flat.sort((a, b) => a.y - b.y);
 
@@ -298,39 +317,43 @@ function floorsIn(c, r, note) {
 
   const here = [];
   for (const k of clusters) {
+    const y = k[Math.floor(k.length / 2)].y;
+    const centre = k.find((f) => f.s === 0);
+    const name = matName((centre || k[k.length - 1]).mat);
 
-    const good = k.filter((f) => WALKABLE.has(matName(f.mat)));
-    const y = good.length ? good[Math.floor(good.length / 2)].y : k[k.length - 1].y;
-    const label = matName(k[k.length - 1].mat);
-    if (!good.length) { note?.(y, label, 'nothing walkable'); continue; }
-    const support = new Set(good.map((f) => f.s)).size;
-    const need = onDeck(x, z, y) ? 1 : NEED;
-    if (support < need) { reject.support++; note?.(y, label, `only ${support} of ${OFFSETS.length} samples`); continue; }
-
-    if (flat.some((f) => WET.has(matName(f.mat)) && f.y > y - 0.05 && f.y < y + WADE)) {
-      reject.wet++; note?.(y, label, 'under water'); continue;
+    const support = new Set(k.map((f) => f.s)).size;
+    if (support < NEED) { reject.hole++; note?.(y, name, `only ${support} of ${OFFSETS.length} samples`); continue; }
+    if (inTheWay(x, z, y)) { reject.obstacle++; note?.(y, name, 'an obstacle stands here'); continue; }
+    if (heightsAt(x, z).some((h) => h[3] === WET && h[0] > y - 0.05 && h[0] < y + WADE)) {
+      reject.wet++; note?.(y, name, 'under water'); continue;
     }
-    const tally = new Map();
-    for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
-    const centre = good.find((f) => f.s === 0);
-    const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
 
-    const room = ceilingAt(x, z, y);
-    if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
-    const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
+    const room = raycast(x, y + 0.2, z, 0, 1, 0, 0.001, 40);
+    const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 0.5));
     note?.(y, name, 'open');
-    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100, tilt: Math.min(...good.map((f) => f.up)) });
+    here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100,
+      home: room === Infinity || k.some((f) => f.kind === CAVE) });
   }
   return here;
 }
 
+const probeArg = process.argv.indexOf('--probe');
 if (probeArg > 0) {
   const [px, pz] = process.argv[probeArg + 1].split(',').map(Number);
   const c = Math.floor(px) - C0, r = Math.floor(pz) - R0;
   console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
   console.log('surfaces under the centre:');
   for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
-    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}${h[3] ? '  rock' : ''}`);
+    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${['ground', 'cave floor', 'obstacle', 'water'][h[3]].padEnd(11)} ${triPiece[h[4]]}`);
+  console.log('in the way of the point itself:');
+  for (let iz = bz(pz - REACH); iz <= bz(pz + REACH); iz++)
+    for (let ix = bx(px - REACH); ix <= bx(px + REACH); ix++)
+      for (const t of bins[iz * BW + ix]) {
+        if (tris[t][11] !== BLOCKS) continue;
+        const b = triBox[t];
+        if (b[3] < px - REACH || b[0] > px + REACH || b[5] < pz - REACH || b[2] > pz + REACH) continue;
+        console.log(`  ${triPiece[t].padEnd(44)} y ${b[1].toFixed(2)}..${b[4].toFixed(2)}`);
+      }
   console.log('floors:');
   floorsIn(c, r, (y, name, why) => console.log(`  y ${y.toFixed(3)}  ${name.padEnd(22)} ${why}`));
   process.exit(0);
@@ -347,87 +370,13 @@ for (let r = 0; r < ROWS; r++) {
   }
 }
 
-const DOOR_LOW = 0.5;
-const DOOR_HIGH = 1.8;
-
-function doorwayClear(a, b) {
-  const ax = C0 + a.c + 0.5, az = R0 + a.r + 0.5;
-  const cx2 = C0 + b.c + 0.5, cz2 = R0 + b.r + 0.5;
-  let dx = cx2 - ax, dz = cz2 - az;
-  const span = Math.hypot(dx, dz);
-  dx /= span; dz /= span;
-
-  const s0 = 0, s1 = span;
-  const yLow = Math.min(a.y, b.y) + DOOR_LOW, yHigh = Math.max(a.y, b.y) + DOOR_HIGH;
-  const nx = -dz, nz = dx;
-  const nd = nx * ax + nz * az;
-
-  const cx = (ax + cx2) / 2, cz = (az + cz2) / 2;
-  const reach = Math.ceil(span / 2) + 1;
-  const hits = new Set();
-  for (let iz = bz(cz - reach); iz <= bz(cz + reach); iz++)
-    for (let ix = bx(cx - reach); ix <= bx(cx + reach); ix++)
-      for (const t of bins[iz * BW + ix]) hits.add(t);
-
-  for (const t of hits) {
-    if (!tris[t][11]) continue;
-    const box = triBox[t];
-    if (box[4] < yLow || box[1] > yHigh) continue;
-    const p = [[tris[t][0], tris[t][1], tris[t][2]], [tris[t][3], tris[t][4], tris[t][5]], [tris[t][6], tris[t][7], tris[t][8]]];
-
-    const d = p.map((v) => nx * v[0] + nz * v[2] - nd);
-    if ((d[0] > 0 && d[1] > 0 && d[2] > 0) || (d[0] < 0 && d[1] < 0 && d[2] < 0)) continue;
-    const pts = [];
-    for (let i = 0; i < 3; i++) {
-      const j = (i + 1) % 3;
-      if ((d[i] > 0) === (d[j] > 0) || d[i] === d[j]) continue;
-      const f = d[i] / (d[i] - d[j]);
-      const x = p[i][0] + (p[j][0] - p[i][0]) * f;
-      const y = p[i][1] + (p[j][1] - p[i][1]) * f;
-      const z = p[i][2] + (p[j][2] - p[i][2]) * f;
-      pts.push([(x - ax) * dx + (z - az) * dz, y]);
-    }
-    if (pts.length < 2) continue;
-
-    let t0 = 0, t1 = 1;
-    const q = [pts[0][0], pts[0][1]], v = [pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]];
-    let out = false;
-    for (const [dir, lo, hi] of [[0, s0, s1], [1, yLow, yHigh]]) {
-      if (Math.abs(v[dir]) < 1e-9) { if (q[dir] < lo || q[dir] > hi) { out = true; break; } continue; }
-      let e0 = (lo - q[dir]) / v[dir], e1 = (hi - q[dir]) / v[dir];
-      if (e0 > e1) { const tmp = e0; e0 = e1; e1 = tmp; }
-      t0 = Math.max(t0, e0); t1 = Math.min(t1, e1);
-      if (t0 > t1) { out = true; break; }
-    }
-    if (out) continue;
-    return false;
-  }
-  return true;
-}
-
-const doorArg = process.argv.indexOf('--door');
-if (doorArg > 0) {
-  const [a1, a2] = process.argv.slice(doorArg + 1, doorArg + 3).map((s) => s.split(',').map(Number));
-  const floors = (cr) => byCell.get((cr[0] - C0) * ROWS + (cr[1] - R0)) || [];
-
-  let a = null, b = null, gap = Infinity;
-  for (const x of floors(a1)) for (const y of floors(a2))
-    if (Math.abs(x.y - y.y) < gap) { gap = Math.abs(x.y - y.y); a = x; b = y; }
-  if (!a || !b) { console.log('no floor in', floors(a1).length ? a2 : a1); process.exit(0); }
-  console.log(`${a1} y ${a.y.toFixed(2)} -> ${a2} y ${b.y.toFixed(2)}: ${doorwayClear(a, b) ? 'OPEN' : 'BLOCKED'}`);
-  const near = [];
-  for (let t = 0; t < tris.length; t++) {
-    if (!tris[t][11]) continue;
-    const bb = triBox[t];
-    if (bb[3] < Math.min(a1[0], a2[0]) - 1 || bb[0] > Math.max(a1[0], a2[0]) + 2) continue;
-    if (bb[5] < Math.min(a1[1], a2[1]) - 1 || bb[2] > Math.max(a1[1], a2[1]) + 2) continue;
-    near.push([bb[1].toFixed(2), bb[4].toFixed(2)]);
-  }
-  console.log(`barrier triangles nearby: ${near.length}`, near.slice(0, 6).map((n) => `y ${n[0]}..${n[1]}`).join('  '));
-  process.exit(0);
-}
-
+// Neighbouring floors join when the step between them is small enough and
+// nothing stands between them -- the same question the cell itself was asked,
+// put to every point along the way across.
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+const corner = (c, r, a, b) =>
+  (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
+  || inTheWay(C0 + c + 0.5, R0 + r + 0.5, (a.y + b.y) / 2);
 const edges = [];
 const links = nodes.map(() => new Set());
 for (const list of byCell.values()) {
@@ -439,13 +388,13 @@ for (const list of byCell.values()) {
       for (const b of other) {
         if (b.i <= a.i) continue;
         if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
-
-        if (diag) {
-          const s1 = byCell.get((a.c + dc) * ROWS + a.r), s2 = byCell.get(a.c * ROWS + (a.r + dr));
-          const near = (l) => l && l.some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP);
-          if (!near(s1) || !near(s2)) continue;
-        }
-        if (!doorwayClear(a, b)) continue;
+        if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
+        // A diagonal cuts a corner, and what sits in that corner decides
+        // whether it may. Ground you could have walked round by, or rock
+        // standing in the way: fine, you are squeezing past it. Open air is
+        // not -- that corner is a brink, and cutting it walks you along the
+        // edge of a cliff or round the end of a railing.
+        if (diag && !(corner(a.c + dc, a.r, a, b) && corner(a.c, a.r + dr, a, b))) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
         edges.push(a.i, b.i);
       }
@@ -468,12 +417,10 @@ for (let i = 0; i < nodes.length; i++) {
 const sizes = new Array(compCount).fill(0);
 for (const c of comp) sizes[c]++;
 
+// Cut off patches: a patch that neither sees the sky nor stands on a cave
+// floor is terrain sealed inside a mountain rather than a place to be.
 const real = new Array(compCount).fill(false);
-nodes.forEach((n, i) => {
-  if (real[comp[i]]) return;
-  const x = C0 + n.c + 0.5, z = R0 + n.r + 0.5;
-  if (inCave(x, z, n.y) || raycast(x, n.y + 0.2, z, 0, 1, 0, 0.001, 60) === Infinity) real[comp[i]] = true;
-});
+nodes.forEach((n, i) => { if (n.home) real[comp[i]] = true; });
 const main = sizes.indexOf(Math.max(...sizes));
 const MIN_COMP = 8;
 const keep = nodes.map((_, i) => comp[i] === main || (real[comp[i]] && sizes[comp[i]] >= MIN_COMP));
@@ -503,17 +450,6 @@ for (let e = 0; e < edges.length; e += 2) {
 
 const mats = [...new Set(outNodes.map((n) => n.m))].sort();
 const matIndex = new Map(mats.map((m, i) => [m, i]));
-
-if (process.argv.includes('--slopes')) {
-  const by = new Map();
-  for (const n of outNodes) {
-    const deg = Math.round(Math.acos(Math.min(1, n.tilt)) * 180 / Math.PI / 5) * 5;
-    const k = `${n.m} ${String(deg).padStart(2)}deg`;
-    by.set(k, (by.get(k) || 0) + 1);
-  }
-  console.log([...by.entries()].sort().map((e) => `${e[0]}: ${e[1]}`).join('\n'));
-  process.exit(0);
-}
 
 const doc = {
   meta: {
