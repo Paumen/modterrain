@@ -3,21 +3,23 @@
 //   node tools/build-grid.mjs scenes/Foo.glb [--force] [--probe x,z]
 //
 // Four rules, and nothing else:
-//   1. A cell has a floor at a level if the surface there is a walkable material.
+//   1. A cell has a floor at a level if terrain there gives it one.
 //   2. Water on that floor means no floor.
 //   3. An object taller than TALL standing on that floor closes the cell.
 //   4. You can step to a touching cell whose floor is within STEP up or down.
+//
+// Terrain is a surface you walk on. Everything else is an object you walk into,
+// and anything new lands there by default.
 
 import { readGlb } from './glb.mjs';
 import { writeFileSync, existsSync } from 'node:fs';
 
-const WALKABLE = new Set(['Grass', 'Dirt', 'Cliff', 'Carved Stone Walkway',
-  'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
+const TERRAIN = /^(Grass_|Terrain_Sand_|Basic_|Cracked_|Wall_|Tiered_Grass_|Path_Terrain_|Path_Bridge_|Prop_Bridge_|Docks_Decking_|Docks_Ladder_Top|Tiered_Walkway_|Cave_|Floor_)/;
 const WATER = new Set(['Water River', 'Waterfall', 'Waterfall Crest', 'Cave Pool']);
 const PATH = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 const TALL = 0.25;    // an object shorter than this you step over
 const STEP = 1.0;     // one tier
-const FLAT = 0.5;     // a surface facing up at least this much is floor, not wall
+const FLAT = 0.707;   // terrain facing up more than sideways is floor, not wall
 const SAME = 0.4;     // surfaces this close together are one floor
 const EYE = 3.6;      // camera height above the floor
 
@@ -45,9 +47,10 @@ const apply = (m, x, y, z) => [
 
 // --- every visible triangle, in world space ---------------------------------
 
-const tris = [];  // [x0,y0,z0, x1,y1,z1, x2,y2,z2, material, upness]
+const tris = [];  // [x0,y0,z0, x1,y1,z1, x2,y2,z2, material, upness, isTerrain]
 for (const node of json.nodes) {
   if (node.mesh == null || !node.matrix) continue;
+  const terrain = TERRAIN.test((node.name || '').split('__')[0]);
   for (const prim of json.meshes[node.mesh].primitives) {
     if ((prim.mode ?? 4) !== 4 || /^Hidden/.test(name(prim.material))) continue;
     const pos = data(prim.attributes.POSITION);
@@ -61,7 +64,7 @@ for (const node of json.nodes) {
       const ax = p[1][0] - p[0][0], ay = p[1][1] - p[0][1], az = p[1][2] - p[0][2];
       const bx = p[2][0] - p[0][0], by = p[2][1] - p[0][1], bz = p[2][2] - p[0][2];
       const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
-      tris.push([...p[0], ...p[1], ...p[2], prim.material, ny / (Math.hypot(nx, ny, nz) || 1)]);
+      tris.push([...p[0], ...p[1], ...p[2], prim.material, ny / (Math.hypot(nx, ny, nz) || 1), terrain]);
     }
   }
 }
@@ -97,9 +100,9 @@ function floorsIn(c, r, why) {
   const up = [], wet = [], solid = [];
   for (const t of here) {
     const tri = tris[t], mat = name(tri[9]), lo = Math.min(tri[1], tri[4], tri[7]);
-    if (tri[10] > FLAT && WALKABLE.has(mat)) up.push([Math.max(tri[1], tri[4], tri[7]), mat]);
+    if (tri[11] && tri[10] > FLAT) up.push([Math.max(tri[1], tri[4], tri[7]), mat]);
     else if (WATER.has(mat)) wet.push(lo);
-    else solid.push([lo, Math.max(tri[1], tri[4], tri[7])]);
+    else if (!tri[11]) solid.push([lo, Math.max(tri[1], tri[4], tri[7])]);
   }
   if (!up.length) return [];
   up.sort((a, b) => a[0] - b[0]);
