@@ -160,7 +160,7 @@ if (unknown.size) {
 }
 
 const CELL = 1;
-const EYE = 1.0;
+const EYE = 1.5;
 const MIN_EYE = 0.5;
 const STEP = 0.75;
 const CLUSTER = 0.3;
