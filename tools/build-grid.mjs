@@ -1,17 +1,3 @@
-// Where you can walk in a scene GLB. One cell is one world unit.
-//
-//   node tools/build-grid.mjs scenes/Foo.glb [--force] [--probe x,z]
-//
-// Four rules, and nothing else:
-//   1. A cell has a floor at a level if terrain there gives it a surface you
-//      stand on. Both halves matter: a rope bridge is terrain, and its rope
-//      handrail is not something you stand on.
-//   2. Water on that floor means no floor.
-//   3. An object taller than TALL standing on that floor closes the cell.
-//   4. You can step to a touching cell whose floor is within STEP up or down.
-//
-// Terrain is a surface you walk on. Everything else is an object you walk into,
-// and anything new lands there by default.
 
 import { readGlb } from './glb.mjs';
 import { writeFileSync, existsSync } from 'node:fs';
@@ -21,11 +7,11 @@ const SURFACE = new Set(['Grass', 'Dirt', 'Cliff', 'Carved Stone Walkway',
   'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 const WATER = new Set(['Water River', 'Waterfall', 'Waterfall Crest', 'Cave Pool']);
 const PATH = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
-const TALL = 0.25;    // an object shorter than this you step over
-const STEP = 1.0;     // one tier
-const FLAT = 0.707;   // terrain facing up more than sideways is floor, not wall
-const SAME = 0.4;     // surfaces this close together are one floor
-const EYE = 3.6;      // camera height above the floor
+const TALL = 0.25;
+const STEP = 1.0;
+const FLAT = 0.707;
+const SAME = 0.4;
+const EYE = 3.6;
 
 const input = process.argv[2];
 const probe = process.argv.indexOf('--probe');
@@ -49,9 +35,7 @@ const apply = (m, x, y, z) => [
   m[2] * x + m[6] * y + m[10] * z + m[14],
 ];
 
-// --- every visible triangle, in world space ---------------------------------
-
-const tris = [];  // [x0,y0,z0, x1,y1,z1, x2,y2,z2, material, upness, isTerrain]
+const tris = [];
 for (const node of json.nodes) {
   if (node.mesh == null || !node.matrix) continue;
   const terrain = TERRAIN.test((node.name || '').split('__')[0]);
@@ -73,8 +57,6 @@ for (const node of json.nodes) {
   }
 }
 
-// --- bin them by cell so a cell can be asked what is in it ------------------
-
 let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
 for (const [x0, , z0, x1, , z1, x2, , z2] of tris) {
   minX = Math.min(minX, x0, x1, x2); maxX = Math.max(maxX, x0, x1, x2);
@@ -94,11 +76,6 @@ for (let t = 0; t < tris.length; t++) {
 }
 const inCell = (c, r) => bins.get((c + C0) * 100000 + (r + R0)) || [];
 
-// --- rules ------------------------------------------------------------------
-
-// Rule 1: floors, from the up-facing walkable surfaces in the cell.
-// Rule 2: water at a floor's level cancels it.
-// Rule 3: anything else standing on a floor closes the cell.
 function floorsIn(c, r, why) {
   const here = inCell(c, r);
   const up = [], wet = [], solid = [];
@@ -117,9 +94,6 @@ function floorsIn(c, r, why) {
     while (j + 1 < up.length && up[j + 1][0] - up[j][0] <= SAME) j++;
     const y = up[j][0], mat = up[j][1];
     if (wet.some((w) => w > y - 0.05 && w < y + 1)) why?.(y, mat, 'water');
-    // An object belongs to the level it stands on, and closes it if it is
-    // taller than TALL. Things at other levels -- a bridge deck overhead --
-    // belong to those levels, not this one.
     else if (solid.some(([lo, hi]) => lo < y + TALL && hi > y + TALL)) why?.(y, mat, 'blocked');
     else { why?.(y, mat, 'open'); floors.push({ c, r, y, mat }); }
     i = j + 1;
@@ -145,7 +119,6 @@ for (let r = 0; r < ROWS; r++)
       f.i = cells.length; cells.push(f);
     }
 
-// Rule 4: step to a touching cell within STEP.
 const edges = [];
 for (const f of cells)
   for (const [dc, dr] of [[1, 0], [0, 1], [1, 1], [1, -1]])

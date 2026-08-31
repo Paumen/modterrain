@@ -10,11 +10,15 @@
   canvas { width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
   .hud {
     position: fixed; top: 12px; left: 12px; color: #dfe7ee; font: 13px/1.5 system-ui, sans-serif;
-    background: rgba(20, 26, 34, 0.7); padding: 8px 12px; border-radius: 8px; pointer-events: none; max-width: 300px;
+    background: rgba(20, 26, 34, 0.7); padding: 8px 12px; border-radius: 8px; pointer-events: none;
+    max-width: 300px;
   }
+  .hud b { font-size: 14px; }
+  .hud small { opacity: 0.75; }
   .bar {
     position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 8px; background: rgba(20, 26, 34, 0.75); padding: 8px; border-radius: 14px;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: calc(100vw - 24px);
+    background: rgba(20, 26, 34, 0.75); padding: 8px; border-radius: 14px;
   }
   .bar button {
     width: 48px; height: 48px; border: 0; border-radius: 10px; background: #2c3644; color: #eef4fa;
@@ -25,117 +29,476 @@
 </head>
 <body>
 <canvas id="view"></canvas>
-<div class="hud" id="hud"><b>Walkthrough</b><br><small>Tap anywhere to walk there<br>
-&#10226;&#10227; turn &middot; &#9650;&#9660; closer/wider &middot; all of it works while walking</small></div>
+<div class="hud" id="hud"></div>
 <div class="bar">
-  <button id="rotL" title="Turn left">&#10226;</button>
-  <button id="out" title="Wider">&#9650;</button>
-  <button id="in" title="Closer">&#9660;</button>
-  <button id="rotR" title="Turn right">&#10227;</button>
+  <button id="back" title="Back to where you came from (Backspace)" disabled>&#8617;</button>
+  <button id="rotL" title="Orbit left (&#8592;)">&#10226;</button>
+  <button id="tiltU" title="Wider, higher view">&#9650;</button>
+  <button id="tiltD" title="Closer, lower view">&#9660;</button>
+  <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
 </div>
 <script src="vendor/babylon/babylon.js"></script>
 <script src="vendor/babylon/babylonjs.loaders.min.js"></script>
 <script>
 'use strict';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
-const TAU = Math.PI * 2;
-const HEADINGS = 6;                      // isometric, 60 apart
-const SPEED = 6;                         // cells per second
-const EYE = 3.6;                         // camera target above the floor
-const VIEWS = [                          // pitch and distance move together
-  { beta: 1.500, zoom: 0.18 }, { beta: 1.325, zoom: 0.34 }, { beta: 1.150, zoom: 0.64 },
-  { beta: 0.975, zoom: 1.19 }, { beta: 0.800, zoom: 2.24 },
-];
+const canvas = document.getElementById('view');
+const hud = document.getElementById('hud');
 
-async function makeEngine(canvas) {
+const TAU = Math.PI * 2;
+const STEPS = 6;
+const STEP_ANGLE = TAU / STEPS;
+const VIEWS = [
+  { beta: 1.500, zoom: 0.18 },
+  { beta: 1.325, zoom: 0.34 },
+  { beta: 1.150, zoom: 0.64 },
+  { beta: 0.975, zoom: 1.19 },
+  { beta: 0.800, zoom: 2.24 },
+];
+const smooth = (t) => t * t * (3 - 2 * t);
+
+const VIEW_HELP = `<b>Walkthrough</b><br>
+<small>Tap a cell or any spot to travel there<br>
+Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back</small>`;
+async function makeEngine() {
   if (navigator.gpu && BABYLON.WebGPUEngine) {
-    try { const e = new BABYLON.WebGPUEngine(canvas, { antialias: true }); await e.initAsync(); return e; }
-    catch (err) { console.warn('WebGPU unavailable, using WebGL', err); }
+    try {
+      const engine = new BABYLON.WebGPUEngine(canvas, { antialias: true });
+      await engine.initAsync();
+      return engine;
+    } catch (e) { console.warn('WebGPU unavailable, falling back to WebGL', e); }
   }
   return new BABYLON.Engine(canvas, true);
 }
 
+function fromGrid(grid) {
+  const { origin, materials, path } = grid.meta;
+  const nodes = grid.cells.map(([c, r, y, m]) => ({
+    c, r,
+    p: [origin.c + c + 0.5, y, origin.r + r + 0.5],
+    s: path[m] ? 'p' : 'g',
+    n: [],
+  }));
+  for (let i = 0; i < grid.edges.length; i += 2) {
+    nodes[grid.edges[i]].n.push(grid.edges[i + 1]);
+    nodes[grid.edges[i + 1]].n.push(grid.edges[i]);
+  }
+  return { meta: { ...grid.meta, eye: grid.meta.eye, cell: grid.meta.cell }, nodes, materials };
+}
+
 (async () => {
-  const canvas = document.getElementById('view');
   const [engine, grid] = await Promise.all([
-    makeEngine(canvas),
+    makeEngine(),
     fetch(`scenes/${SCENE}_grid.json`).then((r) => r.json()),
   ]);
-  const O = grid.meta.origin;
-  // cells as world points, with their neighbours
-  const cells = grid.cells.map(([c, r, y]) => ({ x: O.c + c + 0.5, y, z: O.r + r + 0.5, n: [] }));
-  for (let i = 0; i < grid.edges.length; i += 2) {
-    cells[grid.edges[i]].n.push(grid.edges[i + 1]);
-    cells[grid.edges[i + 1]].n.push(grid.edges[i]);
-  }
-
+  const nav = fromGrid(grid);
+  const { eye, cell } = nav.meta;
   const scene = new BABYLON.Scene(engine);
-  scene.useRightHandedSystem = true;     // keep glTF's own coordinates
+  scene.useRightHandedSystem = true;
   scene.clearColor = BABYLON.Color4.FromHexString('#1a2028ff');
+
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
-  for (const m of scene.meshes) m.freezeWorldMatrix();
+  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0);
+  for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
+
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
   sun.intensity = 1.3;
   const sky = new BABYLON.HemisphericLight('sky', new BABYLON.Vector3(0, 1, 0), scene);
   sky.intensity = 1.2;
   sky.groundColor = new BABYLON.Color3(0.25, 0.22, 0.18);
 
-  // --- one ray caster, used for the camera and for eye height ---------------
-  const tris = [];
-  for (const mesh of scene.meshes) {
-    const pos = mesh.getVerticesData(BABYLON.VertexBuffer.PositionKind);
-    if (!pos) continue;
-    const idx = mesh.getIndices();
-    const w = mesh.computeWorldMatrix(true);
-    for (let t = 0; t < idx.length; t += 3) {
-      const p = [0, 1, 2].map((k) => BABYLON.Vector3.TransformCoordinates(
-        new BABYLON.Vector3(pos[idx[t + k] * 3], pos[idx[t + k] * 3 + 1], pos[idx[t + k] * 3 + 2]), w));
-      tris.push([p[0].x, p[0].y, p[0].z, p[1].x, p[1].y, p[1].z, p[2].x, p[2].y, p[2].z]);
+  let tris, triBox, bins, BW, BH, bMinX, bMinZ;
+  const BIN = cell;
+  {
+    const arrs = [];
+    let total = 0;
+    for (const mesh of terrain) {
+      mesh.computeWorldMatrix(true);
+      const wm = mesh.getWorldMatrix();
+      const src = mesh.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+      const out = new Float32Array(src.length);
+      const v = new BABYLON.Vector3();
+      for (let i = 0; i < src.length; i += 3) {
+        BABYLON.Vector3.TransformCoordinatesFromFloatsToRef(src[i], src[i + 1], src[i + 2], wm, v);
+        out[i] = v.x; out[i + 1] = v.y; out[i + 2] = v.z;
+      }
+      arrs.push(out);
+      total += out.length;
+    }
+    tris = new Float32Array(total);
+    let o = 0;
+    for (const a of arrs) { tris.set(a, o); o += a.length; }
+    const nTris = tris.length / 9;
+    triBox = new Float32Array(nTris * 6);
+    bMinX = Infinity; bMinZ = Infinity;
+    let maxX = -Infinity, maxZ = -Infinity;
+    for (let t = 0; t < nTris; t++) {
+      const b = t * 9;
+      const x0 = Math.min(tris[b], tris[b + 3], tris[b + 6]), x1 = Math.max(tris[b], tris[b + 3], tris[b + 6]);
+      const y0 = Math.min(tris[b + 1], tris[b + 4], tris[b + 7]), y1 = Math.max(tris[b + 1], tris[b + 4], tris[b + 7]);
+      const z0 = Math.min(tris[b + 2], tris[b + 5], tris[b + 8]), z1 = Math.max(tris[b + 2], tris[b + 5], tris[b + 8]);
+      triBox.set([x0, y0, z0, x1, y1, z1], t * 6);
+      bMinX = Math.min(bMinX, x0); bMinZ = Math.min(bMinZ, z0);
+      maxX = Math.max(maxX, x1); maxZ = Math.max(maxZ, z1);
+    }
+    BW = Math.ceil((maxX - bMinX) / BIN) + 1;
+    BH = Math.ceil((maxZ - bMinZ) / BIN) + 1;
+    bins = Array.from({ length: BW * BH }, () => []);
+    const bx = (x) => Math.max(0, Math.min(BW - 1, Math.floor((x - bMinX) / BIN)));
+    const bz = (z) => Math.max(0, Math.min(BH - 1, Math.floor((z - bMinZ) / BIN)));
+    for (let t = 0; t < nTris; t++) {
+      const b = t * 6;
+      for (let iz = bz(triBox[b + 2]); iz <= bz(triBox[b + 5]); iz++)
+        for (let ix = bx(triBox[b]); ix <= bx(triBox[b + 3]); ix++) bins[iz * BW + ix].push(t);
     }
   }
-  const bins = new Map();
-  const key = (x, z) => Math.floor(x) * 100000 + Math.floor(z);
-  tris.forEach((t, i) => {
-    for (let x = Math.floor(Math.min(t[0], t[3], t[6])); x <= Math.floor(Math.max(t[0], t[3], t[6])); x++)
-      for (let z = Math.floor(Math.min(t[2], t[5], t[8])); z <= Math.floor(Math.max(t[2], t[5], t[8])); z++) {
-        const k = x * 100000 + z, l = bins.get(k);
-        if (l) l.push(i); else bins.set(k, [i]);
+  const seen = new Int32Array(tris.length / 9);
+  let seenStamp = 0;
+  function raycast(ox, oy, oz, dx, dy, dz, tMax) {
+    let best = Infinity;
+    const stamp = ++seenStamp;
+    const testBin = (ix, iz) => {
+      if (ix < 0 || ix >= BW || iz < 0 || iz >= BH) return;
+      for (const t of bins[iz * BW + ix]) {
+        if (seen[t] === stamp) continue;
+        seen[t] = stamp;
+        const b = t * 9;
+        const e1x = tris[b + 3] - tris[b], e1y = tris[b + 4] - tris[b + 1], e1z = tris[b + 5] - tris[b + 2];
+        const e2x = tris[b + 6] - tris[b], e2y = tris[b + 7] - tris[b + 1], e2z = tris[b + 8] - tris[b + 2];
+        const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
+        const det = e1x * px + e1y * py + e1z * pz;
+        if (Math.abs(det) < 1e-12) continue;
+        const inv = 1 / det;
+        const tx = ox - tris[b], ty = oy - tris[b + 1], tz = oz - tris[b + 2];
+        const u = (tx * px + ty * py + tz * pz) * inv;
+        if (u < 0 || u > 1) continue;
+        const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
+        const v = (dx * qx + dy * qy + dz * qz) * inv;
+        if (v < 0 || u + v > 1) continue;
+        const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
+        if (hit > 0.001 && hit < tMax && hit < best) best = hit;
       }
-  });
-  function cast(ox, oy, oz, dx, dy, dz, far) {
-    let best = far;
-    const steps = Math.ceil(far) + 2;
-    const seen = new Set();
-    for (let s = 0; s <= steps; s++) {
-      const f = (s / steps) * far;
-      for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) {
-        const k = key(ox + dx * f + a, oz + dz * f + b);
-        if (seen.has(k)) continue;
-        seen.add(k);
-        for (const i of bins.get(k) || []) {
-          const [x0, y0, z0, x1, y1, z1, x2, y2, z2] = tris[i];
-          const e1x = x1 - x0, e1y = y1 - y0, e1z = z1 - z0;
-          const e2x = x2 - x0, e2y = y2 - y0, e2z = z2 - z0;
-          const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
-          const det = e1x * px + e1y * py + e1z * pz;
-          if (Math.abs(det) < 1e-12) continue;
-          const inv = 1 / det, tx = ox - x0, ty = oy - y0, tz = oz - z0;
-          const u = (tx * px + ty * py + tz * pz) * inv;
-          if (u < 0 || u > 1) continue;
-          const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
-          const v = (dx * qx + dy * qy + dz * qz) * inv;
-          if (v < 0 || u + v > 1) continue;
-          const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
-          if (hit > 0.01 && hit < best) best = hit;
-        }
-      }
+    };
+    let ix = Math.floor((ox - bMinX) / BIN), iz = Math.floor((oz - bMinZ) / BIN);
+    const stepX = dx > 0 ? 1 : -1, stepZ = dz > 0 ? 1 : -1;
+    let tX = dx !== 0 ? ((bMinX + (ix + (dx > 0 ? 1 : 0)) * BIN) - ox) / dx : Infinity;
+    let tZ = dz !== 0 ? ((bMinZ + (iz + (dz > 0 ? 1 : 0)) * BIN) - oz) / dz : Infinity;
+    const dX = dx !== 0 ? Math.abs(BIN / dx) : Infinity, dZ = dz !== 0 ? Math.abs(BIN / dz) : Infinity;
+    let t = 0;
+    for (let i = 0; i < BW + BH && t <= tMax && t < best; i++) {
+      for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) testBin(ix + a, iz + b);
+      if (tX < tZ) { t = tX; tX += dX; ix += stepX; } else { t = tZ; tZ += dZ; iz += stepZ; }
     }
     return best;
   }
-  // In a cave the target ducks under the roof rather than sitting in it.
-  const eyeAt = (p) => Math.min(EYE, cast(p.x, p.y + 0.2, p.z, 0, 1, 0, EYE + 1) - 0.6);
 
-  // --- markers, one mesh per colour, drawn as thin instances ----------------
+  const centroid = nav.nodes.reduce((a, n) => [a[0] + n.p[0], a[1] + n.p[2]], [0, 0]).map((v) => v / nav.nodes.length);
+  const startScore = (n) => Math.hypot(n.p[0] - centroid[0], n.p[2] - centroid[1]) + (n.s === 'p' ? 0 : 30);
+  const start = (() => {
+    const order = nav.nodes.map((n, i) => i).sort((a, b) => startScore(nav.nodes[a]) - startScore(nav.nodes[b]));
+    for (const i of order.slice(0, 400)) {
+      const p = nav.nodes[i].p;
+      if (raycast(p[0], p[1] + eye, p[2], 0, 1, 0, 80) === Infinity) return i;
+    }
+    return order[0];
+  })();
+
+  const asked = parseInt(new URLSearchParams(location.search).get('node') ?? '', 10);
+  let cur = Number.isInteger(asked) && asked >= 0 && asked < nav.nodes.length ? asked : start;
+  let stepCont = 0;
+  let viewIdx = 1;
+  const view = () => VIEWS[viewIdx];
+  const floorR = 2.4, maxR = 66, margin = 1.5;
+  const step = () => ((Math.round(stepCont) % STEPS) + STEPS) % STEPS;
+  const eyeOf = (n) => {
+    const node = nav.nodes[n];
+    if (node.e === undefined) {
+      const roof = raycast(node.p[0], node.p[1] + 0.2, node.p[2], 0, 1, 0, eye + 1);
+      node.e = roof === Infinity ? eye : Math.max(1.2, Math.min(eye, roof - 0.4));
+    }
+    return node.e;
+  };
+  const eyePoint = (n) => new BABYLON.Vector3(nav.nodes[n].p[0], nav.nodes[n].p[1] + eyeOf(n), nav.nodes[n].p[2]);
+  const dirAt = (alpha, beta) => [Math.cos(alpha) * Math.sin(beta), Math.cos(beta), Math.sin(alpha) * Math.sin(beta)];
+
+  function nearRadius() {
+    const h = camera.minZ * Math.tan(camera.fov / 2);
+    return Math.hypot(h, h * engine.getAspectRatio(camera)) + 0.12;
+  }
+  const perp = (dx, dy, dz) => {
+    const ax = Math.abs(dy) < 0.9 ? [0, 1, 0] : [1, 0, 0];
+    let ux = ax[1] * dz - ax[2] * dy, uy = ax[2] * dx - ax[0] * dz, uz = ax[0] * dy - ax[1] * dx;
+    const ul = Math.hypot(ux, uy, uz) || 1;
+    ux /= ul; uy /= ul; uz /= ul;
+    return [[ux, uy, uz], [dy * uz - dz * uy, dz * ux - dx * uz, dx * uy - dy * ux]];
+  };
+  function thickCast(ox, oy, oz, dx, dy, dz, tMax, probe) {
+    let best = raycast(ox, oy, oz, dx, dy, dz, tMax);
+    const [u, v] = perp(dx, dy, dz);
+    for (const [sx, sy, sz] of [u, v, [-u[0], -u[1], -u[2]], [-v[0], -v[1], -v[2]]]) {
+      const hit = raycast(ox + sx * probe, oy + sy * probe, oz + sz * probe, dx, dy, dz, tMax);
+      if (hit < best) best = hit;
+    }
+    return best;
+  }
+
+  function freeAt(n, k, vi = viewIdx) {
+    const p = eyePoint(n);
+    const [dx, dy, dz] = dirAt(k * STEP_ANGLE, VIEWS[vi].beta);
+    const probe = nearRadius();
+    const hit = thickCast(p.x, p.y, p.z, dx, dy, dz, maxR + margin, probe);
+    return Math.min(maxR, hit - margin);
+  }
+  const wantRadius = (n) => Math.max(floorR, freeAt(n, step()) * view().zoom);
+  const MIN_ROOM = 2.7;
+  const open = (n, k) => freeAt(n, ((k % STEPS) + STEPS) % STEPS) > MIN_ROOM;
+
+  const camera = new BABYLON.ArcRotateCamera('cam', 0, view().beta, 1, eyePoint(start), scene);
+  camera.minZ = 0.09;
+  camera.maxZ = 1200;
+  camera.fov = 0.9;
+  camera.inputs.clear();
+
+  let tween = null;
+  let route = [];
+  const history = [];
+  let recording = true;
+  function pushHistory(from) {
+    if (history[history.length - 1] === from) return;
+    history.push(from);
+    if (history.length > 60) history.shift();
+    const b = document.getElementById('back');
+    if (b) b.disabled = false;
+  }
+  function goBack() {
+    if (!history.length) return;
+    route = [];
+    const to = history.pop();
+    const b = document.getElementById('back');
+    if (b) b.disabled = !history.length;
+    recording = false;
+    stepCont = bestHeading(to);
+    glideTo(to, 420);
+    recording = true;
+  }
+  function glideTo(node, ms) {
+    if (recording && cur !== node) pushHistory(cur);
+    cur = node;
+    tween = {
+      t0: performance.now(), ms,
+      aT0: performance.now(), aMs: ms,
+      target0: camera.target.clone(), target1: eyePoint(node),
+      alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
+      beta0: camera.beta, beta1: view().beta,
+      radius0: camera.radius, radius1: wantRadius(node),
+    };
+    updateMarkers();
+  }
+  scene.onBeforeRenderObservable.add(() => {
+    if (tween) {
+      const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
+      const s = smooth(t);
+      camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
+      const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
+      camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
+      camera.beta = tween.beta0 + (tween.beta1 - tween.beta0) * s;
+      camera.radius = tween.radius0 + (tween.radius1 - tween.radius0) * s;
+      if (t === 1) {
+        tween = null;
+        if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); } else updateMarkers();
+      }
+    }
+  });
+
+  let smoothR = null;
+  scene.onBeforeRenderObservable.add(() => {
+    const wanted = camera.radius;
+    const tgt = camera.target;
+    const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
+    const probe = nearRadius();
+    const hit = thickCast(tgt.x, tgt.y, tgt.z, dx, dy, dz, wanted + margin, probe);
+    const clearance = Math.hypot(camera.minZ, probe) * 1.3;
+    const cap = Math.min(wanted, hit - clearance);
+    if (smoothR === null) smoothR = cap;
+    const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
+    smoothR += (cap - smoothR) * Math.min(1, dt * 10);
+    camera.radius = Math.max(camera.minZ, Math.min(smoothR, cap));
+    smoothR = camera.radius;
+    const tight = Math.min(1, Math.max(0, 1 - camera.radius / 12));
+    const wantFov = 0.9 + 0.5 * tight;
+    camera.fov += (wantFov - camera.fov) * Math.min(1, dt * 8);
+  });
+
+  const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
+  const surf = { p: 1, g: 3.5 };
+  const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
+  const legMs = (a, b) => Math.min(400, Math.max(150, dist3(nav.nodes[a], nav.nodes[b]) * 150));
+  let byCell = new Map();
+  const cellKey = (c, r) => c * 100000 + r;
+  function indexCells() {
+    byCell = new Map();
+    nav.nodes.forEach((n, i) => {
+      const k = cellKey(n.c, n.r);
+      if (!byCell.has(k)) byCell.set(k, []);
+      byCell.get(k).push(i);
+    });
+  }
+  indexCells();
+  function travelTo(dest) {
+    if (dest === cur) return;
+    const dist = new Float64Array(nav.nodes.length).fill(Infinity);
+    const prev = new Int32Array(nav.nodes.length).fill(-1);
+    const done = new Uint8Array(nav.nodes.length);
+    const heap = [];
+    const push = (cost, node) => {
+      heap.push([cost, node]);
+      let i = heap.length - 1;
+      while (i > 0) {
+        const p = (i - 1) >> 1;
+        if (heap[p][0] <= heap[i][0]) break;
+        [heap[p], heap[i]] = [heap[i], heap[p]];
+        i = p;
+      }
+    };
+    const pop = () => {
+      const top = heap[0], last = heap.pop();
+      if (heap.length) {
+        heap[0] = last;
+        let i = 0;
+        for (;;) {
+          const l = i * 2 + 1, r = l + 1;
+          let m = i;
+          if (l < heap.length && heap[l][0] < heap[m][0]) m = l;
+          if (r < heap.length && heap[r][0] < heap[m][0]) m = r;
+          if (m === i) break;
+          [heap[m], heap[i]] = [heap[i], heap[m]];
+          i = m;
+        }
+      }
+      return top;
+    };
+    dist[cur] = 0;
+    push(0, cur);
+    while (heap.length) {
+      const [, n] = pop();
+      if (done[n]) continue;
+      done[n] = 1;
+      if (n === dest) break;
+      for (const nb of nav.nodes[n].n) {
+        const d = dist[n] + edgeCost(n, nb);
+        if (d < dist[nb]) { dist[nb] = d; prev[nb] = n; push(d, nb); }
+      }
+    }
+    if (dist[dest] === Infinity) {
+      const to = nav.nodes[dest].p;
+      let best = -1, bestD = Infinity;
+      for (let i = 0; i < nav.nodes.length; i++) {
+        if (dist[i] === Infinity) continue;
+        const p = nav.nodes[i].p;
+        const d = Math.hypot(p[0] - to[0], p[1] - to[1], p[2] - to[2]);
+        if (d < bestD) { bestD = d; best = i; }
+      }
+      if (best < 0 || best === cur) { route = []; return; }
+      dest = best;
+    }
+    route = [];
+    for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
+    route.shift();
+    if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); }
+  }
+  const TAP_PX = 32;
+  const ON_DOT_PX = 14;
+  let lastTapDist = Infinity;
+  function markerAtScreen(px, py) {
+    const eng = engine;
+    const vp = camera.viewport.toGlobal(eng.getRenderWidth(), eng.getRenderHeight());
+    const xform = scene.getTransformMatrix();
+    const ident = BABYLON.Matrix.Identity();
+    const scale = eng.getRenderWidth() / (canvas.clientWidth || eng.getRenderWidth());
+    const limit = TAP_PX * scale;
+    let best = -1, bestScore = Infinity, bestRaw = Infinity;
+    for (const i of shown) {
+      const q = nav.nodes[i].p;
+      const p = BABYLON.Vector3.Project(new BABYLON.Vector3(q[0], q[1] + LIFT, q[2]), ident, xform, vp);
+      if (p.z <= 0 || p.z >= 1) continue;
+      const d = Math.hypot(p.x - px * scale, p.y - py * scale);
+      if (d > limit) continue;
+      const score = d + p.z * limit;
+      if (score < bestScore) { bestScore = score; best = i; bestRaw = d / scale; }
+    }
+    lastTapDist = best >= 0 ? bestRaw : Infinity;
+    return best;
+  }
+
+  const EDGE_PX = 26;
+  function nearestNode(point) {
+    let best = 0, bestD = Infinity;
+    nav.nodes.forEach((n, i) => {
+      const d = Math.hypot(n.p[0] - point.x, (n.p[1] - point.y) * 2, n.p[2] - point.z);
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    return best;
+  }
+  function bestHeading(node) {
+    const base = Math.round(stepCont);
+    let bestK = base, bestScore = -Infinity;
+    for (let d = 0; d <= STEPS / 2; d++) {
+      for (const k of d === 0 ? [base] : [base + d, base - d]) {
+        const free = Math.min(freeAt(node, ((k % STEPS) + STEPS) % STEPS), 24);
+        const score = free - d * 1.05;
+        if (score > bestScore) { bestScore = score; bestK = k; }
+      }
+    }
+    return bestK;
+  }
+  function glideFacing(node, ms) {
+    stepCont = bestHeading(node);
+    glideTo(node, ms);
+  }
+
+  const orbit = (dir) => {
+    const from = Math.round(stepCont);
+    let k = from + dir, steps = 1;
+    while (steps < STEPS - 1 && !open(cur, k)) { k += dir; steps++; }
+    if (!open(cur, k)) { k = from + dir; steps = 1; }
+    stepCont = k;
+    if (tween && route.length) {
+      tween.alpha0 = camera.alpha;
+      tween.alpha1 = stepCont * STEP_ANGLE;
+      tween.aT0 = performance.now();
+      tween.aMs = 320;
+      return;
+    }
+    glideTo(cur, Math.min(300 + 120 * steps, 700));
+  };
+  const setView = (dir) => {
+    const next = Math.min(VIEWS.length - 1, Math.max(0, viewIdx + dir));
+    if (next === viewIdx) return;
+    viewIdx = next; route = [];
+    if (!open(cur, Math.round(stepCont))) {
+      for (let d = 1; d < STEPS; d++) {
+        if (open(cur, Math.round(stepCont) + d)) { stepCont += d; break; }
+        if (open(cur, Math.round(stepCont) - d)) { stepCont -= d; break; }
+      }
+    }
+    glideTo(cur, 400);
+  };
+  function walk(sign) {
+    route = [];
+    const fwd = camera.target.subtract(camera.position); fwd.y = 0; fwd.normalize();
+    let best = -1, bestDot = 0.35;
+    for (const nb of nav.nodes[cur].n) {
+      const to = eyePoint(nb).subtract(camera.target); to.y = 0;
+      const d = sign * BABYLON.Vector3.Dot(to.normalize(), fwd);
+      if (d > bestDot) { bestDot = d; best = nb; }
+    }
+    if (best >= 0) {
+      const k = Math.round(stepCont);
+      stepCont = open(best, k) ? k : open(best, k + 1) ? k + 1 : open(best, k - 1) ? k - 1 : k;
+      glideTo(best, 500);
+    }
+  }
+
   const mat = (hex, alpha) => {
     const m = new BABYLON.StandardMaterial('m' + hex, scene);
     m.emissiveColor = BABYLON.Color3.FromHexString(hex);
@@ -143,163 +506,122 @@ async function makeEngine(canvas) {
     if (alpha) m.alpha = alpha;
     return m;
   };
-  const pad = (material, top) => {
-    const m = BABYLON.MeshBuilder.CreateCylinder('pad', { diameter: 0.7, height: 0.04, tessellation: 12 }, scene);
-    m.material = material; m.isPickable = false; m.alwaysSelectAsActiveMesh = true;
-    m.renderingGroupId = top ? 1 : 0; m.thinInstanceCount = 0;
+  const nearMat = mat('#ffd75e'), farMat = mat('#b9c8d6', 0.5), hereMat = mat('#7ee081');
+  const routeMat = mat('#ff9d47');
+  for (const m of [nearMat, hereMat, routeMat]) m.disableDepthWrite = true;
+  const PAD = 0.72;
+  const LIFT = 0.05;
+  const padOf = (material, key) => {
+    const m = BABYLON.MeshBuilder.CreateCylinder('pad', { diameter: PAD, height: 0.04, tessellation: 14 }, scene);
+    m.material = material;
+    m.isPickable = false;
+    m.renderingGroupId = key ? 1 : 0;
+    m.alwaysSelectAsActiveMesh = true;
+    m.thinInstanceCount = 0;
     return m;
   };
-  const pads = { field: pad(mat('#b9c8d6', 0.45), false), route: pad(mat('#ff9d47'), true), here: pad(mat('#7ee081'), true) };
-  const bufs = {};
-  function show(kind, list, scale) {
+  const pads = {
+    far: padOf(farMat, false),
+    near: padOf(nearMat, true),
+    here: padOf(hereMat, true),
+    route: padOf(routeMat, true),
+  };
+  const padBuf = {};
+  function setPads(kind, list, scale) {
     const mesh = pads[kind];
-    let b = bufs[kind];
-    if (!b || b.length < list.length * 16) b = bufs[kind] = new Float32Array(Math.max(16, list.length * 32));
+    let buf = padBuf[kind];
+    if (!buf || buf.length < list.length * 16) buf = padBuf[kind] = new Float32Array(Math.max(16, list.length * 16) * 2);
     list.forEach((i, k) => {
-      const p = cells[i], o = k * 16;
-      b.fill(0, o, o + 16);
-      b[o] = b[o + 5] = b[o + 10] = scale; b[o + 15] = 1;
-      b[o + 12] = p.x; b[o + 13] = p.y + 0.05; b[o + 14] = p.z;
+      const p = nav.nodes[i].p;
+      const o = k * 16;
+      buf[o] = scale; buf[o + 5] = scale; buf[o + 10] = scale; buf[o + 15] = 1;
+      buf[o + 1] = buf[o + 2] = buf[o + 3] = buf[o + 4] = buf[o + 6] = buf[o + 7] = 0;
+      buf[o + 8] = buf[o + 9] = buf[o + 11] = 0;
+      buf[o + 12] = p[0]; buf[o + 13] = p[1] + LIFT; buf[o + 14] = p[2];
     });
-    mesh.thinInstanceSetBuffer('matrix', b, 16, false);
+    mesh.thinInstanceSetBuffer('matrix', buf, 16, false);
     mesh.thinInstanceCount = list.length;
     mesh.setEnabled(list.length > 0);
   }
 
-  // --- where we are, and where we are going --------------------------------
-  const mid = cells.reduce((a, c) => [a[0] + c.x, a[1] + c.z], [0, 0]).map((v) => v / cells.length);
-  let at = cells.reduce((best, c, i) =>
-    Math.hypot(c.x - mid[0], c.z - mid[1]) < Math.hypot(cells[best].x - mid[0], cells[best].z - mid[1]) ? i : best, 0);
-  let path = [];        // cells still to walk through
-  let pos = new BABYLON.Vector3(cells[at].x, cells[at].y, cells[at].z);
-  let heading = 0, view = 1;
-
-  const camera = new BABYLON.ArcRotateCamera('cam', 0, VIEWS[view].beta, 8, pos.clone(), scene);
-  camera.minZ = 0.09; camera.maxZ = 1200; camera.fov = 0.9;
-  camera.inputs.clear();
-
-  function walkTo(dest) {
-    const dist = new Float64Array(cells.length).fill(Infinity);
-    const from = new Int32Array(cells.length).fill(-1);
-    const heap = [[0, at]];
-    dist[at] = 0;
-    while (heap.length) {
-      heap.sort((a, b) => a[0] - b[0]);
-      const [d, n] = heap.shift();
-      if (d > dist[n]) continue;
-      if (n === dest) break;
-      for (const m of cells[n].n) {
-        const c = cells[n], e = cells[m];
-        const w = Math.hypot(e.x - c.x, e.y - c.y, e.z - c.z);
-        if (d + w < dist[m]) { dist[m] = d + w; from[m] = n; heap.push([d + w, m]); }
+  let shown = new Set();
+  function rebuildMarkers() { updateMarkers(); }
+  const SHOW_WITHIN = 18;
+  function updateMarkers() {
+    const near = new Set(nav.nodes[cur].n);
+    const onRoute = new Set(route);
+    const here = nav.nodes[cur].p;
+    const radius = SHOW_WITHIN;
+    const lists = { far: [], near: [], here: [], route: [] };
+    shown = new Set();
+    const kindOf = (i) => (i === cur ? 'here' : onRoute.has(i) ? 'route' : near.has(i) ? 'near' : 'far');
+    const add = (i) => { if (shown.has(i)) return; lists[kindOf(i)].push(i); shown.add(i); };
+    const span = Math.ceil(radius);
+    const home = nav.nodes[cur];
+    for (let dc = -span; dc <= span; dc++) {
+      for (let dr = -span; dr <= span; dr++) {
+        const bucket = byCell.get(cellKey(home.c + dc, home.r + dr));
+        if (!bucket) continue;
+        for (const i of bucket) {
+          const p = nav.nodes[i].p;
+          if (Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) > radius) continue;
+          add(i);
+        }
       }
     }
-    if (dist[dest] === Infinity) return;
-    path = [];
-    for (let n = dest; n !== -1; n = from[n]) path.unshift(n);
-    path.shift();
+    add(cur);
+    for (const i of near) add(i);
+    for (const i of route) add(i);
+    for (const kind of Object.keys(lists)) setPads(kind, lists[kind], kind === 'far' ? 0.62 : 1.25);
   }
 
-  // --- one update per frame; nothing here interrupts anything else ---------
-  scene.onBeforeRenderObservable.add(() => {
-    const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
-
-    // walk: slide along the path at a steady speed, never stopping on a cell
-    let budget = SPEED * dt;
-    while (budget > 0 && path.length) {
-      const next = cells[path[0]];
-      const to = new BABYLON.Vector3(next.x, next.y, next.z);
-      const gap = BABYLON.Vector3.Distance(pos, to);
-      if (gap <= budget) { pos = to; at = path.shift(); budget -= gap; }
-      else { pos = BABYLON.Vector3.Lerp(pos, to, budget / gap); budget = 0; }
-    }
-
-    // camera: each property eases toward what it should be, independently
-    const want = VIEWS[view];
-    const ease = (a, b, k) => a + (b - a) * Math.min(1, dt * k);
-    const target = new BABYLON.Vector3(pos.x, pos.y + eyeAt(pos), pos.z);
-    camera.target = BABYLON.Vector3.Lerp(camera.target, target, Math.min(1, dt * 12));
-    let turn = heading * (TAU / HEADINGS) - camera.alpha;
-    while (turn > Math.PI) turn -= TAU;
-    while (turn < -Math.PI) turn += TAU;
-    camera.alpha += turn * Math.min(1, dt * 6);
-    camera.beta = ease(camera.beta, want.beta, 6);
-
-    // the only thing that limits distance: what is actually in the way. A
-    // camera is a volume, not a point, so the cast is a cylinder as wide as
-    // the near plane's corners -- terrain beside the camera slices through
-    // them even when nothing is on the centre line.
-    const dx = Math.cos(camera.alpha) * Math.sin(camera.beta);
-    const dy = Math.cos(camera.beta);
-    const dz = Math.sin(camera.alpha) * Math.sin(camera.beta);
-    const t = camera.target;
-    const h = camera.minZ * Math.tan(camera.fov / 2);
-    const wide = Math.hypot(h, h * engine.getAspectRatio(camera)) + 0.12;
-    let ux = -dz, uz = dx;
-    const ul = Math.hypot(ux, uz) || 1; ux /= ul; uz /= ul;
-    const vx = dy * uz, vy = dz * ux - dx * uz, vz = -dy * ux;
-    let room = cast(t.x, t.y, t.z, dx, dy, dz, 66);
-    for (const [ox, oy, oz] of [[ux, 0, uz], [-ux, 0, -uz], [vx, vy, vz], [-vx, -vy, -vz]])
-      room = Math.min(room, cast(t.x + ox * wide, t.y + oy * wide, t.z + oz * wide, dx, dy, dz, 66));
-    room -= Math.hypot(camera.minZ, wide) * 1.3;
-    // Eased so walls read as a pull-in, then hard-capped: easing toward the
-    // free distance would leave the camera inside a wall for the frames the
-    // easing takes.
-    const cap = Math.max(0.3, room);
-    camera.radius = Math.min(ease(camera.radius, Math.min(66 * want.zoom, cap), 8), cap);
-  });
-
-  // --- markers follow you ---------------------------------------------------
-  let lastAt = -1;
-  scene.onBeforeRenderObservable.add(() => {
-    if (at === lastAt) { show('route', path.slice(0, 60), 1.2); return; }
-    lastAt = at;
-    const here = cells[at];
-    const near = [];
-    for (let i = 0; i < cells.length; i++) {
-      const c = cells[i];
-      if (Math.abs(c.x - here.x) < 16 && Math.abs(c.z - here.z) < 16 && Math.abs(c.y - here.y) < 6) near.push(i);
-    }
-    show('field', near, 0.6);
-    show('here', [at], 1.3);
-  });
-
-  // --- input ----------------------------------------------------------------
   let down = null;
   scene.onPointerObservable.add((info) => {
     const e = info.event;
-    if (info.type === BABYLON.PointerEventTypes.POINTERDOWN) { down = { x: e.clientX, y: e.clientY }; return; }
+    if (info.type === BABYLON.PointerEventTypes.POINTERDOWN) down = { x: e.clientX, y: e.clientY };
     if (info.type !== BABYLON.PointerEventTypes.POINTERUP || !down) return;
     const dx = e.clientX - down.x, dy = e.clientY - down.y;
     down = null;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { heading += dx > 0 ? -1 : 1; return; }
-    if (Math.abs(dy) > 40) { view = Math.max(0, Math.min(VIEWS.length - 1, view + (dy > 0 ? -1 : 1))); return; }
-    const hit = scene.pick(e.clientX, e.clientY, (m) => m.name !== 'pad');
-    if (!hit?.hit) return;
-    const p = hit.pickedPoint;
-    let best = -1, bestD = Infinity;
-    for (let i = 0; i < cells.length; i++) {
-      const c = cells[i];
-      const d = Math.hypot(c.x - p.x, (c.y - p.y) * 2, c.z - p.z);
-      if (d < bestD) { bestD = d; best = i; }
+    if (Math.hypot(dx, dy) < 40) {
+      const tapped = markerAtScreen(scene.pointerX, scene.pointerY);
+      if (tapped >= 0) return travelTo(tapped);
+      const ground = scene.pick(scene.pointerX, scene.pointerY);
+      if (ground?.hit) travelTo(nearestNode(ground.pickedPoint));
+    } else if (Math.abs(dx) > Math.abs(dy)) {
+      orbit(dx > 0 ? -1 : 1);
+    } else {
+      setView(dy > 0 ? 1 : -1);
     }
-    if (best >= 0) walkTo(best);
   });
-  const bind = (id, fn) => document.getElementById(id).addEventListener('click', fn);
-  bind('rotL', () => heading++); bind('rotR', () => heading--);
-  bind('out', () => { view = Math.min(VIEWS.length - 1, view + 1); });
-  bind('in', () => { view = Math.max(0, view - 1); });
   addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') heading++;
-    if (e.key === 'ArrowRight') heading--;
-    if (e.key === 'PageUp') view = Math.min(VIEWS.length - 1, view + 1);
-    if (e.key === 'PageDown') view = Math.max(0, view - 1);
+    if (e.key === 'ArrowLeft') orbit(1);
+    if (e.key === 'ArrowRight') orbit(-1);
+    if (e.key === 'ArrowUp') walk(1);
+    if (e.key === 'ArrowDown') walk(-1);
+    if (e.key === 'PageUp') setView(1);
+    if (e.key === 'PageDown') setView(-1);
+    if (e.key === 'Backspace') { e.preventDefault(); goBack(); }
   });
+  let wheelAt = 0;
+  addEventListener('wheel', (e) => {
+    if (performance.now() - wheelAt < 350) return;
+    wheelAt = performance.now();
+    setView(e.deltaY > 0 ? 1 : -1);
+  }, { passive: true });
+  document.getElementById('back').addEventListener('click', goBack);
+  document.getElementById('rotL').addEventListener('click', () => orbit(1));
+  document.getElementById('rotR').addEventListener('click', () => orbit(-1));
+  document.getElementById('tiltU').addEventListener('click', () => setView(1));
+  document.getElementById('tiltD').addEventListener('click', () => setView(-1));
 
+  hud.innerHTML = VIEW_HELP;
+  rebuildMarkers();
+  glideFacing(cur, 1);
   engine.runRenderLoop(() => scene.render());
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
-  document.getElementById('hud').innerHTML = `<b>Failed to load</b><br><small>${e.message}</small>`;
+  hud.innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
+Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>`;
   throw e;
 });
 </script>
