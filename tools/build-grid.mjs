@@ -66,12 +66,13 @@ const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
 const CAVE_FLOOR = /^Floor_/;
+const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
 const WALKABLE = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_|Floor_)/;
 const BLOCKING = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Terrain_Water_|Water_|Waterfall_)/;
 
 function classify(piece) {
-  if (WALKABLE.test(piece)) return { blocking: false, cave: CAVE_FLOOR.test(piece) };
-  if (BLOCKING.test(piece)) return { blocking: true, cave: false };
+  if (WALKABLE.test(piece)) return { blocking: false, cave: CAVE_FLOOR.test(piece), water: false };
+  if (BLOCKING.test(piece)) return { blocking: true, cave: false, water: WATER.test(piece) };
   return null;
 }
 const unknown = new Set();
@@ -80,7 +81,8 @@ const CELL = 1;
 const EYE = 1.5;
 const STEP = 0.75;
 const CLUSTER = 0.3;
-const REACH = 0.1;
+const REACH = 0.2;
+const SAMPLE = 0.1;
 const KNEE = 0.5;
 const HEAD = 1.6;
 
@@ -89,6 +91,7 @@ const triMat = [];
 const triUp = [];
 const triBlocking = [];
 const triCave = [];
+const triWater = [];
 const triPiece = [];
 const cache = new Map();
 
@@ -124,6 +127,7 @@ function emitNode(nodeIndex, parent) {
         triUp.push(up);
         triBlocking.push(kind.blocking);
         triCave.push(kind.cave);
+        triWater.push(kind.water);
         triPiece.push(piece);
       }
     }
@@ -167,7 +171,7 @@ function inTheWay(x, z, y) {
 }
 
 function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
-  const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / REACH);
+  const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / SAMPLE);
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
     if (inTheWay(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
@@ -208,21 +212,24 @@ function cluster(hits, y) {
 
 function floorAt(x, z) {
   const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
-  return cluster(hits, (h) => h[0])
-    .map((k) => {
+  const stack = cluster(hits, (h) => h[0]);
+  return stack
+    .map((k, i) => {
       const top = k[k.length - 1];
-      return { y: top[0], mat: top[1], blocking: top[3], cave: top[4] };
+      const above = stack[i + 1]?.[0];
+      return { y: top[0], mat: top[1], blocking: top[3], cave: top[4], submerged: above ? triWater[above[5]] : false };
     })
     .filter((f) => !f.blocking);
 }
 
-const reject = { obstacle: 0 };
+const reject = { obstacle: 0, water: 0 };
 
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
   const here = [];
   for (const f of floorAt(x, z)) {
     const name = matName(f.mat);
+    if (f.submerged) { reject.water++; note?.(f.y, name, 'water covers this'); continue; }
     if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
     note?.(f.y, name, 'open');
     here.push({ c, r, y: f.y, m: name,
