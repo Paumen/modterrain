@@ -1,0 +1,212 @@
+:root {
+  --ink: #12212c;
+  --paper: #fbfcfd;
+  --shade: rgb(11 26 36 / 55%);
+  --edge: rgb(255 255 255 / 22%);
+  --gap: 0.75rem;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  background: #82c1eb;
+  color: var(--paper);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  overscroll-behavior: none;
+}
+
+#view {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* The gestures are handled in script; the browser must not also pan or zoom. */
+  touch-action: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.offscreen {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------- read-out */
+
+.readout {
+  position: fixed;
+  top: max(var(--gap), env(safe-area-inset-top));
+  left: max(var(--gap), env(safe-area-inset-left));
+  margin: 0;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: var(--shade);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+/* ---------------------------------------------------------------- panel */
+
+.panel-toggle {
+  position: fixed;
+  right: max(var(--gap), env(safe-area-inset-right));
+  bottom: max(var(--gap), env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--edge);
+  border-radius: 50%;
+  background: var(--shade);
+  color: inherit;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.panel-toggle svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.panel {
+  position: fixed;
+  right: max(var(--gap), env(safe-area-inset-right));
+  bottom: calc(max(var(--gap), env(safe-area-inset-bottom)) + 3.4rem);
+  left: max(var(--gap), env(safe-area-inset-left));
+  max-height: 62vh;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--edge);
+  border-radius: 0.9rem;
+  background: var(--shade);
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+  overscroll-behavior: contain;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem 0.75rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+}
+
+.stats dt {
+  opacity: 0.7;
+}
+
+.stats dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.switches {
+  display: grid;
+  gap: 0.4rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--edge);
+  font-size: 0.82rem;
+}
+
+.switches label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.switches input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #f2b705;
+}
+
+.hint {
+  margin: 0.8rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--edge);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------- loader */
+
+.loader {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  background: #82c1eb;
+  inset: 0;
+}
+
+.loader[hidden] {
+  display: none;
+}
+
+.loader-card {
+  width: min(19rem, 78vw);
+  text-align: center;
+}
+
+.loader-stage {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.loader-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 30%);
+}
+
+.loader-bar::before {
+  display: block;
+  width: var(--progress, 5%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--paper);
+  content: "";
+  transition: width 200ms ease-out;
+}
+
+.loader-error {
+  margin: 0.9rem 0 0;
+  color: #4a1414;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.loader-error[hidden] {
+  display: none;
+}

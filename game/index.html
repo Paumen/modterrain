@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#82c1eb">
+<title>Modular Terrain — Island</title>
+<meta name="description" content="The Large Island scene from the modular terrain pack, running on Babylon.js and WebGPU: a 1x1 grid world, a Recast navmesh, and tap-to-move built for a touchscreen.">
+<link rel="stylesheet" href="game.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🏝️</text></svg>">
+</head>
+<body>
+
+<canvas id="view" aria-label="The island. Tap the ground to walk there, drag sideways to orbit, drag up and down to zoom."></canvas>
+
+<p class="readout" id="readout" role="status" aria-live="off"></p>
+
+<button type="button" class="panel-toggle" id="panel-toggle" aria-expanded="false" aria-controls="panel" title="Details">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+  <span class="offscreen">Details</span>
+</button>
+
+<aside class="panel" id="panel" hidden>
+  <h1>Island</h1>
+  <dl class="stats" id="stats"></dl>
+
+  <div class="switches">
+    <label><input type="checkbox" id="toggle-grid"> Show the 1&times;1 grid</label>
+    <label><input type="checkbox" id="toggle-nav"> Show the navmesh</label>
+  </div>
+
+  <p class="hint">
+    Tap the ground to walk there. Drag sideways to orbit, up and down to zoom —
+    the camera drops low as it comes in and lifts as it pulls back.
+  </p>
+</aside>
+
+<div class="loader" id="loader">
+  <div class="loader-card">
+    <p class="loader-stage" id="loader-stage">starting</p>
+    <div class="loader-bar" id="loader-bar"></div>
+    <p class="loader-error" id="loader-error" hidden></p>
+  </div>
+</div>
+
+<script src="main.js" type="module"></script>
+
+</body>
+</html>

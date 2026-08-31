@@ -44,6 +44,22 @@ Practical facts about the kit:
 - **Mirroring:** the pack ships almost no pre-mirrored pieces. When you need
   a mirrored variant, mirror the piece yourself.
 
+## The game page
+
+`game/` runs `scenes/Large_Island_v2_No_Ocean_No_Props.glb` on Babylon.js as
+the foundation of a 3D game. `game/README.md` is the real documentation; the
+two facts most likely to catch you out elsewhere:
+
+- **The scene files are in cells, not the pack's units.** The atoms store 100
+  units to a cell, but the assembled scenes bake a scale of 100 into their node
+  matrices, so their world space comes out at 1 unit per cell. `measureScene`
+  in `tools/glb.mjs` divides by `UNITS_PER_CELL` and so reports a scene's size
+  100x too small — the large island reads as 1.57 cells across when it is 157.
+- **The scene GLBs are a rawer export than `atoms/`.** They carry positions
+  only — no normals, no UVs, no colormap — with flat per-material colors, and
+  their materials are all marked `doubleSided` by the trimesh export. Cull
+  backfaces anyway, per the rendering note above.
+
 ## Environment
 
 Installed:
