@@ -17,9 +17,13 @@
 //   slope      Steeper than FLAT is a hillside, not a floor.
 //   water      Water standing on a floor drowns it, up to WADE above.
 //              Water under a bridge deck does not.
-//   cliff face A cliff face standing in the cell at that height closes it. A
-//              face belongs to the cell on its solid side, so a mesa's rim
-//              closes and the floor of a cave does not. Bridges are exempt.
+//   cliff      A floor inside a cliff piece -- above its foot, below its top --
+//              is a floor buried in the terrain, not a place to stand. Cliff
+//              pieces are located the same way bridges and caves are: by the
+//              box the kit ships for them. Layers stack in the same cells, so
+//              a cell sits under several pieces; each is asked separately.
+//              Cells a bridge crosses are exempt at every height, because
+//              there a cliff piece's box spans open air rather than rock.
 //   headroom   Less than HEAD of ceiling and you cannot stand up.
 //   coverage   Fewer than NEED of the nine samples agreeing and there is not
 //              enough floor there to stand on. Cells a deck crosses need one.
@@ -39,7 +43,7 @@
 // business, decided per frame against the real triangles.
 //
 // To see why one cell went the way it did: --probe x,z. To see the walkable
-// patches: --components. The cliff-face mask: --faces. Floor slopes: --slopes.
+// patches: --components. Floor slopes: --slopes.
 
 import { readGlb } from './glb.mjs';
 import { writeFileSync, existsSync } from 'node:fs';
@@ -51,7 +55,8 @@ if (!input) {
 }
 const force = process.argv.includes('--force');
 const outPath = input.replace(/\.glb$/, '_grid.json');
-if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces') && !process.argv.includes('--components') && !process.argv.includes('--slopes') && !process.argv.includes('--door')) {
+const READ_ONLY = ['--probe', '--slopes', '--door', '--components'].some((f) => process.argv.includes(f));
+if (existsSync(outPath) && !force && !READ_ONLY) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
 }
@@ -110,7 +115,7 @@ const isHidden = (i) => /^Hidden/.test(matName(i));
 
 // ---- world-space triangles ------------------------------------------------
 
-const tris = []; // [x0,y0,z0, x1,y1,z1, x2,y2,z2, matIndex, ny]
+const tris = []; // [x0,y0,z0, x1,y1,z1, x2,y2,z2, matIndex, ny, stops]
 const cache = new Map();
 
 // Decking you are meant to walk along, by piece family. A rope bridge is loose
@@ -128,49 +133,14 @@ const decks = []; // world-space [minX, minY, minZ, maxX, maxY, maxZ] per piece
 const CAVE = /^(Cave_|Floor_)/;
 const caves = [];
 
-// A cliff piece always carries the Cliff material on its face, and a cell with
-// a cliff face in it is not somewhere you stand -- not on the ledge above it,
-// not in the gap below it. Faces are collected here as XZ footprints while the
-// triangles are gathered, and the cells they cover are closed outright.
-// Cliff faces, per cell, as the height band each one spans.
-const faces = new Map(); // "cx,cz" -> [[minY, maxY], ...]
-const FACE_TILT = 0.5;   // |normal.y| under this is a face, not a floor
-// A cliff is a face taller than one tier of the kit, which is a unit high.
-// Anything shorter is a ledge you step off, and treating those as cliffs shut
-// the brink cell on every terrace edge -- which cost the routes onto them.
-const DROP = 1.2;
-
-// A face is recorded with the height band it spans, in the cell just behind
-// it -- the side its rock is on, which the normal gives. That step has to be
-// small: a retaining wall is a fifth of a cell thick, and stepping a third of
-// a cell put its face on the walkway beyond it and closed the stairs.
-//
-// Height then says who is stopped. A floor inside the band is a floor part
-// way up a drop; a floor at the top of it is the brink. A floor at its foot
-// is at the bottom of the band and stays open, which is what leaves the
-// ground below a cliff, and a cave's own floor, walkable.
-//
-// Walking the edges rather than taking a bounding box matters too: a face
-// running diagonally, which every curve and esse piece has, boxes into a
-// square many times its own footprint.
-function markFace(p0, p1, p2, nx, nz) {
-  const flat = Math.hypot(nx, nz) || 1;
-  const bx = -(nx / flat) * 0.06, bz = -(nz / flat) * 0.06;
-  const minY = Math.min(p0[1], p1[1], p2[1]), maxY = Math.max(p0[1], p1[1], p2[1]);
-  for (const [a, b] of [[p0, p1], [p1, p2], [p2, p0]]) {
-    const dx = b[0] - a[0], dz = b[2] - a[2];
-    const steps = Math.max(1, Math.ceil(Math.hypot(dx, dz) * 8));
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps;
-      const key = `${Math.floor(a[0] + dx * t + bx)},${Math.floor(a[2] + dz * t + bz)}`;
-      const band = faces.get(key);
-      if (band) band.push([minY, maxY]); else faces.set(key, [[minY, maxY]]);
-    }
-  }
-}
+// The families that exist to be a vertical drop. Their Cliff material also
+// appears on cave floors and rock props, where it is ground you walk on, so
+// the piece name decides this and the material does not.
+const CLIFF = /^(Basic_|Wall_|Cracked_)/;
+const cliffs = [];
 
 function notePiece(node, world) {
-  const into = DECK.test(node.name || '') ? decks : CAVE.test(node.name || '') ? caves : null;
+  const into = DECK.test(node.name || '') ? decks : CAVE.test(node.name || '') ? caves : CLIFF.test(node.name || '') ? cliffs : null;
   if (!into) return;
   for (const prim of json.meshes[node.mesh].primitives) {
     const acc = json.accessors[prim.attributes.POSITION];
@@ -182,7 +152,7 @@ function notePiece(node, world) {
       for (let a = 0; a < 3; a++) { if (p[a] < lo[a]) lo[a] = p[a]; if (p[a] > hi[a]) hi[a] = p[a]; }
     }
     into.push([...lo, ...hi]);
-    return;
+    if (into !== cliffs) return;
   }
 }
 
@@ -240,15 +210,14 @@ function emitNode(nodeIndex, parent) {
         // read as a floor, which is what put walkable ground inside mountains.
         const len = Math.hypot(nx, ny, nz) || 1;
         const up = ny / len;
-        if (Math.abs(up) < FACE_TILT && matName(prim.material) === 'Cliff') markFace(p0, p1, p2, nx, nz);
         const railing = bridge && Math.abs(up) < 0.5;
         const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
-        // Walls are mass, not barriers: their faces are cliff faces, and the
-        // cliff-face rule already closes the cells they stand in. Treating
-        // them as things to walk into as well cost the steps beside them.
+        // Walls are mass, not barriers: Wall_ is a cliff family, so the cliff
+        // rule already closes the cells a wall stands in. Treating them as
+        // things to walk into as well cost the steps beside them.
         const stops = !gateway && (kind === 'barrier' || railing);
-        // 11: stops you walking. 12: the camera cannot see through it either.
-        tris.push([...p0, ...p1, ...p2, prim.material, up, stops, kind === 'mass' && !railing]);
+        // 11: stops you walking.
+        tris.push([...p0, ...p1, ...p2, prim.material, up, stops]);
       }
     }
   }
@@ -325,7 +294,7 @@ function heightsAt(x, z) {
 
 const seen = new Int32Array(tris.length);
 let seenStamp = 0;
-function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax, opaqueOnly) {
+function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
   let best = Infinity;
   const stamp = ++seenStamp;
   const testBin = (ix, iz) => {
@@ -333,7 +302,6 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax, opaqueOnly) {
     for (const t of bins[iz * BW + ix]) {
       if (seen[t] === stamp) continue;
       seen[t] = stamp;
-      if (opaqueOnly && !tris[t][12]) continue;   // you can see through it
       const [x0, y0, z0, x1, y1, z1, x2, y2, z2] = tris[t];
       const e1x = x1 - x0, e1y = y1 - y0, e1z = z1 - z0;
       const e2x = x2 - x0, e2y = y2 - y0, e2z = z2 - z0;
@@ -409,25 +377,6 @@ function ceilingAt(x, z, y) {
 
 const reject = { support: 0, head: 0, wet: 0, cliff: 0 };
 
-// Cells with a cliff face in them, closed before anything else is asked. A
-// face is counted into a cell when it crosses that cell at all, so the cell
-// the wall stands in goes, and so does the strip of ledge hanging over it.
-// Does a cliff face stand in this cell at this height? A cell with a cliff
-// face in it is not somewhere you stand, and that includes the brink: the
-// ledge along the top of a drop is the cliff piece's own upper edge, so its
-// floor sits at the top of the band rather than inside it. Excluding the last
-// tenth of the band, as this did, left exactly that ledge open -- which is
-// standing on the cliff edge.
-function cliffAt(c, r, y) {
-  const band = faces.get(`${c + C0},${r + R0}`);
-  if (!band) return false;
-  // A face no taller than a step is a lip you walk over, not a drop. What a
-  // real one closes is its own top: the brink. Standing inside a drop needs no
-  // rule of its own -- a floor buried in rock has rock over it, and the
-  // headroom test has already thrown it out.
-  return band.some(([lo, hi]) => hi - lo > DROP && Math.abs(y - hi) < 0.15);
-}
-
 // Is this floor part of a deck? Cells a bridge or a dock crosses are walkable
 // at the deck's own height, which is the rule the scene is built to; the
 // sampler's job there is only to find how high the planks sit.
@@ -435,6 +384,17 @@ const inBox = (list, x, z, y) => list.some((d) =>
   x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5] && y >= d[1] - 0.1 && y <= d[4] + 0.1);
 const onDeck = (x, z, y) => inBox(decks, x, z, y);
 const inCave = (x, z, y) => inBox(caves, x, z, y);
+
+// The cell sits under this piece, whatever the height.
+const spans = (list, x, z) => list.some((d) => x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5]);
+// A bridge exempts its cells from the cliff rule at every height: the deck
+// itself, and the ground you walk along underneath it.
+const deckCrosses = (x, z) => spans(decks, x, z);
+// Inside a cliff piece, clear of its own foot and its own walkable top.
+const CLIFF_EDGE = 0.05;
+const inCliff = (x, z, y) => cliffs.some((d) =>
+  x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5]
+  && y > d[1] + CLIFF_EDGE && y < d[4] - CLIFF_EDGE);
 
 // Everything you can stand on in one cell, lowest first. `note` reports why a
 // candidate floor was turned down, for --probe.
@@ -477,9 +437,7 @@ function floorsIn(c, r, note) {
     for (const f of good) tally.set(matName(f.mat), (tally.get(matName(f.mat)) || 0) + 1);
     const centre = good.find((f) => f.s === 0);
     const name = centre ? matName(centre.mat) : [...tally.entries()].sort((a, b) => b[1] - a[1])[0][0];
-    // A bridge is the one thing built to cross a cliff face, so it is the one
-    // exception: the deck stays walkable where it spans the drop.
-    if (cliffAt(c, r, y) && !onDeck(x, z, y)) { reject.cliff++; note?.(y, name, 'cliff face at this height'); continue; }
+    if (inCliff(x, z, y) && !deckCrosses(x, z)) { reject.cliff++; note?.(y, name, 'inside a cliff piece'); continue; }
     const room = ceilingAt(x, z, y);
     if (room < HEAD) { reject.head++; note?.(y, name, `ceiling only ${room.toFixed(2)} up`); continue; }
     const eye = room === Infinity ? EYE : Math.max(MIN_EYE, Math.min(EYE, room - 1.8));
@@ -487,17 +445,6 @@ function floorsIn(c, r, note) {
     here.push({ c, r, y, m: name, e: Math.round(eye * 100) / 100, tilt: Math.min(...good.map((f) => f.up)) });
   }
   return here;
-}
-
-if (process.argv.includes('--faces')) {
-  const rows = [];
-  for (let r = 0; r < ROWS; r++) {
-    let line = '';
-    for (let c = 0; c < COLS; c++) line += cliffCells.has(c * ROWS + r) ? '#' : '.';
-    rows.push(line);
-  }
-  console.log(rows.join('\n'));
-  process.exit(0);
 }
 
 if (probeArg > 0) {
@@ -537,7 +484,6 @@ for (let r = 0; r < ROWS; r++) {
 // The one exception is the gate frame: a doorway is a piece you are meant to
 // walk through, so its own posts do not bar the way. Its door does -- that is
 // a separate piece, and it is a barrier like any other.
-const DOOR_INSET = 0;     // the whole walk between the two centres counts
 // From knee height, not from the floor: you step over a lip without thinking
 // about it, and the front edge of a bridge deck is exactly that. Starting at
 // the floor made every bridge end a wall.
@@ -552,11 +498,10 @@ function doorwayClear(a, b) {
   dx /= span; dz /= span;
   // Trim the ends so a link is judged by the gap between the cells, not by
   // whatever stands in the middle of the cells themselves.
-  const s0 = DOOR_INSET, s1 = span - DOOR_INSET;
+  const s0 = 0, s1 = span;
   const yLow = Math.min(a.y, b.y) + DOOR_LOW, yHigh = Math.max(a.y, b.y) + DOOR_HIGH;
   const nx = -dz, nz = dx;                      // the doorway's own plane
   const nd = nx * ax + nz * az;
-  const half = 0.5 - DOOR_INSET;
 
   const cx = (ax + cx2) / 2, cz = (az + cz2) / 2;
   const reach = Math.ceil(span / 2) + 1;
@@ -581,7 +526,7 @@ function doorwayClear(a, b) {
       const x = p[i][0] + (p[j][0] - p[i][0]) * f;
       const y = p[i][1] + (p[j][1] - p[i][1]) * f;
       const z = p[i][2] + (p[j][2] - p[i][2]) * f;
-      pts.push([(x - ax) * dx + (z - az) * dz, y, (x - ax) * nx + (z - az) * nz]);
+      pts.push([(x - ax) * dx + (z - az) * dz, y]);
     }
     if (pts.length < 2) continue;
     // The segment lies in the doorway's plane, so what is left is a 2D
@@ -597,10 +542,6 @@ function doorwayClear(a, b) {
       if (t0 > t1) { out = true; break; }
     }
     if (out) continue;
-    // Sideways: the doorway has a little thickness, so a rail running exactly
-    // along the line between the cells is caught too.
-    const off0 = pts[0][2] + (pts[1][2] - pts[0][2]) * t0, off1 = pts[0][2] + (pts[1][2] - pts[0][2]) * t1;
-    if (Math.min(off0, off1) > half || Math.max(off0, off1) < -half) continue;
     return false;
   }
   return true;
@@ -703,6 +644,7 @@ if (process.argv.includes('--components')) {
   });
   [...box.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 14).forEach(([k, b]) =>
     console.log(`comp ${k}: ${b.n} cells  x ${b.x0}..${b.x1}  z ${b.z0}..${b.z1}  y ${b.y0.toFixed(1)}..${b.y1.toFixed(1)}  real ${real[k]}  ${k === main ? 'MAIN' : ''}`));
+  process.exit(0);
 }
 
 const remap = new Map();

@@ -14,7 +14,10 @@
 //                     gate is somewhere you can walk through solid timber.
 //   open gates        every gate frame without a door, passable.
 //   shut gates        every gate frame with a door, blocked.
-//   cliff edges       0 -- a walkable cell with a cliff face standing in it.
+//   buried floors     0 -- a walkable cell inside a cliff piece. The builder
+//                     locates cliff pieces by the box the kit declares for
+//                     them; this one measures the box off the vertices, so
+//                     agreement is not the same arithmetic run twice.
 
 import { readGlb } from './glb.mjs';
 import { readFileSync } from 'node:fs';
@@ -54,9 +57,12 @@ const dot = (a,b) => a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
 // Barrier triangles: fences, railings, bumpers, gate doors, bridge handrails.
 const BARRIER = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
 const bars = [];               // [p0,p1,p2, family]
-// Tall vertical Cliff faces, as the cell either side of them and the height
-// of their top: standing on one is standing on the brink of a drop.
-const brinks = new Map();      // "c,r" -> [topY, ...]
+// Cliff pieces, as world boxes measured off their own vertices, and the cells
+// a bridge crosses, which the cliff rule exempts at every height.
+const CLIFF = /^(Basic_|Wall_|Cracked_)/;
+const DECK = /^(Prop_Bridge_|Path_Bridge_|Docks_Decking_|Docks_Ladder_Top)/;
+const cliffBoxes = [];
+const deckCells = new Set();
 const gates = [];              // { piece, x, z, doored }
 const doors = [];
 function walk(i, parent) {
@@ -96,32 +102,18 @@ function walk(i, parent) {
       }
     }
   }
-  if (n.mesh != null) {
+  if (n.mesh != null && (CLIFF.test(piece) || DECK.test(piece))) {
+    let lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
     for (const prim of json.meshes[n.mesh].primitives) {
-      if ((prim.mode ?? 4) !== 4) continue;
-      if ((json.materials?.[prim.material]?.name ?? '') !== 'Cliff') continue;
       const pos = data(prim.attributes.POSITION);
-      const idx = prim.indices != null ? data(prim.indices) : null;
-      const count = idx ? idx.length : pos.length / 3;
-      for (let t = 0; t < count; t += 3) {
-        const v = [0,1,2].map((k) => { const q = (idx ? idx[t+k] : t+k) * 3; return put(w, pos[q], pos[q+1], pos[q+2]); });
-        const e1 = sub(v[1], v[0]), e2 = sub(v[2], v[0]);
-        const nrm = cross(e1, e2), len = Math.hypot(...nrm) || 1;
-        if (Math.abs(nrm[1] / len) >= 0.5) continue;
-        const lo = Math.min(v[0][1], v[1][1], v[2][1]), hi = Math.max(v[0][1], v[1][1], v[2][1]);
-        if (hi - lo <= 1.2) continue;   // a ledge, not a cliff
-        // Both cells the face separates: standing on either side of the brink
-        // is standing on a cliff edge.
-        const nx = nrm[0] / len, nz = nrm[2] / len, f = Math.hypot(nx, nz) || 1;
-        for (const step of [0.12, -0.12]) {
-          for (const p of v) {
-            const k = `${Math.floor(p[0] + (nx / f) * step)},${Math.floor(p[2] + (nz / f) * step)}`;
-            if (!brinks.has(k)) brinks.set(k, []);
-            brinks.get(k).push(hi);
-          }
-        }
+      for (let q = 0; q < pos.length; q += 3) {
+        const p = put(w, pos[q], pos[q+1], pos[q+2]);
+        for (let a = 0; a < 3; a++) { if (p[a] < lo[a]) lo[a] = p[a]; if (p[a] > hi[a]) hi[a] = p[a]; }
       }
     }
+    if (CLIFF.test(piece)) cliffBoxes.push([...lo, ...hi]);
+    else for (let x = Math.floor(lo[0]); x <= Math.floor(hi[0]); x++)
+      for (let z = Math.floor(lo[2]); z <= Math.floor(hi[2]); z++) deckCells.add(x + ',' + z);
   }
   for (const c of n.children || []) walk(c, w);
 }
@@ -228,10 +220,12 @@ for (const g of oneEach(gates)) {
 console.log(`links: ${grid.edges.length / 2}`);
 console.log(`links stepping over something knee-high or lower: ${stepped}`);
 console.log(`fence crossings: ${crossings}${crossings ? '\n  ' + [...tally].sort((a,b)=>b[1]-a[1]).map(([k,v]) => `${String(v).padStart(4)} ${k}`).join('\n  ') : ''}`);
-let edges2 = 0;
+let buried = 0;
 for (const n of nodes) {
-  const band = brinks.get(`${n.c},${n.r}`);
-  if (band && band.some((top) => Math.abs(top - n.y) < 0.12)) edges2++;
+  const x = n.c + 0.5, z = n.r + 0.5;
+  if (deckCells.has(`${n.c},${n.r}`)) continue;
+  if (cliffBoxes.some((d) => x >= d[0] && x <= d[3] && z >= d[2] && z <= d[5]
+      && n.y > d[1] + 0.05 && n.y < d[4] - 0.05)) buried++;
 }
 console.log(`open gates passable: ${openOk}/${openTotal}`);
-console.log(`cells on a cliff edge: ${edges2}`);
+console.log(`walkable cells buried inside a cliff piece: ${buried}`);
