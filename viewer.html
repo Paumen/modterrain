@@ -330,6 +330,7 @@ function toGrid(nav) {
   camera.inputs.clear();
 
   let tween = null;
+  let smoothEye = eye;
   let route = [];
   // A node whose only neighbour is out of sight would otherwise be a trap,
   // so every arrival is remembered and Back always leads out.
@@ -363,6 +364,7 @@ function toGrid(nav) {
       // the current step.
       aT0: performance.now(), aMs: ms,
       target0: camera.target.clone(), target1: eyePoint(node),
+      ground0: camera.target.y - smoothEye, ground1: nav.nodes[node].p[1],
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
       beta0: camera.beta, beta1: view().beta,
       radius0: camera.radius, radius1: wantRadius(node),
@@ -374,6 +376,9 @@ function toGrid(nav) {
       const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
       const s = smooth(t);
       camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
+      const dtE = Math.min(engine.getDeltaTime(), 50) / 1000;
+      smoothEye += (eyeOf(cur) - smoothEye) * Math.min(1, dtE * 3);
+      camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + smoothEye;
       const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
       camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
       camera.beta = tween.beta0 + (tween.beta1 - tween.beta0) * s;

@@ -190,6 +190,11 @@ function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
+    // An open gateway is a frame you walk through; its own door is what shuts it.
+    const piece = (node.name || '').split('__')[0];
+    const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
+    const bridge = /^Prop_Bridge_/.test(piece);
+    const built = /^(Path_Fence|Docks_Railing|Docks_Bumper|Prop_Column|Prop_Stalagmite)/.test(piece);
     notePiece(node, world);
     for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
@@ -210,7 +215,10 @@ function emitNode(nodeIndex, parent) {
         const len = Math.hypot(nx, ny, nz) || 1;
         const up = ny / len;
         if (Math.abs(up) < FACE_TILT && matName(prim.material) === 'Cliff') markFace(p0, p1, p2, nx, nz);
-        tris.push([...p0, ...p1, ...p2, prim.material, up]);
+        // Only things built on top of the ground stop you crossing. The ground
+        // itself is governed by the step limit, and rays along a rise graze it.
+        const blocks = !gateway && (built || (bridge && /Rope|Wood Medium/.test(matName(prim.material))));
+        tris.push([...p0, ...p1, ...p2, prim.material, up, !blocks]);
       }
     }
   }
@@ -282,7 +290,7 @@ function heightsAt(x, z) {
 
 const seen = new Int32Array(tris.length);
 let seenStamp = 0;
-function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
+function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax, skipGateways) {
   let best = Infinity;
   const stamp = ++seenStamp;
   const testBin = (ix, iz) => {
@@ -290,6 +298,7 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax) {
     for (const t of bins[iz * BW + ix]) {
       if (seen[t] === stamp) continue;
       seen[t] = stamp;
+      if (skipGateways && tris[t][11]) continue;   // not something you walk into
       const [x0, y0, z0, x1, y1, z1, x2, y2, z2] = tris[t];
       const e1x = x1 - x0, e1y = y1 - y0, e1z = z1 - z0;
       const e2x = x2 - x0, e2y = y2 - y0, e2z = z2 - z0;
@@ -483,7 +492,7 @@ for (let r = 0; r < ROWS; r++) {
 // as blocked when most of it is -- which a fence, a railing or a wall is along
 // its length, while a lone post leaves the rest of the gap open.
 const CORRIDOR = [-0.35, 0, 0.35];   // across the opening
-const BODY = [0.3, 0.7, 1.1];        // and up it
+const BODY = [0.2, 0.5, 0.8, 1.1, 1.4];        // and up it
 function corridorClear(a, b) {
   const ax = C0 + a.c + 0.5, az = R0 + a.r + 0.5;
   const bx = C0 + b.c + 0.5, bz = R0 + b.r + 0.5;
@@ -497,10 +506,10 @@ function corridorClear(a, b) {
       const vx = bx + px * off - ox, vy = (b.y + h) - oy, vz = bz + pz * off - oz;
       const len = Math.hypot(vx, vy, vz);
       total++;
-      if (raycast(ox, oy, oz, vx / len, vy / len, vz / len, 0.05, len - 0.05) < len - 0.05) blocked++;
+      if (raycast(ox, oy, oz, vx / len, vy / len, vz / len, 0.05, len - 0.05, true) < len - 0.05) blocked++;
     }
   }
-  return blocked * 2 < total;
+  return blocked === 0;
 }
 
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
