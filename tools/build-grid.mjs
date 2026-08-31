@@ -51,7 +51,7 @@ if (!input) {
 }
 const force = process.argv.includes('--force');
 const outPath = input.replace(/\.glb$/, '_grid.json');
-if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces') && !process.argv.includes('--components') && !process.argv.includes('--slopes')) {
+if (existsSync(outPath) && !force && !process.argv.includes('--probe') && !process.argv.includes('--faces') && !process.argv.includes('--components') && !process.argv.includes('--slopes') && !process.argv.includes('--door')) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
 }
@@ -135,20 +135,27 @@ const caves = [];
 // Cliff faces, per cell, as the height band each one spans.
 const faces = new Map(); // "cx,cz" -> [[minY, maxY], ...]
 const FACE_TILT = 0.5;   // |normal.y| under this is a face, not a floor
+// A cliff is a face taller than one tier of the kit, which is a unit high.
+// Anything shorter is a ledge you step off, and treating those as cliffs shut
+// the brink cell on every terrace edge -- which cost the routes onto them.
+const DROP = 1.2;
 
-// A face belongs to the cell of the piece it is the skin of, which is the cell
-// on the solid side -- behind the normal. That side is the whole distinction
-// between a cliff and a cave: the outward face of a mesa has its rock, and so
-// its walkable top, on the far side from you, while the face of a cave wall
-// has its rock behind the wall and the cave floor in front. Closing the cell
-// the sliver merely touches would close both.
+// A face is recorded with the height band it spans, in the cell just behind
+// it -- the side its rock is on, which the normal gives. That step has to be
+// small: a retaining wall is a fifth of a cell thick, and stepping a third of
+// a cell put its face on the walkway beyond it and closed the stairs.
+//
+// Height then says who is stopped. A floor inside the band is a floor part
+// way up a drop; a floor at the top of it is the brink. A floor at its foot
+// is at the bottom of the band and stays open, which is what leaves the
+// ground below a cliff, and a cave's own floor, walkable.
 //
 // Walking the edges rather than taking a bounding box matters too: a face
 // running diagonally, which every curve and esse piece has, boxes into a
 // square many times its own footprint.
 function markFace(p0, p1, p2, nx, nz) {
-  const len = Math.hypot(nx, nz) || 1;
-  const bx = -(nx / len) * 0.3, bz = -(nz / len) * 0.3; // a step into the rock
+  const flat = Math.hypot(nx, nz) || 1;
+  const bx = -(nx / flat) * 0.06, bz = -(nz / flat) * 0.06;
   const minY = Math.min(p0[1], p1[1], p2[1]), maxY = Math.max(p0[1], p1[1], p2[1]);
   for (const [a, b] of [[p0, p1], [p1, p2], [p2, p0]]) {
     const dx = b[0] - a[0], dz = b[2] - a[2];
@@ -186,15 +193,34 @@ function meshGeometry(prim) {
   return g;
 }
 
+// Every piece in the kit is one of three things, and its family name says
+// which. MASS you can neither walk through nor see through: ground, rock,
+// walls, decking. BARRIER you cannot walk through but can see straight over
+// and between: fences, railings, rope. WATER is neither. Anything the scene
+// contains that matches none of these is an error rather than a default, so a
+// piece added later cannot quietly pass for walkable air.
+const BARRIER = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
+const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
+const MASS = /^(Basic_|Cave_|Ceiling_|Docks_(Decking|Support|Ladder)_|Floor_|Grass_|Path_(Bridge|Edging|Terrain)_|Prop_|Terrain_Sand_|Tiered_|Wall_)/;
+const unknown = new Set();
+function kindOf(piece) {
+  if (BARRIER.test(piece)) return 'barrier';
+  if (WATER.test(piece)) return 'water';
+  if (MASS.test(piece)) return 'mass';
+  unknown.add(piece);
+  return 'mass';
+}
+
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
-    // An open gateway is a frame you walk through; its own door is what shuts it.
     const piece = (node.name || '').split('__')[0];
-    const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
+    const kind = kindOf(piece);
+    // A rope bridge's handrails carry the same material as the deck they
+    // stand on, so nothing but their shape tells them apart: a bridge face
+    // that is not roughly horizontal is something you walk between, not on.
     const bridge = /^Prop_Bridge_/.test(piece);
-    const built = /^(Path_Fence|Docks_Railing|Docks_Bumper|Prop_Column|Prop_Stalagmite)/.test(piece);
     notePiece(node, world);
     for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
@@ -215,10 +241,14 @@ function emitNode(nodeIndex, parent) {
         const len = Math.hypot(nx, ny, nz) || 1;
         const up = ny / len;
         if (Math.abs(up) < FACE_TILT && matName(prim.material) === 'Cliff') markFace(p0, p1, p2, nx, nz);
-        // Only things built on top of the ground stop you crossing. The ground
-        // itself is governed by the step limit, and rays along a rise graze it.
-        const blocks = !gateway && (built || (bridge && Math.abs(up) < 0.5));
-        tris.push([...p0, ...p1, ...p2, prim.material, up, !blocks]);
+        const railing = bridge && Math.abs(up) < 0.5;
+        const gateway = /^Path_Fence_Gate_Frame_/.test(piece);
+        // Walls are mass, not barriers: their faces are cliff faces, and the
+        // cliff-face rule already closes the cells they stand in. Treating
+        // them as things to walk into as well cost the steps beside them.
+        const stops = !gateway && (kind === 'barrier' || railing);
+        // 11: stops you walking. 12: the camera cannot see through it either.
+        tris.push([...p0, ...p1, ...p2, prim.material, up, stops, kind === 'mass' && !railing]);
       }
     }
   }
@@ -226,6 +256,11 @@ function emitNode(nodeIndex, parent) {
 }
 
 for (const root of json.scenes[json.scene ?? 0].nodes) emitNode(root, IDENTITY);
+
+if (unknown.size) {
+  console.error(`unclassified pieces -- add them to BARRIER, WATER or MASS:\n  ${[...unknown].join('\n  ')}`);
+  process.exit(1);
+}
 
 // ---- grid geometry --------------------------------------------------------
 
@@ -290,7 +325,7 @@ function heightsAt(x, z) {
 
 const seen = new Int32Array(tris.length);
 let seenStamp = 0;
-function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax, skipGateways) {
+function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax, opaqueOnly) {
   let best = Infinity;
   const stamp = ++seenStamp;
   const testBin = (ix, iz) => {
@@ -298,7 +333,7 @@ function raycast(ox, oy, oz, dx, dy, dz, tMin, tMax, skipGateways) {
     for (const t of bins[iz * BW + ix]) {
       if (seen[t] === stamp) continue;
       seen[t] = stamp;
-      if (skipGateways && tris[t][11]) continue;   // not something you walk into
+      if (opaqueOnly && !tris[t][12]) continue;   // you can see through it
       const [x0, y0, z0, x1, y1, z1, x2, y2, z2] = tris[t];
       const e1x = x1 - x0, e1y = y1 - y0, e1z = z1 - z0;
       const e2x = x2 - x0, e2y = y2 - y0, e2z = z2 - z0;
@@ -377,12 +412,20 @@ const reject = { support: 0, head: 0, wet: 0, cliff: 0 };
 // Cells with a cliff face in them, closed before anything else is asked. A
 // face is counted into a cell when it crosses that cell at all, so the cell
 // the wall stands in goes, and so does the strip of ledge hanging over it.
-// Does a cliff face stand in this cell at this height? A floor resting on top
-// of a face counts as being at its level: the ledge along the brink of a drop
-// is the cliff piece's own top, and that is the cell being closed.
+// Does a cliff face stand in this cell at this height? A cell with a cliff
+// face in it is not somewhere you stand, and that includes the brink: the
+// ledge along the top of a drop is the cliff piece's own upper edge, so its
+// floor sits at the top of the band rather than inside it. Excluding the last
+// tenth of the band, as this did, left exactly that ledge open -- which is
+// standing on the cliff edge.
 function cliffAt(c, r, y) {
   const band = faces.get(`${c + C0},${r + R0}`);
-  return !!band && band.some(([lo, hi]) => y > lo + 0.1 && y < hi - 0.1);
+  if (!band) return false;
+  // A face no taller than a step is a lip you walk over, not a drop. What a
+  // real one closes is its own top: the brink. Standing inside a drop needs no
+  // rule of its own -- a floor buried in rock has rock over it, and the
+  // headroom test has already thrown it out.
+  return band.some(([lo, hi]) => hi - lo > DROP && Math.abs(y - hi) < 0.15);
 }
 
 // Is this floor part of a deck? Cells a bridge or a dock crosses are walkable
@@ -482,34 +525,104 @@ for (let r = 0; r < ROWS; r++) {
 
 // ---- edges ----------------------------------------------------------------
 
-// Two floors connect when the height change is walkable and a body-height
-// corridor between the cell centres is clear, so fences, posts, railings and
-// retaining walls block the way even though the ground either side is fine.
-// Is the way between two cells open? A single line between the two centres is
-// not enough to answer that: a fence rarely runs down the middle of the cells
-// it divides, so a line probe only catches the few that happen to. The whole
-// width of the opening is swept instead, at three heights, and the way counts
-// as blocked when most of it is -- which a fence, a railing or a wall is along
-// its length, while a lone post leaves the rest of the gap open.
-const CORRIDOR = [-0.35, 0, 0.35];   // across the opening
-const BODY = [0.2, 0.5, 0.8, 1.1, 1.4];        // and up it
-function corridorClear(a, b) {
+// Two floors connect when the height change is walkable and the doorway
+// between them is clear. The doorway is a real rectangle, not a set of sample
+// rays: it stands on the line between the two cell centres, as wide as a body
+// and as tall as one, and anything that stops you -- a fence, a railing, a
+// gate's door, a wall -- is whatever has a triangle crossing it. Sampling was
+// the whole trouble before: a fence is thin rails with air between them, so
+// rays threaded the gaps and the fence read as open, exactly as a rope
+// bridge's slats did. An intersection test has no gaps to thread.
+//
+// The one exception is the gate frame: a doorway is a piece you are meant to
+// walk through, so its own posts do not bar the way. Its door does -- that is
+// a separate piece, and it is a barrier like any other.
+const DOOR_INSET = 0;     // the whole walk between the two centres counts
+const DOOR_LOW = 0.05;    // from just above the floor
+const DOOR_HIGH = 1.8;    // to head height
+
+function doorwayClear(a, b) {
   const ax = C0 + a.c + 0.5, az = R0 + a.r + 0.5;
-  const bx = C0 + b.c + 0.5, bz = R0 + b.r + 0.5;
-  const dx = bx - ax, dz = bz - az;
-  const flat = Math.hypot(dx, dz) || 1;
-  const px = -dz / flat, pz = dx / flat;  // across the direction of travel
-  let blocked = 0, total = 0;
-  for (const off of CORRIDOR) {
-    for (const h of BODY) {
-      const ox = ax + px * off, oy = a.y + h, oz = az + pz * off;
-      const vx = bx + px * off - ox, vy = (b.y + h) - oy, vz = bz + pz * off - oz;
-      const len = Math.hypot(vx, vy, vz);
-      total++;
-      if (raycast(ox, oy, oz, vx / len, vy / len, vz / len, 0.05, len - 0.05, true) < len - 0.05) blocked++;
+  const cx2 = C0 + b.c + 0.5, cz2 = R0 + b.r + 0.5;
+  let dx = cx2 - ax, dz = cz2 - az;
+  const span = Math.hypot(dx, dz);
+  dx /= span; dz /= span;
+  // Trim the ends so a link is judged by the gap between the cells, not by
+  // whatever stands in the middle of the cells themselves.
+  const s0 = DOOR_INSET, s1 = span - DOOR_INSET;
+  const yLow = Math.min(a.y, b.y) + DOOR_LOW, yHigh = Math.max(a.y, b.y) + DOOR_HIGH;
+  const nx = -dz, nz = dx;                      // the doorway's own plane
+  const nd = nx * ax + nz * az;
+  const half = 0.5 - DOOR_INSET;
+
+  const cx = (ax + cx2) / 2, cz = (az + cz2) / 2;
+  const reach = Math.ceil(span / 2) + 1;
+  const hits = new Set();
+  for (let iz = bz(cz - reach); iz <= bz(cz + reach); iz++)
+    for (let ix = bx(cx - reach); ix <= bx(cx + reach); ix++)
+      for (const t of bins[iz * BW + ix]) hits.add(t);
+
+  for (const t of hits) {
+    if (!tris[t][11]) continue;
+    const box = triBox[t];
+    if (box[4] < yLow || box[1] > yHigh) continue;
+    const p = [[tris[t][0], tris[t][1], tris[t][2]], [tris[t][3], tris[t][4], tris[t][5]], [tris[t][6], tris[t][7], tris[t][8]]];
+    // Where the triangle crosses the doorway's plane: at most a segment.
+    const d = p.map((v) => nx * v[0] + nz * v[2] - nd);
+    if ((d[0] > 0 && d[1] > 0 && d[2] > 0) || (d[0] < 0 && d[1] < 0 && d[2] < 0)) continue;
+    const pts = [];
+    for (let i = 0; i < 3; i++) {
+      const j = (i + 1) % 3;
+      if ((d[i] > 0) === (d[j] > 0) || d[i] === d[j]) continue;
+      const f = d[i] / (d[i] - d[j]);
+      const x = p[i][0] + (p[j][0] - p[i][0]) * f;
+      const y = p[i][1] + (p[j][1] - p[i][1]) * f;
+      const z = p[i][2] + (p[j][2] - p[i][2]) * f;
+      pts.push([(x - ax) * dx + (z - az) * dz, y, (x - ax) * nx + (z - az) * nz]);
     }
+    if (pts.length < 2) continue;
+    // The segment lies in the doorway's plane, so what is left is a 2D
+    // overlap: clip it to the rectangle and see whether anything survives.
+    let t0 = 0, t1 = 1;
+    const q = [pts[0][0], pts[0][1]], v = [pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]];
+    let out = false;
+    for (const [dir, lo, hi] of [[0, s0, s1], [1, yLow, yHigh]]) {
+      if (Math.abs(v[dir]) < 1e-9) { if (q[dir] < lo || q[dir] > hi) { out = true; break; } continue; }
+      let e0 = (lo - q[dir]) / v[dir], e1 = (hi - q[dir]) / v[dir];
+      if (e0 > e1) { const tmp = e0; e0 = e1; e1 = tmp; }
+      t0 = Math.max(t0, e0); t1 = Math.min(t1, e1);
+      if (t0 > t1) { out = true; break; }
+    }
+    if (out) continue;
+    // Sideways: the doorway has a little thickness, so a rail running exactly
+    // along the line between the cells is caught too.
+    const off0 = pts[0][2] + (pts[1][2] - pts[0][2]) * t0, off1 = pts[0][2] + (pts[1][2] - pts[0][2]) * t1;
+    if (Math.min(off0, off1) > half || Math.max(off0, off1) < -half) continue;
+    return false;
   }
-  return blocked === 0;
+  return true;
+}
+
+// `--door c,r c,r` asks the doorway test about one pair of cells and shows
+// what it found there, which is how a link that should have been blocked gets
+// tracked down without guessing.
+const doorArg = process.argv.indexOf('--door');
+if (doorArg > 0) {
+  const [a1, a2] = process.argv.slice(doorArg + 1, doorArg + 3).map((s) => s.split(',').map(Number));
+  const pick = (cr) => (byCell.get((cr[0] - C0) * ROWS + (cr[1] - R0)) || [])[0];
+  const a = pick(a1), b = pick(a2);
+  if (!a || !b) { console.log('no floor in', a ? a2 : a1); process.exit(0); }
+  console.log(`${a1} y ${a.y.toFixed(2)} -> ${a2} y ${b.y.toFixed(2)}: ${doorwayClear(a, b) ? 'OPEN' : 'BLOCKED'}`);
+  const near = [];
+  for (let t = 0; t < tris.length; t++) {
+    if (!tris[t][11]) continue;
+    const bb = triBox[t];
+    if (bb[3] < Math.min(a1[0], a2[0]) - 1 || bb[0] > Math.max(a1[0], a2[0]) + 2) continue;
+    if (bb[5] < Math.min(a1[1], a2[1]) - 1 || bb[2] > Math.max(a1[1], a2[1]) + 2) continue;
+    near.push([bb[1].toFixed(2), bb[4].toFixed(2)]);
+  }
+  console.log(`barrier triangles nearby: ${near.length}`, near.slice(0, 6).map((n) => `y ${n[0]}..${n[1]}`).join('  '));
+  process.exit(0);
 }
 
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
@@ -530,7 +643,7 @@ for (const list of byCell.values()) {
           const near = (l) => l && l.some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP);
           if (!near(s1) || !near(s2)) continue;
         }
-        if (!corridorClear(a, b)) continue;
+        if (!doorwayClear(a, b)) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
         edges.push(a.i, b.i);
       }
