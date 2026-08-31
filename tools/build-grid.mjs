@@ -67,10 +67,12 @@ const isHidden = (i) => /^Hidden/.test(matName(i));
 
 const CAVE_FLOOR = /^Floor_/;
 const WALKABLE = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_|Floor_)/;
-const BLOCKING = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Terrain_Water_|Water_|Waterfall_)/;
+const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
+const BLOCKING = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_)/;
 
 function classify(piece) {
   if (WALKABLE.test(piece)) return { blocking: false, cave: CAVE_FLOOR.test(piece) };
+  if (WATER.test(piece)) return { blocking: true, cave: false, water: true };
   if (BLOCKING.test(piece)) return { blocking: true, cave: false };
   return null;
 }
@@ -87,6 +89,7 @@ const triMat = [];
 const triUp = [];
 const triBlocking = [];
 const triCave = [];
+const triWater = [];
 const triPiece = [];
 const cache = new Map();
 
@@ -122,6 +125,7 @@ function emitNode(nodeIndex, parent) {
         triUp.push(up);
         triBlocking.push(kind.blocking);
         triCave.push(kind.cave);
+        triWater.push(!!kind.water);
         triPiece.push(piece);
       }
     }
@@ -196,6 +200,7 @@ function heightsAt(x, z) {
 
 function floorAt(x, z) {
   const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
+  if (hits.some((h) => triWater[h[5]])) return [];
   return hits
     .map((h) => ({ y: h[0], mat: h[1], blocking: h[3], cave: h[4] }))
     .filter((f) => !f.blocking);
