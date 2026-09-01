@@ -346,14 +346,17 @@ function fromGrid(grid) {
     }
     const want = plan();
     const rate = RATE + view().far;
-    const squeeze = Math.max(0, Math.min(1, 1 - camera.radius / view().far));
+    const far = view().far;
+    if (!tween) camera.target.y = nav.nodes[cur].p[1] + eye;
+    const probe = nearRadius();
+    const clearance = Math.hypot(camera.minZ, probe) * 1.3;
+    const [bx, by, bz] = dirAt(camera.alpha, want.beta);
+    const level = thickCast(camera.target.x, camera.target.y, camera.target.z, bx, by, bz, far + margin, probe) - clearance;
+    const squeeze = Math.max(0, Math.min(1, 1 - level / far));
     camera.beta = heldBeta.step(want.beta - squeeze * (want.beta - BOOM_LIFT), dt);
     const back = held.step(want.radius, dt, rate);
-    if (!tween) camera.target.y = nav.nodes[cur].p[1] + eye;
     const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
-    const probe = nearRadius();
-    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe)
-      - Math.hypot(camera.minZ, probe) * 1.3;
+    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe) - clearance;
     const goal = Math.max(0, Math.min(back, room));
     camera.radius = goal < camera.radius
       ? goal
@@ -380,7 +383,10 @@ function fromGrid(grid) {
           const rise = Math.abs(vx * tx + vy * ty + vz * tz) - (ex * Math.abs(tx) + ey * Math.abs(ty) + ez * Math.abs(tz));
           hit = off < at * wide && rise < at * tall;
         }
-        b.visibility = b.viewFade.step(hit ? FADED : 1, dt, 10);
+        const vis = b.viewFade.step(hit ? FADED : 1, dt, 10);
+        b.visibility = vis;
+        const mode = vis < 0.999 ? BABYLON.Material.MATERIAL_ALPHABLEND : BABYLON.Material.MATERIAL_OPAQUE;
+        if (b.material.transparencyMode !== mode) b.material.transparencyMode = mode;
       }
     }
   });
