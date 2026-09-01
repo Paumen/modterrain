@@ -74,6 +74,8 @@ const BOOM_OUT = 3;
 const BOOM_LIFT = 0.9;
 const SIGHT_R = 0.6;
 const KEEP_NEAR = 1.0;
+const FADE_EASE = 4;
+const SIGHT_RING = [[1, 0], [0, 1], [-1, 0], [0, -1], [0.7, 0.7], [-0.7, 0.7], [0.7, -0.7], [-0.7, -0.7]];
 const FADED = 0.12;
 const smooth = (t) => t * t * (3 - 2 * t);
 const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
@@ -162,7 +164,7 @@ function fromGrid(grid) {
   const faders = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isFade(m.name));
   const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isFade(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
-  for (const b of faders) b.viewFade = damped(1, 10);
+  for (const b of faders) b.viewFade = 1;
   const fadeOwner = [];
   const fadeIndex = faders.length ? buildIndex((() => {
     const parts = [];
@@ -355,7 +357,7 @@ function fromGrid(grid) {
       const want = Math.max(2.4, maxR * mapZoom);
       camera.radius += (want - camera.radius) * Math.min(1, dt * 6);
       held.v = heldBeta.v = null;
-      for (const b of faders) b.visibility = b.viewFade.step(1, dt, 10);
+      for (const b of faders) b.visibility = b.viewFade += (1 - b.viewFade) * (1 - Math.exp(-FADE_EASE * dt));
       return;
     }
     if (follow) {
@@ -388,12 +390,16 @@ function fromGrid(grid) {
         const [u, v] = perp(dx, dy, dz);
         const ox = camera.target.x, oy = camera.target.y, oz = camera.target.z;
         castOwners(fadeIndex, ox, oy, oz, dx, dy, dz, reach, fadeOwners, fadeFlags);
-        for (const [sx, sy, sz] of [u, v, [-u[0], -u[1], -u[2]], [-v[0], -v[1], -v[2]]])
-          castOwners(fadeIndex, ox + sx * SIGHT_R, oy + sy * SIGHT_R, oz + sz * SIGHT_R,
+        for (const [a, c] of SIGHT_RING)
+          castOwners(fadeIndex,
+            ox + (u[0] * a + v[0] * c) * SIGHT_R,
+            oy + (u[1] * a + v[1] * c) * SIGHT_R,
+            oz + (u[2] * a + v[2] * c) * SIGHT_R,
             dx, dy, dz, reach, fadeOwners, fadeFlags);
       }
       faders.forEach((b, slot) => {
-        const vis = b.viewFade.step(fadeFlags[slot] ? FADED : 1, dt, 10);
+        const goal = fadeFlags[slot] ? FADED : 1;
+        const vis = b.viewFade += (goal - b.viewFade) * (1 - Math.exp(-FADE_EASE * dt));
         b.visibility = vis;
         const mode = vis < 0.999 ? BABYLON.Material.MATERIAL_ALPHABLEND : BABYLON.Material.MATERIAL_OPAQUE;
         if (b.material.transparencyMode !== mode) b.material.transparencyMode = mode;
