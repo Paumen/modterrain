@@ -68,6 +68,8 @@ const LEVEL = 1.55;
 const BACK = 1.6;
 const RATE = 9;
 const MS_PER_UNIT = 150;
+const LOOKAHEAD = 2;
+const THIN_ALPHA = 0.5;
 const smooth = (t) => t * t * (3 - 2 * t);
 const EASE = {
   both: { f: smooth, k: 1.5 },
@@ -139,7 +141,9 @@ function fromGrid(grid) {
 
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
   const faders = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isFade(m.name));
+  const thin = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isSeeThrough(m.name));
   const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name) && !isFade(m.name));
+  for (const m of thin) m.visibility = THIN_ALPHA;
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
   for (const b of faders) b.viewFade = damped(1, 10);
 
@@ -271,7 +275,7 @@ function fromGrid(grid) {
     const t0 = Math.max(at, performance.now() - 100);
     tween = {
       t0, ms, ease: ease.f,
-      aT0: t0, aMs: ms,
+      aT0: t0, aMs: ms, aEase: ease.f,
       target0: camera.target.clone(), target1: eyePoint(node),
       ground0: camera.target.y - eye, ground1: nav.nodes[node].p[1],
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
@@ -285,7 +289,7 @@ function fromGrid(grid) {
       const s = tween.ease(t);
       camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
       camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + eye;
-      const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
+      const sa = tween.aEase(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
       camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
       if (t < 1) break;
       const end = tween.t0 + tween.ms;
@@ -445,17 +449,24 @@ function fromGrid(grid) {
         if (open(node, k)) return k;
     return null;
   }
-  function glideFacing(node, ms, ease, at) {
-    const from = Math.round(stepCont);
-    stepCont = headingNear(node, from) ?? from;
-    glideTo(node, ms, ease, at);
+  const wrapSteps = (x) => ((x % STEPS) + STEPS * 1.5) % STEPS - STEPS / 2;
+  function routeHeading(next) {
+    const ahead = route[Math.min(LOOKAHEAD - 2, route.length - 1)] ?? next;
+    const a = nav.nodes[cur].p, b = nav.nodes[ahead].p;
+    const behind = Math.atan2(b[2] - a[2], b[0] - a[0]) / STEP_ANGLE + STEPS / 2;
+    const want = stepCont + wrapSteps(behind - stepCont);
+    const k = Math.round(want);
+    return open(next, k) ? want : headingNear(next, k) ?? want;
   }
   function stepRoute(first, at) {
     const nxt = route.shift();
     const ease = first
       ? (route.length ? EASE.in : EASE.both)
       : (route.length ? EASE.mid : EASE.out);
-    glideFacing(nxt, legMs(cur, nxt) * ease.k, ease, at);
+    const was = stepCont;
+    stepCont = routeHeading(nxt);
+    glideTo(nxt, legMs(cur, nxt) * ease.k, ease, at);
+    if (first) tween.aMs = Math.max(tween.aMs, Math.min(300 + 120 * Math.abs(stepCont - was), 700));
   }
 
   const orbit = (dir) => {
@@ -468,6 +479,7 @@ function fromGrid(grid) {
       tween.alpha1 = stepCont * STEP_ANGLE;
       tween.aT0 = performance.now();
       tween.aMs = 320;
+      tween.aEase = smooth;
       return;
     }
     glideTo(cur, Math.min(300 + 120 * steps, 700));
@@ -479,9 +491,10 @@ function fromGrid(grid) {
       return;
     }
     const next = Math.min(VIEWS.length - 1, Math.max(0, viewIdx + dir));
-    if (next === viewIdx && !mapView) return;
-    viewIdx = next; mapView = false; route = [];
+    if (next === viewIdx) return;
+    viewIdx = next;
     held.ease(420); heldBeta.ease(420);
+    if (tween || route.length) return;
     stepCont = headingNear(cur, Math.round(stepCont), STEPS - 1) ?? stepCont;
     glideTo(cur, 400);
   };
@@ -858,7 +871,8 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
 
   hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
   rebuildMarkers();
-  glideFacing(cur, 1);
+  stepCont = headingNear(cur, Math.round(stepCont)) ?? stepCont;
+  glideTo(cur, 1);
   engine.runRenderLoop(() => scene.render());
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
