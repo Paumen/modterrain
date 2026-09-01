@@ -103,7 +103,10 @@ const cache = new Map();
 function meshGeometry(prim) {
   const key = `${prim.attributes.POSITION}/${prim.indices ?? -1}`;
   let g = cache.get(key);
-  if (!g) g = cache.set(key, (g = { pos: accessorData(prim.attributes.POSITION), idx: prim.indices != null ? accessorData(prim.indices) : null })).get(key);
+  if (!g) {
+    g = { pos: accessorData(prim.attributes.POSITION), idx: prim.indices != null ? accessorData(prim.indices) : null };
+    cache.set(key, g);
+  }
   return g;
 }
 
@@ -212,13 +215,11 @@ function spanOver(t, x0, x1, z0, z1) {
   return span;
 }
 
-function blocked(x, z, y, rad = RADIUS, report) {
-  const lo = y + STEP_OVER, hi = y + HEAD;
-  const x0 = x - rad, x1 = x + rad, z0 = z - rad, z1 = z + rad;
+function intrudes(x0, x1, z0, z1, lo, hi, skip, report) {
   for (let iz = bz(z0); iz <= bz(z1); iz++)
     for (let ix = bx(x0); ix <= bx(x1); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (triRole[t] === LIQUID) continue;
+        if (skip(t)) continue;
         const b = t * 6;
         if (box[b + 3] < x0 || box[b] > x1 || box[b + 5] < z0 || box[b + 2] > z1) continue;
         if (box[b + 4] <= lo || box[b + 1] >= hi) continue;
@@ -228,6 +229,13 @@ function blocked(x, z, y, rad = RADIUS, report) {
         report(t);
       }
   return false;
+}
+
+const isLiquid = (t) => triRole[t] === LIQUID;
+const notRock = (t) => !triRock[t];
+
+function blocked(x, z, y, rad = RADIUS, report) {
+  return intrudes(x - rad, x + rad, z - rad, z + rad, y + STEP_OVER, y + HEAD, isLiquid, report);
 }
 
 const ROOM = [RADIUS, RADIUS + 0.1];
@@ -289,10 +297,12 @@ function surfaces(x, z) {
   return hits;
 }
 
+const upward = (t, role) => triRole[t] === role && triUp[t] >= SLOPE;
+
 function floorsAt(x, z) {
   const out = [];
   for (const h of surfaces(x, z)) {
-    if (triRole[h[1]] !== GROUND || triUp[h[1]] < SLOPE) continue;
+    if (!upward(h[1], GROUND)) continue;
     const last = out[out.length - 1];
     if (last && h[0] - last.low <= CLUSTER) { last.y = h[0]; last.t = h[1]; }
     else out.push({ low: h[0], y: h[0], t: h[1] });
@@ -304,13 +314,13 @@ const CORNERS = [[FOOT, FOOT], [FOOT, -FOOT], [-FOOT, FOOT], [-FOOT, -FOOT]];
 
 function underfoot(x, z, y) {
   for (const [dx, dz] of CORNERS)
-    if (!surfaces(x + dx, z + dz).some((h) => triRole[h[1]] === GROUND && triUp[h[1]] >= SLOPE && Math.abs(h[0] - y) <= SUPPORT)) return false;
+    if (!surfaces(x + dx, z + dz).some((h) => upward(h[1], GROUND) && Math.abs(h[0] - y) <= SUPPORT)) return false;
   return true;
 }
 
 function drowned(x, z, y, ceiling) {
   const top = Math.min(ceiling, y + HEAD);
-  return surfaces(x, z).some((h) => triRole[h[1]] === LIQUID && triUp[h[1]] >= SLOPE && h[0] > y + 0.02 && h[0] < top);
+  return surfaces(x, z).some((h) => upward(h[1], LIQUID) && h[0] > y + 0.02 && h[0] < top);
 }
 
 function buried(x, z, y) {
@@ -323,19 +333,8 @@ const SPOTS = [[0, 0], [SPREAD, 0], [-SPREAD, 0], [0, SPREAD], [0, -SPREAD],
   [SPREAD * 0.7, SPREAD * 0.7], [SPREAD * 0.7, -SPREAD * 0.7], [-SPREAD * 0.7, SPREAD * 0.7], [-SPREAD * 0.7, -SPREAD * 0.7]];
 
 function cliffInCell(c, r, y) {
-  const x0 = C0 + c, x1 = x0 + 1, z0 = R0 + r, z1 = z0 + 1;
-  const lo = y - CLUSTER, hi = y + HEAD;
-  for (let iz = bz(z0); iz <= bz(z1); iz++)
-    for (let ix = bx(x0); ix <= bx(x1); ix++)
-      for (const t of bins[iz * BW + ix]) {
-        if (!triRock[t]) continue;
-        const b = t * 6;
-        if (box[b + 3] < x0 || box[b] > x1 || box[b + 5] < z0 || box[b + 2] > z1) continue;
-        if (box[b + 4] <= lo || box[b + 1] >= hi) continue;
-        const reach = spanOver(t, x0, x1, z0, z1);
-        if (reach && reach[1] > lo && reach[0] < hi) return true;
-      }
-  return false;
+  const x0 = C0 + c, z0 = R0 + r;
+  return intrudes(x0, x0 + 1, z0, z0 + 1, y - CLUSTER, y + HEAD, notRock);
 }
 
 const reject = { water: 0, buried: 0, cliff: 0, unsupported: 0, blocked: 0 };
