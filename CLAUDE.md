@@ -1,6 +1,8 @@
 Do not assume anything. If you doubt, ask for clarification.
 
-Never add comments to code files. 
+Never add comments to code files.
+
+Build for touch (mobile/tablet) only.
 
 ## Building or adjusting terrain
 
