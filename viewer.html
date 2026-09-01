@@ -69,8 +69,24 @@ const BACK = 1.6;
 const RATE = 9;
 const MS_PER_UNIT = 150;
 const LOOKAHEAD = 2;
+const YAW_EASE = 5;
+const YAW_MAX = 2.4;
 const THIN_ALPHA = 0.5;
 const smooth = (t) => t * t * (3 - 2 * t);
+const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const len3 = (a) => Math.hypot(a[0], a[1], a[2]);
+const unit3 = (a) => { const l = len3(a) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+function tangent(back, on, span) {
+  const m = [back[0] + on[0], back[1] + on[1], back[2] + on[2]];
+  const l = len3(m);
+  const k = l > 1e-6 ? span / l : span;
+  return l > 1e-6 ? [m[0] * k, m[1] * k, m[2] * k] : [on[0] * k, on[1] * k, on[2] * k];
+}
+function hermite(s, p1, m1, p2, m2) {
+  const h1 = s * s * (2 * s - 3) + 1, h2 = s * (s * (s - 2) + 1);
+  const h3 = s * s * (3 - 2 * s), h4 = s * s * (s - 1);
+  return [0, 1, 2].map((i) => h1 * p1[i] + h2 * m1[i] + h3 * p2[i] + h4 * m2[i]);
+}
 const EASE = {
   both: { f: smooth, k: 1.5 },
   in: { f: (t) => t * t, k: 2 },
@@ -246,8 +262,10 @@ function fromGrid(grid) {
   camera.inputs.clear();
 
   let tween = null;
+  let follow = false;
   const held = damped(null, RATE), heldBeta = damped(null, 2);
   let route = [];
+  let prevCur = -1;
   const history = [];
   let recording = true;
   function pushHistory(from) {
@@ -268,16 +286,22 @@ function fromGrid(grid) {
     glideTo(to, 420);
     recording = true;
   }
-  function glideTo(node, ms, ease = EASE.both, at = performance.now()) {
+  function glideTo(node, ms, ease = EASE.both, at = performance.now(), via = null) {
+    follow = !!via;
     if (recording && cur !== node) pushHistory(cur);
     cur = node;
     hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
     const t0 = Math.max(at, performance.now() - 100);
+    const p1 = [camera.target.x, camera.target.y - eye, camera.target.z];
+    const p2 = nav.nodes[node].p;
+    const on = unit3(sub3(p2, p1));
+    const back = via && via[0] >= 0 ? unit3(sub3(p1, nav.nodes[via[0]].p)) : on;
+    const next = via && via[1] >= 0 ? unit3(sub3(nav.nodes[via[1]].p, p2)) : on;
+    const span = len3(sub3(p2, p1));
     tween = {
       t0, ms, ease: ease.f,
       aT0: t0, aMs: ms, aEase: ease.f,
-      target0: camera.target.clone(), target1: eyePoint(node),
-      ground0: camera.target.y - eye, ground1: nav.nodes[node].p[1],
+      p1, p2, m1: tangent(back, on, span), m2: tangent(on, next, span),
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
     };
     updateMarkers();
@@ -287,10 +311,12 @@ function fromGrid(grid) {
     while (tween) {
       const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
       const s = tween.ease(t);
-      camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
-      camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + eye;
-      const sa = tween.aEase(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
-      camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
+      const q = hermite(s, tween.p1, tween.m1, tween.p2, tween.m2);
+      camera.target = new BABYLON.Vector3(q[0], q[1] + eye, q[2]);
+      if (!follow) {
+        const sa = tween.aEase(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
+        camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
+      }
       if (t < 1) break;
       const end = tween.t0 + tween.ms;
       tween = null;
@@ -303,6 +329,12 @@ function fromGrid(grid) {
       held.v = heldBeta.v = null;
       for (const b of faders) b.visibility = b.viewFade.step(1, dt, 10);
       return;
+    }
+    if (follow) {
+      const off = wrapAngle(stepCont * STEP_ANGLE - camera.alpha);
+      const cap = YAW_MAX * dt;
+      camera.alpha += Math.max(-cap, Math.min(cap, off * (1 - Math.exp(-YAW_EASE * dt))));
+      if (!tween && !route.length && Math.abs(off) < 0.01) follow = false;
     }
     const want = plan();
     const rate = RATE + view().far;
@@ -412,6 +444,7 @@ function fromGrid(grid) {
     route = [];
     for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
     route.shift();
+    prevCur = -1;
     if (route.length) stepRoute(true);
   }
   const TAP_PX = 32;
@@ -450,6 +483,7 @@ function fromGrid(grid) {
     return null;
   }
   const wrapSteps = (x) => ((x % STEPS) + STEPS * 1.5) % STEPS - STEPS / 2;
+  const wrapAngle = (x) => ((x % TAU) + TAU * 1.5) % TAU - Math.PI;
   function routeHeading(next) {
     const ahead = route[Math.min(LOOKAHEAD - 2, route.length - 1)] ?? next;
     const a = nav.nodes[cur].p, b = nav.nodes[ahead].p;
@@ -463,10 +497,10 @@ function fromGrid(grid) {
     const ease = first
       ? (route.length ? EASE.in : EASE.both)
       : (route.length ? EASE.mid : EASE.out);
-    const was = stepCont;
+    const from = cur;
     stepCont = routeHeading(nxt);
-    glideTo(nxt, legMs(cur, nxt) * ease.k, ease, at);
-    if (first) tween.aMs = Math.max(tween.aMs, Math.min(300 + 120 * Math.abs(stepCont - was), 700));
+    glideTo(nxt, legMs(cur, nxt) * ease.k, ease, at, [prevCur, route.length ? route[0] : -1]);
+    prevCur = from;
   }
 
   const orbit = (dir) => {
@@ -474,14 +508,7 @@ function fromGrid(grid) {
     const k = headingNear(cur, from, STEPS - 1, dir) ?? from + dir;
     const steps = Math.abs(k - from);
     stepCont = k;
-    if (tween && route.length) {
-      tween.alpha0 = camera.alpha;
-      tween.alpha1 = stepCont * STEP_ANGLE;
-      tween.aT0 = performance.now();
-      tween.aMs = 320;
-      tween.aEase = smooth;
-      return;
-    }
+    if (tween && route.length) return;
     glideTo(cur, Math.min(300 + 120 * steps, 700));
   };
   const setView = (dir) => {
