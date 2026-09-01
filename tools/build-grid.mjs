@@ -80,10 +80,10 @@ const STEP = 0.75;
 const CLUSTER = 0.3;
 const RADIUS = 0.2;
 const FOOT = 0.15;
-const SUPPORT = 0.45;
+const SUPPORT = 0.5;
 const SPREAD = 0.3;
 const SAMPLE = 0.1;
-const STEP_OVER = 0.35;
+const STEP_OVER = 0.45;
 const HEAD = 1.6;
 const SLOPE = 0.5;
 
@@ -154,56 +154,48 @@ for (let t = 0; t < triRole.length; t++) {
 const C0 = Math.floor(minX), R0 = Math.floor(minZ);
 const COLS = Math.ceil(maxX) - C0, ROWS = Math.ceil(maxZ) - R0;
 
-const clipA = { x: new Float64Array(10), z: new Float64Array(10) };
-const clipB = { x: new Float64Array(10), z: new Float64Array(10) };
+const clip = [new Float64Array(16), new Float64Array(16)];
 
-function clipEdge(from, n, to, axis, limit, keepBelow) {
-  const fv = axis ? from.z : from.x, tv = axis ? to.z : to.x;
+function clipTo(src, n, dst, axis, limit, keepBelow) {
+  const inside = (v) => (keepBelow ? v <= limit : v >= limit);
   let m = 0;
   for (let i = 0; i < n; i++) {
     const j = i + 1 === n ? 0 : i + 1;
-    const vi = fv[i], vj = fv[j];
-    const inI = keepBelow ? vi <= limit : vi >= limit;
-    const inJ = keepBelow ? vj <= limit : vj >= limit;
-    if (inI) { to.x[m] = from.x[i]; to.z[m] = from.z[i]; m++; }
-    if (inI !== inJ) {
+    const vi = src[i * 2 + axis], vj = src[j * 2 + axis];
+    if (inside(vi)) { dst[m * 2] = src[i * 2]; dst[m * 2 + 1] = src[i * 2 + 1]; m++; }
+    if (inside(vi) !== inside(vj)) {
       const f = (limit - vi) / (vj - vi);
-      to.x[m] = from.x[i] + (from.x[j] - from.x[i]) * f;
-      to.z[m] = from.z[i] + (from.z[j] - from.z[i]) * f;
+      dst[m * 2] = src[i * 2] + (src[j * 2] - src[i * 2]) * f;
+      dst[m * 2 + 1] = src[i * 2 + 1] + (src[j * 2 + 1] - src[i * 2 + 1]) * f;
       m++;
     }
-    if (m > 8) break;
   }
-  if (axis) { for (let i = 0; i < m; i++) tv[i] = to.z[i]; }
   return m;
 }
 
 const span = [0, 0];
 
 function spanOver(t, x0, x1, z0, z1) {
-  const a = t * 9;
+  const a = t * 9, b = t * 6;
   const ax = tris[a], ay = tris[a + 1], az = tris[a + 2];
-  const bx1 = tris[a + 3], by = tris[a + 4], bz1 = tris[a + 5];
-  const cx1 = tris[a + 6], cy = tris[a + 7], cz1 = tris[a + 8];
-  clipA.x[0] = ax; clipA.z[0] = az;
-  clipA.x[1] = bx1; clipA.z[1] = bz1;
-  clipA.x[2] = cx1; clipA.z[2] = cz1;
-  let n = clipEdge(clipA, 3, clipB, 0, x0, false);
-  if (!n) return null;
-  n = clipEdge(clipB, n, clipA, 0, x1, true);
-  if (!n) return null;
-  n = clipEdge(clipA, n, clipB, 1, z0, false);
-  if (!n) return null;
-  n = clipEdge(clipB, n, clipA, 1, z1, true);
-  if (!n) return null;
-  const ex = bx1 - ax, ey = by - ay, ez = bz1 - az;
-  const fx = cx1 - ax, fy = cy - ay, fz = cz1 - az;
-  const nx = ey * fz - ez * fy, ny = ez * fx - ex * fz, nz = ex * fy - ey * fx;
-  const b = t * 6;
+  const ex = tris[a + 3] - ax, ey = tris[a + 4] - ay, ez = tris[a + 5] - az;
+  const fx = tris[a + 6] - ax, fy = tris[a + 7] - ay, fz = tris[a + 8] - az;
+  const first = clip[0];
+  first[0] = ax; first[1] = az;
+  first[2] = tris[a + 3]; first[3] = tris[a + 5];
+  first[4] = tris[a + 6]; first[5] = tris[a + 8];
+  let n = 3, from = 0;
+  for (const [axis, limit, keepBelow] of [[0, x0, false], [0, x1, true], [1, z0, false], [1, z1, true]]) {
+    n = clipTo(clip[from], n, clip[1 - from], axis, limit, keepBelow);
+    from = 1 - from;
+    if (!n) return null;
+  }
+  const ny = ez * fx - ex * fz;
   if (Math.abs(ny) < 1e-9) { span[0] = box[b + 1]; span[1] = box[b + 4]; return span; }
+  const nx = ey * fz - ez * fy, nz = ex * fy - ey * fx;
   let lo = Infinity, hi = -Infinity;
   for (let i = 0; i < n; i++) {
-    const y = ay - (nx * (clipA.x[i] - ax) + nz * (clipA.z[i] - az)) / ny;
+    const y = ay - (nx * (clip[from][i * 2] - ax) + nz * (clip[from][i * 2 + 1] - az)) / ny;
     if (y < lo) lo = y;
     if (y > hi) hi = y;
   }
@@ -238,14 +230,27 @@ function clearance(x, z, y) {
   return room;
 }
 
-function blockedBetween(a, b) {
-  const y = Math.max(a.y, b.y);
-  const steps = Math.ceil(Math.hypot(b.x - a.x, b.z - a.z) / SAMPLE);
+function sweep(ax, az, bx2, bz2, y) {
+  const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / SAMPLE);
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    if (blocked(a.x + (b.x - a.x) * t, a.z + (b.z - a.z) * t, y)) return true;
+    if (blocked(ax + (bx2 - ax) * t, az + (bz2 - az) * t, y)) return true;
   }
   return false;
+}
+
+const BOW = [0.18, -0.18, 0.32, -0.32];
+
+function blockedBetween(a, b) {
+  const y = Math.max(a.y, b.y);
+  if (!sweep(a.x, a.z, b.x, b.z, y)) return false;
+  const len = Math.hypot(b.x - a.x, b.z - a.z) || 1;
+  const px = (b.z - a.z) / len, pz = -(b.x - a.x) / len;
+  for (const off of BOW) {
+    const cx = (a.x + b.x) / 2 + px * off, cz = (a.z + b.z) / 2 + pz * off;
+    if (!sweep(a.x, a.z, cx, cz, y) && !sweep(cx, cz, b.x, b.z, y)) return false;
+  }
+  return true;
 }
 
 const columns = new Map();
@@ -268,7 +273,7 @@ function surfaces(x, z) {
     const w1 = ((z2 - z0) * (x - x2) + (x0 - x2) * (z - z2)) / d;
     const w2 = 1 - w0 - w1;
     if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-    if (triUp[t] < SLOPE) continue;
+    if (Math.abs(triUp[t]) < SLOPE) continue;
     hits.push([w0 * y0 + w1 * y1 + w2 * y2, t]);
   }
   hits.sort((p, q) => p[0] - q[0]);
@@ -279,7 +284,7 @@ function surfaces(x, z) {
 function floorsAt(x, z) {
   const out = [];
   for (const h of surfaces(x, z)) {
-    if (triRole[h[1]] !== GROUND) continue;
+    if (triRole[h[1]] !== GROUND || triUp[h[1]] < SLOPE) continue;
     const last = out[out.length - 1];
     if (last && h[0] - last.low <= CLUSTER) { last.y = h[0]; last.t = h[1]; }
     else out.push({ low: h[0], y: h[0], t: h[1] });
@@ -291,19 +296,25 @@ const CORNERS = [[FOOT, FOOT], [FOOT, -FOOT], [-FOOT, FOOT], [-FOOT, -FOOT]];
 
 function underfoot(x, z, y) {
   for (const [dx, dz] of CORNERS)
-    if (!surfaces(x + dx, z + dz).some((h) => triRole[h[1]] === GROUND && Math.abs(h[0] - y) <= SUPPORT)) return false;
+    if (!surfaces(x + dx, z + dz).some((h) => triRole[h[1]] === GROUND && triUp[h[1]] >= SLOPE && Math.abs(h[0] - y) <= SUPPORT)) return false;
   return true;
 }
 
 function drowned(x, z, y, ceiling) {
   const top = Math.min(ceiling, y + HEAD);
-  return surfaces(x, z).some((h) => triRole[h[1]] === LIQUID && h[0] > y + 0.02 && h[0] < top);
+  return surfaces(x, z).some((h) => triRole[h[1]] === LIQUID && triUp[h[1]] >= SLOPE && h[0] > y + 0.02 && h[0] < top);
+}
+
+function buried(x, z, y) {
+  for (const h of surfaces(x, z))
+    if (h[0] > y + 0.05 && triRole[h[1]] !== LIQUID) return triUp[h[1]] > 0;
+  return false;
 }
 
 const SPOTS = [[0, 0], [SPREAD, 0], [-SPREAD, 0], [0, SPREAD], [0, -SPREAD],
   [SPREAD * 0.7, SPREAD * 0.7], [SPREAD * 0.7, -SPREAD * 0.7], [-SPREAD * 0.7, SPREAD * 0.7], [-SPREAD * 0.7, -SPREAD * 0.7]];
 
-const reject = { water: 0, unsupported: 0, blocked: 0 };
+const reject = { water: 0, buried: 0, unsupported: 0, blocked: 0 };
 
 function nodesIn(c, r, note) {
   const cx = C0 + c + 0.5, cz = R0 + r + 0.5;
@@ -316,6 +327,7 @@ function nodesIn(c, r, note) {
       const name = matName(triMat[floors[i].t]);
       const say = (why) => note?.(dx, dz, y, name, why);
       if (drowned(x, z, y, floors[i + 1]?.low ?? Infinity)) { reject.water++; say('water covers this'); continue; }
+      if (buried(x, z, y)) { reject.buried++; say('this is the far side of a shell'); continue; }
       if (!underfoot(x, z, y)) { reject.unsupported++; say('too narrow to stand on'); continue; }
       const room = clearance(x, z, y);
       if (!room) {
@@ -370,7 +382,7 @@ for (let r = 0; r < ROWS; r++) {
   }
 }
 
-const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+const DIRS = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const corner = (c, r, a, b) =>
   (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
   || blocked(C0 + c + 0.5, R0 + r + 0.5, Math.max(a.y, b.y));
