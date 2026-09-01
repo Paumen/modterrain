@@ -47,6 +47,7 @@
 <script type="module">
 import { buildIndex, raycast as castRay } from './tools/ray.mjs';
 import { isSeeThrough, isFading } from './tools/see-through.mjs';
+import { walkerFade } from './tools/walker-fade.mjs';
 
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
 const canvas = document.getElementById('view');
@@ -93,7 +94,8 @@ Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &midd
 const WHERE = (n) => `<br><small>at ${n.p[0]},${n.p[2]} &middot; height ${n.p[1].toFixed(2)} &middot; ${n.n.length} way${n.n.length === 1 ? '' : 's'} out</small>`;
 
 async function makeEngine() {
-  if (navigator.gpu && BABYLON.WebGPUEngine) {
+  const forceGL = new URLSearchParams(location.search).has('gl');
+  if (!forceGL && navigator.gpu && BABYLON.WebGPUEngine) {
     try {
       const engine = new BABYLON.WebGPUEngine(canvas, { antialias: true });
       await engine.initAsync();
@@ -133,11 +135,8 @@ function fromGrid(grid) {
   const fading = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isFading(m.name));
   const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
-  for (const m of fading) {
-    m.fade = damped(1, 10);
-    m.material.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
-    m.material.backFaceCulling = true;
-  }
+  for (const m of fading) m.material.backFaceCulling = true;
+  const setWalkerFade = walkerFade(BABYLON, fading);
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
   sun.intensity = 1.3;
@@ -215,17 +214,16 @@ function fromGrid(grid) {
     return best;
   }
 
-  const FADED = 0.12;
-  const HIDE_R = 0.4;
-  function hideRays(from, dx, dy, dz, dist) {
-    const dir = new BABYLON.Vector3(dx, dy, dz);
-    const [u, v] = perp(dx, dy, dz);
-    const out = [new BABYLON.Ray(from, dir, dist)];
-    for (const [sx, sy, sz] of [u, v, [-u[0], -u[1], -u[2]], [-v[0], -v[1], -v[2]]])
-      out.push(new BABYLON.Ray(
-        new BABYLON.Vector3(from.x + sx * HIDE_R, from.y + sy * HIDE_R, from.z + sz * HIDE_R), dir, dist));
-    return out;
-  }
+  const HOLE_INNER = 0.085;
+  const HOLE_OUTER = 0.20;
+  const holeAt = (strength) => {
+    const w = engine.getRenderWidth(), h = engine.getRenderHeight();
+    const vp = camera.viewport.toGlobal(w, h);
+    const foot = new BABYLON.Vector3(camera.target.x, camera.target.y - eye * 0.5, camera.target.z);
+    const q = BABYLON.Vector3.Project(foot, IDENT, scene.getTransformMatrix(), vp);
+    const span = Math.min(w, h);
+    setWalkerFade(q.x, h - q.y, q.z, span * HOLE_INNER, span * HOLE_OUTER, strength);
+  };
 
   function roomAt(n, k, beta) {
     const p = nav.nodes[n].p;
@@ -243,6 +241,7 @@ function fromGrid(grid) {
   }
   const open = (n, k) => roomAt(n, ((k % STEPS) + STEPS) % STEPS, view().beta) > BACK;
 
+  const IDENT = BABYLON.Matrix.Identity();
   const camera = new BABYLON.ArcRotateCamera('cam', 0, view().beta, 1, eyePoint(start), scene);
   camera.minZ = 0.09;
   camera.maxZ = 1200;
@@ -304,7 +303,7 @@ function fromGrid(grid) {
       const want = Math.max(2.4, maxR * mapZoom);
       camera.radius += (want - camera.radius) * Math.min(1, dt * 6);
       held.v = heldBeta.v = null;
-      for (const m of fading) m.visibility = m.fade.step(1, dt, 10);
+      holeAt(0);
       return;
     }
     const want = plan();
@@ -318,14 +317,7 @@ function fromGrid(grid) {
       - Math.hypot(camera.minZ, probe) * 1.3;
     camera.radius = Math.max(0, Math.min(back, room));
     held.v = Math.min(held.v, camera.radius + rate * dt);
-    if (fading.length) {
-      const dist = camera.radius;
-      const rays = dist > 1e-4 ? hideRays(camera.target, dx, dy, dz, dist) : null;
-      for (const m of fading) {
-        const hit = rays && rays.some((r) => m.intersects(r, true).hit);
-        m.visibility = m.fade.step(hit ? FADED : 1, dt, 10);
-      }
-    }
+    holeAt(camera.radius > 1e-4 ? 1 : 0);
   });
 
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);

@@ -1,6 +1,5 @@
 export const SEE_THROUGH_PIECES = /^(Docks_|Path_Fence_|Prop_|Tiered_Retaining_Wall_)/;
 export const FADE_PIECES = /^(Docks_|Prop_Bridge_Rope_)/;
-export const FADE_TILE = 4;
 
 const SEE_THROUGH = ' (see through)';
 const FADES = ' (see through, fades)';

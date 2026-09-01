@@ -1,5 +1,5 @@
 import { readGlb, writeGlb } from './glb.mjs';
-import { markSeeThrough, SEE_THROUGH_PIECES, FADE_PIECES, FADE_TILE } from './see-through.mjs';
+import { markSeeThrough, SEE_THROUGH_PIECES, FADE_PIECES } from './see-through.mjs';
 
 const input = process.argv[2];
 if (!input) {
@@ -108,9 +108,7 @@ function emitNode(nodeIndex, parent) {
         let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         const len = Math.hypot(nx, ny, nz) || 1;
         nx /= len; ny /= len; nz /= len;
-        const tx = Math.floor((p0[0] + p1[0] + p2[0]) / 3 / FADE_TILE);
-        const tz = Math.floor((p0[2] + p1[2] + p2[2]) / 3 / FADE_TILE);
-        const key = fades ? `fade|${tx}|${tz}|${prim.material}` : `${prim.material}|${thin ? 1 : 0}`;
+        const key = `${prim.material}|${thin ? (fades ? 2 : 1) : 0}`;
         let bucket = buckets.get(key);
         if (!bucket) buckets.set(key, (bucket = { pos: [], nrm: [], mat: prim.material, thin, fades }));
         bucket.pos.push(...p0, ...p1, ...p2);
