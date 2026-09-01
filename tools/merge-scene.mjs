@@ -83,7 +83,7 @@ function meshGeometry(prim) {
   return g;
 }
 
-const FADE = /^(Prop_Bridge_|Docks_|Path_Fence_)/;
+const FADE = /^(Prop_Bridge_|Docks_|Path_Fence_|Tiered_Retaining_Wall_)/;
 const FADE_CHUNK = 2;
 
 function emitNode(nodeIndex, parent) {

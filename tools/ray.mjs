@@ -76,3 +76,40 @@ export function raycast(index, ox, oy, oz, dx, dy, dz, tMax, tMin = 0.001) {
   }
   return best;
 }
+
+export function castOwners(index, ox, oy, oz, dx, dy, dz, tMax, owner, flags, tMin = 0.001) {
+  const { tris, bins, cols, rows, cell, minX, minZ, seen } = index;
+  const stamp = ++index.stamp;
+  let cx = index.bx(ox), cz = index.bz(oz);
+  const stepX = dx > 0 ? 1 : -1, stepZ = dz > 0 ? 1 : -1;
+  let tX = dx !== 0 ? (minX + (cx + (dx > 0 ? 1 : 0)) * cell - ox) / dx : Infinity;
+  let tZ = dz !== 0 ? (minZ + (cz + (dz > 0 ? 1 : 0)) * cell - oz) / dz : Infinity;
+  const dX = dx !== 0 ? Math.abs(cell / dx) : Infinity;
+  const dZ = dz !== 0 ? Math.abs(cell / dz) : Infinity;
+  let t = 0;
+  for (let i = 0; i < cols + rows && t <= tMax; i++) {
+    if (cx >= 0 && cx < cols && cz >= 0 && cz < rows) {
+      for (const tri of bins[cz * cols + cx]) {
+        if (seen[tri] === stamp) continue;
+        seen[tri] = stamp;
+        if (flags[owner[tri]]) continue;
+        const a = tri * 9;
+        const e1x = tris[a + 3] - tris[a], e1y = tris[a + 4] - tris[a + 1], e1z = tris[a + 5] - tris[a + 2];
+        const e2x = tris[a + 6] - tris[a], e2y = tris[a + 7] - tris[a + 1], e2z = tris[a + 8] - tris[a + 2];
+        const px = dy * e2z - dz * e2y, py = dz * e2x - dx * e2z, pz = dx * e2y - dy * e2x;
+        const det = e1x * px + e1y * py + e1z * pz;
+        if (Math.abs(det) < 1e-12) continue;
+        const inv = 1 / det;
+        const sx = ox - tris[a], sy = oy - tris[a + 1], sz = oz - tris[a + 2];
+        const u = (sx * px + sy * py + sz * pz) * inv;
+        if (u < 0 || u > 1) continue;
+        const qx = sy * e1z - sz * e1y, qy = sz * e1x - sx * e1z, qz = sx * e1y - sy * e1x;
+        const v = (dx * qx + dy * qy + dz * qz) * inv;
+        if (v < 0 || u + v > 1) continue;
+        const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
+        if (hit > tMin && hit < tMax) flags[owner[tri]] = 1;
+      }
+    }
+    if (tX < tZ) { t = tX; tX += dX; cx += stepX; } else { t = tZ; tZ += dZ; cz += stepZ; }
+  }
+}
