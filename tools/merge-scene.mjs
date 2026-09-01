@@ -1,6 +1,5 @@
 import { readGlb, writeGlb } from './glb.mjs';
-import { markSeeThrough } from './see-through.mjs';
-import { markBridge } from './bridge.mjs';
+import { markSeeThrough, SEE_THROUGH_PIECES, SEE_THROUGH_TILE } from './see-through.mjs';
 
 const input = process.argv[2];
 if (!input) {
@@ -84,15 +83,13 @@ function meshGeometry(prim) {
   return g;
 }
 
-const SEE_THROUGH = /^(Path_Fence_|Docks_Railing_|Docks_Bumper_)/;
-
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
     const flip = det3(world) < 0;
     const piece = (node.name || '').split('__')[0];
-    const bridge = /^Prop_Bridge_/.test(piece);
+    const thin = SEE_THROUGH_PIECES.test(piece);
     for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
       const { pos, idx } = meshGeometry(prim);
@@ -110,10 +107,11 @@ function emitNode(nodeIndex, parent) {
         let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         const len = Math.hypot(nx, ny, nz) || 1;
         nx /= len; ny /= len; nz /= len;
-        const thin = !bridge && SEE_THROUGH.test(piece);
-        const key = bridge ? `bridge|${nodeIndex}|${prim.material}` : `${prim.material}|${thin ? 1 : 0}`;
+        const tx = Math.floor((p0[0] + p1[0] + p2[0]) / 3 / SEE_THROUGH_TILE);
+        const tz = Math.floor((p0[2] + p1[2] + p2[2]) / 3 / SEE_THROUGH_TILE);
+        const key = thin ? `see|${tx}|${tz}|${prim.material}` : `${prim.material}`;
         let bucket = buckets.get(key);
-        if (!bucket) buckets.set(key, (bucket = { pos: [], nrm: [], mat: prim.material, thin, bridge }));
+        if (!bucket) buckets.set(key, (bucket = { pos: [], nrm: [], mat: prim.material, thin }));
         bucket.pos.push(...p0, ...p1, ...p2);
         bucket.nrm.push(nx, ny, nz, nx, ny, nz, nx, ny, nz);
         tris.push([...p0, ...p1, ...p2, prim.material, ny]);
@@ -165,9 +163,7 @@ for (const [, bucket] of ordered) {
   const posAcc = addAccessor(new Float32Array(bucket.pos), 'VEC3', true);
   const nrmAcc = addAccessor(new Float32Array(bucket.nrm), 'VEC3', false);
   out.materials.push(structuredClone(json.materials[bucket.mat]));
-  const name = bucket.bridge
-    ? markBridge(matName(bucket.mat))
-    : bucket.thin ? markSeeThrough(matName(bucket.mat)) : matName(bucket.mat);
+  const name = bucket.thin ? markSeeThrough(matName(bucket.mat)) : matName(bucket.mat);
   out.meshes.push({
     name,
     primitives: [{ attributes: { POSITION: posAcc, NORMAL: nrmAcc }, material: out.materials.length - 1 }],
