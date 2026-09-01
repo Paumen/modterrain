@@ -66,79 +66,12 @@ const VIEWS = [
 const LEVEL = 1.55;
 const BACK = 1.6;
 const RATE = 9;
-const SPEED = 8.4;
-const EASE_DIST = 1.6;
-const CRAWL = 0.1;
-const AIM_AHEAD = 2.6;
-const AIM_MIN = 0.35;
-const RELAX = 0.5;
-const RELAX_PASSES = 2;
-const RELAX_CAP = 0.32;
-const SUB = 8;
-const YAW_EASE = 5;
-const YAW_MAX = 2.4;
-const BOOM_OUT = 3;
-const BOOM_LIFT = 0.9;
 const KEEP_NEAR = 1.0;
 const FADE_EASE = 4;
 const RING = [[1, 0], [0, 1], [-1, 0], [0, -1], [0.7, 0.7], [-0.7, 0.7], [0.7, -0.7], [-0.7, -0.7]];
 const SIGHT_RINGS = [[0.55, 0.78], [1.15, 0.42]];
 const FADED = 0.1;
 const smooth = (t) => t * t * (3 - 2 * t);
-const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-const len3 = (a) => Math.hypot(a[0], a[1], a[2]);
-const unit3 = (a) => { const l = len3(a) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
-function tangent(back, on, span) {
-  const m = [back[0] + on[0], back[1] + on[1], back[2] + on[2]];
-  const l = len3(m);
-  const k = l > 1e-6 ? span / l : span;
-  return l > 1e-6 ? [m[0] * k, m[1] * k, m[2] * k] : [on[0] * k, on[1] * k, on[2] * k];
-}
-function hermite(s, p1, m1, p2, m2) {
-  const h1 = s * s * (2 * s - 3) + 1, h2 = s * (s * (s - 2) + 1);
-  const h3 = s * s * (3 - 2 * s), h4 = s * s * (s - 1);
-  return [0, 1, 2].map((i) => h1 * p1[i] + h2 * m1[i] + h3 * p2[i] + h4 * m2[i]);
-}
-function relaxPath(pts) {
-  const out = pts.map((p) => p.slice());
-  for (let n = 0; n < RELAX_PASSES; n++) {
-    const src = out.map((p) => p.slice());
-    for (let i = 1; i < src.length - 1; i++)
-      for (const a of [0, 2]) out[i][a] += ((src[i - 1][a] + src[i + 1][a]) / 2 - src[i][a]) * RELAX;
-  }
-  for (let i = 0; i < out.length; i++)
-    for (const a of [0, 2])
-      out[i][a] = pts[i][a] + Math.max(-RELAX_CAP, Math.min(RELAX_CAP, out[i][a] - pts[i][a]));
-  return out;
-}
-function buildPath(raw) {
-  const ctl = relaxPath(raw);
-  const at = (i) => ctl[Math.max(0, Math.min(ctl.length - 1, i))];
-  const pts = [ctl[0]];
-  for (let i = 0; i < ctl.length - 1; i++) {
-    const p1 = at(i), p2 = at(i + 1);
-    const on = unit3(sub3(p2, p1));
-    const back = i > 0 ? unit3(sub3(p1, at(i - 1))) : on;
-    const next = i + 2 < ctl.length ? unit3(sub3(at(i + 2), p2)) : on;
-    const span = len3(sub3(p2, p1));
-    const m1 = tangent(back, on, span), m2 = tangent(on, next, span);
-    for (let j = 1; j <= SUB; j++) pts.push(hermite(j / SUB, p1, m1, p2, m2));
-  }
-  const dist = new Float64Array(pts.length);
-  for (let i = 1; i < pts.length; i++) dist[i] = dist[i - 1] + len3(sub3(pts[i], pts[i - 1]));
-  return { pts, dist, total: dist[dist.length - 1] };
-}
-function pathAt(path, s) {
-  const d = path.dist;
-  const q = Math.max(0, Math.min(path.total, s));
-  let lo = 0, hi = d.length - 1;
-  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (d[m] <= q) lo = m; else hi = m; }
-  const span = d[hi] - d[lo];
-  const f = span > 1e-9 ? (q - d[lo]) / span : 0;
-  const p = path.pts[lo], r = path.pts[hi];
-  return [p[0] + (r[0] - p[0]) * f, p[1] + (r[1] - p[1]) * f, p[2] + (r[2] - p[2]) * f];
-}
-
 function damped(v, rate) {
   return {
     v, rate, easing: null,
@@ -317,11 +250,9 @@ function fromGrid(grid) {
     for (let b = want; b <= LEVEL + 1e-6; b += 0.09) if (roomAt(n, k, b) >= BACK) return b;
     return LEVEL;
   }
-  let planned = null;
   function plan() {
-    const key = `${cur}|${step()}|${viewIdx}`;
-    if (!planned || planned.key !== key) planned = { key, beta: fitBeta(cur, step()), radius: view().far };
-    return planned;
+    const beta = fitBeta(cur, step());
+    return { beta, radius: Math.min(view().far, roomAt(cur, step(), beta)) };
   }
   const open = (n, k) => roomAt(n, ((k % STEPS) + STEPS) % STEPS, view().beta) > BACK;
 
@@ -331,11 +262,11 @@ function fromGrid(grid) {
   camera.fov = 0.9;
   camera.inputs.clear();
 
-  let trip = null;
+  let tween = null;
   const held = damped(null, RATE), heldBeta = damped(null, 2);
   let route = [];
-  let yawBias = 0;
   const history = [];
+  let recording = true;
   function pushHistory(from) {
     if (history[history.length - 1] === from) return;
     history.push(from);
@@ -345,47 +276,47 @@ function fromGrid(grid) {
   }
   function goBack() {
     if (!history.length) return;
+    route = [];
     const to = history.pop();
     const b = document.getElementById('back');
     if (b) b.disabled = !history.length;
-    startTrip([cur, to], false);
+    recording = false;
+    stepCont = headingNear(to, Math.round(stepCont)) ?? Math.round(stepCont);
+    glideTo(to, 420);
+    recording = true;
   }
-  function startTrip(nodes, record = true, flip = false) {
-    if (nodes.length < 2) return;
-    const path = buildPath(nodes.map((i) => nav.nodes[i].p));
-    if (!(path.total > 1e-6)) return;
-    const mark = nodes.map((_, i) => path.dist[Math.min(i * SUB, path.dist.length - 1)]);
-    trip = { path, mark, nodes, record, flip, s: 0, i: 0, yaw: stepCont * STEP_ANGLE };
-    yawBias = 0;
-    route = nodes.slice(1);
+  function glideTo(node, ms) {
+    if (recording && cur !== node) pushHistory(cur);
+    cur = node;
+    hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
+    tween = {
+      t0: performance.now(), ms,
+      aT0: performance.now(), aMs: ms,
+      target0: camera.target.clone(), target1: eyePoint(node),
+      ground0: camera.target.y - eye, ground1: nav.nodes[node].p[1],
+      alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
+    };
     updateMarkers();
   }
-  function advanceTrip(dt) {
-    const t = trip;
-    const ez = Math.min(EASE_DIST, t.path.total / 2);
-    const a = Math.min(1, t.s / ez);
-    const b = Math.min(1, (t.path.total - t.s) / ez);
-    t.s = Math.min(t.path.total, t.s + SPEED * Math.max(CRAWL, smooth(Math.min(a, b))) * dt);
-    const p = pathAt(t.path, t.s);
-    camera.target.copyFromFloats(p[0], p[1] + eye, p[2]);
-    const aim = pathAt(t.path, Math.min(t.path.total, t.s + AIM_AHEAD));
-    const dx = aim[0] - p[0], dz = aim[2] - p[2];
-    if (Math.hypot(dx, dz) > AIM_MIN)
-      t.yaw += wrapAngle(Math.atan2(dz, dx) + (t.flip ? 0 : Math.PI) - t.yaw);
-    stepCont = t.yaw / STEP_ANGLE + yawBias;
-    while (t.i < t.nodes.length - 1 && t.s >= (t.mark[t.i] + t.mark[t.i + 1]) / 2) {
-      t.i++;
-      if (t.record && cur !== t.nodes[t.i]) pushHistory(cur);
-      cur = t.nodes[t.i];
-      route = t.nodes.slice(t.i + 1);
-      hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
-      updateMarkers();
-    }
-    if (t.s >= t.path.total) { trip = null; route = []; updateMarkers(); }
+  function glideFacing(node, ms) {
+    const from = Math.round(stepCont);
+    stepCont = headingNear(node, from) ?? from;
+    glideTo(node, ms);
   }
   scene.onBeforeRenderObservable.add(() => {
     const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
-    if (trip) advanceTrip(dt);
+    if (tween) {
+      const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
+      const s = smooth(t);
+      camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
+      camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + eye;
+      const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
+      camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
+      if (t === 1) {
+        tween = null;
+        if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); } else updateMarkers();
+      }
+    }
     if (mapView) {
       camera.beta += (MAP_VIEW.beta - camera.beta) * Math.min(1, dt * 6);
       const want = Math.max(2.4, maxR * mapZoom);
@@ -394,26 +325,17 @@ function fromGrid(grid) {
       for (const b of faders) b.visibility = b.viewFade += (1 - b.viewFade) * (1 - Math.exp(-FADE_EASE * dt));
       return;
     }
-    const off = wrapAngle(stepCont * STEP_ANGLE - camera.alpha);
-    const cap = YAW_MAX * dt;
-    camera.alpha += Math.max(-cap, Math.min(cap, off * (1 - Math.exp(-YAW_EASE * dt))));
     const want = plan();
     const rate = RATE + view().far;
-    const far = view().far;
-    if (!trip) camera.target.y = nav.nodes[cur].p[1] + eye;
-    const probe = nearRadius();
-    const clearance = Math.hypot(camera.minZ, probe) * 1.3;
-    const [bx, by, bz] = dirAt(camera.alpha, want.beta);
-    const level = thickCast(camera.target.x, camera.target.y, camera.target.z, bx, by, bz, far + margin, probe) - clearance;
-    const squeeze = Math.max(0, Math.min(1, 1 - level / far));
-    camera.beta = heldBeta.step(want.beta - squeeze * (want.beta - BOOM_LIFT), dt);
+    camera.beta = heldBeta.step(want.beta, dt);
     const back = held.step(want.radius, dt, rate);
+    if (!tween) camera.target.y = nav.nodes[cur].p[1] + eye;
     const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
-    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe) - clearance;
-    const goal = Math.max(0, Math.min(back, room));
-    camera.radius = goal < camera.radius
-      ? goal
-      : camera.radius + (goal - camera.radius) * (1 - Math.exp(-BOOM_OUT * dt));
+    const probe = nearRadius();
+    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe)
+      - Math.hypot(camera.minZ, probe) * 1.3;
+    camera.radius = Math.max(0, Math.min(back, room));
+    held.v = Math.min(held.v, camera.radius + rate * dt);
     if (fadeIndex) {
       fadeFlags.fill(0);
       const reach = camera.radius + margin;
@@ -442,6 +364,7 @@ function fromGrid(grid) {
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
   const surf = { p: 1, g: 3.5 };
   const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
+  const legMs = (a, b) => Math.max(16, dist3(nav.nodes[a], nav.nodes[b]) * 150);
   let byCell = new Map();
   const cellKey = (c, r) => c * 100000 + r;
   function indexCells() {
@@ -522,9 +445,10 @@ function fromGrid(grid) {
       if (best < 0 || best === cur) { route = []; return; }
       dest = best;
     }
-    const nodes = [];
-    for (let n = dest; n !== -1; n = prev[n]) nodes.unshift(n);
-    startTrip(nodes);
+    route = [];
+    for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
+    route.shift();
+    if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); }
   }
   const TAP_PX = 32;
   function markerAtScreen(px, py) {
@@ -561,23 +485,36 @@ function fromGrid(grid) {
         if (open(node, k)) return k;
     return null;
   }
-  const wrapAngle = (x) => ((x % TAU) + TAU * 1.5) % TAU - Math.PI;
   const orbit = (dir) => {
-    if (trip) { yawBias += dir; return; }
     const from = Math.round(stepCont);
-    stepCont = headingNear(cur, from, STEPS - 1, dir) ?? from + dir;
+    const k = headingNear(cur, from, STEPS - 1, dir) ?? from + dir;
+    const steps = Math.abs(k - from);
+    stepCont = k;
+    if (tween && route.length) {
+      tween.alpha0 = camera.alpha;
+      tween.alpha1 = stepCont * STEP_ANGLE;
+      tween.aT0 = performance.now();
+      tween.aMs = 320;
+      return;
+    }
+    glideTo(cur, Math.min(300 + 120 * steps, 700));
   };
   const setView = (dir) => {
     if (mapView) {
       mapZoom = Math.min(1.8, Math.max(0.18, mapZoom * (dir > 0 ? 1.4 : 1 / 1.4)));
+      glideTo(cur, 260);
       return;
     }
     const next = Math.min(VIEWS.length - 1, Math.max(0, viewIdx + dir));
     if (next === viewIdx) return;
     viewIdx = next;
     held.ease(420); heldBeta.ease(420);
+    if (tween || route.length) return;
+    stepCont = headingNear(cur, Math.round(stepCont), STEPS - 1) ?? stepCont;
+    glideTo(cur, 400);
   };
   function walk(sign) {
+    route = [];
     const fwd = camera.target.subtract(camera.position); fwd.y = 0; fwd.normalize();
     let best = -1, bestDot = 0.35;
     for (const nb of nav.nodes[cur].n) {
@@ -585,7 +522,11 @@ function fromGrid(grid) {
       const d = sign * BABYLON.Vector3.Dot(to.normalize(), fwd);
       if (d > bestDot) { bestDot = d; best = nb; }
     }
-    if (best >= 0) startTrip([cur, best], true, sign < 0);
+    if (best >= 0) {
+      const k = Math.round(stepCont);
+      stepCont = headingNear(best, k, 1) ?? k;
+      glideTo(best, 500);
+    }
   }
 
   const mat = (hex, alpha) => {
@@ -860,6 +801,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     for (const id of ['save', 'path', 'undo']) document.getElementById(id).hidden = !on;
     document.getElementById('undo').disabled = !undoStack.length;
     updateMarkers();
+    glideTo(cur, 450);
   }
   function setPathMode(on) {
     pathMode = on;
@@ -944,8 +886,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
 
   hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
   rebuildMarkers();
-  stepCont = headingNear(cur, Math.round(stepCont)) ?? stepCont;
-  camera.alpha = stepCont * STEP_ANGLE;
+  glideFacing(cur, 1);
   engine.runRenderLoop(() => scene.render());
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
