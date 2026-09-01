@@ -111,9 +111,9 @@ async function makeEngine() {
 
 function fromGrid(grid) {
   const { origin, materials, path } = grid.meta;
-  const nodes = grid.nodes.map(([c, r, y, m]) => ({
+  const nodes = grid.nodes.map(([c, r, y, m, dx = 0, dz = 0]) => ({
     c, r,
-    p: [origin.c + c + 0.5, y, origin.r + r + 0.5],
+    p: [origin.c + c + 0.5 + dx, y, origin.r + r + 0.5 + dz],
     s: path[m] ? 'p' : 'g',
     n: [],
   }));
@@ -131,7 +131,10 @@ function toGrid(nav) {
   nav.nodes.forEach((n, i) => { for (const j of n.n) if (j > i) edges.push(i, j); });
   return {
     meta: nav.meta,
-    nodes: nav.nodes.map((n) => [n.c, n.r, +n.p[1].toFixed(3), n.s === 'p' && walk >= 0 ? walk : grass]),
+    nodes: nav.nodes.map((n) => [
+      n.c, n.r, +n.p[1].toFixed(3), n.s === 'p' && walk >= 0 ? walk : grass,
+      +(n.p[0] - nav.meta.origin.c - n.c - 0.5).toFixed(3), +(n.p[2] - nav.meta.origin.r - n.r - 0.5).toFixed(3),
+    ]),
     edges,
   };
 }

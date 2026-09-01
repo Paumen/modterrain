@@ -65,35 +65,37 @@ function localMatrix(node) {
 const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
-const CAVE_FLOOR = /^Floor_/;
-const RAILED = /^Prop_Bridge_/;
-const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
-const WALKABLE = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_|Floor_)/;
-const BLOCKING = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Terrain_Water_|Water_|Waterfall_)/;
+const GROUND = 0, SOLID = 1, LIQUID = 2;
+const ROLES = [
+  [GROUND, /^(Cave_Center_|Docks_(Decking|Ladder_Top)_|Floor_|Grass_|Path_(Bridge|End|Terrain)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_)/],
+  [LIQUID, /^(Terrain_Water_|Water_)/],
+  [SOLID, /^(Basic_|Cave_Edge_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_(Edging|Fence)_|Prop_(Bridge_Rope|Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Waterfall_)/],
+];
+const CLIFF = /^(Basic_|Cave_Edge_|Cracked_|Wall_)/;
+const CARRIED = /^(Cave_Center_|Floor_|Path_(Bridge|End)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_)/;
 
-function classify(piece) {
-  if (WALKABLE.test(piece)) return { blocking: false, cave: CAVE_FLOOR.test(piece), water: false };
-  if (BLOCKING.test(piece)) return { blocking: true, cave: false, water: WATER.test(piece) };
-  return null;
-}
+const roleOf = (piece) => ROLES.find(([, re]) => re.test(piece))?.[0] ?? null;
 const unknown = new Set();
 
 const CELL = 1;
 const EYE = 1.5;
 const STEP = 0.75;
 const CLUSTER = 0.3;
-const REACH = 0.2;
+const RADIUS = 0.2;
+const FOOT = 0.15;
+const SUPPORT = 0.5;
+const SPREAD = 0.3;
 const SAMPLE = 0.1;
-const KNEE = 0.5;
+const STEP_OVER = 0.45;
 const HEAD = 1.6;
+const SLOPE = 0.5;
 
 const pos = [];
 const triMat = [];
 const triUp = [];
-const triBlocking = [];
-const triCave = [];
-const triWater = [];
+const triRole = [];
 const triPiece = [];
+const triRock = [];
 const cache = new Map();
 
 function meshGeometry(prim) {
@@ -108,9 +110,8 @@ function emitNode(nodeIndex, parent) {
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
-    const kind = classify(piece);
-    const rail = kind !== null && !kind.blocking && RAILED.test(piece);
-    if (kind === null) unknown.add(piece);
+    const role = roleOf(piece);
+    if (role === null) unknown.add(piece);
     else for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
       const { pos: src, idx } = meshGeometry(prim);
@@ -123,15 +124,12 @@ function emitNode(nodeIndex, parent) {
         const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
         const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
         const nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
-        const up = ny / (Math.hypot(nx, ny, nz) || 1);
         pos.push(...p0, ...p1, ...p2);
         triMat.push(prim.material);
-        triUp.push(up);
-        const tall = Math.max(p0[1], p1[1], p2[1]) - Math.min(p0[1], p1[1], p2[1]) > KNEE;
-        triBlocking.push(kind.blocking || (rail && tall && Math.abs(up) < 0.5));
-        triCave.push(kind.cave);
-        triWater.push(kind.water);
+        triUp.push(ny / (Math.hypot(nx, ny, nz) || 1));
+        triRole.push(role);
         triPiece.push(piece);
+        triRock.push(CLIFF.test(piece) ? 1 : 0);
       }
     }
   }
@@ -141,7 +139,7 @@ function emitNode(nodeIndex, parent) {
 for (const root of json.scenes[json.scene ?? 0].nodes) emitNode(root, IDENTITY);
 
 if (unknown.size) {
-  console.error(`unclassified pieces -- add them to WALKABLE or BLOCKING:\n  ${[...unknown].join('\n  ')}`);
+  console.error(`unclassified pieces -- give them a role in ROLES:\n  ${[...unknown].join('\n  ')}`);
   process.exit(1);
 }
 
@@ -153,7 +151,7 @@ const { box, bins, cols: BW, bx, bz } = index;
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Light', 'Wood Light End', 'Wood Medium', 'Wood Dark']);
 
 let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-for (let t = 0; t < triBlocking.length; t++) {
+for (let t = 0; t < triRole.length; t++) {
   const b = t * 6;
   minX = Math.min(minX, box[b]); maxX = Math.max(maxX, box[b + 3]);
   minZ = Math.min(minZ, box[b + 2]); maxZ = Math.max(maxZ, box[b + 5]);
@@ -161,29 +159,112 @@ for (let t = 0; t < triBlocking.length; t++) {
 const C0 = Math.floor(minX), R0 = Math.floor(minZ);
 const COLS = Math.ceil(maxX) - C0, ROWS = Math.ceil(maxZ) - R0;
 
-function inTheWay(x, z, y) {
-  for (let iz = bz(z - REACH); iz <= bz(z + REACH); iz++)
-    for (let ix = bx(x - REACH); ix <= bx(x + REACH); ix++)
+const clip = [new Float64Array(16), new Float64Array(16)];
+
+function clipTo(src, n, dst, axis, limit, keepBelow) {
+  const inside = (v) => (keepBelow ? v <= limit : v >= limit);
+  let m = 0;
+  for (let i = 0; i < n; i++) {
+    const j = i + 1 === n ? 0 : i + 1;
+    const vi = src[i * 2 + axis], vj = src[j * 2 + axis];
+    if (inside(vi)) { dst[m * 2] = src[i * 2]; dst[m * 2 + 1] = src[i * 2 + 1]; m++; }
+    if (inside(vi) !== inside(vj)) {
+      const f = (limit - vi) / (vj - vi);
+      dst[m * 2] = src[i * 2] + (src[j * 2] - src[i * 2]) * f;
+      dst[m * 2 + 1] = src[i * 2 + 1] + (src[j * 2 + 1] - src[i * 2 + 1]) * f;
+      m++;
+    }
+  }
+  return m;
+}
+
+const span = [0, 0];
+
+function spanOver(t, x0, x1, z0, z1) {
+  const a = t * 9, b = t * 6;
+  const ax = tris[a], ay = tris[a + 1], az = tris[a + 2];
+  const ex = tris[a + 3] - ax, ey = tris[a + 4] - ay, ez = tris[a + 5] - az;
+  const fx = tris[a + 6] - ax, fy = tris[a + 7] - ay, fz = tris[a + 8] - az;
+  const first = clip[0];
+  first[0] = ax; first[1] = az;
+  first[2] = tris[a + 3]; first[3] = tris[a + 5];
+  first[4] = tris[a + 6]; first[5] = tris[a + 8];
+  let n = 3, from = 0;
+  for (const [axis, limit, keepBelow] of [[0, x0, false], [0, x1, true], [1, z0, false], [1, z1, true]]) {
+    n = clipTo(clip[from], n, clip[1 - from], axis, limit, keepBelow);
+    from = 1 - from;
+    if (!n) return null;
+  }
+  const ny = ez * fx - ex * fz;
+  if (Math.abs(ny) < 1e-9) { span[0] = box[b + 1]; span[1] = box[b + 4]; return span; }
+  const nx = ey * fz - ez * fy, nz = ex * fy - ey * fx;
+  let lo = Infinity, hi = -Infinity;
+  for (let i = 0; i < n; i++) {
+    const y = ay - (nx * (clip[from][i * 2] - ax) + nz * (clip[from][i * 2 + 1] - az)) / ny;
+    if (y < lo) lo = y;
+    if (y > hi) hi = y;
+  }
+  span[0] = Math.max(lo, box[b + 1]);
+  span[1] = Math.min(hi, box[b + 4]);
+  return span;
+}
+
+function blocked(x, z, y, rad = RADIUS, report) {
+  const lo = y + STEP_OVER, hi = y + HEAD;
+  const x0 = x - rad, x1 = x + rad, z0 = z - rad, z1 = z + rad;
+  for (let iz = bz(z0); iz <= bz(z1); iz++)
+    for (let ix = bx(x0); ix <= bx(x1); ix++)
       for (const t of bins[iz * BW + ix]) {
-        if (!triBlocking[t]) continue;
+        if (triRole[t] === LIQUID) continue;
         const b = t * 6;
-        if (box[b + 3] < x - REACH || box[b] > x + REACH || box[b + 5] < z - REACH || box[b + 2] > z + REACH) continue;
-        if (box[b + 4] > y + KNEE && box[b + 1] < y + HEAD) return true;
+        if (box[b + 3] < x0 || box[b] > x1 || box[b + 5] < z0 || box[b + 2] > z1) continue;
+        if (box[b + 4] <= lo || box[b + 1] >= hi) continue;
+        const reach = spanOver(t, x0, x1, z0, z1);
+        if (!reach || reach[1] <= lo || reach[0] >= hi) continue;
+        if (!report) return true;
+        report(t);
       }
   return false;
 }
 
-function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
+const ROOM = [RADIUS, RADIUS + 0.1];
+
+function clearance(x, z, y) {
+  let room = 0;
+  while (room < ROOM.length && !blocked(x, z, y, ROOM[room])) room++;
+  return room;
+}
+
+function sweep(ax, az, ay, bx2, bz2, by) {
   const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / SAMPLE);
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    if (inTheWay(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
+    if (blocked(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
   }
   return false;
 }
 
-function heightsAt(x, z) {
-  const hits = [];
+const BOW = [0.18, -0.18, 0.32, -0.32];
+
+function blockedBetween(a, b) {
+  if (!sweep(a.x, a.z, a.y, b.x, b.z, b.y)) return false;
+  const mid = (a.y + b.y) / 2;
+  const len = Math.hypot(b.x - a.x, b.z - a.z) || 1;
+  const px = (b.z - a.z) / len, pz = -(b.x - a.x) / len;
+  for (const off of BOW) {
+    const cx = (a.x + b.x) / 2 + px * off, cz = (a.z + b.z) / 2 + pz * off;
+    if (!sweep(a.x, a.z, a.y, cx, cz, mid) && !sweep(cx, cz, mid, b.x, b.z, b.y)) return false;
+  }
+  return true;
+}
+
+const columns = new Map();
+
+function surfaces(x, z) {
+  const key = `${Math.round(x * 100)},${Math.round(z * 100)}`;
+  let hits = columns.get(key);
+  if (hits) return hits;
+  hits = [];
   for (const t of bins[bz(z) * BW + bx(x)]) {
     const b = t * 6;
     if (x < box[b] || x > box[b + 3] || z < box[b + 2] || z > box[b + 5]) continue;
@@ -197,55 +278,96 @@ function heightsAt(x, z) {
     const w1 = ((z2 - z0) * (x - x2) + (x0 - x2) * (z - z2)) / d;
     const w2 = 1 - w0 - w1;
     if (w0 < -1e-6 || w1 < -1e-6 || w2 < -1e-6) continue;
-    if (triUp[t] <= 0) continue;
-    hits.push([w0 * y0 + w1 * y1 + w2 * y2, triMat[t], triUp[t], triBlocking[t], triCave[t], t]);
+    if (Math.abs(triUp[t]) < SLOPE) continue;
+    hits.push([w0 * y0 + w1 * y1 + w2 * y2, t]);
   }
+  hits.sort((p, q) => p[0] - q[0]);
+  columns.set(key, hits);
   return hits;
 }
 
-function cluster(hits, y) {
+function floorsAt(x, z) {
   const out = [];
-  for (const h of hits) {
+  for (const h of surfaces(x, z)) {
+    if (triRole[h[1]] !== GROUND || triUp[h[1]] < SLOPE) continue;
     const last = out[out.length - 1];
-    if (last && y(h) - y(last[last.length - 1]) <= CLUSTER) last.push(h);
-    else out.push([h]);
+    if (last && h[0] - last.low <= CLUSTER) { last.y = h[0]; last.t = h[1]; }
+    else out.push({ low: h[0], y: h[0], t: h[1] });
   }
   return out;
 }
 
-const FOOT = [[REACH, REACH], [REACH, -REACH], [-REACH, REACH], [-REACH, -REACH]];
+const CORNERS = [[FOOT, FOOT], [FOOT, -FOOT], [-FOOT, FOOT], [-FOOT, -FOOT]];
 
-function floorsFrom(hits) {
-  const stack = cluster(hits.sort((a, b) => a[0] - b[0]), (h) => h[0]);
-  return stack.map((k, i) => {
-    const top = k[k.length - 1];
-    const above = stack[i + 1]?.[0];
-    return { y: top[0], mat: top[1], blocking: top[3], cave: top[4], submerged: above ? triWater[above[5]] : false };
-  });
+function underfoot(x, z, y) {
+  for (const [dx, dz] of CORNERS)
+    if (!surfaces(x + dx, z + dz).some((h) => triRole[h[1]] === GROUND && triUp[h[1]] >= SLOPE && Math.abs(h[0] - y) <= SUPPORT)) return false;
+  return true;
 }
 
-function floorAt(x, z) {
-  const here = floorsFrom(heightsAt(x, z));
-  for (const [dx, dz] of FOOT)
-    for (const f of floorsFrom(heightsAt(x + dx, z + dz)))
-      if (!here.some((h) => Math.abs(h.y - f.y) <= CLUSTER)) here.push(f);
-  return here.filter((f) => !f.blocking).sort((a, b) => a.y - b.y);
+function drowned(x, z, y, ceiling) {
+  const top = Math.min(ceiling, y + HEAD);
+  return surfaces(x, z).some((h) => triRole[h[1]] === LIQUID && triUp[h[1]] >= SLOPE && h[0] > y + 0.02 && h[0] < top);
 }
 
-const reject = { obstacle: 0, water: 0 };
+function buried(x, z, y) {
+  for (const h of surfaces(x, z))
+    if (h[0] > y + 0.05 && triRole[h[1]] !== LIQUID) return triUp[h[1]] > 0;
+  return false;
+}
 
-function floorsIn(c, r, note) {
-  const x = C0 + c + 0.5, z = R0 + r + 0.5;
+const SPOTS = [[0, 0], [SPREAD, 0], [-SPREAD, 0], [0, SPREAD], [0, -SPREAD],
+  [SPREAD * 0.7, SPREAD * 0.7], [SPREAD * 0.7, -SPREAD * 0.7], [-SPREAD * 0.7, SPREAD * 0.7], [-SPREAD * 0.7, -SPREAD * 0.7]];
+
+function cliffInCell(c, r, y) {
+  const x0 = C0 + c, x1 = x0 + 1, z0 = R0 + r, z1 = z0 + 1;
+  const lo = y - CLUSTER, hi = y + HEAD;
+  for (let iz = bz(z0); iz <= bz(z1); iz++)
+    for (let ix = bx(x0); ix <= bx(x1); ix++)
+      for (const t of bins[iz * BW + ix]) {
+        if (!triRock[t]) continue;
+        const b = t * 6;
+        if (box[b + 3] < x0 || box[b] > x1 || box[b + 5] < z0 || box[b + 2] > z1) continue;
+        if (box[b + 4] <= lo || box[b + 1] >= hi) continue;
+        const reach = spanOver(t, x0, x1, z0, z1);
+        if (reach && reach[1] > lo && reach[0] < hi) return true;
+      }
+  return false;
+}
+
+const reject = { water: 0, buried: 0, cliff: 0, unsupported: 0, blocked: 0 };
+
+function nodesIn(c, r, note) {
+  const cx = C0 + c + 0.5, cz = R0 + r + 0.5;
   const here = [];
-  for (const f of floorAt(x, z)) {
-    const name = matName(f.mat);
-    if (f.submerged) { reject.water++; note?.(f.y, name, 'water covers this'); continue; }
-    if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
-    note?.(f.y, name, 'open');
-    here.push({ c, r, y: f.y, m: name,
-      home: raycast(index, x, f.y + 0.2, z, 0, 1, 0, 40) === Infinity || f.cave });
+  for (const [dx, dz] of SPOTS) {
+    const x = cx + dx, z = cz + dz;
+    const floors = floorsAt(x, z);
+    for (let i = 0; i < floors.length; i++) {
+      const y = floors[i].y;
+      const name = matName(triMat[floors[i].t]);
+      const say = (why) => note?.(dx, dz, y, name, why);
+      if (!CARRIED.test(triPiece[floors[i].t]) && cliffInCell(c, r, y)) { reject.cliff++; say('a cliff stands in this cell'); continue; }
+      if (drowned(x, z, y, floors[i + 1]?.low ?? Infinity)) { reject.water++; say('water covers this'); continue; }
+      if (buried(x, z, y)) { reject.buried++; say('this is the far side of a shell'); continue; }
+      if (!underfoot(x, z, y)) { reject.unsupported++; say('too narrow to stand on'); continue; }
+      const level = here.find((n) => Math.abs(n.y - y) <= CLUSTER);
+      if (level && level.room === ROOM.length) continue;
+      const room = clearance(x, z, y);
+      if (!room) {
+        reject.blocked++;
+        const names = new Set();
+        if (note) blocked(x, z, y, RADIUS, (t) => names.add(triPiece[t]));
+        say(`blocked by ${[...names].join(', ')}`);
+        continue;
+      }
+      say(`open, room ${room}`);
+      if (!level) here.push({ c, r, x, z, y, room, m: name });
+      else if (room > level.room) Object.assign(level, { x, z, y, room, m: name });
+    }
   }
-  return here;
+  for (const n of here) n.home = raycast(index, n.x, n.y + 0.2, n.z, 0, 1, 0, 40) === Infinity;
+  return here.sort((a, b) => a.y - b.y);
 }
 
 const probeArg = process.argv.indexOf('--probe');
@@ -254,19 +376,20 @@ if (probeArg > 0) {
   const c = Math.floor(px) - C0, r = Math.floor(pz) - R0;
   console.log(`cell ${c},${r} -- centred on ${C0 + c + 0.5}, ${R0 + r + 0.5}`);
   console.log('surfaces under the centre:');
-  for (const h of heightsAt(px, pz).sort((a, b) => a[0] - b[0]))
-    console.log(`  y ${h[0].toFixed(3)}  ${matName(h[1]).padEnd(22)} tilt ${h[2].toFixed(2)}  ${(h[3] ? 'blocking' : h[4] ? 'cave floor' : 'walkable').padEnd(11)} ${triPiece[h[5]]}`);
-  console.log('in the way of the point itself:');
-  for (let iz = bz(pz - REACH); iz <= bz(pz + REACH); iz++)
-    for (let ix = bx(px - REACH); ix <= bx(px + REACH); ix++)
-      for (const t of bins[iz * BW + ix]) {
-        if (!triBlocking[t]) continue;
-        const b = t * 6;
-        if (box[b + 3] < px - REACH || box[b] > px + REACH || box[b + 5] < pz - REACH || box[b + 2] > pz + REACH) continue;
-        console.log(`  ${triPiece[t].padEnd(44)} y ${box[b + 1].toFixed(2)}..${box[b + 4].toFixed(2)}`);
-      }
-  console.log('floors:');
-  floorsIn(c, r, (y, name, why) => console.log(`  y ${y.toFixed(3)}  ${name.padEnd(22)} ${why}`));
+  const ROLE_NAME = ['ground', 'solid', 'liquid'];
+  for (const h of surfaces(C0 + c + 0.5, R0 + r + 0.5))
+    console.log(`  y ${h[0].toFixed(3)}  ${matName(triMat[h[1]]).padEnd(22)} tilt ${triUp[h[1]].toFixed(2)}  ${ROLE_NAME[triRole[h[1]]].padEnd(7)} ${triPiece[h[1]]}`);
+  console.log('spots:');
+  for (const n of nodesIn(c, r, (dx, dz, y, name, why) =>
+    console.log(`  ${dx >= 0 ? '+' : ''}${dx.toFixed(2)},${dz >= 0 ? '+' : ''}${dz.toFixed(2)}  y ${y.toFixed(3)}  ${name.padEnd(22)} ${why}`))) {
+    console.log(`node at ${n.x.toFixed(2)},${n.z.toFixed(2)} y ${n.y.toFixed(3)} ${n.m}${n.home ? ' (open sky)' : ''}`);
+    const seen = new Set();
+    blocked(n.x, n.z, n.y, ROOM.at(-1), (t) => {
+      if (seen.has(triPiece[t])) return;
+      seen.add(triPiece[t]);
+      console.log(`  would block: ${triPiece[t]}`);
+    });
+  }
   process.exit(0);
 }
 
@@ -274,17 +397,18 @@ const nodes = [];
 const byCell = new Map();
 
 for (let r = 0; r < ROWS; r++) {
+  columns.clear();
   for (let c = 0; c < COLS; c++) {
-    const here = floorsIn(c, r);
+    const here = nodesIn(c, r);
     if (!here.length) continue;
     byCell.set(c * ROWS + r, here.map((n) => { n.i = nodes.length; nodes.push(n); return n; }));
   }
 }
 
-const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+const DIRS = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const corner = (c, r, a, b) =>
   (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
-  || inTheWay(C0 + c + 0.5, R0 + r + 0.5, (a.y + b.y) / 2);
+  || blocked(C0 + c + 0.5, R0 + r + 0.5, (a.y + b.y) / 2);
 const edges = [];
 const links = nodes.map(() => new Set());
 for (const list of byCell.values()) {
@@ -296,7 +420,7 @@ for (const list of byCell.values()) {
       for (const b of other) {
         if (b.i <= a.i) continue;
         if (Math.abs(b.y - a.y) > STEP * (diag ? Math.SQRT2 : 1)) continue;
-        if (inTheWayBetween(C0 + a.c + 0.5, R0 + a.r + 0.5, a.y, C0 + b.c + 0.5, R0 + b.r + 0.5, b.y)) continue;
+        if (blockedBetween(a, b)) continue;
         if (diag && !(corner(a.c + dc, a.r, a, b) && corner(a.c, a.r + dr, a, b))) continue;
         links[a.i].add(b.i); links[b.i].add(a.i);
         edges.push(a.i, b.i);
@@ -354,6 +478,7 @@ for (let e = 0; e < edges.length; e += 2) {
 
 const mats = [...new Set(outNodes.map((n) => n.m))].sort();
 const matIndex = new Map(mats.map((m, i) => [m, i]));
+const round = (v) => Math.round(v * 1000) / 1000;
 
 const doc = {
   meta: {
@@ -368,7 +493,7 @@ const doc = {
     path: mats.map((m) => (PATHY.has(m) ? 1 : 0)),
   },
 
-  nodes: outNodes.map((n) => [n.c, n.r, Math.round(n.y * 1000) / 1000, matIndex.get(n.m)]),
+  nodes: outNodes.map((n) => [n.c, n.r, round(n.y), matIndex.get(n.m), round(n.x - C0 - n.c - 0.5), round(n.z - R0 - n.r - 0.5)]),
   edges: outEdges,
 };
 
