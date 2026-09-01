@@ -67,7 +67,14 @@ const VIEWS = [
 const LEVEL = 1.55;
 const BACK = 1.6;
 const RATE = 9;
+const MS_PER_UNIT = 150;
 const smooth = (t) => t * t * (3 - 2 * t);
+const EASE = {
+  both: { f: smooth, k: 1.5 },
+  in: { f: (t) => t * t, k: 2 },
+  mid: { f: (t) => t, k: 1 },
+  out: { f: (t) => t * (2 - t), k: 2 },
+};
 
 function damped(v, rate) {
   return {
@@ -257,13 +264,14 @@ function fromGrid(grid) {
     glideTo(to, 420);
     recording = true;
   }
-  function glideTo(node, ms) {
+  function glideTo(node, ms, ease = EASE.both, at = performance.now()) {
     if (recording && cur !== node) pushHistory(cur);
     cur = node;
     hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
+    const t0 = Math.max(at, performance.now() - 100);
     tween = {
-      t0: performance.now(), ms,
-      aT0: performance.now(), aMs: ms,
+      t0, ms, ease: ease.f,
+      aT0: t0, aMs: ms,
       target0: camera.target.clone(), target1: eyePoint(node),
       ground0: camera.target.y - eye, ground1: nav.nodes[node].p[1],
       alpha0: camera.alpha, alpha1: stepCont * STEP_ANGLE,
@@ -272,17 +280,17 @@ function fromGrid(grid) {
   }
   scene.onBeforeRenderObservable.add(() => {
     const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
-    if (tween) {
+    while (tween) {
       const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
-      const s = smooth(t);
+      const s = tween.ease(t);
       camera.target = BABYLON.Vector3.Lerp(tween.target0, tween.target1, s);
       camera.target.y = tween.ground0 + (tween.ground1 - tween.ground0) * s + eye;
       const sa = smooth(Math.min((performance.now() - tween.aT0) / tween.aMs, 1));
       camera.alpha = tween.alpha0 + (tween.alpha1 - tween.alpha0) * sa;
-      if (t === 1) {
-        tween = null;
-        if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); } else updateMarkers();
-      }
+      if (t < 1) break;
+      const end = tween.t0 + tween.ms;
+      tween = null;
+      if (route.length) stepRoute(false, end); else updateMarkers();
     }
     if (mapView) {
       camera.beta += (MAP_VIEW.beta - camera.beta) * Math.min(1, dt * 6);
@@ -316,7 +324,7 @@ function fromGrid(grid) {
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
   const surf = { p: 1, g: 3.5 };
   const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
-  const legMs = (a, b) => Math.min(400, Math.max(150, dist3(nav.nodes[a], nav.nodes[b]) * 150));
+  const legMs = (a, b) => Math.max(16, dist3(nav.nodes[a], nav.nodes[b]) * MS_PER_UNIT);
   let byCell = new Map();
   const cellKey = (c, r) => c * 100000 + r;
   function indexCells() {
@@ -400,7 +408,7 @@ function fromGrid(grid) {
     route = [];
     for (let n = dest; n !== -1; n = prev[n]) route.unshift(n);
     route.shift();
-    if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); }
+    if (route.length) stepRoute(true);
   }
   const TAP_PX = 32;
   function markerAtScreen(px, py) {
@@ -437,10 +445,17 @@ function fromGrid(grid) {
         if (open(node, k)) return k;
     return null;
   }
-  function glideFacing(node, ms) {
+  function glideFacing(node, ms, ease, at) {
     const from = Math.round(stepCont);
     stepCont = headingNear(node, from) ?? from;
-    glideTo(node, ms);
+    glideTo(node, ms, ease, at);
+  }
+  function stepRoute(first, at) {
+    const nxt = route.shift();
+    const ease = first
+      ? (route.length ? EASE.in : EASE.both)
+      : (route.length ? EASE.mid : EASE.out);
+    glideFacing(nxt, legMs(cur, nxt) * ease.k, ease, at);
   }
 
   const orbit = (dir) => {
