@@ -71,6 +71,9 @@ const ROLES = [
   [LIQUID, /^(Terrain_Water_|Water_)/],
   [SOLID, /^(Basic_|Cave_Edge_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_(Edging|Fence)_|Prop_(Bridge_Rope|Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Waterfall_)/],
 ];
+const CLIFF = /^(Basic_|Cave_Edge_|Cracked_|Wall_)/;
+const CARRIED = /^(Cave_Center_|Floor_|Path_(Bridge|End)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_)/;
+
 const roleOf = (piece) => ROLES.find(([, re]) => re.test(piece))?.[0] ?? null;
 const unknown = new Set();
 
@@ -92,6 +95,7 @@ const triMat = [];
 const triUp = [];
 const triRole = [];
 const triPiece = [];
+const triRock = [];
 const cache = new Map();
 
 function meshGeometry(prim) {
@@ -125,6 +129,7 @@ function emitNode(nodeIndex, parent) {
         triUp.push(ny / (Math.hypot(nx, ny, nz) || 1));
         triRole.push(role);
         triPiece.push(piece);
+        triRock.push(CLIFF.test(piece) ? 1 : 0);
       }
     }
   }
@@ -314,35 +319,21 @@ function buried(x, z, y) {
 const SPOTS = [[0, 0], [SPREAD, 0], [-SPREAD, 0], [0, SPREAD], [0, -SPREAD],
   [SPREAD * 0.7, SPREAD * 0.7], [SPREAD * 0.7, -SPREAD * 0.7], [-SPREAD * 0.7, SPREAD * 0.7], [-SPREAD * 0.7, -SPREAD * 0.7]];
 
-const CLIFF = /^(Basic_|Cave_Edge_|Cracked_|Wall_)/;
-const CARRIED = /^(Cave_Center_|Floor_|Path_(Bridge|End)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_)/;
-const RIM = 0.05;
-
-function cellsUnder(match) {
-  const mask = new Uint8Array(COLS * ROWS);
-  for (let t = 0; t < triRole.length; t++) {
-    if (!match.test(triPiece[t])) continue;
-    const b = t * 6;
-    for (let r = Math.floor(box[b + 2]) - R0; r <= Math.floor(box[b + 5]) - R0; r++)
-      for (let c = Math.floor(box[b]) - C0; c <= Math.floor(box[b + 3]) - C0; c++) {
-        if (c < 0 || c >= COLS || r < 0 || r >= ROWS || mask[c * ROWS + r]) continue;
-        if (spanOver(t, C0 + c + RIM, C0 + c + 1 - RIM, R0 + r + RIM, R0 + r + 1 - RIM)) mask[c * ROWS + r] = 1;
+function cliffInCell(c, r, y) {
+  const x0 = C0 + c, x1 = x0 + 1, z0 = R0 + r, z1 = z0 + 1;
+  const lo = y - CLUSTER, hi = y + HEAD;
+  for (let iz = bz(z0); iz <= bz(z1); iz++)
+    for (let ix = bx(x0); ix <= bx(x1); ix++)
+      for (const t of bins[iz * BW + ix]) {
+        if (!triRock[t]) continue;
+        const b = t * 6;
+        if (box[b + 3] < x0 || box[b] > x1 || box[b + 5] < z0 || box[b + 2] > z1) continue;
+        if (box[b + 4] <= lo || box[b + 1] >= hi) continue;
+        const reach = spanOver(t, x0, x1, z0, z1);
+        if (reach && reach[1] > lo && reach[0] < hi) return true;
       }
-  }
-  return mask;
+  return false;
 }
-
-const cliffCell = cellsUnder(CLIFF);
-const carried = cellsUnder(CARRIED);
-for (let c = 0; c < COLS; c++)
-  for (let r = 0; r < ROWS; r++) {
-    if (!carried[c * ROWS + r]) continue;
-    for (let dc = -1; dc <= 1; dc++)
-      for (let dr = -1; dr <= 1; dr++) {
-        const nc = c + dc, nr = r + dr;
-        if (nc >= 0 && nc < COLS && nr >= 0 && nr < ROWS) cliffCell[nc * ROWS + nr] = 0;
-      }
-  }
 
 const reject = { water: 0, buried: 0, cliff: 0, unsupported: 0, blocked: 0 };
 
@@ -356,7 +347,7 @@ function nodesIn(c, r, note) {
       const y = floors[i].y;
       const name = matName(triMat[floors[i].t]);
       const say = (why) => note?.(dx, dz, y, name, why);
-      if (cliffCell[c * ROWS + r]) { reject.cliff++; say('a cliff stands in this cell'); continue; }
+      if (!CARRIED.test(triPiece[floors[i].t]) && cliffInCell(c, r, y)) { reject.cliff++; say('a cliff stands in this cell'); continue; }
       if (drowned(x, z, y, floors[i + 1]?.low ?? Infinity)) { reject.water++; say('water covers this'); continue; }
       if (buried(x, z, y)) { reject.buried++; say('this is the far side of a shell'); continue; }
       if (!underfoot(x, z, y)) { reject.unsupported++; say('too narrow to stand on'); continue; }
