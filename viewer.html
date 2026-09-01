@@ -8,6 +8,8 @@
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden; background: #1a2028; }
   canvas { width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
+  #rayview { position: fixed; inset: 0; pointer-events: none; }
+  #rayview[hidden] { display: none; }
   .hud {
     position: fixed; top: 12px; left: 12px; color: #dfe7ee; font: 13px/1.5 system-ui, sans-serif;
     background: rgba(20, 26, 34, 0.7); padding: 8px 12px; border-radius: 8px; pointer-events: none;
@@ -30,6 +32,7 @@
 </head>
 <body>
 <canvas id="view"></canvas>
+<canvas id="rayview" hidden></canvas>
 <div class="hud" id="hud"></div>
 <div class="bar">
   <button id="back" title="Back to where you came from (Backspace)" disabled>&#8617;</button>
@@ -37,6 +40,7 @@
   <button id="tiltU" title="Wider, higher view">&#9650;</button>
   <button id="tiltD" title="Closer, lower view">&#9660;</button>
   <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
+  <button id="rays" title="Show where the camera casts its rays (R)">&#9678;</button>
   <button id="edit" title="Review the walkable grid (E)">&#9998;</button>
   <button id="path" title="Record a path: tap start, then end (P)" hidden>&#8618;</button>
   <button id="undo" title="Undo last mark (Z)" hidden>&#8634;</button>
@@ -93,7 +97,8 @@ function damped(v, rate) {
 
 const VIEW_HELP = `<b>Walkthrough</b><br>
 <small>Tap a cell or any spot to travel there<br>
-Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; review grid</small>`;
+Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; review grid<br>
+R shows the rays the camera casts</small>`;
 const WHERE = (n) => `<br><small>at ${n.p[0]},${n.p[2]} &middot; height ${n.p[1].toFixed(2)} &middot; ${n.n.length} way${n.n.length === 1 ? '' : 's'} out</small>`;
 
 async function makeEngine() {
@@ -230,11 +235,51 @@ function fromGrid(grid) {
     ux /= ul; uy /= ul; uz /= ul;
     return [[ux, uy, uz], [dy * uz - dz * uy, dz * ux - dx * uz, dx * uy - dy * ux]];
   };
+  let showRays = false;
+  const rayLog = [];
+  const rayCanvas = document.getElementById('rayview');
+  const rayCtx = rayCanvas.getContext('2d');
+  const logRay = (ox, oy, oz, dx, dy, dz, at, kind) => {
+    if (showRays) rayLog.push({ x: ox + dx * at, y: oy + dy * at, z: oz + dz * at, kind });
+  };
+  const RAY_STYLE = {
+    boom: ['#ff9d47', 5],
+    centre: ['#5bff8f', 9],
+    inner: ['#63b8ff', 7],
+    outer: ['#3f6fae', 5],
+  };
+  function drawRays() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (rayCanvas.width !== w || rayCanvas.height !== h) { rayCanvas.width = w; rayCanvas.height = h; }
+    rayCtx.clearRect(0, 0, w, h);
+    const vp = camera.viewport.toGlobal(w, h);
+    const xf = scene.getTransformMatrix(), id = BABYLON.Matrix.Identity();
+    for (const r of rayLog) {
+      const q = BABYLON.Vector3.Project(new BABYLON.Vector3(r.x, r.y, r.z), id, xf, vp);
+      if (q.z <= 0 || q.z >= 1) continue;
+      const [col, rad] = RAY_STYLE[r.kind];
+      rayCtx.beginPath();
+      rayCtx.arc(q.x, q.y, rad, 0, Math.PI * 2);
+      rayCtx.strokeStyle = col;
+      rayCtx.lineWidth = 2;
+      rayCtx.stroke();
+    }
+    const dim = faders.reduce((a, b) => a + (b.visibility < 0.97 ? 1 : 0), 0);
+    const label = `${rayLog.length} rays · ${dim} fading`;
+    rayCtx.font = '12px system-ui, sans-serif';
+    const tw = rayCtx.measureText(label).width + 16;
+    rayCtx.fillStyle = 'rgba(20,26,34,0.75)';
+    rayCtx.fillRect(w - tw - 10, 10, tw, 24);
+    rayCtx.fillStyle = '#dfe7ee';
+    rayCtx.fillText(label, w - tw - 2, 26);
+  }
   function thickCast(ox, oy, oz, dx, dy, dz, tMax, probe) {
     let best = raycast(ox, oy, oz, dx, dy, dz, tMax);
+    logRay(ox, oy, oz, dx, dy, dz, Math.min(best, tMax) * 0.5, 'boom');
     const [u, v] = perp(dx, dy, dz);
     for (const [sx, sy, sz] of [u, v, [-u[0], -u[1], -u[2]], [-v[0], -v[1], -v[2]]]) {
       const hit = raycast(ox + sx * probe, oy + sy * probe, oz + sz * probe, dx, dy, dz, tMax);
+      logRay(ox + sx * probe, oy + sy * probe, oz + sz * probe, dx, dy, dz, Math.min(hit, tMax) * 0.5, 'boom');
       if (hit < best) best = hit;
     }
     return best;
@@ -305,6 +350,7 @@ function fromGrid(grid) {
   }
   scene.onBeforeRenderObservable.add(() => {
     const dt = Math.min(engine.getDeltaTime(), 50) / 1000;
+    rayLog.length = 0;
     if (tween) {
       const t = Math.min((performance.now() - tween.t0) / tween.ms, 1);
       const s = smooth(t);
@@ -343,13 +389,15 @@ function fromGrid(grid) {
         const [u, v] = perp(dx, dy, dz);
         const ox = camera.target.x, oy = camera.target.y, oz = camera.target.z;
         castOwners(fadeIndex, ox, oy, oz, dx, dy, dz, reach, fadeOwners, fadeFlags, KEEP_NEAR, 1);
+        logRay(ox, oy, oz, dx, dy, dz, KEEP_NEAR, 'centre');
         for (const [r, w] of SIGHT_RINGS)
-          for (const [a, c] of RING)
-            castOwners(fadeIndex,
-              ox + (u[0] * a + v[0] * c) * r,
-              oy + (u[1] * a + v[1] * c) * r,
-              oz + (u[2] * a + v[2] * c) * r,
-              dx, dy, dz, reach, fadeOwners, fadeFlags, KEEP_NEAR, w);
+          for (const [a, c] of RING) {
+            const sx = ox + (u[0] * a + v[0] * c) * r;
+            const sy = oy + (u[1] * a + v[1] * c) * r;
+            const sz = oz + (u[2] * a + v[2] * c) * r;
+            castOwners(fadeIndex, sx, sy, sz, dx, dy, dz, reach, fadeOwners, fadeFlags, KEEP_NEAR, w);
+            logRay(sx, sy, sz, dx, dy, dz, KEEP_NEAR, w > 0.5 ? 'inner' : 'outer');
+          }
       }
       faders.forEach((b, slot) => {
         const goal = 1 - fadeFlags[slot] * (1 - FADED);
@@ -359,6 +407,7 @@ function fromGrid(grid) {
         if (b.material.transparencyMode !== mode) b.material.transparencyMode = mode;
       });
     }
+    if (showRays) drawRays();
   });
 
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
@@ -664,6 +713,11 @@ Tap anything marked again to unmark it &middot; &#8634; undo<br>
 Its start, its end and the steps between them are recorded.<br>
 Tap the start again to cancel &middot; &#8618; back to marking</small>`;
   const TALLY = () => `<br><small>${countKind('missing')} missing &middot; ${countKind('wrong')} wrong &middot; ${paths.length} path${paths.length === 1 ? '' : 's'}</small>`;
+  function toggleRays() {
+    showRays = !showRays;
+    rayCanvas.hidden = !showRays;
+    document.getElementById('rays').classList.toggle('on', showRays);
+  }
   const helpText = () => (!editMode ? VIEW_HELP : (pathMode ? PATH_HELP() : EDIT_HELP()) + TALLY());
 
   const undoStack = [];
@@ -867,6 +921,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     if (editMode && (e.key === 'p' || e.key === 'P')) setPathMode(!pathMode);
     if (editMode && e.key === 'Escape' && selected >= 0) { selected = -1; updateMarkers(); }
     if (editMode && (e.key === 'z' || e.key === 'Z')) undo();
+    if (e.key === 'r' || e.key === 'R') toggleRays();
   });
   let wheelAt = 0;
   addEventListener('wheel', (e) => {
@@ -879,6 +934,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
   document.getElementById('rotR').addEventListener('click', () => orbit(-1));
   document.getElementById('tiltU').addEventListener('click', () => setView(1));
   document.getElementById('tiltD').addEventListener('click', () => setView(-1));
+  document.getElementById('rays').addEventListener('click', toggleRays);
   document.getElementById('edit').addEventListener('click', () => setEditMode(!editMode));
   document.getElementById('undo').addEventListener('click', undo);
   document.getElementById('path').addEventListener('click', () => setPathMode(!pathMode));
