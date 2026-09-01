@@ -66,6 +66,7 @@ const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
 const CAVE_FLOOR = /^Floor_/;
+const RAILED = /^Prop_Bridge_/;
 const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
 const WALKABLE = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_|Floor_)/;
 const BLOCKING = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Terrain_Water_|Water_|Waterfall_)/;
@@ -108,6 +109,7 @@ function emitNode(nodeIndex, parent) {
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
     const kind = classify(piece);
+    const rail = kind !== null && !kind.blocking && RAILED.test(piece);
     if (kind === null) unknown.add(piece);
     else for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
@@ -125,7 +127,8 @@ function emitNode(nodeIndex, parent) {
         pos.push(...p0, ...p1, ...p2);
         triMat.push(prim.material);
         triUp.push(up);
-        triBlocking.push(kind.blocking);
+        const tall = Math.max(p0[1], p1[1], p2[1]) - Math.min(p0[1], p1[1], p2[1]) > KNEE;
+        triBlocking.push(kind.blocking || (rail && tall && Math.abs(up) < 0.5));
         triCave.push(kind.cave);
         triWater.push(kind.water);
         triPiece.push(piece);
@@ -210,16 +213,23 @@ function cluster(hits, y) {
   return out;
 }
 
+const FOOT = [[REACH, REACH], [REACH, -REACH], [-REACH, REACH], [-REACH, -REACH]];
+
+function floorsFrom(hits) {
+  const stack = cluster(hits.sort((a, b) => a[0] - b[0]), (h) => h[0]);
+  return stack.map((k, i) => {
+    const top = k[k.length - 1];
+    const above = stack[i + 1]?.[0];
+    return { y: top[0], mat: top[1], blocking: top[3], cave: top[4], submerged: above ? triWater[above[5]] : false };
+  });
+}
+
 function floorAt(x, z) {
-  const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
-  const stack = cluster(hits, (h) => h[0]);
-  return stack
-    .map((k, i) => {
-      const top = k[k.length - 1];
-      const above = stack[i + 1]?.[0];
-      return { y: top[0], mat: top[1], blocking: top[3], cave: top[4], submerged: above ? triWater[above[5]] : false };
-    })
-    .filter((f) => !f.blocking);
+  const here = floorsFrom(heightsAt(x, z));
+  for (const [dx, dz] of FOOT)
+    for (const f of floorsFrom(heightsAt(x + dx, z + dz)))
+      if (!here.some((h) => Math.abs(h.y - f.y) <= CLUSTER)) here.push(f);
+  return here.filter((f) => !f.blocking).sort((a, b) => a.y - b.y);
 }
 
 const reject = { obstacle: 0, water: 0 };
