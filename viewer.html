@@ -67,9 +67,14 @@ const LEVEL = 1.55;
 const BACK = 1.6;
 const RATE = 9;
 const MS_PER_UNIT = 150;
-const LOOKAHEAD = 2;
+const LOOKAHEAD = 4;
 const YAW_EASE = 5;
 const YAW_MAX = 2.4;
+const BOOM_OUT = 3;
+const BOOM_LIFT = 0.9;
+const VIEW_CONE = 0.85;
+const KEEP_NEAR = 1.2;
+const FADED = 0.12;
 const smooth = (t) => t * t * (3 - 2 * t);
 const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const len3 = (a) => Math.hypot(a[0], a[1], a[2]);
@@ -157,7 +162,12 @@ function fromGrid(grid) {
   const faders = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isFade(m.name));
   const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isFade(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
-  for (const b of faders) b.viewFade = damped(1, 10);
+  for (const b of faders) {
+    b.viewFade = damped(1, 10);
+    const bb = b.getBoundingInfo().boundingBox;
+    b.viewBox = [bb.centerWorld.x, bb.centerWorld.y, bb.centerWorld.z,
+      bb.extendSizeWorld.x, bb.extendSizeWorld.y, bb.extendSizeWorld.z];
+  }
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
   sun.intensity = 1.3;
@@ -245,9 +255,11 @@ function fromGrid(grid) {
     for (let b = want; b <= LEVEL + 1e-6; b += 0.09) if (roomAt(n, k, b) >= BACK) return b;
     return LEVEL;
   }
+  let planned = null;
   function plan() {
-    const beta = fitBeta(cur, step());
-    return { beta, radius: Math.min(view().far, roomAt(cur, step(), beta)) };
+    const key = `${cur}|${step()}|${viewIdx}`;
+    if (!planned || planned.key !== key) planned = { key, beta: fitBeta(cur, step()), radius: view().far };
+    return planned;
   }
   const open = (n, k) => roomAt(n, ((k % STEPS) + STEPS) % STEPS, view().beta) > BACK;
 
@@ -334,21 +346,41 @@ function fromGrid(grid) {
     }
     const want = plan();
     const rate = RATE + view().far;
-    camera.beta = heldBeta.step(want.beta, dt);
+    const squeeze = Math.max(0, Math.min(1, 1 - camera.radius / view().far));
+    camera.beta = heldBeta.step(want.beta - squeeze * (want.beta - BOOM_LIFT), dt);
     const back = held.step(want.radius, dt, rate);
     if (!tween) camera.target.y = nav.nodes[cur].p[1] + eye;
     const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
     const probe = nearRadius();
     const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe)
       - Math.hypot(camera.minZ, probe) * 1.3;
-    camera.radius = Math.max(0, Math.min(back, room));
-    held.v = Math.min(held.v, camera.radius + rate * dt);
+    const goal = Math.max(0, Math.min(back, room));
+    camera.radius = goal < camera.radius
+      ? goal
+      : camera.radius + (goal - camera.radius) * (1 - Math.exp(-BOOM_OUT * dt));
     if (faders.length) {
-      const dist = camera.radius;
-      const ray = dist > 1e-4 ? new BABYLON.Ray(camera.target, new BABYLON.Vector3(dx, dy, dz), dist) : null;
+      const reach = camera.radius - KEEP_NEAR;
+      const px = camera.position.x, py = camera.position.y, pz = camera.position.z;
+      const ux = -dx, uy = -dy, uz = -dz;
+      let sx = uz, sy = 0, sz = -ux;
+      const sl = Math.hypot(sx, sz) || 1;
+      sx /= sl; sz /= sl;
+      const tx = uy * sz - uz * sy, ty = uz * sx - ux * sz, tz = ux * sy - uy * sx;
+      const tall = Math.tan(camera.fov / 2) * VIEW_CONE;
+      const wide = tall * engine.getAspectRatio(camera);
       for (const b of faders) {
-        const hit = ray && b.intersects(ray, false).hit;
-        b.visibility = b.viewFade.step(hit ? 0.12 : 1, dt, 10);
+        const [cx, cy, cz, ex, ey, ez] = b.viewBox;
+        const vx = cx - px, vy = cy - py, vz = cz - pz;
+        const depth = vx * ux + vy * uy + vz * uz;
+        const eDepth = ex * Math.abs(ux) + ey * Math.abs(uy) + ez * Math.abs(uz);
+        let hit = reach > 0 && depth + eDepth > 0.1 && depth - eDepth < reach;
+        if (hit) {
+          const at = Math.max(0.25, depth);
+          const off = Math.abs(vx * sx + vz * sz) - (ex * Math.abs(sx) + ez * Math.abs(sz));
+          const rise = Math.abs(vx * tx + vy * ty + vz * tz) - (ex * Math.abs(tx) + ey * Math.abs(ty) + ez * Math.abs(tz));
+          hit = off < at * wide && rise < at * tall;
+        }
+        b.visibility = b.viewFade.step(hit ? FADED : 1, dt, 10);
       }
     }
   });
@@ -486,7 +518,7 @@ function fromGrid(grid) {
     const behind = Math.atan2(b[2] - a[2], b[0] - a[0]) / STEP_ANGLE + STEPS / 2;
     const want = stepCont + wrapSteps(behind - stepCont);
     const k = Math.round(want);
-    return open(next, k) ? want : headingNear(next, k) ?? want;
+    return open(next, k) ? want : headingNear(next, k, 1) ?? want;
   }
   function stepRoute(first, at) {
     const nxt = route.shift();
