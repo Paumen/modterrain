@@ -46,7 +46,6 @@
 <script src="vendor/babylon/babylonjs.loaders.min.js"></script>
 <script type="module">
 import { buildIndex, raycast as castRay } from './tools/ray.mjs';
-import { isSeeThrough } from './tools/see-through.mjs';
 import { isFade } from './tools/fade.mjs';
 
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
@@ -71,7 +70,6 @@ const MS_PER_UNIT = 150;
 const LOOKAHEAD = 2;
 const YAW_EASE = 5;
 const YAW_MAX = 2.4;
-const THIN_ALPHA = 0.5;
 const smooth = (t) => t * t * (3 - 2 * t);
 const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const len3 = (a) => Math.hypot(a[0], a[1], a[2]);
@@ -157,9 +155,7 @@ function fromGrid(grid) {
 
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
   const faders = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isFade(m.name));
-  const thin = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isSeeThrough(m.name));
-  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name) && !isFade(m.name));
-  for (const m of thin) m.visibility = THIN_ALPHA;
+  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isFade(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
   for (const b of faders) b.viewFade = damped(1, 10);
 
