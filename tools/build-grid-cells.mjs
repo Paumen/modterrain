@@ -21,6 +21,7 @@ const ALWAYS = new Set([
   'Path_Bridge_Edge_Top_1x2', 'Prop_Bridge_Center_1x2', 'Prop_Bridge_End_2x2',
 ]);
 const CLIFF = /^(Basic_|Cracked_|Wall_|Cave_Edge_)/;
+const BARRIER = /^(Path_Fence_(?!Gate_Frame)|Tiered_Retaining_Wall_|Docks_Railing_|Docks_Bumper_)/;
 const CAVE_FLOOR = /^(Cave_Center_|Floor_)/;
 const WALKWAY = /^Tiered_Walkway_/;
 const FLOOR_MAT = /^(Grass|Dirt)$/;
@@ -32,13 +33,14 @@ const RISE = 0.55;
 const LAT = 0.2;
 const STEP = 0.1;
 const EPS = 0.02;
-const HEART = 0.25;
+const HEART = 0.12;
 
 const glb = readGlb(input);
 const { json } = glb;
 const world = nodeWorldMatrices(json);
 const pos3 = [];
 const waterPos = [];
+const barPos = [];
 const triMat = [];
 const triFloor = [];
 const triAlways = [];
@@ -73,6 +75,7 @@ const candidates = new Map();
         waterPos.push(...p[0], ...p[1], ...p[2]);
         continue;
       }
+      if (BARRIER.test(piece)) barPos.push(...p[0], ...p[1], ...p[2]);
       if (cliff) {
         for (let cx = Math.floor(lo[0] + EPS); cx <= Math.floor(hi[0] - EPS); cx++)
           for (let cz = Math.floor(lo[2] + EPS); cz <= Math.floor(hi[2] - EPS); cz++) {
@@ -115,6 +118,33 @@ const candidates = new Map();
 const index = buildIndex(Float64Array.from(pos3), 1);
 const { tris, box, bins, cols, bx, bz } = index;
 const wIdx = buildIndex(Float64Array.from(waterPos), 1);
+const bIdx = buildIndex(Float64Array.from(barPos), 1);
+
+function seg2d(ax, az, bx2, bz2, cx2, cz2, dx2, dz2) {
+  const d1 = (bx2 - ax) * (cz2 - az) - (bz2 - az) * (cx2 - ax);
+  const d2 = (bx2 - ax) * (dz2 - az) - (bz2 - az) * (dx2 - ax);
+  const d3 = (dx2 - cx2) * (az - cz2) - (dz2 - cz2) * (ax - cx2);
+  const d4 = (dx2 - cx2) * (bz2 - cz2) - (dz2 - cz2) * (bx2 - cx2);
+  return d1 * d2 <= 0 && d3 * d4 <= 0;
+}
+
+function curtainHit(x0, z0, x1, z1, yLo, yHi) {
+  const seen = new Set();
+  for (const px of [x0, (x0 + x1) / 2, x1]) for (const pz of [z0, (z0 + z1) / 2, z1]) {
+    const bin = bIdx.bins[bIdx.bz(pz) * bIdx.cols + bIdx.bx(px)];
+    for (const t of bin) {
+      if (seen.has(t)) continue;
+      seen.add(t);
+      const b = t * 6;
+      if (bIdx.box[b + 1] > yHi || bIdx.box[b + 4] < yLo) continue;
+      const a = t * 9;
+      const T = bIdx.tris;
+      for (const [i1, i2] of [[0, 3], [3, 6], [6, 0]])
+        if (seg2d(x0, z0, x1, z1, T[a + i1], T[a + i1 + 2], T[a + i2], T[a + i2 + 2])) return true;
+    }
+  }
+  return false;
+}
 
 function hitY(T, t, x, z) {
   const a = t * 9;
@@ -183,6 +213,7 @@ function corridor(x0, z0, g0, x1, z1, checkSeal, declared) {
       for (const h of [hi + 0.28, hi + CUBE - 0.06]) {
         if (raycast(index, x - ux * sl + ox, h, z - uz * sl + oz, ux, 0, uz, sl) < sl) return false;
       }
+      if (curtainHit(x - ux * sl + ox, z - uz * sl + oz, x + ox, z + oz, Math.min(lane[l], gNew) - 0.05, hi + CUBE)) return false;
       lane[l] = gNew;
     }
   }
@@ -202,7 +233,7 @@ const nodes = [];
 const byCell = new Map();
 for (const { cx, cy, cz } of candidates.values()) {
   const x = cx + 0.5, z = cz + 0.5;
-  let hit = groundAt(x, z, cy + 0.999, 0.999);
+  let hit = groundAt(x, z, cy + 0.98, 1.0);
   if (!hit) continue;
   if (!triFloor[hit.t]) {
     const under = groundAt(x, z, hit.y - 0.001, 0.25);
@@ -213,6 +244,7 @@ for (const { cx, cy, cz } of candidates.values()) {
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
   if (!always && waterTopAt(x, z) > hit.y - 0.02) continue;
   if (!headGap(x, hit.y, z)) continue;
+  if (always && raycast(index, x, hit.y + 0.03, z, 0, 1, 0, 0.9) < 0.9) continue;
   if (!always) {
     let open = 0;
     for (const [dx, dz] of [[0.5, 0], [-0.5, 0], [0, 0.5], [0, -0.5], [0.5, 0.5], [0.5, -0.5], [-0.5, 0.5], [-0.5, -0.5]])
