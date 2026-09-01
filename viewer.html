@@ -37,11 +37,10 @@
   <button id="tiltU" title="Wider, higher view">&#9650;</button>
   <button id="tiltD" title="Closer, lower view">&#9660;</button>
   <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
-  <button id="edit" title="Edit the walkable grid (E)">&#9998;</button>
-  <button id="erase" title="Eraser: tap cells to close them" hidden>&#9003;</button>
-  <button id="del" title="Close the selected cell" hidden>&#128465;</button>
-  <button id="undo" title="Undo last edit" hidden>&#8634;</button>
-  <button id="save" title="Download the edited grid JSON" hidden>&#128190;</button>
+  <button id="edit" title="Review the walkable grid (E)">&#9998;</button>
+  <button id="path" title="Record a path: tap start, then end (P)" hidden>&#8618;</button>
+  <button id="undo" title="Undo last mark (Z)" hidden>&#8634;</button>
+  <button id="save" title="Download the review JSON" hidden>&#128190;</button>
 </div>
 <script src="vendor/babylon/babylon.js"></script>
 <script src="vendor/babylon/babylonjs.loaders.min.js"></script>
@@ -90,13 +89,8 @@ function damped(v, rate) {
 
 const VIEW_HELP = `<b>Walkthrough</b><br>
 <small>Tap a cell or any spot to travel there<br>
-Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; edit grid</small>`;
+Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; review grid</small>`;
 const WHERE = (n) => `<br><small>at ${n.p[0]},${n.p[2]} &middot; height ${n.p[1].toFixed(2)} &middot; ${n.n.length} way${n.n.length === 1 ? '' : 's'} out</small>`;
-const EDIT_HELP = `<b>Grid editor</b><br>
-<small>&#9003; eraser: tap a cell to close it, or tap a line to cut it<br>
-Otherwise tap open ground to open that cell &middot; tap two<br>
-touching cells to link &middot; &#8634; undo<br>
-&#128190; downloads JSON &mdash; save over scenes/${SCENE}_grid.json to keep</small>`;
 
 async function makeEngine() {
   if (navigator.gpu && BABYLON.WebGPUEngine) {
@@ -122,21 +116,6 @@ function fromGrid(grid) {
     nodes[grid.edges[i + 1]].n.push(grid.edges[i]);
   }
   return { meta: grid.meta, nodes, materials };
-}
-function toGrid(nav) {
-  const materials = nav.meta.materials;
-  const walk = materials.indexOf('Carved Stone Walkway');
-  const grass = Math.max(0, materials.indexOf('Grass'));
-  const edges = [];
-  nav.nodes.forEach((n, i) => { for (const j of n.n) if (j > i) edges.push(i, j); });
-  return {
-    meta: nav.meta,
-    nodes: nav.nodes.map((n) => [
-      n.c, n.r, +n.p[1].toFixed(3), n.s === 'p' && walk >= 0 ? walk : grass,
-      +(n.p[0] - nav.meta.origin.c - n.c - 0.5).toFixed(3), +(n.p[2] - nav.meta.origin.r - n.r - 0.5).toFixed(3),
-    ]),
-    edges,
-  };
 }
 
 (async () => {
@@ -278,7 +257,7 @@ function toGrid(nav) {
   function glideTo(node, ms) {
     if (recording && cur !== node) pushHistory(cur);
     cur = node;
-    hud.innerHTML = (editMode ? EDIT_HELP : VIEW_HELP) + WHERE(nav.nodes[cur]);
+    hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
     tween = {
       t0: performance.now(), ms,
       aT0: performance.now(), aMs: ms,
@@ -337,8 +316,7 @@ function toGrid(nav) {
     });
   }
   indexCells();
-  function travelTo(dest) {
-    if (dest === cur) return;
+  function dijkstra(from, dest) {
     const dist = new Float64Array(nav.nodes.length).fill(Infinity);
     const prev = new Int32Array(nav.nodes.length).fill(-1);
     const done = new Uint8Array(nav.nodes.length);
@@ -370,8 +348,8 @@ function toGrid(nav) {
       }
       return top;
     };
-    dist[cur] = 0;
-    push(0, cur);
+    dist[from] = 0;
+    push(0, from);
     while (heap.length) {
       const [, n] = pop();
       if (done[n]) continue;
@@ -382,6 +360,19 @@ function toGrid(nav) {
         if (d < dist[nb]) { dist[nb] = d; prev[nb] = n; push(d, nb); }
       }
     }
+    return { dist, prev };
+  }
+  function stepsBetween(from, dest) {
+    if (from === dest) return 0;
+    const { dist, prev } = dijkstra(from, dest);
+    if (dist[dest] === Infinity) return null;
+    let steps = 0;
+    for (let n = dest; n !== from && n !== -1; n = prev[n]) steps++;
+    return steps;
+  }
+  function travelTo(dest) {
+    if (dest === cur) return;
+    const { dist, prev } = dijkstra(cur, dest);
     if (dist[dest] === Infinity) {
       const to = nav.nodes[dest].p;
       let best = -1, bestD = Infinity;
@@ -400,8 +391,6 @@ function toGrid(nav) {
     if (route.length) { const nxt = route.shift(); glideFacing(nxt, legMs(cur, nxt)); }
   }
   const TAP_PX = 32;
-  const ON_DOT_PX = 14;
-  let lastTapDist = Infinity;
   function markerAtScreen(px, py) {
     const eng = engine;
     const vp = camera.viewport.toGlobal(eng.getRenderWidth(), eng.getRenderHeight());
@@ -409,7 +398,7 @@ function toGrid(nav) {
     const ident = BABYLON.Matrix.Identity();
     const scale = eng.getRenderWidth() / (canvas.clientWidth || eng.getRenderWidth());
     const limit = TAP_PX * scale;
-    let best = -1, bestScore = Infinity, bestRaw = Infinity;
+    let best = -1, bestScore = Infinity;
     for (const i of shown) {
       const q = nav.nodes[i].p;
       const p = BABYLON.Vector3.Project(new BABYLON.Vector3(q[0], q[1] + LIFT, q[2]), ident, xform, vp);
@@ -417,48 +406,9 @@ function toGrid(nav) {
       const d = Math.hypot(p.x - px * scale, p.y - py * scale);
       if (d > limit) continue;
       const score = d + p.z * limit;
-      if (score < bestScore) { bestScore = score; best = i; bestRaw = d / scale; }
+      if (score < bestScore) { bestScore = score; best = i; }
     }
-    lastTapDist = best >= 0 ? bestRaw : Infinity;
     return best;
-  }
-
-  const EDGE_PX = 26;
-  let lastEdgeDist = Infinity;
-  function edgeAtScreen(px, py) {
-    const eng = engine;
-    const vp = camera.viewport.toGlobal(eng.getRenderWidth(), eng.getRenderHeight());
-    const xform = scene.getTransformMatrix();
-    const ident = BABYLON.Matrix.Identity();
-    const scale = eng.getRenderWidth() / (canvas.clientWidth || eng.getRenderWidth());
-    const tx = px * scale, ty = py * scale;
-    const proj = nav.nodes.map((n) =>
-      BABYLON.Vector3.Project(new BABYLON.Vector3(n.p[0], n.p[1] + LIFT, n.p[2]), ident, xform, vp));
-    let best = null, bestD = EDGE_PX * scale;
-    for (let i = 0; i < nav.nodes.length; i++) {
-      const a = proj[i];
-      if (a.z <= 0 || a.z >= 1 || !nearCur(i)) continue;
-      for (const j of nav.nodes[i].n) {
-        if (j <= i || !nearCur(j)) continue;
-        const b = proj[j];
-        if (b.z <= 0 || b.z >= 1) continue;
-        const vx = b.x - a.x, vy = b.y - a.y;
-        const len2 = vx * vx + vy * vy;
-        const t = len2 ? Math.max(0, Math.min(1, ((tx - a.x) * vx + (ty - a.y) * vy) / len2)) : 0;
-        const d = Math.hypot(a.x + vx * t - tx, a.y + vy * t - ty);
-        if (d < bestD) { bestD = d; best = [i, j]; }
-      }
-    }
-    lastEdgeDist = best ? bestD / scale : Infinity;
-    return best;
-  }
-  function removeEdge(i, j) {
-    pushUndo();
-    const a = nav.nodes[i].n, b = nav.nodes[j].n;
-    const ka = a.indexOf(j); if (ka >= 0) a.splice(ka, 1);
-    const kb = b.indexOf(i); if (kb >= 0) b.splice(kb, 1);
-    route = [];
-    updateMarkers();
   }
 
   function nearestNode(point) {
@@ -533,7 +483,8 @@ function toGrid(nav) {
   };
   const nearMat = mat('#ffd75e'), farMat = mat('#b9c8d6', 0.5), hereMat = mat('#7ee081');
   const routeMat = mat('#ff9d47'), selMat = mat('#5ed7ff');
-  for (const m of [nearMat, hereMat, routeMat, selMat]) m.disableDepthWrite = true;
+  const missMat = mat('#ff5ec8'), wrongMat = mat('#ff4d4d'), pathMat = mat('#ffb347');
+  for (const m of [nearMat, hereMat, routeMat, selMat, missMat, wrongMat, pathMat]) m.disableDepthWrite = true;
   const PAD = 0.72;
   const LIFT = 0.05;
   const padOf = (material, key) => {
@@ -551,14 +502,16 @@ function toGrid(nav) {
     here: padOf(hereMat, true),
     route: padOf(routeMat, true),
     sel: padOf(selMat, true),
+    path: padOf(pathMat, true),
+    missing: padOf(missMat, true),
+    wrong: padOf(wrongMat, true),
   };
   const padBuf = {};
   function setPads(kind, list, scale) {
     const mesh = pads[kind];
     let buf = padBuf[kind];
     if (!buf || buf.length < list.length * 16) buf = padBuf[kind] = new Float32Array(Math.max(16, list.length * 16) * 2);
-    list.forEach((i, k) => {
-      const p = nav.nodes[i].p;
+    list.forEach((p, k) => {
       const o = k * 16;
       buf[o] = scale; buf[o + 5] = scale; buf[o + 10] = scale; buf[o + 15] = 1;
       buf[o + 1] = buf[o + 2] = buf[o + 3] = buf[o + 4] = buf[o + 6] = buf[o + 7] = 0;
@@ -580,8 +533,6 @@ function toGrid(nav) {
     return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= editWithin();
   };
   function updateMarkers() {
-    const del = document.getElementById('del');
-    if (del) del.hidden = !editMode || selected < 0;
     const near = new Set(nav.nodes[cur].n);
     const onRoute = new Set(route);
     const here = nav.nodes[cur].p;
@@ -607,30 +558,88 @@ function toGrid(nav) {
     for (const i of near) add(i);
     for (const i of route) add(i);
     if (selected >= 0) add(selected);
-    for (const kind of Object.keys(lists)) setPads(kind, lists[kind], kind === 'far' ? 0.62 : 1.25);
+    const at = (i) => nav.nodes[i].p;
+    for (const kind of Object.keys(lists)) setPads(kind, lists[kind].map(at), kind === 'far' ? 0.62 : 1.25);
+    const missing = [], wrong = [], ends = [];
+    if (editMode) {
+      for (const m of marks.nodes.values()) {
+        if (!nearMark(m)) continue;
+        (m.kind === 'missing' ? missing : wrong).push([m.x, m.y, m.z]);
+      }
+      for (const q of paths) for (const e of [q.start, q.end]) if (nearMark(e)) ends.push([e.x, e.y, e.z]);
+    }
+    setPads('missing', missing, 1.5);
+    setPads('wrong', wrong, 1.5);
+    setPads('path', ends, 1.5);
     drawEdges();
+    hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
   }
 
   let editMode = false;
-  let eraseMode = false;
+  let pathMode = false;
   let selected = -1;
   let edgeMesh = null;
+  let missMesh = null;
+  let wrongMesh = null;
+  const marks = { nodes: new Map(), links: new Map() };
+  const paths = [];
+  const countKind = (kind) =>
+    [...marks.nodes.values()].filter((m) => m.kind === kind).length
+    + [...marks.links.values()].filter((m) => m.kind === kind).length;
+  const refOf = (i) => {
+    const n = nav.nodes[i];
+    return { c: n.c, r: n.r, y: +n.p[1].toFixed(3), x: n.p[0], z: n.p[2] };
+  };
+  const refKey = (a) => `${a.c},${a.r},${a.y.toFixed(2)}`;
+  const linkKey = (a, b) => [refKey(a), refKey(b)].sort().join('|');
+  const nearMark = (m) => {
+    const b = nav.nodes[cur].p;
+    return Math.hypot(m.x - b[0], m.y - b[1], m.z - b[2]) <= editWithin();
+  };
+  const EDIT_HELP = () => `<b>Grid review</b><br>
+<small>Nothing here changes the grid &mdash; it records what is wrong with it.<br>
+Tap a cell, then that same cell again: it should not be walkable<br>
+Tap open ground: a cell is missing there<br>
+Tap a cell, then a touching one: that link is missing, or wrong if it exists<br>
+Tap clear of the cells to drop the one you tapped first<br>
+Tap anything marked again to unmark it &middot; &#8634; undo<br>
+&#128190; downloads ${SCENE}_grid.review.json</small>`;
+  const PATH_HELP = () => `<b>Path recorder</b><br>
+<small>Tap the cell to start from, then the cell to reach.<br>
+Its start, its end and the steps between them are recorded.<br>
+Tap the start again to cancel &middot; &#8618; back to marking</small>`;
+  const TALLY = () => `<br><small>${countKind('missing')} missing &middot; ${countKind('wrong')} wrong &middot; ${paths.length} path${paths.length === 1 ? '' : 's'}</small>`;
+  const helpText = () => (!editMode ? VIEW_HELP : (pathMode ? PATH_HELP() : EDIT_HELP()) + TALLY());
+
   const undoStack = [];
+  const snapshot = () => JSON.stringify({ n: [...marks.nodes], l: [...marks.links], p: paths });
   function pushUndo() {
-    undoStack.push(JSON.stringify(nav.nodes));
-    if (undoStack.length > 25) undoStack.shift();
+    undoStack.push(snapshot());
+    if (undoStack.length > 50) undoStack.shift();
     document.getElementById('undo').disabled = false;
   }
   function undo() {
     if (!undoStack.length) return;
-    nav.nodes = JSON.parse(undoStack.pop());
-    indexCells();
-    if (cur >= nav.nodes.length) cur = 0;
-    selected = -1; route = [];
-    rebuildMarkers();
+    const was = JSON.parse(undoStack.pop());
+    marks.nodes = new Map(was.n);
+    marks.links = new Map(was.l);
+    paths.length = 0;
+    paths.push(...was.p);
+    selected = -1;
+    document.getElementById('undo').disabled = !undoStack.length;
+    updateMarkers();
+  }
+  function lineSystem(name, lines, hex) {
+    if (!lines.length) return null;
+    const m = BABYLON.MeshBuilder.CreateLineSystem(name, { lines }, scene);
+    m.color = BABYLON.Color3.FromHexString(hex);
+    m.alpha = 0.95;
+    m.isPickable = false;
+    return m;
   }
   function drawEdges() {
-    if (edgeMesh) { edgeMesh.dispose(); edgeMesh = null; }
+    for (const m of [edgeMesh, missMesh, wrongMesh]) if (m) m.dispose();
+    edgeMesh = missMesh = wrongMesh = null;
     if (!editMode) return;
     const lines = [];
     nav.nodes.forEach((n, i) => {
@@ -640,23 +649,39 @@ function toGrid(nav) {
         new BABYLON.Vector3(nav.nodes[j].p[0], nav.nodes[j].p[1] + 0.35, nav.nodes[j].p[2]),
       ]);
     });
-    if (!lines.length) return;
-    edgeMesh = BABYLON.MeshBuilder.CreateLineSystem('edges', { lines }, scene);
-    edgeMesh.color = BABYLON.Color3.FromHexString('#7fe4ff');
-    edgeMesh.alpha = 0.95;
-    edgeMesh.isPickable = false;
+    edgeMesh = lineSystem('edges', lines, '#7fe4ff');
+    const miss = [], bad = [];
+    for (const l of marks.links.values()) {
+      if (!nearMark(l.a) && !nearMark(l.b)) continue;
+      (l.kind === 'missing' ? miss : bad).push([
+        new BABYLON.Vector3(l.a.x, l.a.y + 0.45, l.a.z),
+        new BABYLON.Vector3(l.b.x, l.b.y + 0.45, l.b.z),
+      ]);
+    }
+    missMesh = lineSystem('missing', miss, '#ff5ec8');
+    wrongMesh = lineSystem('wrong', bad, '#ff4d4d');
   }
   const linkable = (a, b) => {
     const x = nav.nodes[a], y = nav.nodes[b];
     return Math.abs(x.c - y.c) <= 1 && Math.abs(x.r - y.r) <= 1 && !(x.c === y.c && x.r === y.r);
   };
-  function toggleEdge(a, b) {
-    if (!nav.nodes[a].n.includes(b) && !linkable(a, b)) return;
+  function markNode(ref, kind) {
+    const k = refKey(ref);
     pushUndo();
-    const na = nav.nodes[a], nb = nav.nodes[b];
-    const i = na.n.indexOf(b);
-    if (i >= 0) { na.n.splice(i, 1); nb.n.splice(nb.n.indexOf(a), 1); }
-    else { na.n.push(b); nb.n.push(a); }
+    if (marks.nodes.has(k)) marks.nodes.delete(k);
+    else marks.nodes.set(k, { ...ref, kind });
+  }
+  function markLink(a, b, kind) {
+    const k = linkKey(a, b);
+    pushUndo();
+    if (marks.links.has(k)) marks.links.delete(k);
+    else marks.links.set(k, { a, b, kind });
+  }
+  function markPair(a, b) {
+    const wrong = nav.nodes[a].n.includes(b);
+    if (!wrong && !linkable(a, b)) return false;
+    markLink(refOf(a), refOf(b), wrong ? 'wrong' : 'missing');
+    return true;
   }
   const O = () => nav.meta.origin;
   function cellOf(point) {
@@ -666,58 +691,68 @@ function toGrid(nav) {
     const hit = raycast(x, from, z, 0, -1, 0, 12);
     return { c, r, x, z, y: hit === Infinity ? point.y : from - hit };
   }
-  function addNode(raw) {
+  function markCell(raw) {
     const at = cellOf(raw);
-    if (nav.nodes.some((n) => n.c === at.c && n.r === at.r && Math.abs(n.p[1] - at.y) < nav.meta.step)) return;
+    const here = [...marks.nodes.entries()]
+      .find(([, m]) => m.c === at.c && m.r === at.r && Math.abs(m.y - at.y) < nav.meta.step);
     pushUndo();
-    nav.nodes.push({ c: at.c, r: at.r, p: [at.x, +at.y.toFixed(3), at.z], s: 'p', n: [] });
-    const i = nav.nodes.length - 1;
-    nav.nodes.forEach((n, j) => {
-      if (j !== i && linkable(i, j) && Math.abs(n.p[1] - at.y) <= nav.meta.step * 1.5) {
-        nav.nodes[i].n.push(j); n.n.push(i);
-      }
-    });
-    selected = i;
-    indexCells();
-    updateMarkers();
-  }
-  function deleteNode(i) {
-    pushUndo();
-    for (const nb of nav.nodes[i].n) {
-      const arr = nav.nodes[nb].n;
-      const k = arr.indexOf(i);
-      if (k >= 0) arr.splice(k, 1);
+    if (here) marks.nodes.delete(here[0]);
+    else {
+      const ref = { c: at.c, r: at.r, y: +at.y.toFixed(3), x: at.x, z: at.z };
+      marks.nodes.set(refKey(ref), { ...ref, kind: 'missing' });
     }
-    nav.nodes.splice(i, 1);
-    for (const n of nav.nodes) n.n = n.n.map((j) => (j > i ? j - 1 : j));
-    if (cur === i) cur = Math.min(i, nav.nodes.length - 1);
-    else if (cur > i) cur--;
-    if (cur < 0) cur = 0;
-    selected = -1;
-    route = [];
-    indexCells();
-    if (nav.nodes.length) { camera.target = eyePoint(cur); updateMarkers(); }
   }
-  function exportNav() {
-    const blob = new Blob([JSON.stringify(toGrid(nav))], { type: 'application/json' });
+  function recordPath(from, to) {
+    const steps = stepsBetween(from, to);
+    pushUndo();
+    paths.push({ start: refOf(from), end: refOf(to), steps, reachable: steps !== null });
+  }
+  const cellRef = ({ c, r, y }) => ({ c, r, y });
+  function review() {
+    const nodes = [...marks.nodes.values()];
+    const links = [...marks.links.values()];
+    const of = (kind) => ({
+      cells: nodes.filter((m) => m.kind === kind).map(cellRef),
+      links: links.filter((m) => m.kind === kind).map((m) => [cellRef(m.a), cellRef(m.b)]),
+    });
+    return {
+      scene: SCENE,
+      grid: `${SCENE}_grid.json`,
+      recorded: new Date().toISOString(),
+      origin: nav.meta.origin,
+      cell: nav.meta.cell,
+      missing: of('missing'),
+      wrong: of('wrong'),
+      paths: paths.map((q) => ({
+        start: cellRef(q.start), end: cellRef(q.end), steps: q.steps, reachable: q.reachable,
+      })),
+    };
+  }
+  function exportReview() {
+    const blob = new Blob([JSON.stringify(review(), null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${SCENE}_grid.json`;
+    a.download = `${SCENE}_grid.review.json`;
     a.click();
   }
   function setEditMode(on) {
     editMode = on;
     mapView = on;
     if (on) mapZoom = 0.55;
-    if (!on) eraseMode = false;
+    if (!on) pathMode = false;
     selected = -1;
-    hud.innerHTML = (on ? EDIT_HELP : VIEW_HELP) + WHERE(nav.nodes[cur]);
     document.getElementById('edit').classList.toggle('on', on);
-    document.getElementById('erase').classList.toggle('on', eraseMode);
-    for (const id of ['save', 'erase', 'undo']) document.getElementById(id).hidden = !on;
+    document.getElementById('path').classList.toggle('on', pathMode);
+    for (const id of ['save', 'path', 'undo']) document.getElementById(id).hidden = !on;
     document.getElementById('undo').disabled = !undoStack.length;
     updateMarkers();
     glideTo(cur, 450);
+  }
+  function setPathMode(on) {
+    pathMode = on;
+    selected = -1;
+    document.getElementById('path').classList.toggle('on', on);
+    updateMarkers();
   }
 
   let down = null;
@@ -730,24 +765,30 @@ function toGrid(nav) {
     if (Math.hypot(dx, dy) < 40) {
       const tapped = markerAtScreen(scene.pointerX, scene.pointerY);
       if (editMode) {
-        if (eraseMode) {
-          const nodeDist = tapped >= 0 ? lastTapDist : Infinity;
-          const edge = edgeAtScreen(scene.pointerX, scene.pointerY);
-          const edgeDist = edge ? lastEdgeDist : Infinity;
-          if (nodeDist === Infinity && edgeDist === Infinity) return;
-          if (nodeDist <= Math.max(ON_DOT_PX, edgeDist)) return deleteNode(tapped);
-          return removeEdge(edge[0], edge[1]);
-        }
-        if (tapped >= 0) {
-          const i = tapped;
+        if (pathMode) {
+          let i = tapped;
+          if (i < 0) {
+            const ground = scene.pick(scene.pointerX, scene.pointerY);
+            if (ground?.hit) i = nearestNode(ground.pickedPoint);
+          }
+          if (i < 0) return;
           if (selected === -1) selected = i;
           else if (selected === i) selected = -1;
-          else { toggleEdge(selected, i); selected = i; }
+          else { recordPath(selected, i); selected = -1; }
           updateMarkers();
-        } else {
-          const ground = scene.pick(scene.pointerX, scene.pointerY);
-          if (ground?.hit) addNode(ground.pickedPoint);
+          return;
         }
+        if (tapped >= 0) {
+          if (selected === -1) selected = tapped;
+          else if (selected === tapped) { markNode(refOf(tapped), 'wrong'); selected = -1; }
+          else if (markPair(selected, tapped)) selected = -1;
+          else selected = tapped;
+          updateMarkers();
+          return;
+        }
+        if (selected >= 0) { selected = -1; updateMarkers(); return; }
+        const ground = scene.pick(scene.pointerX, scene.pointerY);
+        if (ground?.hit) { markCell(ground.pickedPoint); updateMarkers(); }
         return;
       }
       if (tapped >= 0) return travelTo(tapped);
@@ -768,7 +809,8 @@ function toGrid(nav) {
     if (e.key === 'PageDown') setView(-1);
     if (e.key === 'Backspace' && !editMode) { e.preventDefault(); goBack(); }
     if (e.key === 'e' || e.key === 'E') setEditMode(!editMode);
-    if (editMode && (e.key === 'Delete' || e.key === 'Backspace') && selected >= 0) deleteNode(selected);
+    if (editMode && (e.key === 'p' || e.key === 'P')) setPathMode(!pathMode);
+    if (editMode && e.key === 'Escape' && selected >= 0) { selected = -1; updateMarkers(); }
     if (editMode && (e.key === 'z' || e.key === 'Z')) undo();
   });
   let wheelAt = 0;
@@ -783,17 +825,11 @@ function toGrid(nav) {
   document.getElementById('tiltU').addEventListener('click', () => setView(1));
   document.getElementById('tiltD').addEventListener('click', () => setView(-1));
   document.getElementById('edit').addEventListener('click', () => setEditMode(!editMode));
-  document.getElementById('del').addEventListener('click', () => { if (selected >= 0) deleteNode(selected); });
   document.getElementById('undo').addEventListener('click', undo);
-  document.getElementById('erase').addEventListener('click', () => {
-    eraseMode = !eraseMode;
-    selected = -1;
-    document.getElementById('erase').classList.toggle('on', eraseMode);
-    updateMarkers();
-  });
-  document.getElementById('save').addEventListener('click', exportNav);
+  document.getElementById('path').addEventListener('click', () => setPathMode(!pathMode));
+  document.getElementById('save').addEventListener('click', exportReview);
 
-  hud.innerHTML = VIEW_HELP + WHERE(nav.nodes[cur]);
+  hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
   rebuildMarkers();
   glideFacing(cur, 1);
   engine.runRenderLoop(() => scene.render());
