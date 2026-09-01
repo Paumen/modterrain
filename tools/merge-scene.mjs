@@ -84,7 +84,7 @@ function meshGeometry(prim) {
 }
 
 const FADE = /^(Prop_Bridge_|Docks_|Path_Fence_|Tiered_Retaining_Wall_)/;
-const FADE_CHUNK = 2;
+const FADE_CHUNK = 1;
 
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];

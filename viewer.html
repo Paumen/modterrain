@@ -385,17 +385,17 @@ function fromGrid(grid) {
       : camera.radius + (goal - camera.radius) * (1 - Math.exp(-BOOM_OUT * dt));
     if (fadeIndex) {
       fadeFlags.fill(0);
-      const reach = camera.radius - KEEP_NEAR;
-      if (reach > 0.2) {
+      const reach = camera.radius + margin;
+      if (reach > KEEP_NEAR) {
         const [u, v] = perp(dx, dy, dz);
         const ox = camera.target.x, oy = camera.target.y, oz = camera.target.z;
-        castOwners(fadeIndex, ox, oy, oz, dx, dy, dz, reach, fadeOwners, fadeFlags);
+        castOwners(fadeIndex, ox, oy, oz, dx, dy, dz, reach, fadeOwners, fadeFlags, KEEP_NEAR);
         for (const [a, c] of SIGHT_RING)
           castOwners(fadeIndex,
             ox + (u[0] * a + v[0] * c) * SIGHT_R,
             oy + (u[1] * a + v[1] * c) * SIGHT_R,
             oz + (u[2] * a + v[2] * c) * SIGHT_R,
-            dx, dy, dz, reach, fadeOwners, fadeFlags);
+            dx, dy, dz, reach, fadeOwners, fadeFlags, KEEP_NEAR);
       }
       faders.forEach((b, slot) => {
         const goal = fadeFlags[slot] ? FADED : 1;
