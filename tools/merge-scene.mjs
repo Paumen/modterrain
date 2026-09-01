@@ -1,5 +1,6 @@
 import { readGlb, writeGlb } from './glb.mjs';
 import { markSeeThrough } from './see-through.mjs';
+import { markBridge } from './bridge.mjs';
 
 const input = process.argv[2];
 if (!input) {
@@ -109,10 +110,10 @@ function emitNode(nodeIndex, parent) {
         let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
         const len = Math.hypot(nx, ny, nz) || 1;
         nx /= len; ny /= len; nz /= len;
-        const thin = SEE_THROUGH.test(piece) || (bridge && Math.abs(ny) < 0.5);
-        const key = `${prim.material}|${thin ? 1 : 0}`;
+        const thin = !bridge && SEE_THROUGH.test(piece);
+        const key = bridge ? `bridge|${nodeIndex}|${prim.material}` : `${prim.material}|${thin ? 1 : 0}`;
         let bucket = buckets.get(key);
-        if (!bucket) buckets.set(key, (bucket = { pos: [], nrm: [], mat: prim.material, thin }));
+        if (!bucket) buckets.set(key, (bucket = { pos: [], nrm: [], mat: prim.material, thin, bridge }));
         bucket.pos.push(...p0, ...p1, ...p2);
         bucket.nrm.push(nx, ny, nz, nx, ny, nz, nx, ny, nz);
         tris.push([...p0, ...p1, ...p2, prim.material, ny]);
@@ -164,7 +165,9 @@ for (const [, bucket] of ordered) {
   const posAcc = addAccessor(new Float32Array(bucket.pos), 'VEC3', true);
   const nrmAcc = addAccessor(new Float32Array(bucket.nrm), 'VEC3', false);
   out.materials.push(structuredClone(json.materials[bucket.mat]));
-  const name = bucket.thin ? markSeeThrough(matName(bucket.mat)) : matName(bucket.mat);
+  const name = bucket.bridge
+    ? markBridge(matName(bucket.mat))
+    : bucket.thin ? markSeeThrough(matName(bucket.mat)) : matName(bucket.mat);
   out.meshes.push({
     name,
     primitives: [{ attributes: { POSITION: posAcc, NORMAL: nrmAcc }, material: out.materials.length - 1 }],

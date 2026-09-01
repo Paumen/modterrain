@@ -72,7 +72,7 @@ const ROLES = [
   [SOLID, /^(Basic_|Cave_Edge_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_(Edging|Fence)_|Prop_(Bridge_Rope|Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Waterfall_)/],
 ];
 const CLIFF = /^(Basic_|Cave_Edge_|Cracked_|Wall_)/;
-const CARRIED = /^(Cave_Center_|Floor_|Path_(Bridge|End)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_)/;
+const CARRIED = /^(Cave_Center_|Floor_|Path_(Bridge|End)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_|Tiered_Walkway_)/;
 const DECK = /^Prop_Bridge_Rope_/;
 const PLANK = new Set(['Wood Dark', 'Wood Light', 'Wood Light End', 'Wood Medium']);
 
