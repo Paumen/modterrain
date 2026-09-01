@@ -133,7 +133,11 @@ function fromGrid(grid) {
   const fading = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isFading(m.name));
   const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
-  for (const m of fading) m.fade = damped(1, 10);
+  for (const m of fading) {
+    m.fade = damped(1, 10);
+    m.material.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+    m.material.backFaceCulling = true;
+  }
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
   sun.intensity = 1.3;
@@ -209,6 +213,18 @@ function fromGrid(grid) {
       if (hit < best) best = hit;
     }
     return best;
+  }
+
+  const FADED = 0.12;
+  const HIDE_R = 0.4;
+  function hideRays(from, dx, dy, dz, dist) {
+    const dir = new BABYLON.Vector3(dx, dy, dz);
+    const [u, v] = perp(dx, dy, dz);
+    const out = [new BABYLON.Ray(from, dir, dist)];
+    for (const [sx, sy, sz] of [u, v, [-u[0], -u[1], -u[2]], [-v[0], -v[1], -v[2]]])
+      out.push(new BABYLON.Ray(
+        new BABYLON.Vector3(from.x + sx * HIDE_R, from.y + sy * HIDE_R, from.z + sz * HIDE_R), dir, dist));
+    return out;
   }
 
   function roomAt(n, k, beta) {
@@ -304,10 +320,10 @@ function fromGrid(grid) {
     held.v = Math.min(held.v, camera.radius + rate * dt);
     if (fading.length) {
       const dist = camera.radius;
-      const ray = dist > 1e-4 ? new BABYLON.Ray(camera.target, new BABYLON.Vector3(dx, dy, dz), dist) : null;
+      const rays = dist > 1e-4 ? hideRays(camera.target, dx, dy, dz, dist) : null;
       for (const m of fading) {
-        const hit = ray && m.intersects(ray, false).hit;
-        m.visibility = m.fade.step(hit ? 0.12 : 1, dt, 10);
+        const hit = rays && rays.some((r) => m.intersects(r, true).hit);
+        m.visibility = m.fade.step(hit ? FADED : 1, dt, 10);
       }
     }
   });
