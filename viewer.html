@@ -364,7 +364,7 @@ function fromGrid(grid) {
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
   const surf = { p: 1, g: 3.5 };
   const edgeCost = (a, b) => dist3(nav.nodes[a], nav.nodes[b]) * (((surf[nav.nodes[a].s] || 2) + (surf[nav.nodes[b].s] || 2)) / 2);
-  const legMs = (a, b) => Math.max(16, dist3(nav.nodes[a], nav.nodes[b]) * 150);
+  const legMs = (a, b) => Math.min(400, Math.max(150, dist3(nav.nodes[a], nav.nodes[b]) * 150));
   let byCell = new Map();
   const cellKey = (c, r) => c * 100000 + r;
   function indexCells() {
