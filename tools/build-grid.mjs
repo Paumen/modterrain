@@ -222,7 +222,7 @@ function blocked(x, z, y, rad = RADIUS, report) {
   return false;
 }
 
-const ROOM = [RADIUS, 0.3, 0.45];
+const ROOM = [RADIUS, RADIUS + 0.1];
 
 function clearance(x, z, y) {
   let room = 0;
@@ -230,11 +230,11 @@ function clearance(x, z, y) {
   return room;
 }
 
-function sweep(ax, az, bx2, bz2, y) {
+function sweep(ax, az, ay, bx2, bz2, by) {
   const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / SAMPLE);
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    if (blocked(ax + (bx2 - ax) * t, az + (bz2 - az) * t, y)) return true;
+    if (blocked(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
   }
   return false;
 }
@@ -242,13 +242,13 @@ function sweep(ax, az, bx2, bz2, y) {
 const BOW = [0.18, -0.18, 0.32, -0.32];
 
 function blockedBetween(a, b) {
-  const y = Math.max(a.y, b.y);
-  if (!sweep(a.x, a.z, b.x, b.z, y)) return false;
+  if (!sweep(a.x, a.z, a.y, b.x, b.z, b.y)) return false;
+  const mid = (a.y + b.y) / 2;
   const len = Math.hypot(b.x - a.x, b.z - a.z) || 1;
   const px = (b.z - a.z) / len, pz = -(b.x - a.x) / len;
   for (const off of BOW) {
     const cx = (a.x + b.x) / 2 + px * off, cz = (a.z + b.z) / 2 + pz * off;
-    if (!sweep(a.x, a.z, cx, cz, y) && !sweep(cx, cz, b.x, b.z, y)) return false;
+    if (!sweep(a.x, a.z, a.y, cx, cz, mid) && !sweep(cx, cz, mid, b.x, b.z, b.y)) return false;
   }
   return true;
 }
@@ -329,6 +329,8 @@ function nodesIn(c, r, note) {
       if (drowned(x, z, y, floors[i + 1]?.low ?? Infinity)) { reject.water++; say('water covers this'); continue; }
       if (buried(x, z, y)) { reject.buried++; say('this is the far side of a shell'); continue; }
       if (!underfoot(x, z, y)) { reject.unsupported++; say('too narrow to stand on'); continue; }
+      const level = here.find((n) => Math.abs(n.y - y) <= CLUSTER);
+      if (level && level.room === ROOM.length) continue;
       const room = clearance(x, z, y);
       if (!room) {
         reject.blocked++;
@@ -338,7 +340,6 @@ function nodesIn(c, r, note) {
         continue;
       }
       say(`open, room ${room}`);
-      const level = here.find((n) => Math.abs(n.y - y) <= CLUSTER);
       if (!level) here.push({ c, r, x, z, y, room, m: name });
       else if (room > level.room) Object.assign(level, { x, z, y, room, m: name });
     }
@@ -385,7 +386,7 @@ for (let r = 0; r < ROWS; r++) {
 const DIRS = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
 const corner = (c, r, a, b) =>
   (byCell.get(c * ROWS + r) || []).some((n) => Math.abs(n.y - a.y) <= STEP && Math.abs(n.y - b.y) <= STEP)
-  || blocked(C0 + c + 0.5, R0 + r + 0.5, Math.max(a.y, b.y));
+  || blocked(C0 + c + 0.5, R0 + r + 0.5, (a.y + b.y) / 2);
 const edges = [];
 const links = nodes.map(() => new Set());
 for (const list of byCell.values()) {
