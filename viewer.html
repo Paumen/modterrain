@@ -50,6 +50,7 @@ import { isSeeThrough } from './tools/see-through.mjs';
 import { isBridge } from './tools/bridge.mjs';
 
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
+const GRID = new URLSearchParams(location.search).get('grid') || '';
 const canvas = document.getElementById('view');
 const hud = document.getElementById('hud');
 
@@ -122,7 +123,7 @@ function fromGrid(grid) {
 (async () => {
   const [engine, grid] = await Promise.all([
     makeEngine(),
-    fetch(`scenes/${SCENE}_grid.json`).then((r) => r.json()),
+    fetch(`scenes/${SCENE}_grid${GRID}.json`).then((r) => r.json()),
   ]);
   const nav = fromGrid(grid);
   const { eye, cell } = nav.meta;
@@ -729,7 +730,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     });
     return {
       scene: SCENE,
-      grid: `${SCENE}_grid.json`,
+      grid: `${SCENE}_grid${GRID}.json`,
       recorded: new Date().toISOString(),
       origin: nav.meta.origin,
       cell: nav.meta.cell,
