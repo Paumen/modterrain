@@ -66,12 +66,14 @@ const matName = (i) => json.materials?.[i]?.name ?? '(none)';
 const isHidden = (i) => /^Hidden/.test(matName(i));
 
 const CAVE_FLOOR = /^Floor_/;
+const RAILED = /^Prop_Bridge_/;
+const WATER = /^(Terrain_Water_|Water_|Waterfall_)/;
 const WALKABLE = /^(Docks_(Decking|Ladder_Top)_|Grass_|Path_(Bridge|Terrain)_|Prop_(Bridge|Protrusion_Floor)_|Terrain_Sand_|Tiered_(Grass|Walkway)_|Floor_)/;
 const BLOCKING = /^(Basic_|Cave_|Ceiling_|Cracked_|Docks_(Bumper|Ladder_Middle|Railing|Support)_|Path_Edging_|Path_Fence_|Prop_(Column|Stalactite|Stalagmite)_|Tiered_Retaining_Wall_|Wall_|Terrain_Water_|Water_|Waterfall_)/;
 
 function classify(piece) {
-  if (WALKABLE.test(piece)) return { blocking: false, cave: CAVE_FLOOR.test(piece) };
-  if (BLOCKING.test(piece)) return { blocking: true, cave: false };
+  if (WALKABLE.test(piece)) return { blocking: false, cave: CAVE_FLOOR.test(piece), water: false };
+  if (BLOCKING.test(piece)) return { blocking: true, cave: false, water: WATER.test(piece) };
   return null;
 }
 const unknown = new Set();
@@ -80,7 +82,8 @@ const CELL = 1;
 const EYE = 1.5;
 const STEP = 0.75;
 const CLUSTER = 0.3;
-const REACH = 0.1;
+const REACH = 0.2;
+const SAMPLE = 0.1;
 const KNEE = 0.5;
 const HEAD = 1.6;
 
@@ -89,6 +92,7 @@ const triMat = [];
 const triUp = [];
 const triBlocking = [];
 const triCave = [];
+const triWater = [];
 const triPiece = [];
 const cache = new Map();
 
@@ -105,6 +109,7 @@ function emitNode(nodeIndex, parent) {
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
     const kind = classify(piece);
+    const rail = kind !== null && !kind.blocking && RAILED.test(piece);
     if (kind === null) unknown.add(piece);
     else for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
@@ -122,8 +127,10 @@ function emitNode(nodeIndex, parent) {
         pos.push(...p0, ...p1, ...p2);
         triMat.push(prim.material);
         triUp.push(up);
-        triBlocking.push(kind.blocking);
+        const tall = Math.max(p0[1], p1[1], p2[1]) - Math.min(p0[1], p1[1], p2[1]) > KNEE;
+        triBlocking.push(kind.blocking || (rail && tall && Math.abs(up) < 0.5));
         triCave.push(kind.cave);
+        triWater.push(kind.water);
         triPiece.push(piece);
       }
     }
@@ -167,7 +174,7 @@ function inTheWay(x, z, y) {
 }
 
 function inTheWayBetween(ax, az, ay, bx2, bz2, by) {
-  const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / REACH);
+  const steps = Math.ceil(Math.hypot(bx2 - ax, bz2 - az) / SAMPLE);
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
     if (inTheWay(ax + (bx2 - ax) * t, az + (bz2 - az) * t, ay + (by - ay) * t)) return true;
@@ -206,23 +213,33 @@ function cluster(hits, y) {
   return out;
 }
 
-function floorAt(x, z) {
-  const hits = heightsAt(x, z).sort((a, b) => a[0] - b[0]);
-  return cluster(hits, (h) => h[0])
-    .map((k) => {
-      const top = k[k.length - 1];
-      return { y: top[0], mat: top[1], blocking: top[3], cave: top[4] };
-    })
-    .filter((f) => !f.blocking);
+const FOOT = [[REACH, REACH], [REACH, -REACH], [-REACH, REACH], [-REACH, -REACH]];
+
+function floorsFrom(hits) {
+  const stack = cluster(hits.sort((a, b) => a[0] - b[0]), (h) => h[0]);
+  return stack.map((k, i) => {
+    const top = k[k.length - 1];
+    const above = stack[i + 1]?.[0];
+    return { y: top[0], mat: top[1], blocking: top[3], cave: top[4], submerged: above ? triWater[above[5]] : false };
+  });
 }
 
-const reject = { obstacle: 0 };
+function floorAt(x, z) {
+  const here = floorsFrom(heightsAt(x, z));
+  for (const [dx, dz] of FOOT)
+    for (const f of floorsFrom(heightsAt(x + dx, z + dz)))
+      if (!here.some((h) => Math.abs(h.y - f.y) <= CLUSTER)) here.push(f);
+  return here.filter((f) => !f.blocking).sort((a, b) => a.y - b.y);
+}
+
+const reject = { obstacle: 0, water: 0 };
 
 function floorsIn(c, r, note) {
   const x = C0 + c + 0.5, z = R0 + r + 0.5;
   const here = [];
   for (const f of floorAt(x, z)) {
     const name = matName(f.mat);
+    if (f.submerged) { reject.water++; note?.(f.y, name, 'water covers this'); continue; }
     if (inTheWay(x, z, f.y)) { reject.obstacle++; note?.(f.y, name, 'an obstacle stands here'); continue; }
     note?.(f.y, name, 'open');
     here.push({ c, r, y: f.y, m: name,
