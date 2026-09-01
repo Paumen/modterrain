@@ -77,7 +77,7 @@ export function raycast(index, ox, oy, oz, dx, dy, dz, tMax, tMin = 0.001) {
   return best;
 }
 
-export function castOwners(index, ox, oy, oz, dx, dy, dz, tMax, owner, flags, tMin = 0.001) {
+export function castOwners(index, ox, oy, oz, dx, dy, dz, tMax, owner, flags, tMin = 0.001, weight = 1) {
   const { tris, bins, cols, rows, cell, minX, minZ, seen } = index;
   const stamp = ++index.stamp;
   let cx = index.bx(ox), cz = index.bz(oz);
@@ -92,7 +92,7 @@ export function castOwners(index, ox, oy, oz, dx, dy, dz, tMax, owner, flags, tM
       for (const tri of bins[cz * cols + cx]) {
         if (seen[tri] === stamp) continue;
         seen[tri] = stamp;
-        if (flags[owner[tri]]) continue;
+        if (flags[owner[tri]] >= weight) continue;
         const a = tri * 9;
         const e1x = tris[a + 3] - tris[a], e1y = tris[a + 4] - tris[a + 1], e1z = tris[a + 5] - tris[a + 2];
         const e2x = tris[a + 6] - tris[a], e2y = tris[a + 7] - tris[a + 1], e2z = tris[a + 8] - tris[a + 2];
@@ -107,7 +107,7 @@ export function castOwners(index, ox, oy, oz, dx, dy, dz, tMax, owner, flags, tM
         const v = (dx * qx + dy * qy + dz * qz) * inv;
         if (v < 0 || u + v > 1) continue;
         const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
-        if (hit > tMin && hit < tMax) flags[owner[tri]] = 1;
+        if (hit > tMin && hit < tMax) flags[owner[tri]] = weight;
       }
     }
     if (tX < tZ) { t = tX; tX += dX; cx += stepX; } else { t = tZ; tZ += dZ; cz += stepZ; }

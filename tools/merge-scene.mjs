@@ -84,7 +84,6 @@ function meshGeometry(prim) {
 }
 
 const FADE = /^(Prop_Bridge_|Docks_|Path_Fence_|Tiered_Retaining_Wall_)/;
-const FADE_CHUNK = 1;
 
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];
@@ -93,7 +92,7 @@ function emitNode(nodeIndex, parent) {
     const flip = det3(world) < 0;
     const piece = (node.name || '').split('__')[0];
     const fade = FADE.test(piece);
-    const group = `${Math.floor(world[12] / FADE_CHUNK)}|${Math.floor(world[14] / FADE_CHUNK)}`;
+    const group = nodeIndex;
     for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
       const { pos, idx } = meshGeometry(prim);
