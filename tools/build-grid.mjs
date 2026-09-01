@@ -73,6 +73,8 @@ const ROLES = [
 ];
 const CLIFF = /^(Basic_|Cave_Edge_|Cracked_|Wall_)/;
 const CARRIED = /^(Cave_Center_|Floor_|Path_(Bridge|End)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_)/;
+const DECK = /^Prop_Bridge_Rope_/;
+const PLANK = new Set(['Wood Dark', 'Wood Light', 'Wood Light End', 'Wood Medium']);
 
 const roleOf = (piece) => ROLES.find(([, re]) => re.test(piece))?.[0] ?? null;
 const unknown = new Set();
@@ -110,10 +112,11 @@ function emitNode(nodeIndex, parent) {
   const world = parent === IDENTITY && node.matrix ? node.matrix : mul4(parent, localMatrix(node));
   if (node.mesh != null) {
     const piece = (node.name || '').split('__')[0];
-    const role = roleOf(piece);
-    if (role === null) unknown.add(piece);
+    const pieceRole = roleOf(piece);
+    if (pieceRole === null) unknown.add(piece);
     else for (const prim of json.meshes[node.mesh].primitives) {
       if ((prim.mode ?? 4) !== 4 || isHidden(prim.material)) continue;
+      const role = DECK.test(piece) && PLANK.has(matName(prim.material)) ? GROUND : pieceRole;
       const { pos: src, idx } = meshGeometry(prim);
       const count = idx ? idx.length : src.length / 3;
       for (let t = 0; t < count; t += 3) {
