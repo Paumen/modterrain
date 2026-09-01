@@ -314,7 +314,37 @@ function buried(x, z, y) {
 const SPOTS = [[0, 0], [SPREAD, 0], [-SPREAD, 0], [0, SPREAD], [0, -SPREAD],
   [SPREAD * 0.7, SPREAD * 0.7], [SPREAD * 0.7, -SPREAD * 0.7], [-SPREAD * 0.7, SPREAD * 0.7], [-SPREAD * 0.7, -SPREAD * 0.7]];
 
-const reject = { water: 0, buried: 0, unsupported: 0, blocked: 0 };
+const CLIFF = /^(Basic_|Cave_Edge_|Cracked_|Wall_)/;
+const CARRIED = /^(Cave_Center_|Floor_|Path_(Bridge|End)_|Prop_(Bridge_(Center|End)|Protrusion_Floor)_)/;
+const RIM = 0.05;
+
+function cellsUnder(match) {
+  const mask = new Uint8Array(COLS * ROWS);
+  for (let t = 0; t < triRole.length; t++) {
+    if (!match.test(triPiece[t])) continue;
+    const b = t * 6;
+    for (let r = Math.floor(box[b + 2]) - R0; r <= Math.floor(box[b + 5]) - R0; r++)
+      for (let c = Math.floor(box[b]) - C0; c <= Math.floor(box[b + 3]) - C0; c++) {
+        if (c < 0 || c >= COLS || r < 0 || r >= ROWS || mask[c * ROWS + r]) continue;
+        if (spanOver(t, C0 + c + RIM, C0 + c + 1 - RIM, R0 + r + RIM, R0 + r + 1 - RIM)) mask[c * ROWS + r] = 1;
+      }
+  }
+  return mask;
+}
+
+const cliffCell = cellsUnder(CLIFF);
+const carried = cellsUnder(CARRIED);
+for (let c = 0; c < COLS; c++)
+  for (let r = 0; r < ROWS; r++) {
+    if (!carried[c * ROWS + r]) continue;
+    for (let dc = -1; dc <= 1; dc++)
+      for (let dr = -1; dr <= 1; dr++) {
+        const nc = c + dc, nr = r + dr;
+        if (nc >= 0 && nc < COLS && nr >= 0 && nr < ROWS) cliffCell[nc * ROWS + nr] = 0;
+      }
+  }
+
+const reject = { water: 0, buried: 0, cliff: 0, unsupported: 0, blocked: 0 };
 
 function nodesIn(c, r, note) {
   const cx = C0 + c + 0.5, cz = R0 + r + 0.5;
@@ -326,6 +356,7 @@ function nodesIn(c, r, note) {
       const y = floors[i].y;
       const name = matName(triMat[floors[i].t]);
       const say = (why) => note?.(dx, dz, y, name, why);
+      if (cliffCell[c * ROWS + r]) { reject.cliff++; say('a cliff stands in this cell'); continue; }
       if (drowned(x, z, y, floors[i + 1]?.low ?? Infinity)) { reject.water++; say('water covers this'); continue; }
       if (buried(x, z, y)) { reject.buried++; say('this is the far side of a shell'); continue; }
       if (!underfoot(x, z, y)) { reject.unsupported++; say('too narrow to stand on'); continue; }
