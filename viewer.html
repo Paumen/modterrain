@@ -93,15 +93,18 @@ const VIEW_HELP = `<b>Walkthrough</b><br>
 Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; review grid</small>`;
 const WHERE = (n) => `<br><small>at ${n.p[0]},${n.p[2]} &middot; height ${n.p[1].toFixed(2)} &middot; ${n.n.length} way${n.n.length === 1 ? '' : 's'} out</small>`;
 
+let engineKind = 'none';
 async function makeEngine() {
-  const forceGL = new URLSearchParams(location.search).has('gl');
-  if (!forceGL && navigator.gpu && BABYLON.WebGPUEngine) {
+  const wantGPU = new URLSearchParams(location.search).has('webgpu');
+  if (wantGPU && navigator.gpu && BABYLON.WebGPUEngine) {
     try {
       const engine = new BABYLON.WebGPUEngine(canvas, { antialias: true });
       await engine.initAsync();
+      engineKind = 'WebGPU';
       return engine;
     } catch (e) { console.warn('WebGPU unavailable, falling back to WebGL', e); }
   }
+  engineKind = 'WebGL';
   return new BABYLON.Engine(canvas, true);
 }
 
@@ -136,7 +139,10 @@ function fromGrid(grid) {
   const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
   for (const m of fading) m.material.backFaceCulling = true;
-  const setWalkerFade = walkerFade(BABYLON, fading);
+  let setWalkerFade = () => {};
+  try {
+    setWalkerFade = walkerFade(BABYLON, fading);
+  } catch (e) { console.warn('walker fade unavailable', e); }
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
   sun.intensity = 1.3;
@@ -854,7 +860,9 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
   engine.runRenderLoop(() => scene.render());
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
-  hud.innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
+  const why = (e && (e.stack || e.message)) || String(e);
+  hud.innerHTML = `<b>Failed to load</b><br><small>${engineKind} &middot; ${SCENE}<br>
+<code style="white-space:pre-wrap;word-break:break-word">${String(why).slice(0, 600).replace(/</g, '&lt;')}</code><br>
 Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>`;
   throw e;
 });
