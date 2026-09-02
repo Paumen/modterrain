@@ -103,18 +103,21 @@ const check = (name, ok, detail) => results.push({ name, ok, detail });
 const at = (ref) => `${ref.c},${ref.r} @ ${ref.y}`;
 const linked = (a, b) => nodes[a].n.includes(b);
 
-for (const ref of review.missing.cells) {
+const add = review.add ?? review.missing ?? { cells: [], links: [] };
+const marked = review.mark ?? { cells: [], links: [] };
+
+for (const ref of add.cells) {
   const i = find(ref);
-  check(`missing cell ${at(ref)}`, i >= 0, i >= 0 ? 'now walkable' : 'still not in the grid');
+  check(`add cell ${at(ref)}`, i >= 0, i >= 0 ? 'now walkable' : 'still not in the grid');
 }
 for (const ref of review.wrong.cells) {
   const i = find(ref);
   check(`wrong cell ${at(ref)}`, i < 0, i < 0 ? 'gone' : 'still walkable');
 }
-for (const [a, b] of review.missing.links) {
+for (const [a, b] of add.links) {
   const i = find(a), j = find(b);
   const ok = i >= 0 && j >= 0 && linked(i, j);
-  check(`missing link ${at(a)} — ${at(b)}`, ok,
+  check(`add link ${at(a)} — ${at(b)}`, ok,
     i < 0 || j < 0 ? 'an end is not in the grid' : ok ? 'now linked' : 'still unlinked');
 }
 for (const [a, b] of review.wrong.links) {
@@ -136,5 +139,11 @@ for (const q of review.paths) {
 
 const failed = results.filter((r) => !r.ok);
 for (const r of results) console.log(`${r.ok ? 'ok  ' : 'FAIL'}  ${r.name}: ${r.detail}`);
+for (const ref of marked.cells) console.log(`note  marked cell ${at(ref)}: ${find(ref) >= 0 ? 'in the grid' : 'not in the grid'}`);
+for (const [a, b] of marked.links) {
+  const i = find(a), j = find(b);
+  console.log(`note  marked link ${at(a)} — ${at(b)}: ${i >= 0 && j >= 0 && linked(i, j) ? 'linked' : 'not linked'}`);
+}
+for (const v of review.views ?? []) console.log(`note  pinned view: node ${v.node} cell ${v.cell?.c},${v.cell?.r} y ${v.y} step ${v.step} tilt ${v.tilt}°`);
 console.log(`\n${results.length - failed.length}/${results.length} passed against ${gridPath}`);
 process.exit(failed.length ? 1 : 0);

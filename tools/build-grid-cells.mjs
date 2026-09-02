@@ -372,7 +372,7 @@ console.log([...byMat.entries()].sort((a, b) => b[1] - a[1]).map(([m, n]) => `${
 
 if (LINT) {
   const BACK = 1.6, MARGIN = 0.3, MAX_R = 66, PROBE = 0.2, HEADINGS = 8;
-  const VIEWS = [1.540, 1.470, 1.309, 1.134, 0.960];
+  const VIEWS = [1.435, 1.365, 1.204, 1.029, 0.855];
   const camIdx = buildIndex(Float64Array.from(camPos), 1);
   const perp = (dx, dy, dz) => {
     const ax = Math.abs(dy) < 0.9 ? [0, 1, 0] : [1, 0, 0];

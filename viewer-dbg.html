@@ -1059,6 +1059,7 @@ function fromGrid(grid) {
     if (touches.size < 2) gesture = null;
   };
   canvas.addEventListener('pointerdown', (e) => {
+    console.log('PD', e.pointerId, 'edit', editMode, 'draw', drawing, 'touches', [...touches.keys()].join('/'));
     if (!editMode) return;
     touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (touches.size === 2) {
@@ -1072,10 +1073,11 @@ function fromGrid(grid) {
       updateMarkers();
       return;
     }
-    if (touches.size > 2 || !drawing) return;
+    if (touches.size > 2 || !drawing) { console.log('PD reject size', touches.size, 'draw', drawing); return; }
     if (press && !touches.has(press.id)) { clearHold(); press = null; stroke = null; linkDrag = null; }
     const [sx, sy] = renderXY(e);
-    press = { id: e.pointerId, x: e.clientX, y: e.clientY, sx, sy, t0: e.timeStamp, cell: pickCell(sx, sy), timer: 0 };
+    press = { id: e.pointerId, x: e.clientX, y: e.clientY, sx, sy, cell: pickCell(sx, sy), timer: 0 };
+    console.log('PD press', JSON.stringify(press.cell));
     if (!pathMode && press.cell && press.cell.node >= 0) {
       press.timer = setTimeout(() => {
         if (!press || !touches.has(press.id)) return;
@@ -1102,7 +1104,6 @@ function fromGrid(grid) {
     }
     if (!press || press.id !== e.pointerId) return;
     const [sx, sy] = renderXY(e);
-    if (linkDrag && e.timeStamp - press.t0 < HOLD_MS) { linkDrag = null; selected = -1; needMarkers(); }
     if (linkDrag) {
       const cell = pickCell(sx, sy);
       if (cell) { linkDrag.to = cell; needMarkers(); }
@@ -1122,11 +1123,10 @@ function fromGrid(grid) {
     const mine = press && press.id === e.pointerId ? press : null;
     endTouch(e.pointerId);
     if (!touches.size) multiTouch = false;
-    if (!editMode || !mine) return;
+    if (!editMode || !mine) { console.log('PU skip', e.pointerId, 'mine', !!mine); return; }
     clearHold();
     press = null;
     const [sx, sy] = renderXY(e);
-    if (linkDrag && e.timeStamp - mine.t0 < HOLD_MS) { linkDrag = null; selected = -1; }
     if (linkDrag) {
       const from = linkDrag.from;
       const cell = pickCell(sx, sy);
@@ -1138,6 +1138,7 @@ function fromGrid(grid) {
     }
     if (stroke) { stroke = null; updateMarkers(); return; }
     const swiped = Math.hypot(e.clientX - mine.x, e.clientY - mine.y) >= CANCEL_PX;
+    console.log('PU', 'swiped', swiped, 'stroke', !!stroke, 'link', !!linkDrag, 'cell', JSON.stringify(mine.cell));
     const cell = mine.cell ?? pickCell(sx, sy);
     if (!cell) return;
     if (pathMode) { if (!swiped) pathTap(cell); return; }
