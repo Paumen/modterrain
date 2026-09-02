@@ -1,8 +1,8 @@
 {
  "generated": "node tools/build-catalog.mjs",
  "total": 315,
- "assemblies": 99,
- "scenes": 8,
+ "assemblies": 98,
+ "scenes": 9,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -1251,7 +1251,7 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 99,
+   "count": 98,
    "sections": [
     {
      "id": "assemblies-assembly-cliff",
@@ -1350,9 +1350,9 @@
      "name": "Bridges",
      "color": "#8a5a2f",
      "models": [
+      386,
       387,
-      388,
-      389
+      388
      ]
     },
     {
@@ -1360,6 +1360,7 @@
      "name": "Rivers",
      "color": "#3aa7d6",
      "models": [
+      389,
       390,
       391,
       392,
@@ -1382,16 +1383,7 @@
       409,
       410,
       411,
-      412,
-      413
-     ]
-    },
-    {
-     "id": "assemblies-assembly-structure",
-     "name": "Other",
-     "color": "#b98c5a",
-     "models": [
-      386
+      412
      ]
     }
    ]
@@ -1400,13 +1392,14 @@
    "id": "scenes",
    "label": "Scenes",
    "facet": "scene",
-   "count": 8,
+   "count": 9,
    "sections": [
     {
      "id": "scenes-scene-diorama",
      "name": "Scenes",
      "color": "#4f8f6f",
      "models": [
+      413,
       414,
       415,
       416,
@@ -18775,70 +18768,6 @@
    "missingTextures": []
   },
   {
-   "id": "Large_Island_Terrain_v3",
-   "name": "Large Island Terrain v3",
-   "file": "assemblies/Large_Island_Terrain_v3.glb",
-   "group": "assembly-structure",
-   "family": null,
-   "shape": null,
-   "layer": null,
-   "size": null,
-   "sizeGroup": null,
-   "traits": [],
-   "variant": null,
-   "placed": 0,
-   "missingPieces": [],
-   "incomplete": false,
-   "pieces": [],
-   "dwh": [
-    157,
-    134,
-    19.25
-   ],
-   "min": [
-    -64,
-    -7,
-    -94
-   ],
-   "max": [
-    93,
-    12.25,
-    40
-   ],
-   "triangles": 119688,
-   "trianglesPerUnit": 0,
-   "calls": 10402,
-   "bytes": 2605376,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-blue",
-    "hidden|hidden-green",
-    "hidden|hidden-orange",
-    "hidden|hidden-pink",
-    "hidden|hidden-red",
-    "hidden|hidden-violet",
-    "hidden|hidden-yellow",
-    "material|cliff-face",
-    "material|dirt",
-    "material|grass",
-    "material|rock-light",
-    "material|rock-lightest",
-    "material|rock-medium",
-    "material|rope",
-    "material|stone-walkway",
-    "material|water-river",
-    "material|waterfall",
-    "material|waterfall-crest",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end",
-    "material|wood-medium"
-   ],
-   "missingTextures": [
-    "Rope NM.png"
-   ]
-  },
-  {
    "id": "Path_Bridge_End",
    "name": "Path Bridge End",
    "file": "assemblies/Path_Bridge_End.glb",
@@ -20770,6 +20699,66 @@
     "material|water-ocean"
    ],
    "missingTextures": []
+  },
+  {
+   "id": "Large_Island_Terrain_v3",
+   "name": "Large Island Terrain v3",
+   "file": "scenes/Large_Island_Terrain_v3.glb",
+   "group": "scene-diorama",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1.57,
+    1.34,
+    0.193
+   ],
+   "min": [
+    -0.64,
+    -0.07,
+    -0.94
+   ],
+   "max": [
+    0.93,
+    0.123,
+    0.4
+   ],
+   "triangles": 119688,
+   "trianglesPerUnit": 56891,
+   "calls": 10402,
+   "bytes": 2605452,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|dirt",
+    "material|grass",
+    "material|rock-light",
+    "material|rock-lightest",
+    "material|rock-medium",
+    "material|rope",
+    "material|stone-walkway",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": [
+    "Rope NM.png"
+   ]
   },
   {
    "id": "Large_Island_v2",
