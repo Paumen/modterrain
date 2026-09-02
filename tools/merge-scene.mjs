@@ -1,5 +1,5 @@
 import { readGlb, writeGlb } from './glb.mjs';
-import { markSeeThrough } from './see-through.mjs';
+import { markSeeThrough, TERRAIN } from './see-through.mjs';
 
 const input = process.argv[2];
 if (!input) {
@@ -82,15 +82,6 @@ function meshGeometry(prim) {
   }
   return g;
 }
-
-const TERRAIN = new Set([
-  'Grass', 'Grass Autumn', 'Snow Grass',
-  'Dirt', 'Snow Dirt',
-  'Cliff', 'Cliff Face',
-  'Carved Stone Walkway',
-  'Water River', 'Winter Water River', 'Water Ocean', 'Water Lake',
-  'Waterfall', 'Waterfall Crest', 'Cave Waterfall', 'Cave Pool',
-]);
 
 function emitNode(nodeIndex, parent) {
   const node = json.nodes[nodeIndex];

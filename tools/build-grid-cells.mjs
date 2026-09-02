@@ -1,6 +1,7 @@
 import { writeFileSync, existsSync } from 'node:fs';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
 import { buildIndex, raycast } from './ray.mjs';
+import { TERRAIN } from './see-through.mjs';
 
 const VERSION = '1.0.0';
 
@@ -93,7 +94,8 @@ function sealCells(p, lo, hi) {
     if ((prim.mode ?? 4) !== 4) continue;
     const mat = json.materials?.[prim.material]?.name ?? '';
     const hidden = /^Hidden/.test(mat);
-    if (hidden && !LINT) continue;
+    if (hidden) continue;
+    const solid = TERRAIN.has(mat);
     const water = isWater(mat);
     const cliff = CLIFF.test(piece);
     const always = ALWAYS.has(piece);
@@ -108,8 +110,7 @@ function sealCells(p, lo, hi) {
         const v = idx ? idx[t + k] : t + k;
         p.push(transformPoint(world[i], pos.data[v * 3], pos.data[v * 3 + 1], pos.data[v * 3 + 2]));
       }
-      if (LINT) { camPos.push(...p[0], ...p[1], ...p[2]); camPiece.push(node.name || `mesh ${node.mesh}`); }
-      if (hidden) continue;
+      if (LINT && solid) { camPos.push(...p[0], ...p[1], ...p[2]); camPiece.push(node.name || `mesh ${node.mesh}`); }
       const lo = [0, 1, 2].map((a) => Math.min(p[0][a], p[1][a], p[2][a]));
       const hi = [0, 1, 2].map((a) => Math.max(p[0][a], p[1][a], p[2][a]));
       if (water || cliff) sealCells(p, lo, hi);

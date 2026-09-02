@@ -493,25 +493,9 @@
 </g>
 <g><title>cell 110,58 y -5 open 8/8</title><rect x="1320.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 19,60 y -4.964 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="228.5" y="720.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="234" y1="726" x2="239" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="726" x2="237.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="726" x2="234" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="726" x2="230.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="726" x2="229" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="726" x2="230.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="726" x2="234" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="726" x2="237.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 19,60 y -3 open 8/8</title><rect x="228.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 19,59 y -4.928 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="228.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="234" y1="714" x2="239" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="714" x2="237.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="714" x2="234" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="714" x2="230.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="714" x2="229" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="714" x2="230.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="714" x2="234" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="714" x2="237.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 19,59 y -3 open 8/8</title><rect x="228.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 47,66 y 4.25 open 8/8</title><rect x="564.5" y="792.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -521,9 +505,8 @@
 </g>
 <g><title>cell 50,66 y 4.35 open 8/8</title><rect x="600.5" y="792.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 84,92 y -1.814 open 6/8 blocked 135° 180°</title><rect x="1008.5" y="1104.5" width="11" height="11" fill="#a0b15e"/>
+<g><title>cell 84,92 y -1.814 open 7/8 blocked 135°</title><rect x="1008.5" y="1104.5" width="11" height="11" fill="#95c464"/>
 <line x1="1014" y1="1110" x2="1010.464" y2="1113.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="1110" x2="1009" y2="1110" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 84,89 y -2.686 open 8/8</title><rect x="1008.5" y="1068.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -543,8 +526,7 @@
 </g>
 <g><title>cell 85,92 y -2.063 open 8/8</title><rect x="1020.5" y="1104.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,91 y -2.041 open 4/8 blocked 90° 135° 180° 225°</title><rect x="996.5" y="1092.5" width="11" height="11" fill="#b58952"/>
-<line x1="1002" y1="1098" x2="1002" y2="1103" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,91 y -2.041 open 5/8 blocked 135° 180° 225°</title><rect x="996.5" y="1092.5" width="11" height="11" fill="#aa9d58"/>
 <line x1="1002" y1="1098" x2="998.464" y2="1101.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1002" y1="1098" x2="997" y2="1098" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1002" y1="1098" x2="998.464" y2="1094.464" stroke="#1a2028" stroke-width="1.5"/>
@@ -601,39 +583,25 @@
 </g>
 <g><title>cell 79,34 y -2.75 open 8/8</title><rect x="948.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 80,33 y -2.801 open 6/8 blocked 0° 45°</title><rect x="960.5" y="396.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="966" y1="402" x2="971" y2="402" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="402" x2="969.536" y2="405.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 80,33 y -2.801 open 8/8</title><rect x="960.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 80,34 y -2.75 open 6/8 blocked 0° 45°</title><rect x="960.5" y="408.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="966" y1="414" x2="971" y2="414" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="414" x2="969.536" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 80,34 y -2.75 open 8/8</title><rect x="960.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 81,32 y -2.801 open 5/8 blocked 0° 45° 90°</title><rect x="972.5" y="384.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="978" y1="390" x2="983" y2="390" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="390" x2="981.536" y2="393.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="390" x2="978" y2="395" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 81,32 y -2.801 open 8/8</title><rect x="972.5" y="384.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 81,33 y -2.75 open 5/8 blocked 0° 45° 90°</title><rect x="972.5" y="396.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="978" y1="402" x2="983" y2="402" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="402" x2="981.536" y2="405.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="402" x2="978" y2="407" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 81,33 y -2.75 open 8/8</title><rect x="972.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 82,29 y -2.85 open 8/8</title><rect x="984.5" y="348.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 82,30 y -2.8 open 8/8</title><rect x="984.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,31 y -2.75 open 6/8 blocked 45° 90°</title><rect x="984.5" y="372.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="990" y1="378" x2="993.536" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="378" x2="990" y2="383" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,31 y -2.75 open 8/8</title><rect x="984.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 83,29 y -2.75 open 8/8</title><rect x="996.5" y="348.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 83,30 y -2.75 open 8/8</title><rect x="996.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,31 y -2.75 open 6/8 blocked 45° 90°</title><rect x="996.5" y="372.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1002" y1="378" x2="1005.536" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="378" x2="1002" y2="383" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,31 y -2.75 open 8/8</title><rect x="996.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 81,29 y -3.5 open 8/8</title><rect x="972.5" y="348.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -645,10 +613,7 @@
 </g>
 <g><title>cell 80,32 y -3.288 open 8/8</title><rect x="960.5" y="384.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,32 y -2.75 open 5/8 blocked 0° 45° 90°</title><rect x="984.5" y="384.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="990" y1="390" x2="995" y2="390" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="390" x2="993.536" y2="393.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="390" x2="990" y2="395" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,32 y -2.75 open 8/8</title><rect x="984.5" y="384.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 80,30 y -3.5 open 8/8</title><rect x="960.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -676,11 +641,7 @@
 </g>
 <g><title>cell 80,29 y -3.5 open 8/8</title><rect x="960.5" y="348.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,33 y -2.5 open 4/8 blocked 180° 225° 270° 315°</title><rect x="996.5" y="396.5" width="11" height="11" fill="#b58952"/>
-<line x1="1002" y1="402" x2="997" y2="402" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="402" x2="998.464" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="402" x2="1002" y2="397" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="402" x2="1005.536" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,33 y -2.5 open 8/8</title><rect x="996.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 33,113 y -3.704 open 8/8</title><rect x="396.5" y="1356.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -1190,12 +1151,9 @@
 <line x1="942" y1="438" x2="945.536" y2="441.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="942" y1="438" x2="938.464" y2="441.536" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 79,35 y -3.517 open 6/8 blocked 0° 45°</title><rect x="948.5" y="420.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="954" y1="426" x2="959" y2="426" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="954" y1="426" x2="957.536" y2="429.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 79,35 y -3.517 open 8/8</title><rect x="948.5" y="420.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 79,36 y -3.527 open 5/8 blocked 0° 45° 90°</title><rect x="948.5" y="432.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="954" y1="438" x2="959" y2="438" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 79,36 y -3.527 open 6/8 blocked 45° 90°</title><rect x="948.5" y="432.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="954" y1="438" x2="957.536" y2="441.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="954" y1="438" x2="954" y2="443" stroke="#1a2028" stroke-width="1.5"/>
 </g>
@@ -1363,258 +1321,79 @@
 </g>
 <g><title>cell 92,29 y -3.171 open 8/8</title><rect x="1104.5" y="348.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,55 y -4.858 open 7/8 blocked 45°</title><rect x="216.5" y="660.5" width="11" height="11" fill="#95c464"/>
-<line x1="222" y1="666" x2="225.536" y2="669.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,55 y -4.858 open 8/8</title><rect x="216.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,56 y -4.888 open 4/8 blocked 0° 45° 90° 315°</title><rect x="216.5" y="672.5" width="11" height="11" fill="#b58952"/>
-<line x1="222" y1="678" x2="227" y2="678" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="678" x2="225.536" y2="681.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="678" x2="222" y2="683" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="678" x2="225.536" y2="674.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,56 y -4.888 open 8/8</title><rect x="216.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 19,55 y -4.671 open 8/8</title><rect x="228.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 19,56 y -4.7 open 3/8 blocked 0° 45° 90° 135° 180°</title><rect x="228.5" y="672.5" width="11" height="11" fill="#c0754c"/>
-<line x1="234" y1="678" x2="239" y2="678" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="678" x2="237.536" y2="681.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="678" x2="234" y2="683" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="678" x2="230.464" y2="681.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="678" x2="229" y2="678" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 19,56 y -4.7 open 8/8</title><rect x="228.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 20,55 y -4.536 open 8/8</title><rect x="240.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 20,56 y -4.546 open 5/8 blocked 45° 90° 135°</title><rect x="240.5" y="672.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="246" y1="678" x2="249.536" y2="681.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="678" x2="246" y2="683" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="678" x2="242.464" y2="681.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 20,56 y -4.546 open 8/8</title><rect x="240.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,57 y -4.917 open 3/8 blocked 0° 45° 90° 135° 315°</title><rect x="216.5" y="684.5" width="11" height="11" fill="#c0754c"/>
-<line x1="222" y1="690" x2="227" y2="690" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="690" x2="225.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="690" x2="222" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="690" x2="218.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="690" x2="225.536" y2="686.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,57 y -4.917 open 8/8</title><rect x="216.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 19,57 y -4.749 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="228.5" y="684.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="234" y1="690" x2="239" y2="690" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="690" x2="237.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="690" x2="234" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="690" x2="230.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="690" x2="229" y2="690" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="690" x2="230.464" y2="686.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="690" x2="234" y2="685" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="690" x2="237.536" y2="686.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 19,57 y -4.749 open 8/8</title><rect x="228.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 20,57 y -4.581 open 3/8 blocked 45° 90° 135° 180° 225°</title><rect x="240.5" y="684.5" width="11" height="11" fill="#c0754c"/>
-<line x1="246" y1="690" x2="249.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="690" x2="246" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="690" x2="242.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="690" x2="241" y2="690" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="690" x2="242.464" y2="686.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 20,57 y -4.581 open 8/8</title><rect x="240.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 20,59 y -4.761 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="240.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="246" y1="714" x2="251" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="714" x2="249.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="714" x2="246" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="714" x2="242.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="714" x2="241" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="714" x2="242.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="714" x2="246" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="714" x2="249.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 20,59 y -4.761 open 8/8</title><rect x="240.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 20,60 y -4.832 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="240.5" y="720.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="246" y1="726" x2="251" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="726" x2="249.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="726" x2="246" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="726" x2="242.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="726" x2="241" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="726" x2="242.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="726" x2="246" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="726" x2="249.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 20,60 y -4.832 open 8/8</title><rect x="240.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 21,59 y -4.594 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="252.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="258" y1="714" x2="263" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="714" x2="261.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="714" x2="258" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="714" x2="254.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="714" x2="253" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="714" x2="254.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="714" x2="258" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="714" x2="261.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 21,59 y -4.594 open 8/8</title><rect x="252.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 21,60 y -4.643 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="252.5" y="720.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="258" y1="726" x2="263" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="726" x2="261.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="726" x2="258" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="726" x2="254.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="726" x2="253" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="726" x2="254.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="726" x2="258" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="726" x2="261.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 21,60 y -4.643 open 8/8</title><rect x="252.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 22,59 y -4.517 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="264.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="270" y1="714" x2="275" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="714" x2="273.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="714" x2="270" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="714" x2="266.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="714" x2="265" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="714" x2="266.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="714" x2="270" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="714" x2="273.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 22,59 y -4.517 open 8/8</title><rect x="264.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 22,60 y -4.527 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="264.5" y="720.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="270" y1="726" x2="275" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="726" x2="273.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="726" x2="270" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="726" x2="266.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="726" x2="265" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="726" x2="266.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="726" x2="270" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="726" x2="273.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 22,60 y -4.527 open 8/8</title><rect x="264.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 20,58 y -4.671 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="240.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="246" y1="702" x2="251" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="702" x2="249.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="702" x2="246" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="702" x2="242.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="702" x2="241" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="702" x2="242.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="702" x2="246" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="702" x2="249.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 20,58 y -4.671 open 8/8</title><rect x="240.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 21,56 y -4.5 open 7/8 blocked 90°</title><rect x="252.5" y="672.5" width="11" height="11" fill="#95c464"/>
-<line x1="258" y1="678" x2="258" y2="683" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 21,56 y -4.5 open 8/8</title><rect x="252.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 21,57 y -4.513 open 4/8 blocked 45° 90° 135° 180°</title><rect x="252.5" y="684.5" width="11" height="11" fill="#b58952"/>
-<line x1="258" y1="690" x2="261.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="690" x2="258" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="690" x2="254.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="690" x2="253" y2="690" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 21,57 y -4.513 open 8/8</title><rect x="252.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 21,58 y -4.543 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="252.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="258" y1="702" x2="263" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="702" x2="261.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="702" x2="258" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="702" x2="254.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="702" x2="253" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="702" x2="254.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="702" x2="258" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="702" x2="261.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 21,58 y -4.543 open 8/8</title><rect x="252.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 22,56 y -4.437 open 7/8 blocked 90°</title><rect x="264.5" y="672.5" width="11" height="11" fill="#95c464"/>
-<line x1="270" y1="678" x2="270" y2="683" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 22,56 y -4.437 open 8/8</title><rect x="264.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 22,57 y -4.5 open 5/8 blocked 45° 90° 135°</title><rect x="264.5" y="684.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="270" y1="690" x2="273.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="690" x2="270" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="690" x2="266.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 22,57 y -4.5 open 8/8</title><rect x="264.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 22,58 y -4.5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="264.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="270" y1="702" x2="275" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="702" x2="273.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="702" x2="270" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="702" x2="266.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="702" x2="265" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="702" x2="266.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="702" x2="270" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="702" x2="273.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 22,58 y -4.5 open 8/8</title><rect x="264.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 21,55 y -4.5 open 8/8</title><rect x="252.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 22,55 y -4.457 open 8/8</title><rect x="264.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,58 y -4.96 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="216.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="222" y1="702" x2="227" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="702" x2="225.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="702" x2="222" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="702" x2="218.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="702" x2="217" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="702" x2="218.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="702" x2="222" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="702" x2="225.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,58 y -4.96 open 8/8</title><rect x="216.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,59 y -4.99 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="216.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="222" y1="714" x2="227" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="714" x2="225.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="714" x2="222" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="714" x2="218.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="714" x2="217" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="714" x2="218.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="714" x2="222" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="714" x2="225.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,59 y -4.99 open 8/8</title><rect x="216.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,60 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="216.5" y="720.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="222" y1="726" x2="227" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="726" x2="225.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="726" x2="222" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="726" x2="218.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="726" x2="217" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="726" x2="218.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="726" x2="222" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="726" x2="225.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,60 y -5 open 8/8</title><rect x="216.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 19,58 y -4.838 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="228.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="234" y1="702" x2="239" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="702" x2="237.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="702" x2="234" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="702" x2="230.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="702" x2="229" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="702" x2="230.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="702" x2="234" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="702" x2="237.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 19,58 y -4.838 open 8/8</title><rect x="228.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 17,57 y -4.993 open 4/8 blocked 0° 45° 90° 135°</title><rect x="204.5" y="684.5" width="11" height="11" fill="#b58952"/>
-<line x1="210" y1="690" x2="215" y2="690" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="690" x2="213.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="690" x2="210" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="690" x2="206.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 17,57 y -4.993 open 8/8</title><rect x="204.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 17,58 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="204.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="210" y1="702" x2="215" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="702" x2="213.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="702" x2="210" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="702" x2="206.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="702" x2="205" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="702" x2="206.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="702" x2="210" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="702" x2="213.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 17,58 y -5 open 8/8</title><rect x="204.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 17,59 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="204.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="210" y1="714" x2="215" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="714" x2="213.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="714" x2="210" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="714" x2="206.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="714" x2="205" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="714" x2="206.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="714" x2="210" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="714" x2="213.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 17,59 y -5 open 8/8</title><rect x="204.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 17,60 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="204.5" y="720.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="210" y1="726" x2="215" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="726" x2="213.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="726" x2="210" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="726" x2="206.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="726" x2="205" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="726" x2="206.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="726" x2="210" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="726" x2="213.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 17,60 y -5 open 8/8</title><rect x="204.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 16,55 y -5 open 8/8</title><rect x="192.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 16,56 y -5 open 7/8 blocked 90°</title><rect x="192.5" y="672.5" width="11" height="11" fill="#95c464"/>
-<line x1="198" y1="678" x2="198" y2="683" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,56 y -5 open 8/8</title><rect x="192.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 16,57 y -5 open 5/8 blocked 45° 90° 135°</title><rect x="192.5" y="684.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="198" y1="690" x2="201.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="690" x2="198" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="690" x2="194.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,57 y -5 open 8/8</title><rect x="192.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 17,55 y -4.974 open 8/8</title><rect x="204.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 17,56 y -4.984 open 5/8 blocked 0° 45° 90°</title><rect x="204.5" y="672.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="210" y1="678" x2="215" y2="678" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="678" x2="213.536" y2="681.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="678" x2="210" y2="683" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 17,56 y -4.984 open 8/8</title><rect x="204.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 51,52 y -0.063 open 8/8</title><rect x="612.5" y="624.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -1853,13 +1632,11 @@
 </g>
 <g><title>cell 75,50 y -0.75 open 8/8</title><rect x="900.5" y="600.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 24,58 y -4.063 open 7/8 blocked 180°</title><rect x="288.5" y="696.5" width="11" height="11" fill="#95c464"/>
-<line x1="294" y1="702" x2="289" y2="702" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 24,58 y -4.063 open 8/8</title><rect x="288.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 24,59 y -4.063 open 8/8</title><rect x="288.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 24,60 y -4.063 open 7/8 blocked 180°</title><rect x="288.5" y="720.5" width="11" height="11" fill="#95c464"/>
-<line x1="294" y1="726" x2="289" y2="726" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 24,60 y -4.063 open 8/8</title><rect x="288.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 24,61 y -3.979 open 8/8</title><rect x="288.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -1871,47 +1648,19 @@
 </g>
 <g><title>cell 25,61 y -3.854 open 8/8</title><rect x="300.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 21,61 y -4.656 open 5/8 blocked 225° 270° 315°</title><rect x="252.5" y="732.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="258" y1="738" x2="254.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="738" x2="258" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="738" x2="261.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 21,61 y -4.656 open 8/8</title><rect x="252.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 22,61 y -4.531 open 5/8 blocked 225° 270° 315°</title><rect x="264.5" y="732.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="270" y1="738" x2="266.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="738" x2="270" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="270" y1="738" x2="273.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 22,61 y -4.531 open 8/8</title><rect x="264.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 20,61 y -4.844 open 5/8 blocked 225° 270° 315°</title><rect x="240.5" y="732.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="246" y1="738" x2="242.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="738" x2="246" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="738" x2="249.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 20,61 y -4.844 open 8/8</title><rect x="240.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 23,58 y -4.328 open 3/8 blocked 45° 90° 135° 180° 225°</title><rect x="276.5" y="696.5" width="11" height="11" fill="#c0754c"/>
-<line x1="282" y1="702" x2="285.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="702" x2="282" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="702" x2="278.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="702" x2="277" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="702" x2="278.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 23,58 y -4.328 open 8/8</title><rect x="276.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 23,59 y -4.328 open 1/8 blocked 45° 90° 135° 180° 225° 270° 315°</title><rect x="276.5" y="708.5" width="11" height="11" fill="#d54e40"/>
-<line x1="282" y1="714" x2="285.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="714" x2="282" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="714" x2="278.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="714" x2="277" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="714" x2="278.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="714" x2="282" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="714" x2="285.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 23,59 y -4.328 open 8/8</title><rect x="276.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 23,60 y -4.328 open 3/8 blocked 135° 180° 225° 270° 315°</title><rect x="276.5" y="720.5" width="11" height="11" fill="#c0754c"/>
-<line x1="282" y1="726" x2="278.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="726" x2="277" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="726" x2="278.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="726" x2="282" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="726" x2="285.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 23,60 y -4.328 open 8/8</title><rect x="276.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 23,61 y -4.239 open 6/8 blocked 225° 270°</title><rect x="276.5" y="732.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="282" y1="738" x2="278.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="738" x2="282" y2="733" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 23,61 y -4.239 open 8/8</title><rect x="276.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 63,117 y -0.812 open 8/8</title><rect x="756.5" y="1404.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -1971,19 +1720,13 @@
 </g>
 <g><title>cell 68,121 y -0.75 open 8/8</title><rect x="816.5" y="1452.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 68,94 y 1.859 open 6/8 blocked 180° 225°</title><rect x="816.5" y="1128.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="822" y1="1134" x2="817" y2="1134" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="822" y1="1134" x2="818.464" y2="1130.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 68,94 y 1.859 open 8/8</title><rect x="816.5" y="1128.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 68,95 y 1.859 open 6/8 blocked 135° 225°</title><rect x="816.5" y="1140.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="822" y1="1146" x2="818.464" y2="1149.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="822" y1="1146" x2="818.464" y2="1142.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 68,95 y 1.859 open 8/8</title><rect x="816.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 69,94 y 1.359 open 7/8 blocked 135°</title><rect x="828.5" y="1128.5" width="11" height="11" fill="#95c464"/>
-<line x1="834" y1="1134" x2="830.464" y2="1137.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 69,94 y 1.359 open 8/8</title><rect x="828.5" y="1128.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 69,95 y 1.359 open 7/8 blocked 225°</title><rect x="828.5" y="1140.5" width="11" height="11" fill="#95c464"/>
-<line x1="834" y1="1146" x2="830.464" y2="1142.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 69,95 y 1.359 open 8/8</title><rect x="828.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 70,94 y 0.859 open 8/8</title><rect x="840.5" y="1128.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -2388,21 +2131,11 @@
 </g>
 <g><title>cell 83,100 y -0.75 open 8/8</title><rect x="996.5" y="1200.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 84,100 y -1 open 6/8 blocked 180° 225°</title><rect x="1008.5" y="1200.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1014" y1="1206" x2="1009" y2="1206" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="1206" x2="1010.464" y2="1202.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 84,100 y -1 open 8/8</title><rect x="1008.5" y="1200.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,99 y -1 open 4/8 blocked 0° 45° 90° 315°</title><rect x="984.5" y="1188.5" width="11" height="11" fill="#b58952"/>
-<line x1="990" y1="1194" x2="995" y2="1194" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1194" x2="993.536" y2="1197.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1194" x2="990" y2="1199" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1194" x2="993.536" y2="1190.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,99 y -1 open 8/8</title><rect x="984.5" y="1188.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,98 y -1 open 4/8 blocked 0° 45° 90° 315°</title><rect x="984.5" y="1176.5" width="11" height="11" fill="#b58952"/>
-<line x1="990" y1="1182" x2="995" y2="1182" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1182" x2="993.536" y2="1185.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1182" x2="990" y2="1187" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1182" x2="993.536" y2="1178.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,98 y -1 open 8/8</title><rect x="984.5" y="1176.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 41,115 y -1.704 open 8/8</title><rect x="492.5" y="1380.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -3051,13 +2784,11 @@
 <line x1="870" y1="1206" x2="866.464" y2="1209.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="870" y1="1206" x2="865" y2="1206" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 70,96 y 0.25 open 7/8 blocked 225°</title><rect x="840.5" y="1152.5" width="11" height="11" fill="#95c464"/>
-<line x1="846" y1="1158" x2="842.464" y2="1154.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 70,96 y 0.25 open 8/8</title><rect x="840.5" y="1152.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 70,97 y 0.25 open 5/8 blocked 90° 135° 225°</title><rect x="840.5" y="1164.5" width="11" height="11" fill="#aa9d58"/>
+<g><title>cell 70,97 y 0.25 open 6/8 blocked 90° 135°</title><rect x="840.5" y="1164.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="846" y1="1170" x2="846" y2="1175" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="846" y1="1170" x2="842.464" y2="1173.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="846" y1="1170" x2="842.464" y2="1166.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 30,91 y -1.687 open 8/8</title><rect x="360.5" y="1092.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -3243,25 +2974,9 @@
 </g>
 <g><title>cell 53,109 y -0.02 open 8/8</title><rect x="636.5" y="1308.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 13,61 y -5.046 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="156.5" y="732.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="162" y1="738" x2="167" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="738" x2="165.536" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="738" x2="162" y2="743" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="738" x2="158.464" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="738" x2="157" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="738" x2="158.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="738" x2="162" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="738" x2="165.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,61 y -3 open 8/8</title><rect x="156.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 13,60 y -5.081 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="156.5" y="720.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="162" y1="726" x2="167" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="726" x2="165.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="726" x2="162" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="726" x2="158.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="726" x2="157" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="726" x2="158.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="726" x2="162" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="726" x2="165.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,60 y -3.234 open 8/8</title><rect x="156.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 94,30 y -3.484 open 8/8</title><rect x="1128.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -3896,13 +3611,9 @@
 </g>
 <g><title>cell 80,28 y -3.5 open 8/8</title><rect x="960.5" y="336.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 84,30 y -3.5 open 6/8 blocked 45° 90°</title><rect x="1008.5" y="360.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1014" y1="366" x2="1017.536" y2="369.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="366" x2="1014" y2="371" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 84,30 y -3.5 open 8/8</title><rect x="1008.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,30 y -3.5 open 6/8 blocked 45° 90°</title><rect x="1020.5" y="360.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="366" x2="1029.536" y2="369.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="366" x2="1026" y2="371" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,30 y -3.5 open 8/8</title><rect x="1020.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 106,21 y -4.531 open 8/8</title><rect x="1272.5" y="252.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -3936,35 +3647,19 @@
 </g>
 <g><title>cell 109,24 y -4.969 open 8/8</title><rect x="1308.5" y="288.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,60 y -5.013 open 2/8 blocked 45° 90° 135° 180° 225° 270°</title><rect x="168.5" y="720.5" width="11" height="11" fill="#cb6246"/>
-<line x1="174" y1="726" x2="177.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="726" x2="174" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="726" x2="170.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="726" x2="169" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="726" x2="170.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="726" x2="174" y2="721" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,60 y -2 open 8/8</title><rect x="168.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,59 y -5.043 open 2/8 blocked 90° 135° 180° 225° 270° 315°</title><rect x="168.5" y="708.5" width="11" height="11" fill="#cb6246"/>
-<line x1="174" y1="714" x2="174" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="714" x2="170.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="714" x2="169" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="714" x2="170.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="714" x2="174" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="714" x2="177.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,59 y -2 open 8/8</title><rect x="168.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 66,39 y 0.179 open 8/8</title><rect x="792.5" y="468.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 65,39 y 0.25 open 7/8 blocked 135°</title><rect x="780.5" y="468.5" width="11" height="11" fill="#95c464"/>
-<line x1="786" y1="474" x2="782.464" y2="477.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 65,39 y 0.25 open 8/8</title><rect x="780.5" y="468.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 66,38 y 0.25 open 8/8</title><rect x="792.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 65,38 y 0.25 open 7/8 blocked 135°</title><rect x="780.5" y="456.5" width="11" height="11" fill="#95c464"/>
-<line x1="786" y1="462" x2="782.464" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 65,38 y 0.25 open 8/8</title><rect x="780.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 66,40 y 0 open 6/8 blocked 135° 225°</title><rect x="792.5" y="480.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="798" y1="486" x2="794.464" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="798" y1="486" x2="794.464" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 66,40 y 0 open 8/8</title><rect x="792.5" y="480.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 72,128 y -1.75 open 8/8</title><rect x="864.5" y="1536.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4160,13 +3855,9 @@
 </g>
 <g><title>cell 16,74 y -5.157 open 8/8</title><rect x="192.5" y="888.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 16,62 y -5 open 5/8 blocked 225° 270° 315°</title><rect x="192.5" y="744.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="198" y1="750" x2="194.464" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="750" x2="198" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="750" x2="201.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,62 y -5 open 8/8</title><rect x="192.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 16,63 y -5 open 7/8 blocked 270°</title><rect x="192.5" y="756.5" width="11" height="11" fill="#95c464"/>
-<line x1="198" y1="762" x2="198" y2="757" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,63 y -5 open 8/8</title><rect x="192.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 16,64 y -5 open 8/8</title><rect x="192.5" y="768.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4190,9 +3881,7 @@
 </g>
 <g><title>cell 17,70 y -5.463 open 8/8</title><rect x="204.5" y="840.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 17,62 y -5 open 6/8 blocked 225° 270°</title><rect x="204.5" y="744.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="210" y1="750" x2="206.464" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="750" x2="210" y2="745" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 17,62 y -5 open 8/8</title><rect x="204.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 17,63 y -5 open 8/8</title><rect x="204.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4226,9 +3915,7 @@
 </g>
 <g><title>cell 18,69 y -5.349 open 8/8</title><rect x="216.5" y="828.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,62 y -5 open 6/8 blocked 270° 315°</title><rect x="216.5" y="744.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="222" y1="750" x2="222" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="750" x2="225.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,62 y -5 open 8/8</title><rect x="216.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 18,63 y -5 open 8/8</title><rect x="216.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4254,9 +3941,7 @@
 </g>
 <g><title>cell 19,66 y -5.227 open 8/8</title><rect x="228.5" y="792.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 19,62 y -4.969 open 6/8 blocked 270° 315°</title><rect x="228.5" y="744.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="234" y1="750" x2="234" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="750" x2="237.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 19,62 y -4.969 open 8/8</title><rect x="228.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 19,63 y -4.969 open 8/8</title><rect x="228.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4506,9 +4191,7 @@
 </g>
 <g><title>cell 89,41 y -2.861 open 8/8</title><rect x="1068.5" y="492.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 88,33 y -3.703 open 6/8 blocked 135° 225°</title><rect x="1056.5" y="396.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1062" y1="402" x2="1058.464" y2="405.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1062" y1="402" x2="1058.464" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 88,33 y -3.703 open 8/8</title><rect x="1056.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 86,96 y -0.814 open 8/8</title><rect x="1032.5" y="1152.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4518,16 +4201,11 @@
 </g>
 <g><title>cell 86,95 y -1.067 open 8/8</title><rect x="1032.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,96 y -1.063 open 7/8 blocked 180°</title><rect x="1020.5" y="1152.5" width="11" height="11" fill="#95c464"/>
-<line x1="1026" y1="1158" x2="1021" y2="1158" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,96 y -1.063 open 8/8</title><rect x="1020.5" y="1152.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,94 y -1.703 open 6/8 blocked 135° 180°</title><rect x="1020.5" y="1128.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="1134" x2="1022.464" y2="1137.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="1134" x2="1021" y2="1134" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,94 y -1.703 open 8/8</title><rect x="1020.5" y="1128.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,95 y -1.328 open 6/8 blocked 135° 180°</title><rect x="1020.5" y="1140.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="1146" x2="1022.464" y2="1149.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="1146" x2="1021" y2="1146" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,95 y -1.328 open 8/8</title><rect x="1020.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 85,93 y -1.938 open 8/8</title><rect x="1020.5" y="1116.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4775,10 +4453,7 @@
 </g>
 <g><title>cell 8,94 y -4.998 open 8/8</title><rect x="96.5" y="1128.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 79,103 y -1 open 5/8 blocked 135° 225° 270°</title><rect x="948.5" y="1236.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="954" y1="1242" x2="950.464" y2="1245.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="954" y1="1242" x2="950.464" y2="1238.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="954" y1="1242" x2="954" y2="1237" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 79,103 y -1 open 8/8</title><rect x="948.5" y="1236.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 80,103 y -0.952 open 8/8</title><rect x="960.5" y="1236.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4788,9 +4463,7 @@
 </g>
 <g><title>cell 79,105 y -0.75 open 8/8</title><rect x="948.5" y="1260.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 80,102 y -0.952 open 6/8 blocked 225° 270°</title><rect x="960.5" y="1224.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="966" y1="1230" x2="962.464" y2="1226.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="1230" x2="966" y2="1225" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 80,102 y -0.952 open 8/8</title><rect x="960.5" y="1224.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 80,105 y -0.75 open 8/8</title><rect x="960.5" y="1260.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4856,10 +4529,7 @@
 <line x1="990" y1="1134" x2="990" y2="1129" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="990" y1="1134" x2="993.536" y2="1130.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 82,95 y -0.992 open 5/8 blocked 0° 45° 315°</title><rect x="984.5" y="1140.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="990" y1="1146" x2="995" y2="1146" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1146" x2="993.536" y2="1149.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1146" x2="993.536" y2="1142.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,95 y 0.25 open 8/8</title><rect x="984.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 83,95 y 0.25 open 8/8</title><rect x="996.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4913,8 +4583,7 @@
 </g>
 <g><title>cell 74,122 y -1.7 open 8/8</title><rect x="888.5" y="1464.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 75,119 y -1.532 open 7/8 blocked 270°</title><rect x="900.5" y="1428.5" width="11" height="11" fill="#95c464"/>
-<line x1="906" y1="1434" x2="906" y2="1429" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 75,119 y -1.532 open 8/8</title><rect x="900.5" y="1428.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 75,120 y -1.75 open 8/8</title><rect x="900.5" y="1440.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -4922,8 +4591,7 @@
 </g>
 <g><title>cell 75,122 y -1.75 open 8/8</title><rect x="900.5" y="1464.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 76,119 y -1.583 open 7/8 blocked 270°</title><rect x="912.5" y="1428.5" width="11" height="11" fill="#95c464"/>
-<line x1="918" y1="1434" x2="918" y2="1429" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 76,119 y -1.583 open 8/8</title><rect x="912.5" y="1428.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 76,120 y -1.75 open 8/8</title><rect x="912.5" y="1440.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -5469,11 +5137,7 @@
 </g>
 <g><title>cell 78,103 y -0.641 open 8/8</title><rect x="936.5" y="1236.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 79,102 y -1 open 4/8 blocked 135° 225° 270° 315°</title><rect x="948.5" y="1224.5" width="11" height="11" fill="#b58952"/>
-<line x1="954" y1="1230" x2="950.464" y2="1233.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="954" y1="1230" x2="950.464" y2="1226.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="954" y1="1230" x2="954" y2="1225" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="954" y1="1230" x2="957.536" y2="1226.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 79,102 y -1 open 8/8</title><rect x="948.5" y="1224.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 76,102 y 0 open 8/8</title><rect x="912.5" y="1224.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -5896,10 +5560,7 @@
 <line x1="1014" y1="1134" x2="1009" y2="1134" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1014" y1="1134" x2="1010.464" y2="1130.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 84,95 y -1.067 open 5/8 blocked 135° 180° 225°</title><rect x="1008.5" y="1140.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1014" y1="1146" x2="1010.464" y2="1149.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="1146" x2="1009" y2="1146" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="1146" x2="1010.464" y2="1142.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 84,95 y -1.067 open 8/8</title><rect x="1008.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 110,64 y -5.036 open 8/8</title><rect x="1320.5" y="768.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -6194,11 +5855,9 @@
 <line x1="750" y1="342" x2="750" y2="347" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="342" x2="746.464" y2="345.536" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 87,30 y -2.85 open 7/8 blocked 135°</title><rect x="1044.5" y="360.5" width="11" height="11" fill="#95c464"/>
-<line x1="1050" y1="366" x2="1046.464" y2="369.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 87,30 y -2.85 open 8/8</title><rect x="1044.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 88,30 y -2.875 open 7/8 blocked 135°</title><rect x="1056.5" y="360.5" width="11" height="11" fill="#95c464"/>
-<line x1="1062" y1="366" x2="1058.464" y2="369.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 88,30 y -2.875 open 8/8</title><rect x="1056.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 102,56 y -4.332 open 8/8</title><rect x="1224.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -7080,9 +6739,7 @@
 </g>
 <g><title>cell 24,57 y -3.979 open 8/8</title><rect x="288.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 23,57 y -4.239 open 6/8 blocked 90° 135°</title><rect x="276.5" y="684.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="282" y1="690" x2="282" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="282" y1="690" x2="278.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 23,57 y -4.239 open 8/8</title><rect x="276.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 23,115 y -5 open 8/8</title><rect x="276.5" y="1380.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -7650,10 +7307,7 @@
 </g>
 <g><title>cell 84,40 y -1.75 open 8/8</title><rect x="1008.5" y="480.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,37 y -2.65 open 5/8 blocked 135° 180° 225°</title><rect x="1020.5" y="444.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1026" y1="450" x2="1022.464" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="450" x2="1021" y2="450" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="450" x2="1022.464" y2="446.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,37 y -1.75 open 8/8</title><rect x="1020.5" y="444.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 85,38 y -1.75 open 8/8</title><rect x="1020.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -7866,54 +7520,17 @@
 <line x1="966" y1="882" x2="962.464" y2="878.464" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="966" y1="882" x2="966" y2="877" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 16,58 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="192.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="198" y1="702" x2="203" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="702" x2="201.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="702" x2="198" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="702" x2="194.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="702" x2="193" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="702" x2="194.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="702" x2="198" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="702" x2="201.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,58 y -5 open 8/8</title><rect x="192.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 16,59 y -5 open 2/8 blocked 0° 45° 90° 225° 270° 315°</title><rect x="192.5" y="708.5" width="11" height="11" fill="#cb6246"/>
-<line x1="198" y1="714" x2="203" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="714" x2="201.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="714" x2="198" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="714" x2="194.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="714" x2="198" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="714" x2="201.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,59 y -5 open 8/8</title><rect x="192.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 16,60 y -5 open 2/8 blocked 0° 45° 90° 135° 270° 315°</title><rect x="192.5" y="720.5" width="11" height="11" fill="#cb6246"/>
-<line x1="198" y1="726" x2="203" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="726" x2="201.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="726" x2="198" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="726" x2="194.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="726" x2="198" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="726" x2="201.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,60 y -5 open 8/8</title><rect x="192.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 16,61 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="192.5" y="732.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="198" y1="738" x2="203" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="738" x2="201.536" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="738" x2="198" y2="743" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="738" x2="194.464" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="738" x2="193" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="738" x2="194.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="738" x2="198" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="198" y1="738" x2="201.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 16,61 y -5 open 8/8</title><rect x="192.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 17,61 y -5 open 3/8 blocked 135° 180° 225° 270° 315°</title><rect x="204.5" y="732.5" width="11" height="11" fill="#c0754c"/>
-<line x1="210" y1="738" x2="206.464" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="738" x2="205" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="738" x2="206.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="738" x2="210" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="210" y1="738" x2="213.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 17,61 y -5 open 8/8</title><rect x="204.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 18,61 y -5 open 4/8 blocked 180° 225° 270° 315°</title><rect x="216.5" y="732.5" width="11" height="11" fill="#b58952"/>
-<line x1="222" y1="738" x2="217" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="738" x2="218.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="738" x2="222" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="222" y1="738" x2="225.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 18,61 y -5 open 8/8</title><rect x="216.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 85,82 y -2.781 open 8/8</title><rect x="1020.5" y="984.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -7935,9 +7552,7 @@
 <line x1="1014" y1="966" x2="1014" y2="961" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1014" y1="966" x2="1017.536" y2="962.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 86,82 y -2.75 open 6/8 blocked 0° 45°</title><rect x="1032.5" y="984.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1038" y1="990" x2="1043" y2="990" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="990" x2="1041.536" y2="993.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 86,82 y -2.75 open 8/8</title><rect x="1032.5" y="984.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 86,83 y -2.688 open 6/8 blocked 0° 45°</title><rect x="1032.5" y="996.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="1038" y1="1002" x2="1043" y2="1002" stroke="#1a2028" stroke-width="1.5"/>
@@ -9373,10 +8988,7 @@
 </g>
 <g><title>cell 36,60 y -1.916 open 8/8</title><rect x="432.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,101 y -1 open 5/8 blocked 180° 225° 270°</title><rect x="984.5" y="1212.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="990" y1="1218" x2="985" y2="1218" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1218" x2="986.464" y2="1214.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1218" x2="990" y2="1213" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,101 y -1 open 8/8</title><rect x="984.5" y="1212.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 54,41 y 4.084 open 8/8</title><rect x="648.5" y="492.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -9555,43 +9167,19 @@
 </g>
 <g><title>cell 52,31 y -2.75 open 8/8</title><rect x="624.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 84,34 y -2.625 open 5/8 blocked 45° 90° 225°</title><rect x="1008.5" y="408.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1014" y1="414" x2="1017.536" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="414" x2="1014" y2="419" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="414" x2="1010.464" y2="410.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 84,34 y -2.625 open 8/8</title><rect x="1008.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,34 y -2.763 open 5/8 blocked 45° 90° 135°</title><rect x="1020.5" y="408.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1026" y1="414" x2="1029.536" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="414" x2="1026" y2="419" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="414" x2="1022.464" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,34 y -2.763 open 8/8</title><rect x="1020.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 86,34 y -3 open 5/8 blocked 45° 90° 135°</title><rect x="1032.5" y="408.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1038" y1="414" x2="1041.536" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="414" x2="1038" y2="419" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="414" x2="1034.464" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 86,34 y -3 open 8/8</title><rect x="1032.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,34 y -2.391 open 4/8 blocked 45° 180° 225° 270°</title><rect x="996.5" y="408.5" width="11" height="11" fill="#b58952"/>
-<line x1="1002" y1="414" x2="1005.536" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="414" x2="997" y2="414" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="414" x2="998.464" y2="410.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="414" x2="1002" y2="409" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,34 y -2.391 open 8/8</title><rect x="996.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,35 y -2.25 open 5/8 blocked 0° 45° 225°</title><rect x="996.5" y="420.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1002" y1="426" x2="1007" y2="426" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="426" x2="1005.536" y2="429.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="426" x2="998.464" y2="422.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,35 y -2.25 open 8/8</title><rect x="996.5" y="420.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,36 y -2.125 open 5/8 blocked 0° 45° 315°</title><rect x="996.5" y="432.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1002" y1="438" x2="1007" y2="438" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="438" x2="1005.536" y2="441.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="438" x2="1005.536" y2="434.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,36 y -2.125 open 8/8</title><rect x="996.5" y="432.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,36 y -2 open 3/8 blocked 0° 45° 135° 180° 225°</title><rect x="984.5" y="432.5" width="11" height="11" fill="#c0754c"/>
-<line x1="990" y1="438" x2="995" y2="438" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="438" x2="993.536" y2="441.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="438" x2="986.464" y2="441.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="438" x2="985" y2="438" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="438" x2="986.464" y2="434.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,36 y -2 open 8/8</title><rect x="984.5" y="432.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 102,106 y -5 open 5/8 blocked 135° 180° 225°</title><rect x="1224.5" y="1272.5" width="11" height="11" fill="#aa9d58"/>
 <line x1="1230" y1="1278" x2="1226.464" y2="1281.536" stroke="#1a2028" stroke-width="1.5"/>
@@ -9729,15 +9317,9 @@
 </g>
 <g><title>cell 97,14 y -4.5 open 8/8</title><rect x="1164.5" y="168.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 84,31 y -2.75 open 5/8 blocked 45° 90° 135°</title><rect x="1008.5" y="372.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1014" y1="378" x2="1017.536" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="378" x2="1014" y2="383" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="378" x2="1010.464" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 84,31 y -2.75 open 8/8</title><rect x="1008.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,31 y -2.75 open 5/8 blocked 45° 90° 135°</title><rect x="1020.5" y="372.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1026" y1="378" x2="1029.536" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="378" x2="1026" y2="383" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="378" x2="1022.464" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,31 y -2.75 open 8/8</title><rect x="1020.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 32,53 y -2.75 open 8/8</title><rect x="384.5" y="636.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -10674,8 +10256,7 @@
 </g>
 <g><title>cell 60,87 y 5.156 open 8/8</title><rect x="720.5" y="1044.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 65,40 y 0.359 open 7/8 blocked 135°</title><rect x="780.5" y="480.5" width="11" height="11" fill="#95c464"/>
-<line x1="786" y1="486" x2="782.464" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 65,40 y 0.359 open 8/8</title><rect x="780.5" y="480.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 67,39 y 0.084 open 8/8</title><rect x="804.5" y="468.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -11390,24 +10971,9 @@
 </g>
 <g><title>cell 55,88 y 4.25 open 8/8</title><rect x="660.5" y="1056.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,60 y -5 open 1/8 blocked 0° 45° 90° 135° 180° 225° 270°</title><rect x="180.5" y="720.5" width="11" height="11" fill="#d54e40"/>
-<line x1="186" y1="726" x2="191" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="726" x2="189.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="726" x2="186" y2="731" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="726" x2="182.464" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="726" x2="181" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="726" x2="182.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="726" x2="186" y2="721" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,60 y -2 open 8/8</title><rect x="180.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,61 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="180.5" y="732.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="186" y1="738" x2="191" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="738" x2="189.536" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="738" x2="186" y2="743" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="738" x2="182.464" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="738" x2="181" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="738" x2="182.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="738" x2="186" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="738" x2="189.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,61 y -2.234 open 8/8</title><rect x="180.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 19,80 y -3.75 open 8/8</title><rect x="228.5" y="960.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -11524,11 +11090,9 @@
 </g>
 <g><title>cell 101,115 y -5 open 8/8</title><rect x="1212.5" y="1380.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 87,31 y -3.47 open 7/8 blocked 135°</title><rect x="1044.5" y="372.5" width="11" height="11" fill="#95c464"/>
-<line x1="1050" y1="378" x2="1046.464" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 87,31 y -3.47 open 8/8</title><rect x="1044.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 87,32 y -3 open 7/8 blocked 225°</title><rect x="1044.5" y="384.5" width="11" height="11" fill="#95c464"/>
-<line x1="1050" y1="390" x2="1046.464" y2="386.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 87,32 y -3 open 8/8</title><rect x="1044.5" y="384.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 88,31 y -3.625 open 8/8</title><rect x="1056.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -12597,28 +12161,16 @@
 </g>
 <g><title>cell 47,91 y 4 open 8/8</title><rect x="564.5" y="1092.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 66,95 y 2.609 open 7/8 blocked 135°</title><rect x="792.5" y="1140.5" width="11" height="11" fill="#95c464"/>
-<line x1="798" y1="1146" x2="794.464" y2="1149.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 66,95 y 2.609 open 8/8</title><rect x="792.5" y="1140.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 65,96 y 2.875 open 6/8 blocked 45° 135°</title><rect x="780.5" y="1152.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="786" y1="1158" x2="789.536" y2="1161.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 65,96 y 2.875 open 7/8 blocked 135°</title><rect x="780.5" y="1152.5" width="11" height="11" fill="#95c464"/>
 <line x1="786" y1="1158" x2="782.464" y2="1161.536" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 66,96 y 2.875 open 6/8 blocked 45° 135°</title><rect x="792.5" y="1152.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="798" y1="1158" x2="801.536" y2="1161.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="798" y1="1158" x2="794.464" y2="1161.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 66,96 y 2.875 open 8/8</title><rect x="792.5" y="1152.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 10,58 y -4 open 8/8</title><rect x="120.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 10,59 y -5.495 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="120.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="126" y1="714" x2="131" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="714" x2="129.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="714" x2="126" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="714" x2="122.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="714" x2="121" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="714" x2="122.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="714" x2="126" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="714" x2="129.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 10,59 y -4 open 8/8</title><rect x="120.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 77,98 y 0.25 open 8/8</title><rect x="924.5" y="1176.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -12664,9 +12216,8 @@
 <line x1="1038" y1="1038" x2="1041.536" y2="1041.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1038" y1="1038" x2="1041.536" y2="1034.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 86,87 y -2.781 open 5/8 blocked 0° 45° 315°</title><rect x="1032.5" y="1044.5" width="11" height="11" fill="#aa9d58"/>
+<g><title>cell 86,87 y -2.781 open 6/8 blocked 0° 315°</title><rect x="1032.5" y="1044.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="1038" y1="1050" x2="1043" y2="1050" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="1050" x2="1041.536" y2="1053.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1038" y1="1050" x2="1041.536" y2="1046.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 87,86 y -2.157 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="1044.5" y="1032.5" width="11" height="11" fill="#e03a3a"/>
@@ -12713,11 +12264,9 @@
 <line x1="750" y1="510" x2="750" y2="505" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="510" x2="753.536" y2="506.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 62,43 y 0.25 open 4/8 blocked 180° 225° 270° 315°</title><rect x="744.5" y="516.5" width="11" height="11" fill="#b58952"/>
+<g><title>cell 62,43 y 0.25 open 6/8 blocked 180° 225°</title><rect x="744.5" y="516.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="750" y1="522" x2="745" y2="522" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="522" x2="746.464" y2="518.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="522" x2="750" y2="517" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="522" x2="753.536" y2="518.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 62,44 y 0.25 open 6/8 blocked 180° 225°</title><rect x="744.5" y="528.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="750" y1="534" x2="745" y2="534" stroke="#1a2028" stroke-width="1.5"/>
@@ -12729,15 +12278,10 @@
 </g>
 <g><title>cell 62,47 y 0.25 open 8/8</title><rect x="744.5" y="564.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 63,42 y 0.25 open 5/8 blocked 225° 270° 315°</title><rect x="756.5" y="504.5" width="11" height="11" fill="#aa9d58"/>
+<g><title>cell 63,42 y 0.25 open 7/8 blocked 225°</title><rect x="756.5" y="504.5" width="11" height="11" fill="#95c464"/>
 <line x1="762" y1="510" x2="758.464" y2="506.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="510" x2="762" y2="505" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="510" x2="765.536" y2="506.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 63,43 y 0.25 open 5/8 blocked 225° 270° 315°</title><rect x="756.5" y="516.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="762" y1="522" x2="758.464" y2="518.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="522" x2="762" y2="517" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="522" x2="765.536" y2="518.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 63,43 y 0.25 open 8/8</title><rect x="756.5" y="516.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 63,44 y 0.25 open 8/8</title><rect x="756.5" y="528.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -12747,14 +12291,9 @@
 </g>
 <g><title>cell 63,47 y 0.25 open 8/8</title><rect x="756.5" y="564.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 64,42 y 0.25 open 5/8 blocked 225° 270° 315°</title><rect x="768.5" y="504.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="774" y1="510" x2="770.464" y2="506.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="510" x2="774" y2="505" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="510" x2="777.536" y2="506.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 64,42 y 0.25 open 8/8</title><rect x="768.5" y="504.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 64,43 y 0.25 open 6/8 blocked 225° 270°</title><rect x="768.5" y="516.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="774" y1="522" x2="770.464" y2="518.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="522" x2="774" y2="517" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 64,43 y 0.25 open 8/8</title><rect x="768.5" y="516.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 64,44 y 0.25 open 8/8</title><rect x="768.5" y="528.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -12764,11 +12303,9 @@
 </g>
 <g><title>cell 64,47 y 0.25 open 8/8</title><rect x="768.5" y="564.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 65,42 y 0.25 open 7/8 blocked 225°</title><rect x="780.5" y="504.5" width="11" height="11" fill="#95c464"/>
-<line x1="786" y1="510" x2="782.464" y2="506.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 65,42 y 0.25 open 8/8</title><rect x="780.5" y="504.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 65,43 y 0.25 open 7/8 blocked 225°</title><rect x="780.5" y="516.5" width="11" height="11" fill="#95c464"/>
-<line x1="786" y1="522" x2="782.464" y2="518.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 65,43 y 0.25 open 8/8</title><rect x="780.5" y="516.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 65,44 y 0.25 open 8/8</title><rect x="780.5" y="528.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -12850,39 +12387,15 @@
 </g>
 <g><title>cell 112,28 y -5.017 open 8/8</title><rect x="1344.5" y="336.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,35 y -2.25 open 2/8 blocked 0° 45° 135° 180° 225° 270°</title><rect x="984.5" y="420.5" width="11" height="11" fill="#cb6246"/>
-<line x1="990" y1="426" x2="995" y2="426" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="426" x2="993.536" y2="429.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="426" x2="986.464" y2="429.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="426" x2="985" y2="426" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="426" x2="986.464" y2="422.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="426" x2="990" y2="421" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,35 y -2.25 open 8/8</title><rect x="984.5" y="420.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,34 y -2.375 open 4/8 blocked 135° 180° 225° 270°</title><rect x="984.5" y="408.5" width="11" height="11" fill="#b58952"/>
-<line x1="990" y1="414" x2="986.464" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="414" x2="985" y2="414" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="414" x2="986.464" y2="410.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="414" x2="990" y2="409" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,34 y -2.375 open 8/8</title><rect x="984.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 84,33 y -2.625 open 2/8 blocked 45° 90° 180° 225° 270° 315°</title><rect x="1008.5" y="396.5" width="11" height="11" fill="#cb6246"/>
-<line x1="1014" y1="402" x2="1017.536" y2="405.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="402" x2="1014" y2="407" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="402" x2="1009" y2="402" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="402" x2="1010.464" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="402" x2="1014" y2="397" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1014" y1="402" x2="1017.536" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 84,33 y -2.625 open 8/8</title><rect x="1008.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,33 y -2.875 open 3/8 blocked 45° 90° 225° 270° 315°</title><rect x="1020.5" y="396.5" width="11" height="11" fill="#c0754c"/>
-<line x1="1026" y1="402" x2="1029.536" y2="405.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="402" x2="1026" y2="407" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="402" x2="1022.464" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="402" x2="1026" y2="397" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="402" x2="1029.536" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,33 y -2.875 open 8/8</title><rect x="1020.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 86,33 y -3 open 5/8 blocked 90° 225° 270°</title><rect x="1032.5" y="396.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1038" y1="402" x2="1038" y2="407" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="402" x2="1034.464" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="402" x2="1038" y2="397" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 86,33 y -3 open 8/8</title><rect x="1032.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 60,94 y -3 open 6/8 blocked 0° 45°</title><rect x="720.5" y="1128.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="726" y1="1134" x2="731" y2="1134" stroke="#1a2028" stroke-width="1.5"/>
@@ -13034,15 +12547,9 @@
 </g>
 <g><title>cell 89,26 y -2.822 open 8/8</title><rect x="1068.5" y="312.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 80,35 y -2.75 open 5/8 blocked 0° 45° 315°</title><rect x="960.5" y="420.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="966" y1="426" x2="971" y2="426" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="426" x2="969.536" y2="429.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="426" x2="969.536" y2="422.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 80,35 y -2.75 open 8/8</title><rect x="960.5" y="420.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 80,36 y -2.655 open 5/8 blocked 0° 45° 315°</title><rect x="960.5" y="432.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="966" y1="438" x2="971" y2="438" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="438" x2="969.536" y2="441.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="438" x2="969.536" y2="434.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 80,36 y -2.655 open 8/8</title><rect x="960.5" y="432.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 25,87 y -1.75 open 8/8</title><rect x="300.5" y="1044.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -13820,27 +13327,15 @@
 </g>
 <g><title>cell 110,17 y -5 open 8/8</title><rect x="1320.5" y="204.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 62,40 y 1.859 open 3/8 blocked 90° 135° 225° 270° 315°</title><rect x="744.5" y="480.5" width="11" height="11" fill="#c0754c"/>
-<line x1="750" y1="486" x2="750" y2="491" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="486" x2="746.464" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 62,40 y 1.859 open 7/8 blocked 225°</title><rect x="744.5" y="480.5" width="11" height="11" fill="#95c464"/>
 <line x1="750" y1="486" x2="746.464" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="486" x2="750" y2="481" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="486" x2="753.536" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 62,41 y 1.859 open 3/8 blocked 45° 90° 135° 225° 270°</title><rect x="744.5" y="492.5" width="11" height="11" fill="#c0754c"/>
-<line x1="750" y1="498" x2="753.536" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="498" x2="750" y2="503" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 62,41 y 1.859 open 7/8 blocked 135°</title><rect x="744.5" y="492.5" width="11" height="11" fill="#95c464"/>
 <line x1="750" y1="498" x2="746.464" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="498" x2="746.464" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="498" x2="750" y2="493" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 63,40 y 1.359 open 6/8 blocked 135° 225°</title><rect x="756.5" y="480.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="762" y1="486" x2="758.464" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="486" x2="758.464" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 63,40 y 1.359 open 8/8</title><rect x="756.5" y="480.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 63,41 y 1.359 open 6/8 blocked 135° 225°</title><rect x="756.5" y="492.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="762" y1="498" x2="758.464" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="498" x2="758.464" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 63,41 y 1.359 open 8/8</title><rect x="756.5" y="492.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 53,94 y 4.05 open 8/8</title><rect x="636.5" y="1128.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -13864,16 +13359,11 @@
 </g>
 <g><title>cell 13,97 y -4.75 open 8/8</title><rect x="156.5" y="1164.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 64,40 y 0.859 open 6/8 blocked 135° 225°</title><rect x="768.5" y="480.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="774" y1="486" x2="770.464" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="486" x2="770.464" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 64,40 y 0.859 open 8/8</title><rect x="768.5" y="480.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 64,41 y 0.859 open 6/8 blocked 135° 225°</title><rect x="768.5" y="492.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="774" y1="498" x2="770.464" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="498" x2="770.464" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 64,41 y 0.859 open 8/8</title><rect x="768.5" y="492.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 65,41 y 0.359 open 7/8 blocked 225°</title><rect x="780.5" y="492.5" width="11" height="11" fill="#95c464"/>
-<line x1="786" y1="498" x2="782.464" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 65,41 y 0.359 open 8/8</title><rect x="780.5" y="492.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 67,19 y -4.894 open 8/8</title><rect x="804.5" y="228.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -13975,19 +13465,14 @@
 </g>
 <g><title>cell 19,91 y -3.805 open 8/8</title><rect x="228.5" y="1092.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 88,34 y -3.48 open 7/8 blocked 135°</title><rect x="1056.5" y="408.5" width="11" height="11" fill="#95c464"/>
-<line x1="1062" y1="414" x2="1058.464" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 88,34 y -3.48 open 8/8</title><rect x="1056.5" y="408.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 87,34 y -3.437 open 7/8 blocked 135°</title><rect x="1044.5" y="408.5" width="11" height="11" fill="#95c464"/>
 <line x1="1050" y1="414" x2="1046.464" y2="417.536" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 87,35 y -3.062 open 5/8 blocked 135° 180° 225°</title><rect x="1044.5" y="420.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1050" y1="426" x2="1046.464" y2="429.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1050" y1="426" x2="1045" y2="426" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1050" y1="426" x2="1046.464" y2="422.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 87,35 y -3.062 open 8/8</title><rect x="1044.5" y="420.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 88,35 y -3.103 open 6/8 blocked 135° 180°</title><rect x="1056.5" y="420.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1062" y1="426" x2="1058.464" y2="429.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 88,35 y -3.103 open 7/8 blocked 180°</title><rect x="1056.5" y="420.5" width="11" height="11" fill="#95c464"/>
 <line x1="1062" y1="426" x2="1057" y2="426" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 51,42 y 4.102 open 8/8</title><rect x="612.5" y="504.5" width="11" height="11" fill="#3f8f4f"/>
@@ -14028,24 +13513,9 @@
 </g>
 <g><title>cell 19,110 y -4.75 open 8/8</title><rect x="228.5" y="1320.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,58 y -5.428 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="144.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="150" y1="702" x2="155" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="702" x2="153.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="702" x2="150" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="702" x2="146.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="702" x2="145" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="702" x2="146.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="702" x2="150" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="702" x2="153.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,58 y -4 open 8/8</title><rect x="144.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,59 y -5.338 open 1/8 blocked 0° 45° 135° 180° 225° 270° 315°</title><rect x="144.5" y="708.5" width="11" height="11" fill="#d54e40"/>
-<line x1="150" y1="714" x2="155" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="714" x2="153.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="714" x2="146.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="714" x2="145" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="714" x2="146.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="714" x2="150" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="714" x2="153.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,59 y -4 open 8/8</title><rect x="144.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 39,91 y -0.898 open 8/8</title><rect x="468.5" y="1092.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -14325,29 +13795,19 @@
 </g>
 <g><title>cell 89,87 y -0.75 open 8/8</title><rect x="1068.5" y="1044.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 21,62 y -4.656 open 5/8 blocked 225° 270° 315°</title><rect x="252.5" y="744.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="258" y1="750" x2="254.464" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="750" x2="258" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="258" y1="750" x2="261.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 21,62 y -4.656 open 8/8</title><rect x="252.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 21,63 y -4.656 open 8/8</title><rect x="252.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 22,62 y -4.458 open 7/8 blocked 270°</title><rect x="264.5" y="744.5" width="11" height="11" fill="#95c464"/>
-<line x1="270" y1="750" x2="270" y2="745" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 22,62 y -4.458 open 8/8</title><rect x="264.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 22,63 y -4.531 open 8/8</title><rect x="264.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 20,62 y -4.844 open 5/8 blocked 225° 270° 315°</title><rect x="240.5" y="744.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="246" y1="750" x2="242.464" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="750" x2="246" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="246" y1="750" x2="249.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 20,62 y -4.844 open 8/8</title><rect x="240.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 20,63 y -4.844 open 8/8</title><rect x="240.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 19,61 y -4.969 open 5/8 blocked 225° 270° 315°</title><rect x="228.5" y="732.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="234" y1="738" x2="230.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="738" x2="234" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="234" y1="738" x2="237.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 19,61 y -4.969 open 8/8</title><rect x="228.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 81,103 y -1 open 8/8</title><rect x="972.5" y="1236.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -14389,20 +13849,11 @@
 </g>
 <g><title>cell 49,60 y 4.25 open 8/8</title><rect x="588.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 86,31 y -2.85 open 5/8 blocked 45° 90° 135°</title><rect x="1032.5" y="372.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1038" y1="378" x2="1041.536" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="378" x2="1038" y2="383" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="378" x2="1034.464" y2="381.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 86,31 y -2.85 open 8/8</title><rect x="1032.5" y="372.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 86,32 y -3 open 4/8 blocked 180° 225° 270° 315°</title><rect x="1032.5" y="384.5" width="11" height="11" fill="#b58952"/>
-<line x1="1038" y1="390" x2="1033" y2="390" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="390" x2="1034.464" y2="386.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="390" x2="1038" y2="385" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1038" y1="390" x2="1041.536" y2="386.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 86,32 y -3 open 8/8</title><rect x="1032.5" y="384.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 87,33 y -3.687 open 6/8 blocked 135° 225°</title><rect x="1044.5" y="396.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1050" y1="402" x2="1046.464" y2="405.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1050" y1="402" x2="1046.464" y2="398.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 87,33 y -3.687 open 8/8</title><rect x="1044.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 43,40 y -2.655 open 7/8 blocked 90°</title><rect x="516.5" y="480.5" width="11" height="11" fill="#95c464"/>
 <line x1="522" y1="486" x2="522" y2="491" stroke="#1a2028" stroke-width="1.5"/>
@@ -15610,21 +15061,19 @@
 </g>
 <g><title>cell 54,82 y 5 open 8/8</title><rect x="648.5" y="984.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 87,81 y -2.713 open 5/8 blocked 0° 45° 90°</title><rect x="1044.5" y="972.5" width="11" height="11" fill="#aa9d58"/>
+<g><title>cell 87,81 y -2.713 open 6/8 blocked 0° 45°</title><rect x="1044.5" y="972.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="1050" y1="978" x2="1055" y2="978" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1050" y1="978" x2="1053.536" y2="981.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1050" y1="978" x2="1050" y2="983" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 87,82 y -2.543 open 5/8 blocked 0° 45° 90°</title><rect x="1044.5" y="984.5" width="11" height="11" fill="#aa9d58"/>
 <line x1="1050" y1="990" x2="1055" y2="990" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1050" y1="990" x2="1053.536" y2="993.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1050" y1="990" x2="1050" y2="995" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 88,81 y -2.599 open 4/8 blocked 0° 45° 90° 315°</title><rect x="1056.5" y="972.5" width="11" height="11" fill="#b58952"/>
+<g><title>cell 88,81 y -2.599 open 5/8 blocked 0° 45° 90°</title><rect x="1056.5" y="972.5" width="11" height="11" fill="#aa9d58"/>
 <line x1="1062" y1="978" x2="1067" y2="978" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1062" y1="978" x2="1065.536" y2="981.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1062" y1="978" x2="1062" y2="983" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1062" y1="978" x2="1065.536" y2="974.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 88,83 y -1.868 open 8/8</title><rect x="1056.5" y="996.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -15777,17 +15226,11 @@
 </g>
 <g><title>cell 84,85 y -3 open 8/8</title><rect x="1008.5" y="1020.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,84 y -2.75 open 6/8 blocked 0° 45°</title><rect x="1020.5" y="1008.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="1014" x2="1031" y2="1014" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="1014" x2="1029.536" y2="1017.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,84 y -2.75 open 8/8</title><rect x="1020.5" y="1008.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,85 y -2.75 open 6/8 blocked 0° 45°</title><rect x="1020.5" y="1020.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="1026" x2="1031" y2="1026" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="1026" x2="1029.536" y2="1029.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,85 y -2.75 open 8/8</title><rect x="1020.5" y="1020.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,86 y -2.75 open 6/8 blocked 0° 315°</title><rect x="1020.5" y="1032.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="1038" x2="1031" y2="1038" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="1038" x2="1029.536" y2="1034.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,86 y -2.75 open 8/8</title><rect x="1020.5" y="1032.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 43,51 y -0.75 open 8/8</title><rect x="516.5" y="612.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -15797,12 +15240,9 @@
 </g>
 <g><title>cell 39,33 y -3.75 open 8/8</title><rect x="468.5" y="396.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,87 y -3 open 6/8 blocked 0° 315°</title><rect x="1020.5" y="1044.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="1050" x2="1031" y2="1050" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="1050" x2="1029.536" y2="1046.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,87 y -3 open 8/8</title><rect x="1020.5" y="1044.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 86,89 y -2.686 open 6/8 blocked 0° 315°</title><rect x="1032.5" y="1068.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1038" y1="1074" x2="1043" y2="1074" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 86,89 y -2.686 open 7/8 blocked 315°</title><rect x="1032.5" y="1068.5" width="11" height="11" fill="#95c464"/>
 <line x1="1038" y1="1074" x2="1041.536" y2="1070.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 15,110 y -5.358 open 8/8</title><rect x="180.5" y="1320.5" width="11" height="11" fill="#3f8f4f"/>
@@ -16045,12 +15485,9 @@
 </g>
 <g><title>cell 82,39 y -1.875 open 8/8</title><rect x="984.5" y="468.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,97 y -1 open 6/8 blocked 180° 225°</title><rect x="1020.5" y="1164.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="1026" y1="1170" x2="1021" y2="1170" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1026" y1="1170" x2="1022.464" y2="1166.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,97 y -1 open 8/8</title><rect x="1020.5" y="1164.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 85,98 y -1 open 7/8 blocked 180°</title><rect x="1020.5" y="1176.5" width="11" height="11" fill="#95c464"/>
-<line x1="1026" y1="1182" x2="1021" y2="1182" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 85,98 y -1 open 8/8</title><rect x="1020.5" y="1176.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 86,98 y -1 open 8/8</title><rect x="1032.5" y="1176.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -16572,15 +16009,10 @@
 <line x1="942" y1="450" x2="938.464" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="942" y1="450" x2="937" y2="450" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 79,37 y -2.463 open 5/8 blocked 0° 45° 135°</title><rect x="948.5" y="444.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="954" y1="450" x2="959" y2="450" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="954" y1="450" x2="957.536" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 79,37 y -2.463 open 7/8 blocked 135°</title><rect x="948.5" y="444.5" width="11" height="11" fill="#95c464"/>
 <line x1="954" y1="450" x2="950.464" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 80,37 y -2.75 open 5/8 blocked 0° 45° 315°</title><rect x="960.5" y="444.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="966" y1="450" x2="971" y2="450" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="450" x2="969.536" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="966" y1="450" x2="969.536" y2="446.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 80,37 y -2.75 open 8/8</title><rect x="960.5" y="444.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 58,46 y 0.25 open 4/8 blocked 135° 180° 225° 270°</title><rect x="696.5" y="552.5" width="11" height="11" fill="#b58952"/>
 <line x1="702" y1="558" x2="698.464" y2="561.536" stroke="#1a2028" stroke-width="1.5"/>
@@ -16929,8 +16361,7 @@
 </g>
 <g><title>cell 86,17 y -4 open 8/8</title><rect x="1032.5" y="204.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 86,30 y -2.75 open 7/8 blocked 90°</title><rect x="1032.5" y="360.5" width="11" height="11" fill="#95c464"/>
-<line x1="1038" y1="366" x2="1038" y2="371" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 86,30 y -2.75 open 8/8</title><rect x="1032.5" y="360.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 86,29 y -2.75 open 8/8</title><rect x="1032.5" y="348.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -17227,11 +16658,9 @@
 </g>
 <g><title>cell 35,80 y -1.75 open 8/8</title><rect x="420.5" y="960.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 87,36 y -2.812 open 7/8 blocked 225°</title><rect x="1044.5" y="432.5" width="11" height="11" fill="#95c464"/>
-<line x1="1050" y1="438" x2="1046.464" y2="434.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 87,36 y -2.812 open 8/8</title><rect x="1044.5" y="432.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 88,36 y -2.822 open 7/8 blocked 225°</title><rect x="1056.5" y="432.5" width="11" height="11" fill="#95c464"/>
-<line x1="1062" y1="438" x2="1058.464" y2="434.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 88,36 y -2.822 open 8/8</title><rect x="1056.5" y="432.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 28,124 y -5.027 open 8/8</title><rect x="336.5" y="1488.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -17881,34 +17310,26 @@
 <line x1="486" y1="1410" x2="486" y2="1405" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="486" y1="1410" x2="489.536" y2="1406.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 60,40 y 2.859 open 2/8 blocked 45° 90° 135° 225° 270° 315°</title><rect x="720.5" y="480.5" width="11" height="11" fill="#cb6246"/>
-<line x1="726" y1="486" x2="729.536" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="726" y1="486" x2="726" y2="491" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="726" y1="486" x2="722.464" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 60,40 y 2.859 open 5/8 blocked 225° 270° 315°</title><rect x="720.5" y="480.5" width="11" height="11" fill="#aa9d58"/>
 <line x1="726" y1="486" x2="722.464" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="726" y1="486" x2="726" y2="481" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="726" y1="486" x2="729.536" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 60,41 y 2.859 open 2/8 blocked 45° 90° 135° 225° 270° 315°</title><rect x="720.5" y="492.5" width="11" height="11" fill="#cb6246"/>
+<g><title>cell 60,41 y 2.859 open 5/8 blocked 45° 90° 135°</title><rect x="720.5" y="492.5" width="11" height="11" fill="#aa9d58"/>
 <line x1="726" y1="498" x2="729.536" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="726" y1="498" x2="726" y2="503" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="726" y1="498" x2="722.464" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="726" y1="498" x2="722.464" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="726" y1="498" x2="726" y2="493" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="726" y1="498" x2="729.536" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 61,40 y 2.359 open 3/8 blocked 90° 135° 225° 270° 315°</title><rect x="732.5" y="480.5" width="11" height="11" fill="#c0754c"/>
+<g><title>cell 61,40 y 2.359 open 4/8 blocked 90° 225° 270° 315°</title><rect x="732.5" y="480.5" width="11" height="11" fill="#b58952"/>
 <line x1="738" y1="486" x2="738" y2="491" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="738" y1="486" x2="734.464" y2="489.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="738" y1="486" x2="734.464" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="738" y1="486" x2="738" y2="481" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="738" y1="486" x2="741.536" y2="482.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 61,41 y 2.359 open 3/8 blocked 45° 90° 135° 225° 270°</title><rect x="732.5" y="492.5" width="11" height="11" fill="#c0754c"/>
+<g><title>cell 61,41 y 2.359 open 4/8 blocked 45° 90° 135° 270°</title><rect x="732.5" y="492.5" width="11" height="11" fill="#b58952"/>
 <line x1="738" y1="498" x2="741.536" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="738" y1="498" x2="738" y2="503" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="738" y1="498" x2="734.464" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="738" y1="498" x2="734.464" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="738" y1="498" x2="738" y2="493" stroke="#1a2028" stroke-width="1.5"/>
 </g>
 <g><title>cell 24,123 y -5.021 open 8/8</title><rect x="288.5" y="1476.5" width="11" height="11" fill="#3f8f4f"/>
@@ -18659,9 +18080,7 @@
 </g>
 <g><title>cell 129,47 y -5.474 open 8/8</title><rect x="1548.5" y="564.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 66,41 y 0 open 6/8 blocked 135° 225°</title><rect x="792.5" y="492.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="798" y1="498" x2="794.464" y2="501.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="798" y1="498" x2="794.464" y2="494.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 66,41 y 0 open 8/8</title><rect x="792.5" y="492.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 56,83 y 4.25 open 8/8</title><rect x="672.5" y="996.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -18680,10 +18099,7 @@
 <line x1="1050" y1="1074" x2="1050" y2="1069" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1050" y1="1074" x2="1053.536" y2="1070.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 87,90 y -2.312 open 5/8 blocked 0° 270° 315°</title><rect x="1044.5" y="1080.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1050" y1="1086" x2="1055" y2="1086" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1050" y1="1086" x2="1050" y2="1081" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1050" y1="1086" x2="1053.536" y2="1082.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 87,90 y -2.312 open 8/8</title><rect x="1044.5" y="1080.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 87,91 y -1.937 open 8/8</title><rect x="1044.5" y="1092.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -18749,15 +18165,7 @@
 </g>
 <g><title>cell 87,105 y -1 open 8/8</title><rect x="1044.5" y="1260.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 13,59 y -5.171 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="156.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="162" y1="714" x2="167" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="714" x2="165.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="714" x2="162" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="714" x2="158.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="714" x2="157" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="714" x2="158.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="714" x2="162" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="714" x2="165.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,59 y -3.734 open 8/8</title><rect x="156.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 32,43 y -3.687 open 8/8</title><rect x="384.5" y="516.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -19262,26 +18670,15 @@
 </g>
 <g><title>cell 93,78 y -1.533 open 8/8</title><rect x="1116.5" y="936.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,37 y -2 open 5/8 blocked 0° 45° 315°</title><rect x="996.5" y="444.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1002" y1="450" x2="1007" y2="450" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="450" x2="1005.536" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="450" x2="1005.536" y2="446.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,37 y -2 open 8/8</title><rect x="996.5" y="444.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,38 y -2 open 5/8 blocked 0° 45° 315°</title><rect x="996.5" y="456.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="1002" y1="462" x2="1007" y2="462" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="462" x2="1005.536" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="1002" y1="462" x2="1005.536" y2="458.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,38 y -2 open 8/8</title><rect x="996.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 81,102 y -1 open 6/8 blocked 225° 270°</title><rect x="972.5" y="1224.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="978" y1="1230" x2="974.464" y2="1226.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="1230" x2="978" y2="1225" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 81,102 y -1 open 8/8</title><rect x="972.5" y="1224.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,102 y -1 open 6/8 blocked 225° 270°</title><rect x="984.5" y="1224.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="990" y1="1230" x2="986.464" y2="1226.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="1230" x2="990" y2="1225" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,102 y -1 open 8/8</title><rect x="984.5" y="1224.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 83,101 y -1 open 7/8 blocked 225°</title><rect x="996.5" y="1212.5" width="11" height="11" fill="#95c464"/>
-<line x1="1002" y1="1218" x2="998.464" y2="1214.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 83,101 y -1 open 8/8</title><rect x="996.5" y="1212.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 83,102 y -1 open 8/8</title><rect x="996.5" y="1224.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -19463,14 +18860,7 @@
 <line x1="1206" y1="1038" x2="1202.464" y2="1041.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="1206" y1="1038" x2="1201" y2="1038" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 13,58 y -5.261 open 1/8 blocked 0° 45° 90° 135° 225° 270° 315°</title><rect x="156.5" y="696.5" width="11" height="11" fill="#d54e40"/>
-<line x1="162" y1="702" x2="167" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="702" x2="165.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="702" x2="162" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="702" x2="158.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="702" x2="158.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="702" x2="162" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="702" x2="165.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,58 y -4 open 8/8</title><rect x="156.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 88,53 y -2.844 open 6/8 blocked 90° 135°</title><rect x="1056.5" y="636.5" width="11" height="11" fill="#a0b15e"/>
 <line x1="1062" y1="642" x2="1062" y2="647" stroke="#1a2028" stroke-width="1.5"/>
@@ -19736,9 +19126,7 @@
 </g>
 <g><title>cell 14,55 y -5.156 open 8/8</title><rect x="168.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,56 y -5.156 open 6/8 blocked 90° 135°</title><rect x="168.5" y="672.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="174" y1="678" x2="174" y2="683" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="678" x2="170.464" y2="681.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,56 y -5.156 open 8/8</title><rect x="168.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 15,52 y -5.031 open 8/8</title><rect x="180.5" y="624.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -19748,8 +19136,7 @@
 </g>
 <g><title>cell 15,55 y -5.031 open 8/8</title><rect x="180.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,56 y -5.031 open 7/8 blocked 90°</title><rect x="180.5" y="672.5" width="11" height="11" fill="#95c464"/>
-<line x1="186" y1="678" x2="186" y2="683" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,56 y -5.031 open 8/8</title><rect x="180.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 13,53 y -5.344 open 8/8</title><rect x="156.5" y="636.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -19757,8 +19144,7 @@
 </g>
 <g><title>cell 13,55 y -5.344 open 8/8</title><rect x="156.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 13,56 y -5.344 open 7/8 blocked 90°</title><rect x="156.5" y="672.5" width="11" height="11" fill="#95c464"/>
-<line x1="162" y1="678" x2="162" y2="683" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,56 y -5.344 open 8/8</title><rect x="156.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 12,53 y -5.469 open 8/8</title><rect x="144.5" y="636.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -19766,8 +19152,7 @@
 </g>
 <g><title>cell 12,55 y -5.469 open 8/8</title><rect x="144.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,56 y -5.469 open 7/8 blocked 90°</title><rect x="144.5" y="672.5" width="11" height="11" fill="#95c464"/>
-<line x1="150" y1="678" x2="150" y2="683" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,56 y -5.469 open 8/8</title><rect x="144.5" y="672.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 45,55 y -0.933 open 8/8</title><rect x="540.5" y="660.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -20030,15 +19415,7 @@
 </g>
 <g><title>cell 93,73 y -0.78 open 8/8</title><rect x="1116.5" y="876.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,61 y -5 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="168.5" y="732.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="174" y1="738" x2="179" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="738" x2="177.536" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="738" x2="174" y2="743" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="738" x2="170.464" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="738" x2="169" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="738" x2="170.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="738" x2="174" y2="733" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="738" x2="177.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,61 y -2.734 open 8/8</title><rect x="168.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 71,120 y -0.766 open 8/8</title><rect x="852.5" y="1440.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -20231,129 +19608,47 @@
 </g>
 <g><title>cell 107,99 y -5.475 open 8/8</title><rect x="1284.5" y="1188.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 11,61 y -5.388 open 6/8 blocked 0° 270°</title><rect x="132.5" y="732.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="138" y1="738" x2="143" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="738" x2="138" y2="733" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 11,61 y -5.388 open 8/8</title><rect x="132.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 11,62 y -5.358 open 8/8</title><rect x="132.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,61 y -5.2 open 4/8 blocked 0° 45° 225° 315°</title><rect x="144.5" y="732.5" width="11" height="11" fill="#b58952"/>
-<line x1="150" y1="738" x2="155" y2="738" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="738" x2="153.536" y2="741.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="738" x2="146.464" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="738" x2="153.536" y2="734.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,61 y -5.2 open 8/8</title><rect x="144.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,62 y -5.171 open 7/8 blocked 315°</title><rect x="144.5" y="744.5" width="11" height="11" fill="#95c464"/>
-<line x1="150" y1="750" x2="153.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,62 y -5.171 open 8/8</title><rect x="144.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 13,62 y -5.036 open 5/8 blocked 225° 270° 315°</title><rect x="156.5" y="744.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="162" y1="750" x2="158.464" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="750" x2="162" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="750" x2="165.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,62 y -5.036 open 8/8</title><rect x="156.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 11,60 y -5.417 open 4/8 blocked 0° 225° 270° 315°</title><rect x="132.5" y="720.5" width="11" height="11" fill="#b58952"/>
-<line x1="138" y1="726" x2="143" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="726" x2="134.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="726" x2="138" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="726" x2="141.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 11,60 y -5.417 open 8/8</title><rect x="132.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,60 y -5.249 open 3/8 blocked 0° 45° 225° 270° 315°</title><rect x="144.5" y="720.5" width="11" height="11" fill="#c0754c"/>
-<line x1="150" y1="726" x2="155" y2="726" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="726" x2="153.536" y2="729.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="726" x2="146.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="726" x2="150" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="726" x2="153.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,60 y -5.249 open 8/8</title><rect x="144.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,57 y -5.464 open 5/8 blocked 45° 90° 135°</title><rect x="144.5" y="684.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="150" y1="690" x2="153.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="690" x2="150" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="150" y1="690" x2="146.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,57 y -5.464 open 8/8</title><rect x="144.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 13,57 y -5.332 open 5/8 blocked 45° 90° 135°</title><rect x="156.5" y="684.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="162" y1="690" x2="165.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="690" x2="162" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="162" y1="690" x2="158.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,57 y -5.332 open 8/8</title><rect x="156.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,57 y -5.143 open 5/8 blocked 45° 90° 135°</title><rect x="168.5" y="684.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="174" y1="690" x2="177.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="690" x2="174" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="690" x2="170.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,57 y -5.143 open 8/8</title><rect x="168.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,58 y -5.094 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="168.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="174" y1="702" x2="179" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="702" x2="177.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="702" x2="174" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="702" x2="170.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="702" x2="169" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="702" x2="170.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="702" x2="174" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="702" x2="177.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,58 y -5.094 open 8/8</title><rect x="168.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,57 y -5.027 open 5/8 blocked 45° 90° 135°</title><rect x="180.5" y="684.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="186" y1="690" x2="189.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="690" x2="186" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="690" x2="182.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,57 y -5.027 open 8/8</title><rect x="180.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,58 y -5.017 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="180.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="186" y1="702" x2="191" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="702" x2="189.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="702" x2="186" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="702" x2="182.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="702" x2="181" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="702" x2="182.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="702" x2="186" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="702" x2="189.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,58 y -5.017 open 8/8</title><rect x="180.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,59 y -5 open 2/8 blocked 0° 90° 180° 225° 270° 315°</title><rect x="180.5" y="708.5" width="11" height="11" fill="#cb6246"/>
-<line x1="186" y1="714" x2="191" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="714" x2="186" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="714" x2="181" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="714" x2="182.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="714" x2="186" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="714" x2="189.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,59 y -5 open 8/8</title><rect x="180.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,62 y -5 open 5/8 blocked 225° 270° 315°</title><rect x="168.5" y="744.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="174" y1="750" x2="170.464" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="750" x2="174" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="750" x2="177.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,62 y -5 open 8/8</title><rect x="168.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,62 y -5 open 5/8 blocked 225° 270° 315°</title><rect x="180.5" y="744.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="186" y1="750" x2="182.464" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="750" x2="186" y2="745" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="186" y1="750" x2="189.536" y2="746.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,62 y -5 open 8/8</title><rect x="180.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 11,57 y -5.499 open 5/8 blocked 45° 90° 135°</title><rect x="132.5" y="684.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="138" y1="690" x2="141.536" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="690" x2="138" y2="695" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="690" x2="134.464" y2="693.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 11,57 y -5.499 open 8/8</title><rect x="132.5" y="684.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 11,58 y -5.49 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="132.5" y="696.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="138" y1="702" x2="143" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="702" x2="141.536" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="702" x2="138" y2="707" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="702" x2="134.464" y2="705.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="702" x2="133" y2="702" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="702" x2="134.464" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="702" x2="138" y2="697" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="702" x2="141.536" y2="698.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 11,58 y -5.49 open 8/8</title><rect x="132.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 11,59 y -5.46 open 0/8 blocked 0° 45° 90° 135° 180° 225° 270° 315°</title><rect x="132.5" y="708.5" width="11" height="11" fill="#e03a3a"/>
-<line x1="138" y1="714" x2="143" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="714" x2="141.536" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="714" x2="138" y2="719" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="714" x2="134.464" y2="717.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="714" x2="133" y2="714" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="714" x2="134.464" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="714" x2="138" y2="709" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="138" y1="714" x2="141.536" y2="710.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 11,59 y -5.46 open 8/8</title><rect x="132.5" y="708.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 10,60 y -5.493 open 5/8 blocked 225° 270° 315°</title><rect x="120.5" y="720.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="126" y1="726" x2="122.464" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="726" x2="126" y2="721" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="126" y1="726" x2="129.536" y2="722.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 10,60 y -5.493 open 8/8</title><rect x="120.5" y="720.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 10,61 y -5.484 open 7/8 blocked 270°</title><rect x="120.5" y="732.5" width="11" height="11" fill="#95c464"/>
-<line x1="126" y1="738" x2="126" y2="733" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 10,61 y -5.484 open 8/8</title><rect x="120.5" y="732.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 10,62 y -5.474 open 8/8</title><rect x="120.5" y="744.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -20837,21 +20132,14 @@
 </g>
 <g><title>cell 0,83 y -5.469 open 8/8</title><rect x="0.5" y="996.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 62,38 y 0.25 open 3/8 blocked 45° 90° 135° 180° 225°</title><rect x="744.5" y="456.5" width="11" height="11" fill="#c0754c"/>
-<line x1="750" y1="462" x2="753.536" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="750" y1="462" x2="750" y2="467" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 62,38 y 0.25 open 5/8 blocked 135° 180° 225°</title><rect x="744.5" y="456.5" width="11" height="11" fill="#aa9d58"/>
 <line x1="750" y1="462" x2="746.464" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="462" x2="745" y2="462" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="462" x2="746.464" y2="458.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 63,38 y 0.25 open 5/8 blocked 45° 90° 135°</title><rect x="756.5" y="456.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="762" y1="462" x2="765.536" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="462" x2="762" y2="467" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="462" x2="758.464" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 63,38 y 0.25 open 8/8</title><rect x="756.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 64,38 y 0.25 open 6/8 blocked 90° 135°</title><rect x="768.5" y="456.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="774" y1="462" x2="774" y2="467" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="462" x2="770.464" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 64,38 y 0.25 open 8/8</title><rect x="768.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 61,119 y -1.437 open 8/8</title><rect x="732.5" y="1428.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -21052,29 +20340,13 @@
 </g>
 <g><title>cell 36,58 y -1.916 open 8/8</title><rect x="432.5" y="696.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 81,37 y -2 open 5/8 blocked 135° 180° 225°</title><rect x="972.5" y="444.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="978" y1="450" x2="974.464" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="450" x2="973" y2="450" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="450" x2="974.464" y2="446.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 81,37 y -2 open 8/8</title><rect x="972.5" y="444.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 81,38 y -2 open 5/8 blocked 135° 180° 225°</title><rect x="972.5" y="456.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="978" y1="462" x2="974.464" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="462" x2="973" y2="462" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="978" y1="462" x2="974.464" y2="458.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 81,38 y -2 open 8/8</title><rect x="972.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,37 y -2 open 3/8 blocked 0° 45° 135° 180° 225°</title><rect x="984.5" y="444.5" width="11" height="11" fill="#c0754c"/>
-<line x1="990" y1="450" x2="995" y2="450" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="450" x2="993.536" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="450" x2="986.464" y2="453.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="450" x2="985" y2="450" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="450" x2="986.464" y2="446.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,37 y -2 open 8/8</title><rect x="984.5" y="444.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 82,38 y -2 open 3/8 blocked 0° 45° 180° 225° 315°</title><rect x="984.5" y="456.5" width="11" height="11" fill="#c0754c"/>
-<line x1="990" y1="462" x2="995" y2="462" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="462" x2="993.536" y2="465.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="462" x2="985" y2="462" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="462" x2="986.464" y2="458.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="990" y1="462" x2="993.536" y2="458.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 82,38 y -2 open 8/8</title><rect x="984.5" y="456.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 92,105 y -1.273 open 8/8</title><rect x="1104.5" y="1260.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -22092,22 +21364,16 @@
 </g>
 <g><title>cell 60,124 y -1.75 open 8/8</title><rect x="720.5" y="1488.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 62,39 y 0.25 open 3/8 blocked 45° 90° 135° 180° 225°</title><rect x="744.5" y="468.5" width="11" height="11" fill="#c0754c"/>
-<line x1="750" y1="474" x2="753.536" y2="477.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 62,39 y 0.25 open 4/8 blocked 90° 135° 180° 225°</title><rect x="744.5" y="468.5" width="11" height="11" fill="#b58952"/>
 <line x1="750" y1="474" x2="750" y2="479" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="474" x2="746.464" y2="477.536" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="474" x2="745" y2="474" stroke="#1a2028" stroke-width="1.5"/>
 <line x1="750" y1="474" x2="746.464" y2="470.464" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 63,39 y 0.25 open 5/8 blocked 45° 90° 135°</title><rect x="756.5" y="468.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="762" y1="474" x2="765.536" y2="477.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="762" y1="474" x2="762" y2="479" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 63,39 y 0.25 open 7/8 blocked 135°</title><rect x="756.5" y="468.5" width="11" height="11" fill="#95c464"/>
 <line x1="762" y1="474" x2="758.464" y2="477.536" stroke="#1a2028" stroke-width="1.5"/>
 </g>
-<g><title>cell 64,39 y 0.25 open 5/8 blocked 45° 90° 135°</title><rect x="768.5" y="468.5" width="11" height="11" fill="#aa9d58"/>
-<line x1="774" y1="474" x2="777.536" y2="477.536" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="474" x2="774" y2="479" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="774" y1="474" x2="770.464" y2="477.536" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 64,39 y 0.25 open 8/8</title><rect x="768.5" y="468.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 106,19 y -4.546 open 8/8</title><rect x="1272.5" y="228.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -22225,13 +21491,11 @@
 </g>
 <g><title>cell 11,64 y -5.388 open 8/8</title><rect x="132.5" y="768.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 12,63 y -5.171 open 7/8 blocked 315°</title><rect x="144.5" y="756.5" width="11" height="11" fill="#95c464"/>
-<line x1="150" y1="762" x2="153.536" y2="758.464" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 12,63 y -5.171 open 8/8</title><rect x="144.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 12,64 y -5.2 open 8/8</title><rect x="144.5" y="768.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 13,63 y -5.036 open 7/8 blocked 270°</title><rect x="156.5" y="756.5" width="11" height="11" fill="#95c464"/>
-<line x1="162" y1="762" x2="162" y2="757" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 13,63 y -5.036 open 8/8</title><rect x="156.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 13,64 y -5.046 open 8/8</title><rect x="156.5" y="768.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
@@ -22263,12 +21527,9 @@
 </g>
 <g><title>cell 15,66 y -5 open 8/8</title><rect x="180.5" y="792.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 14,63 y -5 open 6/8 blocked 225° 270°</title><rect x="168.5" y="756.5" width="11" height="11" fill="#a0b15e"/>
-<line x1="174" y1="762" x2="170.464" y2="758.464" stroke="#1a2028" stroke-width="1.5"/>
-<line x1="174" y1="762" x2="174" y2="757" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 14,63 y -5 open 8/8</title><rect x="168.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
-<g><title>cell 15,63 y -5 open 7/8 blocked 270°</title><rect x="180.5" y="756.5" width="11" height="11" fill="#95c464"/>
-<line x1="186" y1="762" x2="186" y2="757" stroke="#1a2028" stroke-width="1.5"/>
+<g><title>cell 15,63 y -5 open 8/8</title><rect x="180.5" y="756.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
 <g><title>cell 11,66 y -5.46 open 8/8</title><rect x="132.5" y="792.5" width="11" height="11" fill="#3f8f4f"/>
 </g>
