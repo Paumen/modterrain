@@ -61,6 +61,8 @@ const PALETTE = join(ROOT, 'catalog', 'palette.json');
  * have yet. */
 const DIRECTORIES = ['atoms', 'assemblies', 'scenes'];
 
+const ASSEMBLED = 'modterrain tools/assemble.mjs';
+
 /**
  * Surface → the pack material it comes from, as a path inside the zip's
  * `textures_unity/`. The path rather than the name because the pack has two
@@ -558,6 +560,11 @@ for (const directory of DIRECTORIES) {
     const path = join(ROOT, directory, file);
     const id = file.replace(/\.glb$/, '');
     const { json, bin } = readGlb(path);
+
+    /* Something this repo assembled is made of pieces that are already on the
+     * map, and its meshes are shared between placements at different heights:
+     * re-ramping them here would shade one cliff by another's position. */
+    if (json.asset?.generator === ASSEMBLED) continue;
 
     const mapped = new Set();
     for (const [index, material] of (json.materials ?? []).entries()) {

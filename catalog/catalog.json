@@ -1,7 +1,7 @@
 {
  "generated": "node tools/build-catalog.mjs",
  "total": 290,
- "assemblies": 98,
+ "assemblies": 99,
  "scenes": 8,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
@@ -1176,7 +1176,7 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 98,
+   "count": 99,
    "sections": [
     {
      "id": "assemblies-assembly-cliff",
@@ -1275,9 +1275,9 @@
      "name": "Bridges",
      "color": "#8a5a2f",
      "models": [
-      361,
       362,
-      363
+      363,
+      364
      ]
     },
     {
@@ -1285,7 +1285,6 @@
      "name": "Rivers",
      "color": "#3aa7d6",
      "models": [
-      364,
       365,
       366,
       367,
@@ -1308,7 +1307,16 @@
       384,
       385,
       386,
-      387
+      387,
+      388
+     ]
+    },
+    {
+     "id": "assemblies-assembly-structure",
+     "name": "Other",
+     "color": "#b98c5a",
+     "models": [
+      361
      ]
     }
    ]
@@ -1324,14 +1332,14 @@
      "name": "Scenes",
      "color": "#4f8f6f",
      "models": [
-      388,
       389,
       390,
       391,
       392,
       393,
       394,
-      395
+      395,
+      396
      ]
     }
    ]
@@ -1348,7 +1356,7 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#88796d",
-     "count": 202,
+     "count": 203,
      "short": "Cliff Face"
     },
     {
@@ -1356,7 +1364,7 @@
      "name": "Grass",
      "source": "Grass",
      "hex": "#228b22",
-     "count": 144,
+     "count": 145,
      "short": "Grass"
     },
     {
@@ -1364,7 +1372,7 @@
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#bca176",
-     "count": 61,
+     "count": 62,
      "short": "Dirt"
     },
     {
@@ -1372,7 +1380,7 @@
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 54,
+     "count": 55,
      "short": "River"
     },
     {
@@ -1380,7 +1388,7 @@
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 38,
+     "count": 39,
      "short": "Waterfall"
     },
     {
@@ -1388,7 +1396,7 @@
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 27,
+     "count": 28,
      "short": "Dark"
     },
     {
@@ -1396,7 +1404,7 @@
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 26,
+     "count": 27,
      "short": "Light End"
     },
     {
@@ -1404,7 +1412,7 @@
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 25,
+     "count": 26,
      "short": "Light"
     },
     {
@@ -1412,7 +1420,7 @@
      "name": "Rope",
      "source": "Rope",
      "hex": "#7f725a",
-     "count": 16,
+     "count": 17,
      "short": "Rope"
     },
     {
@@ -1420,7 +1428,7 @@
      "name": "Waterfall Crest",
      "source": "Waterfall Crest",
      "hex": "#00edf9",
-     "count": 14,
+     "count": 15,
      "short": "Waterfall Crest"
     },
     {
@@ -1428,7 +1436,7 @@
      "name": "Wood Medium",
      "source": "Wood Medium",
      "hex": "#935f32",
-     "count": 14,
+     "count": 15,
      "short": "Medium"
     },
     {
@@ -1444,7 +1452,7 @@
      "name": "Stone Walkway",
      "source": "Stone Walkway",
      "hex": "#8b7c71",
-     "count": 8,
+     "count": 9,
      "short": "Walkway"
     },
     {
@@ -2059,7 +2067,7 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 349,
+     "count": 350,
      "short": "Hidden"
     },
     {
@@ -2067,7 +2075,7 @@
      "name": "Hidden Violet",
      "source": "Hidden Violet",
      "hex": "#dccdff",
-     "count": 112,
+     "count": 113,
      "short": "Violet"
     },
     {
@@ -2075,7 +2083,7 @@
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 102,
+     "count": 103,
      "short": "Yellow"
     },
     {
@@ -2083,7 +2091,7 @@
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 92,
+     "count": 93,
      "short": "Orange"
     },
     {
@@ -2091,7 +2099,7 @@
      "name": "Hidden Pink",
      "source": "Hidden Pink",
      "hex": "#ffdfff",
-     "count": 75,
+     "count": 76,
      "short": "Pink"
     },
     {
@@ -2099,7 +2107,7 @@
      "name": "Hidden Blue",
      "source": "Hidden Blue",
      "hex": "#d8efff",
-     "count": 73,
+     "count": 74,
      "short": "Blue"
     },
     {
@@ -2107,7 +2115,7 @@
      "name": "Hidden Green",
      "source": "Hidden Green",
      "hex": "#dcfdc8",
-     "count": 71,
+     "count": 72,
      "short": "Green"
     },
     {
@@ -2115,7 +2123,7 @@
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 54,
+     "count": 55,
      "short": "Red"
     }
    ]
@@ -17733,6 +17741,67 @@
     "material|grass"
    ],
    "missingTextures": []
+  },
+  {
+   "id": "Large_Island_v2_terrain",
+   "name": "Large Island v2 terrain",
+   "file": "assemblies/Large_Island_v2_terrain.glb",
+   "group": "assembly-structure",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "placed": 0,
+   "missingPieces": [],
+   "incomplete": false,
+   "pieces": [],
+   "dwh": [
+    157,
+    134,
+    19.25
+   ],
+   "min": [
+    -64,
+    -7,
+    -94
+   ],
+   "max": [
+    93,
+    12.25,
+    40
+   ],
+   "triangles": 113754,
+   "trianglesPerUnit": 0,
+   "calls": 9926,
+   "bytes": 2398552,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|dirt",
+    "material|grass",
+    "material|rope",
+    "material|stone-walkway",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": [
+    "Rope NM.png"
+   ]
   },
   {
    "id": "Path_Bridge_End",
