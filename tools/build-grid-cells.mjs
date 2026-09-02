@@ -1,6 +1,6 @@
 import { writeFileSync, existsSync } from 'node:fs';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
-import { buildIndex } from './ray.mjs';
+import { buildIndex, raycast } from './ray.mjs';
 
 const VERSION = '1.0.0';
 
@@ -13,8 +13,10 @@ if (!/\.glb$/i.test(input)) {
   console.error(`${input}: input must be a .glb file`);
   process.exit(1);
 }
+const LINT = process.argv.includes('--lint');
 const outPath = input.replace(/\.glb$/i, '_grid2.json');
-if (existsSync(outPath) && !process.argv.includes('--force')) {
+const writeGrid = !existsSync(outPath) || process.argv.includes('--force');
+if (!writeGrid && !LINT) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
 }
@@ -48,6 +50,8 @@ const obsPos = [];
 const triMat = [];
 const triFloor = [];
 const triAlways = [];
+const camPos = [];
+const camPiece = [];
 const sealed = new Set();
 const cellKey = (cx, cy, cz) => cx * 4000000 + cy * 4000 + cz + 2000000000;
 const candidates = new Map();
@@ -88,7 +92,8 @@ function sealCells(p, lo, hi) {
   for (const prim of json.meshes[node.mesh].primitives ?? []) {
     if ((prim.mode ?? 4) !== 4) continue;
     const mat = json.materials?.[prim.material]?.name ?? '';
-    if (/^Hidden/.test(mat)) continue;
+    const hidden = /^Hidden/.test(mat);
+    if (hidden && !LINT) continue;
     const water = isWater(mat);
     const cliff = CLIFF.test(piece);
     const always = ALWAYS.has(piece);
@@ -103,6 +108,8 @@ function sealCells(p, lo, hi) {
         const v = idx ? idx[t + k] : t + k;
         p.push(transformPoint(world[i], pos.data[v * 3], pos.data[v * 3 + 1], pos.data[v * 3 + 2]));
       }
+      if (LINT) { camPos.push(...p[0], ...p[1], ...p[2]); camPiece.push(node.name || `mesh ${node.mesh}`); }
+      if (hidden) continue;
       const lo = [0, 1, 2].map((a) => Math.min(p[0][a], p[1][a], p[2][a]));
       const hi = [0, 1, 2].map((a) => Math.max(p[0][a], p[1][a], p[2][a]));
       if (water || cliff) sealCells(p, lo, hi);
@@ -337,8 +344,9 @@ for (let e = 0; e < edges.length; e += 2) outEdges.push(remap.get(edges[e]), rem
 const mats = [...new Set(outNodes.map((n) => n.m))].sort();
 const matIndex = new Map(mats.map((m, i) => [m, i]));
 const round = (v) => Math.round(v * 1000) / 1000;
+const EYE = 1.5;
 
-writeFileSync(outPath, JSON.stringify({
+if (writeGrid) writeFileSync(outPath, JSON.stringify({
   meta: {
     version: VERSION,
     built: new Date().toISOString(),
@@ -346,7 +354,7 @@ writeFileSync(outPath, JSON.stringify({
     cell: 1,
     origin: { c: minX, r: minZ },
     size: { cols: maxX - minX + 1, rows: maxZ - minZ + 1 },
-    eye: 1.5,
+    eye: EYE,
     step: 0.75,
     main: mainCount,
     materials: mats,
@@ -358,5 +366,90 @@ writeFileSync(outPath, JSON.stringify({
 
 const byMat = new Map();
 for (const n of outNodes) byMat.set(n.m, (byMat.get(n.m) || 0) + 1);
-console.log(`${outPath}: ${outNodes.length} cells, ${outEdges.length / 2} edges, main ${mainCount}, ${compCount} components, ${sealed.size} sealed cells`);
+console.log(`${outPath}${writeGrid ? '' : ' (kept)'}: ${outNodes.length} cells, ${outEdges.length / 2} edges, main ${mainCount}, ${compCount} components, ${sealed.size} sealed cells`);
 console.log([...byMat.entries()].sort((a, b) => b[1] - a[1]).map(([m, n]) => `${m} ${n}`).join(', '));
+
+if (LINT) {
+  const BACK = 1.6, MARGIN = 0.3, MAX_R = 66, PROBE = 0.2, HEADINGS = 8;
+  const VIEWS = [1.540, 1.470, 1.309, 1.134, 0.960];
+  const camIdx = buildIndex(Float64Array.from(camPos), 1);
+  const perp = (dx, dy, dz) => {
+    const ax = Math.abs(dy) < 0.9 ? [0, 1, 0] : [1, 0, 0];
+    let ux = ax[1] * dz - ax[2] * dy, uy = ax[2] * dx - ax[0] * dz, uz = ax[0] * dy - ax[1] * dx;
+    const ul = Math.hypot(ux, uy, uz) || 1;
+    ux /= ul; uy /= ul; uz /= ul;
+    return [[ux, uy, uz], [dy * uz - dz * uy, dz * ux - dx * uz, dx * uy - dy * ux]];
+  };
+  function boom(ox, oy, oz, dx, dy, dz) {
+    let best = raycast(camIdx, ox, oy, oz, dx, dy, dz, MAX_R + MARGIN), tri = camIdx.hit;
+    const [u, v] = perp(dx, dy, dz);
+    for (const [sx, sy, sz] of [u, v, [-u[0], -u[1], -u[2]], [-v[0], -v[1], -v[2]]]) {
+      const d = raycast(camIdx, ox + sx * PROBE, oy + sy * PROBE, oz + sz * PROBE, dx, dy, dz, MAX_R + MARGIN);
+      if (d < best) { best = d; tri = camIdx.hit; }
+    }
+    return { room: Math.min(MAX_R, best - MARGIN), tri };
+  }
+  const pieces = new Map();
+  const lintNodes = outNodes.slice(0, mainCount).map((n) => {
+    let mask = 0;
+    for (let k = 0; k < HEADINGS; k++) {
+      const alpha = (k * 2 * Math.PI) / HEADINGS;
+      let worst = null;
+      for (const beta of VIEWS) {
+        const h = boom(n.x, n.y + EYE, n.z, Math.cos(alpha) * Math.sin(beta), Math.cos(beta), Math.sin(alpha) * Math.sin(beta));
+        if (h.room <= BACK && (!worst || h.room < worst.room)) worst = h;
+      }
+      if (!worst) continue;
+      mask |= 1 << k;
+      const name = camPiece[worst.tri];
+      const rec = pieces.get(name) ?? { piece: name, family: name.split('__')[0], hits: 0, cells: new Set() };
+      rec.hits++;
+      rec.cells.add(`${n.cx - minX},${n.cz - minZ}`);
+      pieces.set(name, rec);
+    }
+    let open = HEADINGS;
+    for (let k = 0; k < HEADINGS; k++) if (mask & (1 << k)) open--;
+    return { c: n.cx - minX, r: n.cz - minZ, y: round(n.y), open, mask };
+  });
+  const ranked = [...pieces.values()].sort((a, b) => b.hits - a.hits)
+    .map((p) => ({ piece: p.piece, family: p.family, hits: p.hits, cells: [...p.cells] }));
+
+  const cols = maxX - minX + 1, rows = maxZ - minZ + 1, S = 12;
+  const worstAt = new Map();
+  for (const n of lintNodes) {
+    const key = `${n.c},${n.r}`;
+    if (!worstAt.has(key) || n.open < worstAt.get(key).open) worstAt.set(key, n);
+  }
+  const shade = (open) => {
+    const t = open / HEADINGS;
+    const mix = (a, b) => Math.round(a + (b - a) * t).toString(16).padStart(2, '0');
+    return open === HEADINGS ? '#3f8f4f' : `#${mix(0xe0, 0x8a)}${mix(0x3a, 0xd8)}${mix(0x3a, 0x6a)}`;
+  };
+  const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  const svg = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${cols * S} ${rows * S}" width="${cols * S}" height="${rows * S}">`,
+    `<rect width="${cols * S}" height="${rows * S}" fill="#1a2028"/>`];
+  for (const n of worstAt.values()) {
+    const x = n.c * S, z = n.r * S, cx = x + S / 2, cz = z + S / 2;
+    const blocked = [];
+    for (let k = 0; k < HEADINGS; k++) if (n.mask & (1 << k)) blocked.push(k);
+    const title = `cell ${n.c},${n.r} y ${n.y} open ${n.open}/${HEADINGS}` + (blocked.length ? ` blocked ${blocked.map((k) => k * 45 + '\u00b0').join(' ')}` : '');
+    svg.push(`<g><title>${esc(title)}</title><rect x="${x + 0.5}" y="${z + 0.5}" width="${S - 1}" height="${S - 1}" fill="${shade(n.open)}"/>`);
+    for (const k of blocked) {
+      const a = (k * 2 * Math.PI) / HEADINGS;
+      svg.push(`<line x1="${cx}" y1="${cz}" x2="${round(cx + Math.cos(a) * (S / 2 - 1))}" y2="${round(cz + Math.sin(a) * (S / 2 - 1))}" stroke="#1a2028" stroke-width="1.5"/>`);
+    }
+    svg.push('</g>');
+  }
+  svg.push('</svg>');
+  const lintBase = input.replace(/\.glb$/i, '_camlint');
+  writeFileSync(`${lintBase}.svg`, svg.join('\n'));
+  writeFileSync(`${lintBase}.json`, JSON.stringify({
+    meta: { scene: input.split('/').pop(), built: new Date().toISOString(), eye: EYE, back: BACK, margin: MARGIN, probe: PROBE, views: VIEWS, headings: HEADINGS, origin: { c: minX, r: minZ }, main: mainCount },
+    nodes: lintNodes.map((n) => [n.c, n.r, n.y, n.open, n.mask]),
+    pieces: ranked,
+  }));
+  const hist = new Array(HEADINGS + 1).fill(0);
+  for (const n of lintNodes) hist[n.open]++;
+  console.log(`${lintBase}.svg/.json: open headings ${hist.map((n, i) => `${i}:${n}`).join(' ')}`);
+  for (const p of ranked.slice(0, 15)) console.log(`  ${p.hits} ${p.piece} (${p.cells.length} cells)`);
+}
