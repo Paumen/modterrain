@@ -121,6 +121,21 @@
    "packAlbedo": "ice.png",
    "distance": 3
   },
+  "Stone Walkway": {
+   "hex": "#8b7c71",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.8623046875
+   ],
+   "packColor": "#857d74",
+   "packMaterial": "Carved Stone/Carved Stone Walkway.mat",
+   "packAlbedo": "Carved Stone Walkway.png",
+   "distance": 11
+  },
   "Waterfall Crest": {
    "hex": "#00edf9",
    "cell": [

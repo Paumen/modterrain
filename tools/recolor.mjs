@@ -75,6 +75,7 @@ const PALETTE_SOURCES = {
   Dirt: 'Terrain/Dirt.mat',
   Grass: 'Terrain/Grass.mat',
   Ice: 'Terrain/Ice.mat',
+  'Stone Walkway': 'Carved Stone/Carved Stone Walkway.mat',
   'Waterfall Crest': 'Water/Waterfall Crest.mat',
 };
 

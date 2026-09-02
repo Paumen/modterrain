@@ -1,8 +1,8 @@
 {
  "generated": "node tools/build-catalog.mjs",
- "total": 270,
+ "total": 290,
  "assemblies": 98,
- "scenes": 7,
+ "scenes": 8,
  "budgetPerUnit": 250,
  "unitsPerCell": 100,
  "facets": {
@@ -58,7 +58,7 @@
    "id": "atoms",
    "label": "Atoms",
    "facet": "family",
-   "count": 270,
+   "count": 290,
    "sections": [
     {
      "id": "atoms-basic",
@@ -113,26 +113,6 @@
      "name": "Walls",
      "color": "#6f7b8c",
      "models": [
-      212,
-      213,
-      214,
-      215,
-      216,
-      217,
-      218,
-      219,
-      220,
-      221,
-      222,
-      223,
-      224,
-      225,
-      226,
-      227,
-      228,
-      229,
-      230,
-      231,
       232,
       233,
       234,
@@ -155,7 +135,27 @@
       251,
       252,
       253,
-      254
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271,
+      272,
+      273,
+      274
      ]
     },
     {
@@ -163,10 +163,6 @@
      "name": "Cracked Cliffs",
      "color": "#a8705a",
      "models": [
-      49,
-      50,
-      51,
-      52,
       53,
       54,
       55,
@@ -184,7 +180,11 @@
       67,
       68,
       69,
-      70
+      70,
+      71,
+      72,
+      73,
+      74
      ]
     },
     {
@@ -192,23 +192,23 @@
      "name": "Grass Steps",
      "color": "#5f9e4a",
      "models": [
-      194,
-      195,
-      196,
-      197,
-      198,
-      199,
-      200,
-      201,
-      202,
-      203,
       204,
       205,
       206,
       207,
       208,
       209,
-      210
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220
      ]
     },
     {
@@ -216,16 +216,6 @@
      "name": "Terrain Paths",
      "color": "#d98f4f",
      "models": [
-      135,
-      136,
-      137,
-      138,
-      139,
-      140,
-      141,
-      142,
-      143,
-      144,
       145,
       146,
       147,
@@ -244,7 +234,27 @@
       160,
       161,
       162,
-      211
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231
      ]
     },
     {
@@ -252,16 +262,16 @@
      "name": "Bridges & Ends",
      "color": "#8a5a2f",
      "models": [
-      131,
-      132,
-      133,
-      134,
-      163,
-      164,
-      165,
-      166,
-      167,
-      168
+      141,
+      142,
+      143,
+      144,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178
      ]
     },
     {
@@ -269,24 +279,7 @@
      "name": "Grass Carpet",
      "color": "#79c04a",
      "models": [
-      87,
-      88,
-      89,
-      90,
-      91,
-      92,
-      93,
-      94,
-      95,
-      96,
-      97
-     ]
-    },
-    {
-     "id": "atoms-grass-hill",
-     "name": "Grass Hills",
-     "color": "#3f8f5f",
-     "models": [
+      97,
       98,
       99,
       100,
@@ -296,7 +289,14 @@
       104,
       105,
       106,
-      107,
+      107
+     ]
+    },
+    {
+     "id": "atoms-grass-hill",
+     "name": "Grass Hills",
+     "color": "#3f8f5f",
+     "models": [
       108,
       109,
       110,
@@ -307,75 +307,7 @@
       115,
       116,
       117,
-      118
-     ]
-    },
-    {
-     "id": "atoms-sand",
-     "name": "Sand",
-     "color": "#e0c27a",
-     "models": [
-      169,
-      170,
-      171,
-      172,
-      173,
-      174,
-      175,
-      176,
-      177,
-      178,
-      179,
-      180
-     ]
-    },
-    {
-     "id": "atoms-river",
-     "name": "River",
-     "color": "#3aa7d6",
-     "models": [
-      181,
-      182,
-      183,
-      184,
-      185,
-      186,
-      187,
-      188,
-      189,
-      190,
-      191,
-      192,
-      193
-     ]
-    },
-    {
-     "id": "atoms-water",
-     "name": "Water & Waterfalls",
-     "color": "#2fc7e8",
-     "models": [
-      255,
-      256,
-      257,
-      258,
-      259,
-      260,
-      261,
-      262,
-      263,
-      264,
-      265,
-      266,
-      267,
-      268,
-      269
-     ]
-    },
-    {
-     "id": "atoms-iceberg",
-     "name": "Icebergs",
-     "color": "#8fc7ff",
-     "models": [
+      118,
       119,
       120,
       121,
@@ -385,9 +317,87 @@
       125,
       126,
       127,
-      128,
+      128
+     ]
+    },
+    {
+     "id": "atoms-sand",
+     "name": "Sand",
+     "color": "#e0c27a",
+     "models": [
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190
+     ]
+    },
+    {
+     "id": "atoms-river",
+     "name": "River",
+     "color": "#3aa7d6",
+     "models": [
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203
+     ]
+    },
+    {
+     "id": "atoms-water",
+     "name": "Water & Waterfalls",
+     "color": "#2fc7e8",
+     "models": [
+      275,
+      276,
+      277,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289
+     ]
+    },
+    {
+     "id": "atoms-iceberg",
+     "name": "Icebergs",
+     "color": "#8fc7ff",
+     "models": [
       129,
-      130
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140
      ]
     },
     {
@@ -395,10 +405,6 @@
      "name": "Docks",
      "color": "#c08447",
      "models": [
-      71,
-      72,
-      73,
-      74,
       75,
       76,
       77,
@@ -410,7 +416,11 @@
       83,
       84,
       85,
-      86
+      86,
+      87,
+      88,
+      89,
+      90
      ]
     },
     {
@@ -427,6 +437,23 @@
       47,
       48
      ]
+    },
+    {
+     "id": "atoms-props",
+     "name": "Props",
+     "color": "#b76fa8",
+     "models": [
+      49,
+      50,
+      51,
+      52,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96
+     ]
     }
    ]
   },
@@ -434,7 +461,7 @@
    "id": "shapes",
    "label": "Shapes",
    "facet": "shape",
-   "count": 270,
+   "count": 290,
    "sections": [
     {
      "id": "shapes-curve-inner",
@@ -455,56 +482,62 @@
       11,
       49,
       50,
-      51,
-      52,
       53,
       54,
       55,
       56,
-      88,
-      89,
-      90,
+      57,
+      58,
+      59,
+      60,
+      92,
+      93,
       98,
       99,
-      105,
-      106,
-      110,
-      111,
-      112,
-      119,
+      100,
+      108,
+      109,
+      115,
+      116,
       120,
       121,
       122,
-      135,
-      138,
-      139,
-      140,
-      141,
-      142,
-      160,
-      161,
-      162,
+      129,
+      130,
+      131,
+      132,
+      145,
+      148,
+      149,
+      150,
+      151,
+      152,
+      170,
+      171,
       172,
-      173,
-      194,
-      195,
-      199,
-      200,
-      201,
-      202,
-      203,
+      182,
+      183,
+      204,
+      205,
+      209,
+      210,
+      211,
       212,
       213,
-      214,
-      215,
-      216,
-      217,
-      218,
-      219,
-      220,
-      221,
       222,
-      223
+      223,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243
      ]
     },
     {
@@ -528,45 +561,46 @@
       25,
       26,
       27,
-      57,
-      58,
-      59,
-      60,
       61,
       62,
-      91,
-      92,
-      93,
-      100,
-      107,
-      113,
-      114,
+      63,
+      64,
+      65,
+      66,
+      94,
+      101,
+      102,
+      103,
+      110,
+      117,
       123,
       124,
-      125,
-      136,
-      143,
-      144,
-      145,
-      174,
-      175,
-      176,
-      196,
-      197,
-      204,
-      205,
+      133,
+      134,
+      135,
+      146,
+      153,
+      154,
+      155,
+      184,
+      185,
+      186,
       206,
       207,
-      208,
-      224,
-      225,
-      226,
-      227,
-      228,
-      229,
-      230,
-      231,
-      232
+      214,
+      215,
+      216,
+      217,
+      218,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      252
      ]
     },
     {
@@ -574,13 +608,17 @@
      "name": "Curve",
      "color": "#c9a227",
      "models": [
-      158,
-      170,
-      171,
+      168,
+      180,
       181,
-      182,
-      183,
-      184
+      191,
+      192,
+      193,
+      194,
+      226,
+      227,
+      228,
+      229
      ]
     },
     {
@@ -595,28 +633,28 @@
       43,
       44,
       45,
-      94,
-      95,
-      101,
-      115,
-      116,
-      146,
-      177,
-      178,
-      185,
-      186,
+      104,
+      105,
+      111,
+      125,
+      126,
+      156,
       187,
       188,
-      189,
-      190,
-      209,
-      210,
-      233,
-      234,
-      235,
-      236,
-      237,
-      238
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      219,
+      220,
+      253,
+      254,
+      255,
+      256,
+      257,
+      258
      ]
     },
     {
@@ -628,18 +666,22 @@
       33,
       34,
       40,
-      153,
-      154,
-      155,
-      156,
-      179,
-      180,
-      192,
-      193,
-      239,
-      240,
-      241,
-      242
+      51,
+      52,
+      95,
+      96,
+      163,
+      164,
+      165,
+      166,
+      189,
+      190,
+      202,
+      203,
+      259,
+      260,
+      261,
+      262
      ]
     },
     {
@@ -647,9 +689,9 @@
      "name": "Overlapping",
      "color": "#7f8fa6",
      "models": [
-      102,
-      103,
-      117
+      112,
+      113,
+      127
      ]
     },
     {
@@ -664,43 +706,46 @@
       46,
       47,
       48,
-      63,
-      64,
-      65,
-      66,
       67,
       68,
       69,
       70,
-      96,
-      104,
-      108,
-      109,
+      71,
+      72,
+      73,
+      74,
+      106,
+      114,
       118,
-      127,
+      119,
       128,
-      129,
-      130,
       137,
+      138,
+      139,
+      140,
       147,
-      148,
-      149,
-      150,
-      151,
+      157,
+      158,
       159,
-      198,
-      243,
-      244,
-      245,
-      246,
-      247,
-      248,
-      249,
-      250,
-      251,
-      252,
-      253,
-      254
+      160,
+      161,
+      169,
+      208,
+      224,
+      230,
+      231,
+      263,
+      264,
+      265,
+      266,
+      267,
+      268,
+      269,
+      270,
+      271,
+      272,
+      273,
+      274
      ]
     },
     {
@@ -708,10 +753,10 @@
      "name": "Stairs & Ladder",
      "color": "#b98c5a",
      "models": [
-      74,
-      75,
-      76,
-      80
+      78,
+      79,
+      80,
+      84
      ]
     },
     {
@@ -719,8 +764,8 @@
      "name": "Transition",
      "color": "#d76fa0",
      "models": [
-      157,
-      211
+      167,
+      225
      ]
     },
     {
@@ -729,13 +774,15 @@
      "color": "#8d8377",
      "models": [
       39,
-      72,
-      73,
-      97,
-      126,
-      152,
-      169,
-      191
+      76,
+      77,
+      91,
+      107,
+      136,
+      162,
+      179,
+      201,
+      221
      ]
     },
     {
@@ -743,10 +790,10 @@
      "name": "End & Corner",
      "color": "#6f7b8c",
      "models": [
-      133,
-      134,
-      164,
-      165
+      143,
+      144,
+      174,
+      175
      ]
     },
     {
@@ -756,38 +803,38 @@
      "models": [
       41,
       42,
-      71,
-      77,
-      78,
-      79,
+      75,
       81,
       82,
       83,
-      84,
       85,
       86,
       87,
-      131,
-      132,
-      163,
-      166,
-      167,
-      168,
-      255,
-      256,
-      257,
-      258,
-      259,
-      260,
-      261,
-      262,
-      263,
-      264,
-      265,
-      266,
-      267,
-      268,
-      269
+      88,
+      89,
+      90,
+      97,
+      141,
+      142,
+      173,
+      176,
+      177,
+      178,
+      275,
+      276,
+      277,
+      278,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289
      ]
     }
    ]
@@ -796,7 +843,7 @@
    "id": "layers",
    "label": "Layers",
    "facet": "layer",
-   "count": 270,
+   "count": 290,
    "sections": [
     {
      "id": "layers-layer-under",
@@ -835,24 +882,24 @@
       41,
       43,
       46,
-      212,
-      215,
-      218,
-      221,
-      224,
-      227,
-      230,
-      233,
-      236,
-      239,
+      232,
+      235,
+      238,
       241,
-      243,
-      246,
-      249,
-      252,
-      258,
+      244,
+      247,
+      250,
+      253,
+      256,
       259,
-      260
+      261,
+      263,
+      266,
+      269,
+      272,
+      278,
+      279,
+      280
      ]
     },
     {
@@ -871,8 +918,6 @@
       36,
       44,
       47,
-      49,
-      51,
       53,
       55,
       57,
@@ -882,23 +927,25 @@
       65,
       67,
       69,
-      86,
-      213,
-      216,
-      219,
-      222,
-      225,
-      228,
-      231,
-      234,
-      237,
-      244,
-      247,
-      250,
-      253,
-      261,
-      262,
-      263
+      71,
+      73,
+      90,
+      233,
+      236,
+      239,
+      242,
+      245,
+      248,
+      251,
+      254,
+      257,
+      264,
+      267,
+      270,
+      273,
+      281,
+      282,
+      283
      ]
     },
     {
@@ -919,8 +966,6 @@
       42,
       45,
       48,
-      50,
-      52,
       54,
       56,
       58,
@@ -930,35 +975,37 @@
       66,
       68,
       70,
-      76,
-      78,
-      79,
-      131,
-      132,
-      133,
-      134,
-      211,
-      214,
-      217,
-      220,
-      223,
-      226,
-      229,
-      232,
-      235,
-      238,
+      72,
+      74,
+      80,
+      82,
+      83,
+      141,
+      142,
+      143,
+      144,
+      225,
+      234,
+      237,
       240,
-      242,
-      245,
-      248,
-      251,
-      254,
-      264,
+      243,
+      246,
+      249,
+      252,
+      255,
+      258,
+      260,
+      262,
       265,
-      266,
-      267,
       268,
-      269
+      271,
+      274,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289
      ]
     },
     {
@@ -966,22 +1013,22 @@
      "name": "No Layer",
      "color": "#9a9a9a",
      "models": [
-      71,
-      72,
-      73,
-      74,
+      49,
+      50,
+      51,
+      52,
       75,
+      76,
       77,
-      80,
+      78,
+      79,
       81,
-      82,
-      83,
       84,
       85,
+      86,
       87,
       88,
       89,
-      90,
       91,
       92,
       93,
@@ -1022,16 +1069,16 @@
       128,
       129,
       130,
+      131,
+      132,
+      133,
+      134,
       135,
       136,
       137,
       138,
       139,
       140,
-      141,
-      142,
-      143,
-      144,
       145,
       146,
       147,
@@ -1098,9 +1145,29 @@
       208,
       209,
       210,
-      255,
-      256,
-      257
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      275,
+      276,
+      277
      ]
     }
    ]
@@ -1116,26 +1183,6 @@
      "name": "Cliff Runs",
      "color": "#9a8f80",
      "models": [
-      270,
-      271,
-      272,
-      273,
-      274,
-      275,
-      276,
-      277,
-      278,
-      279,
-      280,
-      281,
-      282,
-      283,
-      284,
-      285,
-      286,
-      287,
-      288,
-      289,
       290,
       291,
       292,
@@ -1145,14 +1192,7 @@
       296,
       297,
       298,
-      299
-     ]
-    },
-    {
-     "id": "assemblies-assembly-water",
-     "name": "Waterfalls & Cave Entrances",
-     "color": "#2fc7e8",
-     "models": [
+      299,
       300,
       301,
       302,
@@ -1172,7 +1212,14 @@
       316,
       317,
       318,
-      319,
+      319
+     ]
+    },
+    {
+     "id": "assemblies-assembly-water",
+     "name": "Waterfalls & Cave Entrances",
+     "color": "#2fc7e8",
+     "models": [
       320,
       321,
       322,
@@ -1191,33 +1238,12 @@
       335,
       336,
       337,
-      338
-     ]
-    },
-    {
-     "id": "assemblies-assembly-crack",
-     "name": "Cracks",
-     "color": "#a8705a",
-     "models": [
+      338,
       339,
-      340
-     ]
-    },
-    {
-     "id": "assemblies-assembly-bridge",
-     "name": "Bridges",
-     "color": "#8a5a2f",
-     "models": [
+      340,
       341,
       342,
-      343
-     ]
-    },
-    {
-     "id": "assemblies-assembly-river",
-     "name": "Rivers",
-     "color": "#3aa7d6",
-     "models": [
+      343,
       344,
       345,
       346,
@@ -1232,16 +1258,57 @@
       355,
       356,
       357,
-      358,
+      358
+     ]
+    },
+    {
+     "id": "assemblies-assembly-crack",
+     "name": "Cracks",
+     "color": "#a8705a",
+     "models": [
       359,
-      360,
+      360
+     ]
+    },
+    {
+     "id": "assemblies-assembly-bridge",
+     "name": "Bridges",
+     "color": "#8a5a2f",
+     "models": [
       361,
       362,
-      363,
+      363
+     ]
+    },
+    {
+     "id": "assemblies-assembly-river",
+     "name": "Rivers",
+     "color": "#3aa7d6",
+     "models": [
       364,
       365,
       366,
-      367
+      367,
+      368,
+      369,
+      370,
+      371,
+      372,
+      373,
+      374,
+      375,
+      376,
+      377,
+      378,
+      379,
+      380,
+      381,
+      382,
+      383,
+      384,
+      385,
+      386,
+      387
      ]
     }
    ]
@@ -1250,20 +1317,21 @@
    "id": "scenes",
    "label": "Scenes",
    "facet": "scene",
-   "count": 7,
+   "count": 8,
    "sections": [
     {
      "id": "scenes-scene-diorama",
      "name": "Scenes",
      "color": "#4f8f6f",
      "models": [
-      368,
-      369,
-      370,
-      371,
-      372,
-      373,
-      374
+      388,
+      389,
+      390,
+      391,
+      392,
+      393,
+      394,
+      395
      ]
     }
    ]
@@ -1280,7 +1348,7 @@
      "name": "Cliff Face",
      "source": "Cliff Face",
      "hex": "#88796d",
-     "count": 192,
+     "count": 202,
      "short": "Cliff Face"
     },
     {
@@ -1288,7 +1356,7 @@
      "name": "Grass",
      "source": "Grass",
      "hex": "#228b22",
-     "count": 143,
+     "count": 144,
      "short": "Grass"
     },
     {
@@ -1296,7 +1364,7 @@
      "name": "Dirt",
      "source": "Dirt",
      "hex": "#bca176",
-     "count": 57,
+     "count": 61,
      "short": "Dirt"
     },
     {
@@ -1304,7 +1372,7 @@
      "name": "Water River",
      "source": "Water River",
      "hex": "#1893b9",
-     "count": 53,
+     "count": 54,
      "short": "River"
     },
     {
@@ -1312,7 +1380,7 @@
      "name": "Waterfall",
      "source": "Waterfall",
      "hex": "#1293bc",
-     "count": 37,
+     "count": 38,
      "short": "Waterfall"
     },
     {
@@ -1320,7 +1388,7 @@
      "name": "Wood Dark",
      "source": "Wood Dark",
      "hex": "#673a10",
-     "count": 26,
+     "count": 27,
      "short": "Dark"
     },
     {
@@ -1328,7 +1396,7 @@
      "name": "Wood Light End",
      "source": "Wood Light End",
      "hex": "#bd905c",
-     "count": 25,
+     "count": 26,
      "short": "Light End"
     },
     {
@@ -1336,7 +1404,7 @@
      "name": "Wood Light",
      "source": "Wood Light",
      "hex": "#c89c6a",
-     "count": 24,
+     "count": 25,
      "short": "Light"
     },
     {
@@ -1344,8 +1412,24 @@
      "name": "Rope",
      "source": "Rope",
      "hex": "#7f725a",
-     "count": 15,
+     "count": 16,
      "short": "Rope"
+    },
+    {
+     "key": "material|waterfall-crest",
+     "name": "Waterfall Crest",
+     "source": "Waterfall Crest",
+     "hex": "#00edf9",
+     "count": 14,
+     "short": "Waterfall Crest"
+    },
+    {
+     "key": "material|wood-medium",
+     "name": "Wood Medium",
+     "source": "Wood Medium",
+     "hex": "#935f32",
+     "count": 14,
+     "short": "Medium"
     },
     {
      "key": "material|ice",
@@ -1356,27 +1440,19 @@
      "short": "Ice"
     },
     {
-     "key": "material|waterfall-crest",
-     "name": "Waterfall Crest",
-     "source": "Waterfall Crest",
-     "hex": "#00edf9",
-     "count": 13,
-     "short": "Waterfall Crest"
-    },
-    {
-     "key": "material|wood-medium",
-     "name": "Wood Medium",
-     "source": "Wood Medium",
-     "hex": "#935f32",
-     "count": 13,
-     "short": "Medium"
+     "key": "material|stone-walkway",
+     "name": "Stone Walkway",
+     "source": "Stone Walkway",
+     "hex": "#8b7c71",
+     "count": 8,
+     "short": "Walkway"
     },
     {
      "key": "material|cliff",
      "name": "Cliff",
      "source": "Cliff",
      "hex": "#88796d",
-     "count": 5,
+     "count": 6,
      "short": "Cliff"
     },
     {
@@ -1384,8 +1460,16 @@
      "name": "Metal Iron",
      "source": "Metal Iron",
      "hex": "#726c68",
-     "count": 5,
+     "count": 6,
      "short": "Iron"
+    },
+    {
+     "key": "material|cave-pool",
+     "name": "Cave Pool",
+     "source": "Cave Pool",
+     "hex": "#22cde3",
+     "count": 5,
+     "short": "Cave Pool"
     },
     {
      "key": "material|candlewax",
@@ -1396,12 +1480,36 @@
      "short": "Candlewax"
     },
     {
-     "key": "material|cave-pool",
-     "name": "Cave Pool",
-     "source": "Cave Pool",
-     "hex": "#22cde3",
+     "key": "material|carved-stone-1",
+     "name": "Carved Stone 1",
+     "source": "Carved Stone 1",
+     "hex": "#baae9f",
      "count": 4,
-     "short": "Cave Pool"
+     "short": "Stone 1"
+    },
+    {
+     "key": "material|carved-stone-2",
+     "name": "Carved Stone 2",
+     "source": "Carved Stone 2",
+     "hex": "#c7bfb3",
+     "count": 4,
+     "short": "Stone 2"
+    },
+    {
+     "key": "material|carved-stone-3",
+     "name": "Carved Stone 3",
+     "source": "Carved Stone 3",
+     "hex": "#d6d2cb",
+     "count": 4,
+     "short": "Stone 3"
+    },
+    {
+     "key": "material|carved-stone-walkway",
+     "name": "Carved Stone Walkway",
+     "source": "Carved Stone Walkway",
+     "hex": "#bfbab4",
+     "count": 4,
+     "short": "Carved Stone Walkway"
     },
     {
      "key": "material|bark-branch",
@@ -1450,38 +1558,6 @@
      "hex": "#76624b",
      "count": 3,
      "short": "Pine"
-    },
-    {
-     "key": "material|carved-stone-1",
-     "name": "Carved Stone 1",
-     "source": "Carved Stone 1",
-     "hex": "#baae9f",
-     "count": 3,
-     "short": "Stone 1"
-    },
-    {
-     "key": "material|carved-stone-2",
-     "name": "Carved Stone 2",
-     "source": "Carved Stone 2",
-     "hex": "#c7bfb3",
-     "count": 3,
-     "short": "Stone 2"
-    },
-    {
-     "key": "material|carved-stone-3",
-     "name": "Carved Stone 3",
-     "source": "Carved Stone 3",
-     "hex": "#d6d2cb",
-     "count": 3,
-     "short": "Stone 3"
-    },
-    {
-     "key": "material|carved-stone-walkway",
-     "name": "Carved Stone Walkway",
-     "source": "Carved Stone Walkway",
-     "hex": "#bfbab4",
-     "count": 3,
-     "short": "Walkway"
     },
     {
      "key": "material|cattail-grass",
@@ -1983,7 +2059,7 @@
      "name": "Hidden",
      "source": "Hidden",
      "hex": "#f8f8f8",
-     "count": 330,
+     "count": 349,
      "short": "Hidden"
     },
     {
@@ -1999,7 +2075,7 @@
      "name": "Hidden Yellow",
      "source": "Hidden Yellow",
      "hex": "#fcfbc8",
-     "count": 92,
+     "count": 102,
      "short": "Yellow"
     },
     {
@@ -2007,8 +2083,16 @@
      "name": "Hidden Orange",
      "source": "Hidden Orange",
      "hex": "#ffe6cb",
-     "count": 84,
+     "count": 92,
      "short": "Orange"
+    },
+    {
+     "key": "hidden|hidden-pink",
+     "name": "Hidden Pink",
+     "source": "Hidden Pink",
+     "hex": "#ffdfff",
+     "count": 75,
+     "short": "Pink"
     },
     {
      "key": "hidden|hidden-blue",
@@ -2017,14 +2101,6 @@
      "hex": "#d8efff",
      "count": 73,
      "short": "Blue"
-    },
-    {
-     "key": "hidden|hidden-pink",
-     "name": "Hidden Pink",
-     "source": "Hidden Pink",
-     "hex": "#ffdfff",
-     "count": 72,
-     "short": "Pink"
     },
     {
      "key": "hidden|hidden-green",
@@ -2039,7 +2115,7 @@
      "name": "Hidden Red",
      "source": "Hidden Red",
      "hex": "#ffcfcf",
-     "count": 48,
+     "count": 54,
      "short": "Red"
     }
    ]
@@ -3900,6 +3976,154 @@
    "missingTextures": []
   },
   {
+   "id": "Ceiling_Curve_Inner_4x4",
+   "name": "Ceiling Curve Inner 4x4",
+   "file": "atoms/Ceiling_Curve_Inner_4x4.glb",
+   "family": "props",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    4,
+    4,
+    1
+   ],
+   "min": [
+    -1.5,
+    -1,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    0,
+    1.5
+   ],
+   "triangles": 54,
+   "trianglesPerUnit": 3,
+   "calls": 3,
+   "bytes": 7896,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Ceiling_Curve_Inner_8x8",
+   "name": "Ceiling Curve Inner 8x8",
+   "file": "atoms/Ceiling_Curve_Inner_8x8.glb",
+   "family": "props",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    8,
+    8,
+    1
+   ],
+   "min": [
+    -4.5,
+    -1,
+    -3.5
+   ],
+   "max": [
+    3.5,
+    0,
+    4.5
+   ],
+   "triangles": 100,
+   "trianglesPerUnit": 2,
+   "calls": 3,
+   "bytes": 10876,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Ceiling_Incline_1x3",
+   "name": "Ceiling Incline 1x3",
+   "file": "atoms/Ceiling_Incline_1x3.glb",
+   "family": "props",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    4,
+    1,
+    1
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -0.5
+   ],
+   "max": [
+    3.5,
+    0,
+    0.5
+   ],
+   "triangles": 24,
+   "trianglesPerUnit": 6,
+   "calls": 3,
+   "bytes": 5696,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Ceiling_Incline_1x6",
+   "name": "Ceiling Incline 1x6",
+   "file": "atoms/Ceiling_Incline_1x6.glb",
+   "family": "props",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 6",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    6,
+    1,
+    2
+   ],
+   "min": [
+    -0.5,
+    -2,
+    -0.5
+   ],
+   "max": [
+    5.5,
+    0,
+    0.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": 3,
+   "calls": 3,
+   "bytes": 6056,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Cracked_Curve_Inner_2x2_1_Mid",
    "name": "Cracked Curve Inner 2x2 1 Mid",
    "file": "atoms/Cracked_Curve_Inner_2x2_1_Mid.glb",
@@ -5359,6 +5583,227 @@
    "materials": [
     "material|wood-dark",
     "material|wood-light-end"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Floor_And_Ceiling_Flat_1x1",
+   "name": "Floor And Ceiling Flat 1x1",
+   "file": "atoms/Floor_And_Ceiling_Flat_1x1.glb",
+   "family": "props",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1,
+    1,
+    1
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    0,
+    0.5
+   ],
+   "triangles": 12,
+   "trianglesPerUnit": 12,
+   "calls": 2,
+   "bytes": 3772,
+   "materials": [
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Floor_Curve_Inner_4x4",
+   "name": "Floor Curve Inner 4x4",
+   "file": "atoms/Floor_Curve_Inner_4x4.glb",
+   "family": "props",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    4,
+    4,
+    1
+   ],
+   "min": [
+    -1.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    1,
+    1.5
+   ],
+   "triangles": 54,
+   "trianglesPerUnit": 3,
+   "calls": 3,
+   "bytes": 7876,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Floor_Curve_Inner_8x8",
+   "name": "Floor Curve Inner 8x8",
+   "file": "atoms/Floor_Curve_Inner_8x8.glb",
+   "family": "props",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    8,
+    8,
+    1
+   ],
+   "min": [
+    -4.5,
+    0,
+    -3.5
+   ],
+   "max": [
+    3.5,
+    1,
+    4.5
+   ],
+   "triangles": 100,
+   "trianglesPerUnit": 2,
+   "calls": 3,
+   "bytes": 10868,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Floor_Curve_Outer_8x8",
+   "name": "Floor Curve Outer 8x8",
+   "file": "atoms/Floor_Curve_Outer_8x8.glb",
+   "family": "props",
+   "shape": "curve-outer",
+   "layer": "layer-none",
+   "size": "8 × 8",
+   "sizeGroup": "size-large",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    8,
+    8,
+    1
+   ],
+   "min": [
+    -3.5,
+    0,
+    -4.5
+   ],
+   "max": [
+    4.5,
+    1,
+    3.5
+   ],
+   "triangles": 88,
+   "trianglesPerUnit": 1,
+   "calls": 3,
+   "bytes": 10132,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Floor_Incline_1x3",
+   "name": "Floor Incline 1x3",
+   "file": "atoms/Floor_Incline_1x3.glb",
+   "family": "props",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    4,
+    1,
+    1
+   ],
+   "min": [
+    -0.5,
+    0,
+    -0.5
+   ],
+   "max": [
+    3.5,
+    1,
+    0.5
+   ],
+   "triangles": 24,
+   "trianglesPerUnit": 6,
+   "calls": 3,
+   "bytes": 5676,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Floor_Incline_1x6",
+   "name": "Floor Incline 1x6",
+   "file": "atoms/Floor_Incline_1x6.glb",
+   "family": "props",
+   "shape": "incline",
+   "layer": "layer-none",
+   "size": "1 × 6",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    6,
+    1,
+    2
+   ],
+   "min": [
+    -0.5,
+    0,
+    -0.5
+   ],
+   "max": [
+    5.5,
+    2,
+    0.5
+   ],
+   "triangles": 32,
+   "trianglesPerUnit": 3,
+   "calls": 3,
+   "bytes": 6096,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-yellow",
+    "material|cliff-face"
    ],
    "missingTextures": []
   },
@@ -10284,6 +10729,156 @@
    "missingTextures": []
   },
   {
+   "id": "Tiered_Walkway_Path_Flat_1x1",
+   "name": "Tiered Walkway Path Flat 1x1",
+   "file": "atoms/Tiered_Walkway_Path_Flat_1x1.glb",
+   "family": "path-terrain",
+   "shape": "flat",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1,
+    1,
+    1
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    0,
+    0.5
+   ],
+   "triangles": 12,
+   "trianglesPerUnit": 12,
+   "calls": 3,
+   "bytes": 4864,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "material|stone-walkway"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Path_Transition_Curve_Inner_1x1",
+   "name": "Tiered Walkway Path Transition Curve Inner 1x1",
+   "file": "atoms/Tiered_Walkway_Path_Transition_Curve_Inner_1x1.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1,
+    1,
+    1.06
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    0.06,
+    0.5
+   ],
+   "triangles": 20,
+   "trianglesPerUnit": 19,
+   "calls": 3,
+   "bytes": 5508,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-pink",
+    "material|dirt"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Path_Transition_Curve_Inner_2x2",
+   "name": "Tiered Walkway Path Transition Curve Inner 2x2",
+   "file": "atoms/Tiered_Walkway_Path_Transition_Curve_Inner_2x2.glb",
+   "family": "path-terrain",
+   "shape": "curve-inner",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    2,
+    2,
+    1.06
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    0.06,
+    0.5
+   ],
+   "triangles": 42,
+   "trianglesPerUnit": 10,
+   "calls": 5,
+   "bytes": 9032,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "material|dirt",
+    "material|stone-walkway"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Path_Transition_Straight_1x1",
+   "name": "Tiered Walkway Path Transition Straight 1x1",
+   "file": "atoms/Tiered_Walkway_Path_Transition_Straight_1x1.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 1",
+   "sizeGroup": "size-1x1",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1,
+    1,
+    1.06
+   ],
+   "min": [
+    -0.5,
+    -1,
+    -0.5
+   ],
+   "max": [
+    0.5,
+    0.06,
+    0.5
+   ],
+   "triangles": 16,
+   "trianglesPerUnit": 15,
+   "calls": 3,
+   "bytes": 5152,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-pink",
+    "material|dirt"
+   ],
+   "missingTextures": []
+  },
+  {
    "id": "Tiered_Walkway_Step_Top_Path_Transition_1x2",
    "name": "Tiered Walkway Step Top Path Transition 1x2",
    "file": "atoms/Tiered_Walkway_Step_Top_Path_Transition_1x2.glb",
@@ -10320,6 +10915,242 @@
     "hidden|hidden-violet",
     "material|dirt",
     "material|grass"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Steps_Curve_Short_2x2",
+   "name": "Tiered Walkway Steps Curve Short 2x2",
+   "file": "atoms/Tiered_Walkway_Steps_Curve_Short_2x2.glb",
+   "family": "path-terrain",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "2 × 2",
+   "sizeGroup": "size-2",
+   "traits": [
+    "short"
+   ],
+   "variant": null,
+   "dwh": [
+    2,
+    2,
+    1
+   ],
+   "min": [
+    -0.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    1,
+    0.5
+   ],
+   "triangles": 128,
+   "trianglesPerUnit": 32,
+   "calls": 4,
+   "bytes": 13744,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-red",
+    "material|stone-walkway"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Steps_Curve_Short_3x3",
+   "name": "Tiered Walkway Steps Curve Short 3x3",
+   "file": "atoms/Tiered_Walkway_Steps_Curve_Short_3x3.glb",
+   "family": "path-terrain",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "3 × 3",
+   "sizeGroup": "size-3",
+   "traits": [
+    "short"
+   ],
+   "variant": null,
+   "dwh": [
+    3,
+    3,
+    1
+   ],
+   "min": [
+    -1.5,
+    0,
+    -1.5
+   ],
+   "max": [
+    1.5,
+    1,
+    1.5
+   ],
+   "triangles": 128,
+   "trianglesPerUnit": 14,
+   "calls": 4,
+   "bytes": 13744,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-red",
+    "material|stone-walkway"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Steps_Curve_Short_4x4",
+   "name": "Tiered Walkway Steps Curve Short 4x4",
+   "file": "atoms/Tiered_Walkway_Steps_Curve_Short_4x4.glb",
+   "family": "path-terrain",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "4 × 4",
+   "sizeGroup": "size-4",
+   "traits": [
+    "short"
+   ],
+   "variant": null,
+   "dwh": [
+    4,
+    4,
+    1
+   ],
+   "min": [
+    -1.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    1,
+    1.5
+   ],
+   "triangles": 128,
+   "trianglesPerUnit": 8,
+   "calls": 4,
+   "bytes": 13744,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-red",
+    "material|stone-walkway"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Steps_Curve_Short_5x5",
+   "name": "Tiered Walkway Steps Curve Short 5x5",
+   "file": "atoms/Tiered_Walkway_Steps_Curve_Short_5x5.glb",
+   "family": "path-terrain",
+   "shape": "curve",
+   "layer": "layer-none",
+   "size": "5 × 5",
+   "sizeGroup": "size-large",
+   "traits": [
+    "short"
+   ],
+   "variant": null,
+   "dwh": [
+    5,
+    5,
+    1
+   ],
+   "min": [
+    -2.5,
+    0,
+    -2.5
+   ],
+   "max": [
+    2.5,
+    1,
+    2.5
+   ],
+   "triangles": 128,
+   "trianglesPerUnit": 5,
+   "calls": 4,
+   "bytes": 13612,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-red",
+    "material|stone-walkway"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Steps_Straight_1x2",
+   "name": "Tiered Walkway Steps Straight 1x2",
+   "file": "atoms/Tiered_Walkway_Steps_Straight_1x2.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 2",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    2,
+    1,
+    1
+   ],
+   "min": [
+    -0.5,
+    0,
+    -0.5
+   ],
+   "max": [
+    1.5,
+    1,
+    0.5
+   ],
+   "triangles": 100,
+   "trianglesPerUnit": 50,
+   "calls": 4,
+   "bytes": 11252,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-red",
+    "material|stone-walkway"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Tiered_Walkway_Steps_Straight_1x3",
+   "name": "Tiered Walkway Steps Straight 1x3",
+   "file": "atoms/Tiered_Walkway_Steps_Straight_1x3.glb",
+   "family": "path-terrain",
+   "shape": "straight",
+   "layer": "layer-none",
+   "size": "1 × 3",
+   "sizeGroup": "size-narrow",
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    3,
+    1,
+    1
+   ],
+   "min": [
+    -0.5,
+    0,
+    -0.5
+   ],
+   "max": [
+    2.5,
+    1,
+    0.5
+   ],
+   "triangles": 100,
+   "trianglesPerUnit": 33,
+   "calls": 4,
+   "bytes": 11272,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-orange",
+    "hidden|hidden-red",
+    "material|stone-walkway"
    ],
    "missingTextures": []
   },
@@ -16708,10 +17539,8 @@
    "traits": [],
    "variant": null,
    "placed": 35,
-   "missingPieces": [
-    "Floor_And_Ceiling_Flat_1x1"
-   ],
-   "incomplete": true,
+   "missingPieces": [],
+   "incomplete": false,
    "pieces": [
     {
      "id": "Grass_Carpet_Center_1x1",
@@ -19082,6 +19911,58 @@
     "hidden|hidden-red",
     "hidden|hidden-violet",
     "hidden|hidden-yellow",
+    "material|carved-stone-1",
+    "material|carved-stone-2",
+    "material|carved-stone-3",
+    "material|carved-stone-walkway",
+    "material|cave-pool",
+    "material|cliff",
+    "material|dirt",
+    "material|grass",
+    "material|metal-iron",
+    "material|rope",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": []
+  },
+  {
+   "id": "Large_Island_v2_No_Ocean_No_Props_merged",
+   "name": "Large Island v2 No Ocean No Props merged",
+   "file": "scenes/Large_Island_v2_No_Ocean_No_Props_merged.glb",
+   "group": "scene-diorama",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    1.57,
+    1.34,
+    0.193
+   ],
+   "min": [
+    -0.64,
+    -0.07,
+    -0.94
+   ],
+   "max": [
+    0.93,
+    0.123,
+    0.4
+   ],
+   "triangles": 133777,
+   "trianglesPerUnit": 63588,
+   "calls": 17,
+   "bytes": 9643792,
+   "materials": [
     "material|carved-stone-1",
     "material|carved-stone-2",
     "material|carved-stone-3",

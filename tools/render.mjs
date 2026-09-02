@@ -5,17 +5,22 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
+const MODEL_URL = '/__model.glb';
 
 const MIME = {
   '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript',
   '.json': 'application/json', '.glb': 'model/gltf-binary', '.png': 'image/png',
 };
 
-function serve(root, page) {
+function serve(root, page, model) {
   const server = createServer(async (req, res) => {
     const url = decodeURIComponent(req.url.split('?')[0]);
     if (url === '/__render.html') {
       res.writeHead(200, { 'content-type': 'text/html' }).end(page);
+      return;
+    }
+    if (url === MODEL_URL) {
+      res.writeHead(200, { 'content-type': MIME['.glb'] }).end(await readFile(model));
       return;
     }
     const path = resolve(root, url.replace(/^\/+/, ''));
@@ -126,8 +131,7 @@ const options = {
 };
 
 const out = option('out', join(ROOT, `${basename(input).replace(/\.glb$/i, '')}.png`));
-const modelUrl = `/${relative(ROOT, resolve(input)).split('/').map(encodeURIComponent).join('/')}`;
-const { server, port } = await serve(ROOT, PAGE(modelUrl, options));
+const { server, port } = await serve(ROOT, PAGE(MODEL_URL, options), resolve(input));
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: options.width, height: options.height }, deviceScaleFactor: 1 });
