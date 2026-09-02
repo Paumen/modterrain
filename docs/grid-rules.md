@@ -15,10 +15,12 @@ The avatar is a 0.5×0.5×0.5 cube. Cells are 1×1×1 units.
    on the cells where the piece has a top surface with standing clearance.
 5. A cell containing water is sealed: no node, no edge may pass through it.
    Even when grass or sand lies below the water.
-6. A cell containing cliff-family geometry (`Basic_`, `Cracked_`, `Wall_`,
+6. A cell containing cliff-family geometry (`Basic_`, `Cracked_`,
    `Cave_Edge_`) is sealed the same way. Except where rule 4 applies.
    (For now cliff is defined by piece family; later by material, when cave
-   floors get their own material.)
+   floors get their own material. `Wall_` pieces are not in the family: their
+   sloped foot spills into the passage cells beside them, so they are left to
+   the cube like any other obstacle.)
 7. A cell only gets a node if the cube, standing on the floor, has clear space
    (the 0.5 above the local floor) at the center and can cross out via at least
    two of its four edges.
@@ -41,10 +43,15 @@ Implementation readings, per the confirmed answers:
   on the highest ground under its footprint; anything else inside the box
   blocks - fences, rails, crates, walls, whatever is added later.
 - Ground belongs to rule 14, not to collision: faces walkable-steep or
-  flatter carry the cube; the strict <0.5 per 0.5 rise limit (measured over
-  the footprint, so a plank seam narrower than the cube is not a void)
-  decides what it may climb. Kit slopes max 0.375, walkway risers 0.25;
-  terrace walls at 0.5 are blocked by the limit itself.
+  flatter carry the cube; the strict <0.5 per 0.5 rise limit decides what it
+  may climb. Kit slopes max 0.375, walkway risers 0.25; terrace walls at 0.5
+  are blocked by the limit itself.
+- Ground is read over the whole 0.5×0.5 footprint (the highest up-facing
+  surface anywhere under the square), never at points. The kit's plank seams
+  sit exactly on the quarter lines of a cell, so point probes at the centre
+  and corners all fall through them; the footprint reading makes a seam
+  narrower than the cube invisible, and the cube stands and climbs on what
+  is really under it.
 - Rules 5 and 6 are literal: a cell containing any water or cliff-family
   geometry (beyond 0.02 float tolerance) is sealed shut.
 - Rule 13 is not redundant: retaining walls block their edge even when the
