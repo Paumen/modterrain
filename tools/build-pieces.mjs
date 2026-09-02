@@ -28,10 +28,8 @@ function cells(min, max) {
 const catalog = JSON.parse(readFileSync(join(ROOT, 'catalog', 'catalog.json'), 'utf8'));
 const meta = new Map(catalog.models.map((entry) => [entry.id, entry]));
 
-/* Assemblies are placeable too, and so are whole scenes. Scenes are authored
- * at one unit per cell where everything else uses a hundred, so they carry the
- * factor for the viewport to apply — and catalog.json measures them in their
- * own units, so its bounds for them need the same factor.
+/* Assemblies are placeable too, and so are whole scenes. Everything is one
+ * unit to a cell, so the factor the viewport applies is one throughout.
  */
 const SOURCES = [
   { dir: 'atoms', scale: 1 },

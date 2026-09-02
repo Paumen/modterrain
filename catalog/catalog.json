@@ -1,10 +1,10 @@
 {
  "generated": "node tools/build-catalog.mjs",
  "total": 315,
- "assemblies": 99,
- "scenes": 8,
+ "assemblies": 98,
+ "scenes": 9,
  "budgetPerUnit": 250,
- "unitsPerCell": 100,
+ "unitsPerCell": 1,
  "facets": {
   "basic": "Cliffs",
   "wall": "Walls",
@@ -1251,7 +1251,7 @@
    "id": "assemblies",
    "label": "Assemblies",
    "facet": "assembly",
-   "count": 99,
+   "count": 98,
    "sections": [
     {
      "id": "assemblies-assembly-cliff",
@@ -1350,9 +1350,9 @@
      "name": "Bridges",
      "color": "#8a5a2f",
      "models": [
+      386,
       387,
-      388,
-      389
+      388
      ]
     },
     {
@@ -1360,6 +1360,7 @@
      "name": "Rivers",
      "color": "#3aa7d6",
      "models": [
+      389,
       390,
       391,
       392,
@@ -1382,16 +1383,7 @@
       409,
       410,
       411,
-      412,
-      413
-     ]
-    },
-    {
-     "id": "assemblies-assembly-structure",
-     "name": "Other",
-     "color": "#b98c5a",
-     "models": [
-      386
+      412
      ]
     }
    ]
@@ -1400,13 +1392,14 @@
    "id": "scenes",
    "label": "Scenes",
    "facet": "scene",
-   "count": 8,
+   "count": 9,
    "sections": [
     {
      "id": "scenes-scene-diorama",
      "name": "Scenes",
      "color": "#4f8f6f",
      "models": [
+      413,
       414,
       415,
       416,
@@ -2260,7 +2253,7 @@
    "triangles": 48,
    "trianglesPerUnit": 4,
    "calls": 2,
-   "bytes": 6204,
+   "bytes": 6252,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2298,7 +2291,7 @@
    "triangles": 24,
    "trianglesPerUnit": 6,
    "calls": 2,
-   "bytes": 4496,
+   "bytes": 4544,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2336,7 +2329,7 @@
    "triangles": 62,
    "trianglesPerUnit": 7,
    "calls": 5,
-   "bytes": 10480,
+   "bytes": 10524,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -2377,7 +2370,7 @@
    "triangles": 36,
    "trianglesPerUnit": 9,
    "calls": 2,
-   "bytes": 5492,
+   "bytes": 5540,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2415,7 +2408,7 @@
    "triangles": 40,
    "trianglesPerUnit": 3,
    "calls": 2,
-   "bytes": 5684,
+   "bytes": 5732,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2453,7 +2446,7 @@
    "triangles": 24,
    "trianglesPerUnit": 6,
    "calls": 2,
-   "bytes": 4468,
+   "bytes": 4516,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2491,7 +2484,7 @@
    "triangles": 62,
    "trianglesPerUnit": 7,
    "calls": 5,
-   "bytes": 10404,
+   "bytes": 10452,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -2532,7 +2525,7 @@
    "triangles": 44,
    "trianglesPerUnit": 11,
    "calls": 2,
-   "bytes": 5876,
+   "bytes": 5924,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2568,7 +2561,7 @@
    "triangles": 58,
    "trianglesPerUnit": 2,
    "calls": 2,
-   "bytes": 6908,
+   "bytes": 6952,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2604,7 +2597,7 @@
    "triangles": 28,
    "trianglesPerUnit": 3,
    "calls": 2,
-   "bytes": 4748,
+   "bytes": 4796,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2640,7 +2633,7 @@
    "triangles": 74,
    "trianglesPerUnit": 4,
    "calls": 5,
-   "bytes": 11372,
+   "bytes": 11420,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -2679,7 +2672,7 @@
    "triangles": 44,
    "trianglesPerUnit": 5,
    "calls": 2,
-   "bytes": 5988,
+   "bytes": 6032,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2715,7 +2708,7 @@
    "triangles": 38,
    "trianglesPerUnit": 8,
    "calls": 2,
-   "bytes": 5568,
+   "bytes": 5616,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2751,7 +2744,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3724,
+   "bytes": 3768,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2787,7 +2780,7 @@
    "triangles": 38,
    "trianglesPerUnit": 17,
    "calls": 4,
-   "bytes": 7876,
+   "bytes": 7920,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -2825,7 +2818,7 @@
    "triangles": 18,
    "trianglesPerUnit": 18,
    "calls": 2,
-   "bytes": 4280,
+   "bytes": 4328,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2863,7 +2856,7 @@
    "triangles": 40,
    "trianglesPerUnit": 3,
    "calls": 2,
-   "bytes": 5664,
+   "bytes": 5712,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2901,7 +2894,7 @@
    "triangles": 16,
    "trianglesPerUnit": 7,
    "calls": 2,
-   "bytes": 4012,
+   "bytes": 4056,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -2939,7 +2932,7 @@
    "triangles": 66,
    "trianglesPerUnit": 8,
    "calls": 5,
-   "bytes": 10688,
+   "bytes": 10736,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -2980,7 +2973,7 @@
    "triangles": 32,
    "trianglesPerUnit": 14,
    "calls": 2,
-   "bytes": 5180,
+   "bytes": 5228,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3018,7 +3011,7 @@
    "triangles": 40,
    "trianglesPerUnit": 3,
    "calls": 2,
-   "bytes": 5684,
+   "bytes": 5728,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3056,7 +3049,7 @@
    "triangles": 16,
    "trianglesPerUnit": 7,
    "calls": 2,
-   "bytes": 3988,
+   "bytes": 4032,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3094,7 +3087,7 @@
    "triangles": 66,
    "trianglesPerUnit": 8,
    "calls": 5,
-   "bytes": 10672,
+   "bytes": 10716,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -3135,7 +3128,7 @@
    "triangles": 32,
    "trianglesPerUnit": 14,
    "calls": 2,
-   "bytes": 5152,
+   "bytes": 5200,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3171,7 +3164,7 @@
    "triangles": 58,
    "trianglesPerUnit": 2,
    "calls": 2,
-   "bytes": 6888,
+   "bytes": 6932,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3207,7 +3200,7 @@
    "triangles": 28,
    "trianglesPerUnit": 4,
    "calls": 2,
-   "bytes": 4792,
+   "bytes": 4840,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3243,7 +3236,7 @@
    "triangles": 82,
    "trianglesPerUnit": 4,
    "calls": 5,
-   "bytes": 11900,
+   "bytes": 11948,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -3282,7 +3275,7 @@
    "triangles": 52,
    "trianglesPerUnit": 8,
    "calls": 2,
-   "bytes": 6564,
+   "bytes": 6612,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3318,7 +3311,7 @@
    "triangles": 48,
    "trianglesPerUnit": 4,
    "calls": 2,
-   "bytes": 6144,
+   "bytes": 6192,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3354,7 +3347,7 @@
    "triangles": 20,
    "trianglesPerUnit": 7,
    "calls": 2,
-   "bytes": 4252,
+   "bytes": 4300,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3390,7 +3383,7 @@
    "triangles": 64,
    "trianglesPerUnit": 7,
    "calls": 5,
-   "bytes": 10484,
+   "bytes": 10532,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -3429,7 +3422,7 @@
    "triangles": 34,
    "trianglesPerUnit": 11,
    "calls": 2,
-   "bytes": 5300,
+   "bytes": 5348,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3465,7 +3458,7 @@
    "triangles": 42,
    "trianglesPerUnit": 4,
    "calls": 2,
-   "bytes": 5756,
+   "bytes": 5800,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3501,7 +3494,7 @@
    "triangles": 64,
    "trianglesPerUnit": 10,
    "calls": 5,
-   "bytes": 10568,
+   "bytes": 10616,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -3540,7 +3533,7 @@
    "triangles": 34,
    "trianglesPerUnit": 19,
    "calls": 2,
-   "bytes": 5260,
+   "bytes": 5308,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3576,7 +3569,7 @@
    "triangles": 24,
    "trianglesPerUnit": 6,
    "calls": 2,
-   "bytes": 4560,
+   "bytes": 4608,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3612,7 +3605,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3708,
+   "bytes": 3756,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3648,7 +3641,7 @@
    "triangles": 32,
    "trianglesPerUnit": 14,
    "calls": 5,
-   "bytes": 8500,
+   "bytes": 8544,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -3687,7 +3680,7 @@
    "triangles": 16,
    "trianglesPerUnit": 16,
    "calls": 2,
-   "bytes": 4076,
+   "bytes": 4120,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3723,7 +3716,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3748,
+   "bytes": 3796,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3759,7 +3752,7 @@
    "triangles": 20,
    "trianglesPerUnit": 6,
    "calls": 2,
-   "bytes": 4280,
+   "bytes": 4328,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -3797,7 +3790,7 @@
    "triangles": 16,
    "trianglesPerUnit": 15,
    "calls": 3,
-   "bytes": 5244,
+   "bytes": 5292,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -3836,7 +3829,7 @@
    "triangles": 16,
    "trianglesPerUnit": 16,
    "calls": 3,
-   "bytes": 5204,
+   "bytes": 5252,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -3875,7 +3868,7 @@
    "triangles": 80,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 10948,
+   "bytes": 10992,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -3915,7 +3908,7 @@
    "triangles": 24,
    "trianglesPerUnit": 8,
    "calls": 3,
-   "bytes": 5648,
+   "bytes": 5692,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -3954,7 +3947,7 @@
    "triangles": 48,
    "trianglesPerUnit": 5,
    "calls": 4,
-   "bytes": 8364,
+   "bytes": 8412,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -3994,7 +3987,7 @@
    "triangles": 60,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 9556,
+   "bytes": 9600,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -4034,7 +4027,7 @@
    "triangles": 16,
    "trianglesPerUnit": 16,
    "calls": 3,
-   "bytes": 5132,
+   "bytes": 5180,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -4073,7 +4066,7 @@
    "triangles": 40,
    "trianglesPerUnit": 20,
    "calls": 4,
-   "bytes": 7820,
+   "bytes": 7864,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -4111,7 +4104,7 @@
    "triangles": 54,
    "trianglesPerUnit": 3,
    "calls": 3,
-   "bytes": 7896,
+   "bytes": 7944,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4148,7 +4141,7 @@
    "triangles": 100,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 10876,
+   "bytes": 10924,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4185,7 +4178,7 @@
    "triangles": 24,
    "trianglesPerUnit": 6,
    "calls": 3,
-   "bytes": 5696,
+   "bytes": 5744,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4222,7 +4215,7 @@
    "triangles": 32,
    "trianglesPerUnit": 3,
    "calls": 3,
-   "bytes": 6056,
+   "bytes": 6100,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4261,7 +4254,7 @@
    "triangles": 28,
    "trianglesPerUnit": 7,
    "calls": 3,
-   "bytes": 5840,
+   "bytes": 5888,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4300,7 +4293,7 @@
    "triangles": 38,
    "trianglesPerUnit": 10,
    "calls": 3,
-   "bytes": 6600,
+   "bytes": 6648,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4339,7 +4332,7 @@
    "triangles": 36,
    "trianglesPerUnit": 4,
    "calls": 3,
-   "bytes": 6300,
+   "bytes": 6348,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4378,7 +4371,7 @@
    "triangles": 50,
    "trianglesPerUnit": 6,
    "calls": 3,
-   "bytes": 7344,
+   "bytes": 7388,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4417,7 +4410,7 @@
    "triangles": 48,
    "trianglesPerUnit": 3,
    "calls": 3,
-   "bytes": 7056,
+   "bytes": 7104,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4456,7 +4449,7 @@
    "triangles": 68,
    "trianglesPerUnit": 4,
    "calls": 3,
-   "bytes": 8656,
+   "bytes": 8700,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4495,7 +4488,7 @@
    "triangles": 44,
    "trianglesPerUnit": 3,
    "calls": 3,
-   "bytes": 6828,
+   "bytes": 6876,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4534,7 +4527,7 @@
    "triangles": 62,
    "trianglesPerUnit": 4,
    "calls": 3,
-   "bytes": 8168,
+   "bytes": 8216,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4573,7 +4566,7 @@
    "triangles": 28,
    "trianglesPerUnit": 28,
    "calls": 2,
-   "bytes": 4744,
+   "bytes": 4792,
    "materials": [
     "hidden|hidden-yellow",
     "material|cliff-face"
@@ -4611,7 +4604,7 @@
    "triangles": 42,
    "trianglesPerUnit": 21,
    "calls": 2,
-   "bytes": 5800,
+   "bytes": 5848,
    "materials": [
     "hidden|hidden-yellow",
     "material|cliff-face"
@@ -4649,7 +4642,7 @@
    "triangles": 40,
    "trianglesPerUnit": 10,
    "calls": 2,
-   "bytes": 5472,
+   "bytes": 5520,
    "materials": [
     "hidden|hidden-yellow",
     "material|cliff-face"
@@ -4687,7 +4680,7 @@
    "triangles": 60,
    "trianglesPerUnit": 10,
    "calls": 2,
-   "bytes": 6960,
+   "bytes": 7008,
    "materials": [
     "hidden|hidden-yellow",
     "material|cliff-face"
@@ -4725,7 +4718,7 @@
    "triangles": 36,
    "trianglesPerUnit": 9,
    "calls": 2,
-   "bytes": 5220,
+   "bytes": 5264,
    "materials": [
     "hidden|hidden-yellow",
     "material|cliff-face"
@@ -4763,7 +4756,7 @@
    "triangles": 54,
    "trianglesPerUnit": 9,
    "calls": 2,
-   "bytes": 6584,
+   "bytes": 6632,
    "materials": [
     "hidden|hidden-yellow",
     "material|cliff-face"
@@ -4801,7 +4794,7 @@
    "triangles": 24,
    "trianglesPerUnit": 24,
    "calls": 3,
-   "bytes": 5616,
+   "bytes": 5664,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4840,7 +4833,7 @@
    "triangles": 34,
    "trianglesPerUnit": 24,
    "calls": 3,
-   "bytes": 6356,
+   "bytes": 6404,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4879,7 +4872,7 @@
    "triangles": 32,
    "trianglesPerUnit": 14,
    "calls": 3,
-   "bytes": 6096,
+   "bytes": 6144,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4918,7 +4911,7 @@
    "triangles": 46,
    "trianglesPerUnit": 15,
    "calls": 3,
-   "bytes": 7216,
+   "bytes": 7264,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4957,7 +4950,7 @@
    "triangles": 32,
    "trianglesPerUnit": 13,
    "calls": 3,
-   "bytes": 6096,
+   "bytes": 6140,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -4996,7 +4989,7 @@
    "triangles": 46,
    "trianglesPerUnit": 14,
    "calls": 3,
-   "bytes": 7192,
+   "bytes": 7240,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5035,7 +5028,7 @@
    "triangles": 28,
    "trianglesPerUnit": 14,
    "calls": 3,
-   "bytes": 5848,
+   "bytes": 5896,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5074,7 +5067,7 @@
    "triangles": 40,
    "trianglesPerUnit": 14,
    "calls": 3,
-   "bytes": 6724,
+   "bytes": 6772,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5111,7 +5104,7 @@
    "triangles": 48,
    "trianglesPerUnit": 48,
    "calls": 3,
-   "bytes": 21296,
+   "bytes": 21344,
    "materials": [
     "material|wood-dark",
     "material|wood-light",
@@ -5148,7 +5141,7 @@
    "triangles": 176,
    "trianglesPerUnit": 161,
    "calls": 3,
-   "bytes": 27956,
+   "bytes": 28004,
    "materials": [
     "material|wood-dark",
     "material|wood-light",
@@ -5185,7 +5178,7 @@
    "triangles": 176,
    "trianglesPerUnit": 79,
    "calls": 3,
-   "bytes": 27928,
+   "bytes": 27976,
    "materials": [
     "material|wood-dark",
     "material|wood-light",
@@ -5222,7 +5215,7 @@
    "triangles": 288,
    "trianglesPerUnit": 118,
    "calls": 3,
-   "bytes": 34188,
+   "bytes": 34236,
    "materials": [
     "material|wood-dark",
     "material|wood-light",
@@ -5259,7 +5252,7 @@
    "triangles": 74,
    "trianglesPerUnit": 74,
    "calls": 3,
-   "bytes": 25968,
+   "bytes": 26016,
    "materials": [
     "material|wood-dark",
     "material|wood-light",
@@ -5296,7 +5289,7 @@
    "triangles": 64,
    "trianglesPerUnit": 64,
    "calls": 3,
-   "bytes": 18388,
+   "bytes": 18432,
    "materials": [
     "hidden|hidden",
     "material|wood-light",
@@ -5333,7 +5326,7 @@
    "triangles": 52,
    "trianglesPerUnit": 52,
    "calls": 1,
-   "bytes": 11456,
+   "bytes": 11504,
    "materials": [
     "material|wood-light"
    ],
@@ -5368,7 +5361,7 @@
    "triangles": 80,
    "trianglesPerUnit": 80,
    "calls": 2,
-   "bytes": 14192,
+   "bytes": 14240,
    "materials": [
     "material|wood-dark",
     "material|wood-light-end"
@@ -5406,7 +5399,7 @@
    "triangles": 240,
    "trianglesPerUnit": 240,
    "calls": 3,
-   "bytes": 29524,
+   "bytes": 29572,
    "materials": [
     "material|rope",
     "material|wood-dark",
@@ -5447,7 +5440,7 @@
    "triangles": 460,
    "trianglesPerUnit": 298,
    "calls": 4,
-   "bytes": 38336,
+   "bytes": 38384,
    "materials": [
     "hidden|hidden",
     "material|rope",
@@ -5489,7 +5482,7 @@
    "triangles": 112,
    "trianglesPerUnit": 112,
    "calls": 2,
-   "bytes": 15876,
+   "bytes": 15920,
    "materials": [
     "hidden|hidden",
     "material|rope"
@@ -5529,7 +5522,7 @@
    "triangles": 112,
    "trianglesPerUnit": 112,
    "calls": 2,
-   "bytes": 15880,
+   "bytes": 15924,
    "materials": [
     "hidden|hidden",
     "material|rope"
@@ -5570,7 +5563,7 @@
    "triangles": 80,
    "trianglesPerUnit": 80,
    "calls": 2,
-   "bytes": 14812,
+   "bytes": 14856,
    "materials": [
     "hidden|hidden",
     "material|rope"
@@ -5611,7 +5604,7 @@
    "triangles": 64,
    "trianglesPerUnit": 64,
    "calls": 2,
-   "bytes": 14348,
+   "bytes": 14396,
    "materials": [
     "hidden|hidden",
     "material|rope"
@@ -5649,7 +5642,7 @@
    "triangles": 24,
    "trianglesPerUnit": 24,
    "calls": 3,
-   "bytes": 19996,
+   "bytes": 20044,
    "materials": [
     "material|wood-dark",
     "material|wood-light",
@@ -5686,7 +5679,7 @@
    "triangles": 32,
    "trianglesPerUnit": 29,
    "calls": 2,
-   "bytes": 12772,
+   "bytes": 12820,
    "materials": [
     "material|wood-dark",
     "material|wood-light-end"
@@ -5722,7 +5715,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3772,
+   "bytes": 3820,
    "materials": [
     "hidden|hidden-yellow",
     "material|cliff-face"
@@ -5758,7 +5751,7 @@
    "triangles": 54,
    "trianglesPerUnit": 3,
    "calls": 3,
-   "bytes": 7876,
+   "bytes": 7924,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5795,7 +5788,7 @@
    "triangles": 100,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 10868,
+   "bytes": 10916,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5832,7 +5825,7 @@
    "triangles": 88,
    "trianglesPerUnit": 1,
    "calls": 3,
-   "bytes": 10132,
+   "bytes": 10180,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5869,7 +5862,7 @@
    "triangles": 24,
    "trianglesPerUnit": 6,
    "calls": 3,
-   "bytes": 5676,
+   "bytes": 5724,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5906,7 +5899,7 @@
    "triangles": 32,
    "trianglesPerUnit": 3,
    "calls": 3,
-   "bytes": 6096,
+   "bytes": 6144,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -5946,7 +5939,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 3,
-   "bytes": 4852,
+   "bytes": 4900,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -5985,7 +5978,7 @@
    "triangles": 22,
    "trianglesPerUnit": 22,
    "calls": 4,
-   "bytes": 6756,
+   "bytes": 6804,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6025,7 +6018,7 @@
    "triangles": 28,
    "trianglesPerUnit": 7,
    "calls": 4,
-   "bytes": 7108,
+   "bytes": 7156,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6065,7 +6058,7 @@
    "triangles": 34,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 7588,
+   "bytes": 7636,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6105,7 +6098,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 3,
-   "bytes": 5152,
+   "bytes": 5200,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-yellow",
@@ -6144,7 +6137,7 @@
    "triangles": 28,
    "trianglesPerUnit": 10,
    "calls": 4,
-   "bytes": 7248,
+   "bytes": 7296,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6184,7 +6177,7 @@
    "triangles": 42,
    "trianglesPerUnit": 6,
    "calls": 4,
-   "bytes": 8144,
+   "bytes": 8192,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6224,7 +6217,7 @@
    "triangles": 28,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 7172,
+   "bytes": 7220,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6264,7 +6257,7 @@
    "triangles": 48,
    "trianglesPerUnit": 6,
    "calls": 4,
-   "bytes": 8468,
+   "bytes": 8512,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6304,7 +6297,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 4,
-   "bytes": 6084,
+   "bytes": 6132,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6344,7 +6337,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 3,
-   "bytes": 4840,
+   "bytes": 4884,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -6384,7 +6377,7 @@
    "triangles": 68,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 10960,
+   "bytes": 11008,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6426,7 +6419,7 @@
    "triangles": 92,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 12488,
+   "bytes": 12532,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6468,7 +6461,7 @@
    "triangles": 54,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 10152,
+   "bytes": 10200,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6510,7 +6503,7 @@
    "triangles": 44,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 9352,
+   "bytes": 9400,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6552,7 +6545,7 @@
    "triangles": 42,
    "trianglesPerUnit": 1,
    "calls": 4,
-   "bytes": 7992,
+   "bytes": 8036,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6594,7 +6587,7 @@
    "triangles": 42,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 9032,
+   "bytes": 9080,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6636,7 +6629,7 @@
    "triangles": 20,
    "trianglesPerUnit": 4,
    "calls": 5,
-   "bytes": 7612,
+   "bytes": 7660,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6678,7 +6671,7 @@
    "triangles": 62,
    "trianglesPerUnit": 2,
    "calls": 6,
-   "bytes": 11720,
+   "bytes": 11764,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6721,7 +6714,7 @@
    "triangles": 70,
    "trianglesPerUnit": 1,
    "calls": 6,
-   "bytes": 12064,
+   "bytes": 12108,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6764,7 +6757,7 @@
    "triangles": 54,
    "trianglesPerUnit": 2,
    "calls": 6,
-   "bytes": 11368,
+   "bytes": 11416,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6808,7 +6801,7 @@
    "triangles": 66,
    "trianglesPerUnit": 3,
    "calls": 6,
-   "bytes": 11804,
+   "bytes": 11852,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6852,7 +6845,7 @@
    "triangles": 60,
    "trianglesPerUnit": 3,
    "calls": 6,
-   "bytes": 11568,
+   "bytes": 11616,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -6895,7 +6888,7 @@
    "triangles": 38,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 7840,
+   "bytes": 7888,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6936,7 +6929,7 @@
    "triangles": 62,
    "trianglesPerUnit": 3,
    "calls": 5,
-   "bytes": 10472,
+   "bytes": 10520,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -6978,7 +6971,7 @@
    "triangles": 70,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 11004,
+   "bytes": 11048,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7020,7 +7013,7 @@
    "triangles": 40,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 8168,
+   "bytes": 8216,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7061,7 +7054,7 @@
    "triangles": 62,
    "trianglesPerUnit": 3,
    "calls": 5,
-   "bytes": 10508,
+   "bytes": 10552,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7103,7 +7096,7 @@
    "triangles": 44,
    "trianglesPerUnit": 3,
    "calls": 5,
-   "bytes": 9368,
+   "bytes": 9416,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7145,7 +7138,7 @@
    "triangles": 51,
    "trianglesPerUnit": 3,
    "calls": 5,
-   "bytes": 9932,
+   "bytes": 9976,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7187,7 +7180,7 @@
    "triangles": 42,
    "trianglesPerUnit": 5,
    "calls": 4,
-   "bytes": 7944,
+   "bytes": 7992,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7228,7 +7221,7 @@
    "triangles": 20,
    "trianglesPerUnit": 8,
    "calls": 5,
-   "bytes": 7520,
+   "bytes": 7564,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7267,7 +7260,7 @@
    "triangles": 48,
    "trianglesPerUnit": 12,
    "calls": 3,
-   "bytes": 7332,
+   "bytes": 7380,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7304,7 +7297,7 @@
    "triangles": 72,
    "trianglesPerUnit": 8,
    "calls": 3,
-   "bytes": 8912,
+   "bytes": 8956,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7341,7 +7334,7 @@
    "triangles": 88,
    "trianglesPerUnit": 6,
    "calls": 3,
-   "bytes": 10036,
+   "bytes": 10084,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7378,7 +7371,7 @@
    "triangles": 80,
    "trianglesPerUnit": 5,
    "calls": 3,
-   "bytes": 9440,
+   "bytes": 9488,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7415,7 +7408,7 @@
    "triangles": 56,
    "trianglesPerUnit": 28,
    "calls": 2,
-   "bytes": 6772,
+   "bytes": 6820,
    "materials": [
     "hidden|hidden-pink",
     "material|ice"
@@ -7451,7 +7444,7 @@
    "triangles": 80,
    "trianglesPerUnit": 14,
    "calls": 2,
-   "bytes": 8412,
+   "bytes": 8456,
    "materials": [
     "hidden|hidden-pink",
     "material|ice"
@@ -7487,7 +7480,7 @@
    "triangles": 72,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 7864,
+   "bytes": 7908,
    "materials": [
     "hidden|hidden-pink",
     "material|ice"
@@ -7523,7 +7516,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3820,
+   "bytes": 3864,
    "materials": [
     "hidden|hidden",
     "material|ice"
@@ -7559,7 +7552,7 @@
    "triangles": 44,
    "trianglesPerUnit": 31,
    "calls": 3,
-   "bytes": 7128,
+   "bytes": 7176,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7596,7 +7589,7 @@
    "triangles": 60,
    "trianglesPerUnit": 20,
    "calls": 3,
-   "bytes": 8132,
+   "bytes": 8180,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7633,7 +7626,7 @@
    "triangles": 60,
    "trianglesPerUnit": 20,
    "calls": 3,
-   "bytes": 8164,
+   "bytes": 8208,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7670,7 +7663,7 @@
    "triangles": 52,
    "trianglesPerUnit": 18,
    "calls": 3,
-   "bytes": 7620,
+   "bytes": 7668,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7709,7 +7702,7 @@
    "triangles": 24,
    "trianglesPerUnit": 6,
    "calls": 4,
-   "bytes": 6756,
+   "bytes": 6800,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7749,7 +7742,7 @@
    "triangles": 50,
    "trianglesPerUnit": 11,
    "calls": 7,
-   "bytes": 12272,
+   "bytes": 12316,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -7792,7 +7785,7 @@
    "triangles": 28,
    "trianglesPerUnit": 14,
    "calls": 4,
-   "bytes": 6932,
+   "bytes": 6980,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7832,7 +7825,7 @@
    "triangles": 36,
    "trianglesPerUnit": 16,
    "calls": 7,
-   "bytes": 11052,
+   "bytes": 11100,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -7875,7 +7868,7 @@
    "triangles": 52,
    "trianglesPerUnit": 7,
    "calls": 5,
-   "bytes": 9972,
+   "bytes": 10020,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -7916,7 +7909,7 @@
    "triangles": 52,
    "trianglesPerUnit": 4,
    "calls": 5,
-   "bytes": 9948,
+   "bytes": 9996,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -7957,7 +7950,7 @@
    "triangles": 28,
    "trianglesPerUnit": 4,
    "calls": 5,
-   "bytes": 8468,
+   "bytes": 8516,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -7996,7 +7989,7 @@
    "triangles": 36,
    "trianglesPerUnit": 36,
    "calls": 5,
-   "bytes": 8868,
+   "bytes": 8916,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8035,7 +8028,7 @@
    "triangles": 44,
    "trianglesPerUnit": 11,
    "calls": 5,
-   "bytes": 9248,
+   "bytes": 9296,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8074,7 +8067,7 @@
    "triangles": 44,
    "trianglesPerUnit": 5,
    "calls": 5,
-   "bytes": 9248,
+   "bytes": 9296,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8113,7 +8106,7 @@
    "triangles": 52,
    "trianglesPerUnit": 3,
    "calls": 5,
-   "bytes": 9748,
+   "bytes": 9796,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8152,7 +8145,7 @@
    "triangles": 60,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 10276,
+   "bytes": 10320,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8191,7 +8184,7 @@
    "triangles": 30,
    "trianglesPerUnit": 30,
    "calls": 4,
-   "bytes": 7476,
+   "bytes": 7524,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8229,7 +8222,7 @@
    "triangles": 44,
    "trianglesPerUnit": 11,
    "calls": 5,
-   "bytes": 9248,
+   "bytes": 9292,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8268,7 +8261,7 @@
    "triangles": 52,
    "trianglesPerUnit": 6,
    "calls": 5,
-   "bytes": 9776,
+   "bytes": 9824,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8307,7 +8300,7 @@
    "triangles": 60,
    "trianglesPerUnit": 10,
    "calls": 5,
-   "bytes": 10460,
+   "bytes": 10508,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8346,7 +8339,7 @@
    "triangles": 16,
    "trianglesPerUnit": 16,
    "calls": 5,
-   "bytes": 7192,
+   "bytes": 7240,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8388,7 +8381,7 @@
    "triangles": 40,
    "trianglesPerUnit": 20,
    "calls": 5,
-   "bytes": 8980,
+   "bytes": 9028,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8430,7 +8423,7 @@
    "triangles": 60,
    "trianglesPerUnit": 15,
    "calls": 5,
-   "bytes": 10448,
+   "bytes": 10492,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8472,7 +8465,7 @@
    "triangles": 32,
    "trianglesPerUnit": 30,
    "calls": 5,
-   "bytes": 8488,
+   "bytes": 8536,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8514,7 +8507,7 @@
    "triangles": 52,
    "trianglesPerUnit": 21,
    "calls": 5,
-   "bytes": 9916,
+   "bytes": 9960,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8555,7 +8548,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3792,
+   "bytes": 3840,
    "materials": [
     "hidden|hidden",
     "material|dirt"
@@ -8594,7 +8587,7 @@
    "triangles": 16,
    "trianglesPerUnit": 4,
    "calls": 2,
-   "bytes": 3992,
+   "bytes": 4040,
    "materials": [
     "hidden|hidden",
     "material|dirt"
@@ -8633,7 +8626,7 @@
    "triangles": 40,
    "trianglesPerUnit": 8,
    "calls": 5,
-   "bytes": 8976,
+   "bytes": 9024,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8675,7 +8668,7 @@
    "triangles": 16,
    "trianglesPerUnit": 8,
    "calls": 2,
-   "bytes": 4148,
+   "bytes": 4196,
    "materials": [
     "hidden|hidden",
     "material|dirt"
@@ -8714,7 +8707,7 @@
    "triangles": 40,
    "trianglesPerUnit": 16,
    "calls": 5,
-   "bytes": 9368,
+   "bytes": 9416,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8756,7 +8749,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 4,
-   "bytes": 5956,
+   "bytes": 6004,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -8796,7 +8789,7 @@
    "triangles": 20,
    "trianglesPerUnit": 20,
    "calls": 6,
-   "bytes": 8732,
+   "bytes": 8780,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -8838,7 +8831,7 @@
    "triangles": 16,
    "trianglesPerUnit": 16,
    "calls": 6,
-   "bytes": 8508,
+   "bytes": 8552,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -8880,7 +8873,7 @@
    "triangles": 18,
    "trianglesPerUnit": 14,
    "calls": 4,
-   "bytes": 6436,
+   "bytes": 6484,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8920,7 +8913,7 @@
    "triangles": 26,
    "trianglesPerUnit": 7,
    "calls": 5,
-   "bytes": 8068,
+   "bytes": 8116,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -8961,7 +8954,7 @@
    "triangles": 28,
    "trianglesPerUnit": 4,
    "calls": 5,
-   "bytes": 8216,
+   "bytes": 8264,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9002,7 +8995,7 @@
    "triangles": 646,
    "trianglesPerUnit": 146,
    "calls": 5,
-   "bytes": 53180,
+   "bytes": 53228,
    "materials": [
     "hidden|hidden",
     "material|wood-dark",
@@ -9041,7 +9034,7 @@
    "triangles": 1196,
    "trianglesPerUnit": 115,
    "calls": 5,
-   "bytes": 74340,
+   "bytes": 74388,
    "materials": [
     "hidden|hidden",
     "material|wood-dark",
@@ -9082,7 +9075,7 @@
    "triangles": 2168,
    "trianglesPerUnit": 338,
    "calls": 5,
-   "bytes": 120188,
+   "bytes": 120232,
    "materials": [
     "hidden|hidden",
     "material|rope",
@@ -9125,7 +9118,7 @@
    "triangles": 448,
    "trianglesPerUnit": 448,
    "calls": 5,
-   "bytes": 50972,
+   "bytes": 51016,
    "materials": [
     "hidden|hidden",
     "material|rope",
@@ -9169,7 +9162,7 @@
    "triangles": 546,
    "trianglesPerUnit": 546,
    "calls": 5,
-   "bytes": 57116,
+   "bytes": 57164,
    "materials": [
     "hidden|hidden",
     "material|rope",
@@ -9213,7 +9206,7 @@
    "triangles": 657,
    "trianglesPerUnit": 657,
    "calls": 5,
-   "bytes": 63980,
+   "bytes": 64024,
    "materials": [
     "hidden|hidden",
     "material|rope",
@@ -9254,7 +9247,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 3,
-   "bytes": 4836,
+   "bytes": 4884,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -9293,7 +9286,7 @@
    "triangles": 66,
    "trianglesPerUnit": 0,
    "calls": 3,
-   "bytes": 8928,
+   "bytes": 8976,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9332,7 +9325,7 @@
    "triangles": 58,
    "trianglesPerUnit": 1,
    "calls": 3,
-   "bytes": 8428,
+   "bytes": 8476,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9369,7 +9362,7 @@
    "triangles": 36,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 7732,
+   "bytes": 7780,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9407,7 +9400,7 @@
    "triangles": 44,
    "trianglesPerUnit": 1,
    "calls": 4,
-   "bytes": 8252,
+   "bytes": 8300,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9445,7 +9438,7 @@
    "triangles": 44,
    "trianglesPerUnit": 0,
    "calls": 4,
-   "bytes": 8372,
+   "bytes": 8416,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9483,7 +9476,7 @@
    "triangles": 30,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 6368,
+   "bytes": 6416,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9520,7 +9513,7 @@
    "triangles": 44,
    "trianglesPerUnit": 1,
    "calls": 4,
-   "bytes": 8332,
+   "bytes": 8380,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9558,7 +9551,7 @@
    "triangles": 36,
    "trianglesPerUnit": 1,
    "calls": 4,
-   "bytes": 7508,
+   "bytes": 7556,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9598,7 +9591,7 @@
    "triangles": 52,
    "trianglesPerUnit": 1,
    "calls": 3,
-   "bytes": 7452,
+   "bytes": 7500,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9635,7 +9628,7 @@
    "triangles": 36,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 7724,
+   "bytes": 7772,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9673,7 +9666,7 @@
    "triangles": 16,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 6248,
+   "bytes": 6292,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -9713,7 +9706,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11904,
+   "bytes": 11948,
    "materials": [
     "material|water-river"
    ],
@@ -9750,7 +9743,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11900,
+   "bytes": 11944,
    "materials": [
     "material|water-river"
    ],
@@ -9787,7 +9780,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11852,
+   "bytes": 11900,
    "materials": [
     "material|water-river"
    ],
@@ -9824,7 +9817,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11852,
+   "bytes": 11900,
    "materials": [
     "material|water-river"
    ],
@@ -9861,7 +9854,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11916,
+   "bytes": 11964,
    "materials": [
     "material|water-river"
    ],
@@ -9898,7 +9891,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11916,
+   "bytes": 11964,
    "materials": [
     "material|water-river"
    ],
@@ -9935,7 +9928,7 @@
    "triangles": 64,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 13840,
+   "bytes": 13888,
    "materials": [
     "material|water-river"
    ],
@@ -9972,7 +9965,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11916,
+   "bytes": 11964,
    "materials": [
     "material|water-river"
    ],
@@ -10009,7 +10002,7 @@
    "triangles": 32,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 11916,
+   "bytes": 11960,
    "materials": [
     "material|water-river"
    ],
@@ -10046,7 +10039,7 @@
    "triangles": 64,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 13840,
+   "bytes": 13888,
    "materials": [
     "material|water-river"
    ],
@@ -10081,7 +10074,7 @@
    "triangles": 2,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 10136,
+   "bytes": 10184,
    "materials": [
     "material|water-river"
    ],
@@ -10118,7 +10111,7 @@
    "triangles": 8,
    "trianglesPerUnit": 2,
    "calls": 1,
-   "bytes": 10476,
+   "bytes": 10520,
    "materials": [
     "material|water-river"
    ],
@@ -10155,7 +10148,7 @@
    "triangles": 6,
    "trianglesPerUnit": 3,
    "calls": 1,
-   "bytes": 10316,
+   "bytes": 10360,
    "materials": [
     "material|water-river"
    ],
@@ -10194,7 +10187,7 @@
    "triangles": 24,
    "trianglesPerUnit": 12,
    "calls": 3,
-   "bytes": 5844,
+   "bytes": 5892,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10235,7 +10228,7 @@
    "triangles": 20,
    "trianglesPerUnit": 11,
    "calls": 3,
-   "bytes": 5668,
+   "bytes": 5716,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10276,7 +10269,7 @@
    "triangles": 32,
    "trianglesPerUnit": 4,
    "calls": 3,
-   "bytes": 6288,
+   "bytes": 6332,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10317,7 +10310,7 @@
    "triangles": 28,
    "trianglesPerUnit": 4,
    "calls": 3,
-   "bytes": 6160,
+   "bytes": 6204,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10357,7 +10350,7 @@
    "triangles": 8,
    "trianglesPerUnit": 8,
    "calls": 3,
-   "bytes": 4452,
+   "bytes": 4496,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10396,7 +10389,7 @@
    "triangles": 20,
    "trianglesPerUnit": 20,
    "calls": 3,
-   "bytes": 5424,
+   "bytes": 5468,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10435,7 +10428,7 @@
    "triangles": 20,
    "trianglesPerUnit": 5,
    "calls": 3,
-   "bytes": 5436,
+   "bytes": 5484,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10474,7 +10467,7 @@
    "triangles": 20,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 5400,
+   "bytes": 5448,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10513,7 +10506,7 @@
    "triangles": 28,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 5920,
+   "bytes": 5968,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10552,7 +10545,7 @@
    "triangles": 36,
    "trianglesPerUnit": 1,
    "calls": 3,
-   "bytes": 6372,
+   "bytes": 6420,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10591,7 +10584,7 @@
    "triangles": 20,
    "trianglesPerUnit": 20,
    "calls": 3,
-   "bytes": 5460,
+   "bytes": 5508,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10630,7 +10623,7 @@
    "triangles": 28,
    "trianglesPerUnit": 7,
    "calls": 3,
-   "bytes": 5944,
+   "bytes": 5992,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10669,7 +10662,7 @@
    "triangles": 28,
    "trianglesPerUnit": 3,
    "calls": 3,
-   "bytes": 5924,
+   "bytes": 5972,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10708,7 +10701,7 @@
    "triangles": 36,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 6436,
+   "bytes": 6480,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10747,7 +10740,7 @@
    "triangles": 44,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 6920,
+   "bytes": 6968,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10787,7 +10780,7 @@
    "triangles": 28,
    "trianglesPerUnit": 9,
    "calls": 3,
-   "bytes": 6088,
+   "bytes": 6136,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10827,7 +10820,7 @@
    "triangles": 28,
    "trianglesPerUnit": 9,
    "calls": 3,
-   "bytes": 6048,
+   "bytes": 6096,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-violet",
@@ -10866,7 +10859,7 @@
    "triangles": 36,
    "trianglesPerUnit": 14,
    "calls": 2,
-   "bytes": 5740,
+   "bytes": 5788,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -10904,7 +10897,7 @@
    "triangles": 64,
    "trianglesPerUnit": 24,
    "calls": 3,
-   "bytes": 8908,
+   "bytes": 8956,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -10943,7 +10936,7 @@
    "triangles": 36,
    "trianglesPerUnit": 4,
    "calls": 2,
-   "bytes": 5740,
+   "bytes": 5784,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -10981,7 +10974,7 @@
    "triangles": 64,
    "trianglesPerUnit": 7,
    "calls": 3,
-   "bytes": 8924,
+   "bytes": 8972,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11020,7 +11013,7 @@
    "triangles": 12,
    "trianglesPerUnit": 9,
    "calls": 2,
-   "bytes": 3960,
+   "bytes": 4008,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11058,7 +11051,7 @@
    "triangles": 22,
    "trianglesPerUnit": 15,
    "calls": 3,
-   "bytes": 5804,
+   "bytes": 5852,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11095,7 +11088,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3716,
+   "bytes": 3764,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11131,7 +11124,7 @@
    "triangles": 22,
    "trianglesPerUnit": 22,
    "calls": 3,
-   "bytes": 5440,
+   "bytes": 5488,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11168,7 +11161,7 @@
    "triangles": 22,
    "trianglesPerUnit": 22,
    "calls": 3,
-   "bytes": 5432,
+   "bytes": 5480,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11205,7 +11198,7 @@
    "triangles": 52,
    "trianglesPerUnit": 14,
    "calls": 2,
-   "bytes": 6952,
+   "bytes": 7000,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11241,7 +11234,7 @@
    "triangles": 92,
    "trianglesPerUnit": 23,
    "calls": 3,
-   "bytes": 10996,
+   "bytes": 11040,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11278,7 +11271,7 @@
    "triangles": 36,
    "trianglesPerUnit": 28,
    "calls": 2,
-   "bytes": 5664,
+   "bytes": 5712,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11314,7 +11307,7 @@
    "triangles": 64,
    "trianglesPerUnit": 48,
    "calls": 3,
-   "bytes": 8824,
+   "bytes": 8872,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11351,7 +11344,7 @@
    "triangles": 36,
    "trianglesPerUnit": 8,
    "calls": 2,
-   "bytes": 5664,
+   "bytes": 5712,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11387,7 +11380,7 @@
    "triangles": 64,
    "trianglesPerUnit": 14,
    "calls": 3,
-   "bytes": 8824,
+   "bytes": 8872,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11424,7 +11417,7 @@
    "triangles": 36,
    "trianglesPerUnit": 4,
    "calls": 2,
-   "bytes": 5664,
+   "bytes": 5712,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11460,7 +11453,7 @@
    "triangles": 64,
    "trianglesPerUnit": 6,
    "calls": 3,
-   "bytes": 8824,
+   "bytes": 8872,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11497,7 +11490,7 @@
    "triangles": 36,
    "trianglesPerUnit": 1,
    "calls": 2,
-   "bytes": 5664,
+   "bytes": 5712,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11533,7 +11526,7 @@
    "triangles": 64,
    "trianglesPerUnit": 2,
    "calls": 3,
-   "bytes": 8828,
+   "bytes": 8872,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11572,7 +11565,7 @@
    "triangles": 30,
    "trianglesPerUnit": 30,
    "calls": 3,
-   "bytes": 6120,
+   "bytes": 6168,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11611,7 +11604,7 @@
    "triangles": 10,
    "trianglesPerUnit": 10,
    "calls": 1,
-   "bytes": 2496,
+   "bytes": 2540,
    "materials": [
     "material|rock-light"
    ],
@@ -11648,7 +11641,7 @@
    "triangles": 38,
    "trianglesPerUnit": 38,
    "calls": 3,
-   "bytes": 6716,
+   "bytes": 6764,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11687,7 +11680,7 @@
    "triangles": 58,
    "trianglesPerUnit": 42,
    "calls": 3,
-   "bytes": 7972,
+   "bytes": 8020,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11724,7 +11717,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 2,
-   "bytes": 3752,
+   "bytes": 3800,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-medium"
@@ -11760,7 +11753,7 @@
    "triangles": 22,
    "trianglesPerUnit": 22,
    "calls": 3,
-   "bytes": 5456,
+   "bytes": 5504,
    "materials": [
     "hidden|hidden-orange",
     "material|rock-light",
@@ -11797,7 +11790,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 3,
-   "bytes": 4864,
+   "bytes": 4908,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -11834,7 +11827,7 @@
    "triangles": 20,
    "trianglesPerUnit": 19,
    "calls": 3,
-   "bytes": 5508,
+   "bytes": 5552,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -11871,7 +11864,7 @@
    "triangles": 42,
    "trianglesPerUnit": 10,
    "calls": 5,
-   "bytes": 9032,
+   "bytes": 9080,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -11910,7 +11903,7 @@
    "triangles": 16,
    "trianglesPerUnit": 15,
    "calls": 3,
-   "bytes": 5152,
+   "bytes": 5196,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -11947,7 +11940,7 @@
    "triangles": 50,
    "trianglesPerUnit": 25,
    "calls": 6,
-   "bytes": 10768,
+   "bytes": 10816,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -11989,7 +11982,7 @@
    "triangles": 128,
    "trianglesPerUnit": 32,
    "calls": 4,
-   "bytes": 13744,
+   "bytes": 13788,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -12029,7 +12022,7 @@
    "triangles": 128,
    "trianglesPerUnit": 14,
    "calls": 4,
-   "bytes": 13744,
+   "bytes": 13792,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -12069,7 +12062,7 @@
    "triangles": 128,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 13744,
+   "bytes": 13792,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -12109,7 +12102,7 @@
    "triangles": 128,
    "trianglesPerUnit": 5,
    "calls": 4,
-   "bytes": 13612,
+   "bytes": 13660,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -12147,7 +12140,7 @@
    "triangles": 100,
    "trianglesPerUnit": 50,
    "calls": 4,
-   "bytes": 11252,
+   "bytes": 11300,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -12185,7 +12178,7 @@
    "triangles": 100,
    "trianglesPerUnit": 33,
    "calls": 4,
-   "bytes": 11272,
+   "bytes": 11320,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -12223,7 +12216,7 @@
    "triangles": 76,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 10252,
+   "bytes": 10300,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12261,7 +12254,7 @@
    "triangles": 40,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 7704,
+   "bytes": 7752,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12299,7 +12292,7 @@
    "triangles": 76,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 10296,
+   "bytes": 10344,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12337,7 +12330,7 @@
    "triangles": 112,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 12728,
+   "bytes": 12772,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12375,7 +12368,7 @@
    "triangles": 64,
    "trianglesPerUnit": 3,
    "calls": 4,
-   "bytes": 9216,
+   "bytes": 9264,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12413,7 +12406,7 @@
    "triangles": 112,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 12756,
+   "bytes": 12804,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12451,7 +12444,7 @@
    "triangles": 132,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 14120,
+   "bytes": 14168,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12489,7 +12482,7 @@
    "triangles": 72,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 9712,
+   "bytes": 9760,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12527,7 +12520,7 @@
    "triangles": 132,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 14148,
+   "bytes": 14196,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12565,7 +12558,7 @@
    "triangles": 160,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 15996,
+   "bytes": 16044,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12603,7 +12596,7 @@
    "triangles": 88,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 10676,
+   "bytes": 10724,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12641,7 +12634,7 @@
    "triangles": 160,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 16028,
+   "bytes": 16072,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12679,7 +12672,7 @@
    "triangles": 40,
    "trianglesPerUnit": 7,
    "calls": 4,
-   "bytes": 8036,
+   "bytes": 8084,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12717,7 +12710,7 @@
    "triangles": 16,
    "trianglesPerUnit": 16,
    "calls": 3,
-   "bytes": 5264,
+   "bytes": 5312,
    "materials": [
     "hidden|hidden-blue",
     "hidden|hidden-green",
@@ -12754,7 +12747,7 @@
    "triangles": 40,
    "trianglesPerUnit": 5,
    "calls": 4,
-   "bytes": 8016,
+   "bytes": 8064,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12792,7 +12785,7 @@
    "triangles": 68,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 9824,
+   "bytes": 9868,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12830,7 +12823,7 @@
    "triangles": 32,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 7340,
+   "bytes": 7388,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12868,7 +12861,7 @@
    "triangles": 68,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 9904,
+   "bytes": 9952,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12906,7 +12899,7 @@
    "triangles": 96,
    "trianglesPerUnit": 3,
    "calls": 4,
-   "bytes": 11744,
+   "bytes": 11792,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12944,7 +12937,7 @@
    "triangles": 48,
    "trianglesPerUnit": 5,
    "calls": 4,
-   "bytes": 8332,
+   "bytes": 8376,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -12982,7 +12975,7 @@
    "triangles": 96,
    "trianglesPerUnit": 3,
    "calls": 4,
-   "bytes": 11772,
+   "bytes": 11820,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13020,7 +13013,7 @@
    "triangles": 82,
    "trianglesPerUnit": 4,
    "calls": 4,
-   "bytes": 10824,
+   "bytes": 10872,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13058,7 +13051,7 @@
    "triangles": 40,
    "trianglesPerUnit": 5,
    "calls": 4,
-   "bytes": 7816,
+   "bytes": 7864,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13096,7 +13089,7 @@
    "triangles": 82,
    "trianglesPerUnit": 3,
    "calls": 4,
-   "bytes": 10872,
+   "bytes": 10920,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13134,7 +13127,7 @@
    "triangles": 110,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 12716,
+   "bytes": 12764,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13172,7 +13165,7 @@
    "triangles": 56,
    "trianglesPerUnit": 3,
    "calls": 4,
-   "bytes": 8776,
+   "bytes": 8824,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13210,7 +13203,7 @@
    "triangles": 110,
    "trianglesPerUnit": 2,
    "calls": 4,
-   "bytes": 12748,
+   "bytes": 12796,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13248,7 +13241,7 @@
    "triangles": 70,
    "trianglesPerUnit": 3,
    "calls": 5,
-   "bytes": 11040,
+   "bytes": 11088,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13287,7 +13280,7 @@
    "triangles": 70,
    "trianglesPerUnit": 3,
    "calls": 5,
-   "bytes": 11024,
+   "bytes": 11072,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13326,7 +13319,7 @@
    "triangles": 90,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 12416,
+   "bytes": 12464,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13365,7 +13358,7 @@
    "triangles": 90,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 12452,
+   "bytes": 12496,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13404,7 +13397,7 @@
    "triangles": 24,
    "trianglesPerUnit": 7,
    "calls": 4,
-   "bytes": 6764,
+   "bytes": 6812,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13442,7 +13435,7 @@
    "triangles": 12,
    "trianglesPerUnit": 12,
    "calls": 4,
-   "bytes": 5956,
+   "bytes": 6004,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13480,7 +13473,7 @@
    "triangles": 24,
    "trianglesPerUnit": 6,
    "calls": 4,
-   "bytes": 6760,
+   "bytes": 6804,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13521,7 +13514,7 @@
    "triangles": 64,
    "trianglesPerUnit": 9,
    "calls": 4,
-   "bytes": 9668,
+   "bytes": 9712,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13562,7 +13555,7 @@
    "triangles": 28,
    "trianglesPerUnit": 14,
    "calls": 4,
-   "bytes": 7064,
+   "bytes": 7112,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13603,7 +13596,7 @@
    "triangles": 64,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 9688,
+   "bytes": 9732,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13644,7 +13637,7 @@
    "triangles": 64,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 9656,
+   "bytes": 9700,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13685,7 +13678,7 @@
    "triangles": 28,
    "trianglesPerUnit": 11,
    "calls": 4,
-   "bytes": 7052,
+   "bytes": 7100,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13726,7 +13719,7 @@
    "triangles": 112,
    "trianglesPerUnit": 13,
    "calls": 4,
-   "bytes": 11792,
+   "bytes": 11840,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13767,7 +13760,7 @@
    "triangles": 108,
    "trianglesPerUnit": 7,
    "calls": 4,
-   "bytes": 12636,
+   "bytes": 12684,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13808,7 +13801,7 @@
    "triangles": 44,
    "trianglesPerUnit": 8,
    "calls": 4,
-   "bytes": 8080,
+   "bytes": 8128,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13849,7 +13842,7 @@
    "triangles": 108,
    "trianglesPerUnit": 6,
    "calls": 4,
-   "bytes": 12704,
+   "bytes": 12752,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -13889,7 +13882,7 @@
    "triangles": 272,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 130440,
+   "bytes": 130484,
    "materials": [
     "material|water-lake"
    ],
@@ -13926,7 +13919,7 @@
    "triangles": 1088,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 154380,
+   "bytes": 154428,
    "materials": [
     "material|water-lake"
    ],
@@ -13963,7 +13956,7 @@
    "triangles": 4480,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 251456,
+   "bytes": 251504,
    "materials": [
     "material|water-lake"
    ],
@@ -14000,7 +13993,7 @@
    "triangles": 4,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 5132,
+   "bytes": 5176,
    "materials": [
     "material|waterfall"
    ],
@@ -14037,7 +14030,7 @@
    "triangles": 24,
    "trianglesPerUnit": 8,
    "calls": 1,
-   "bytes": 6276,
+   "bytes": 6324,
    "materials": [
     "material|waterfall"
    ],
@@ -14074,7 +14067,7 @@
    "triangles": 24,
    "trianglesPerUnit": 8,
    "calls": 1,
-   "bytes": 6268,
+   "bytes": 6312,
    "materials": [
     "material|waterfall"
    ],
@@ -14111,7 +14104,7 @@
    "triangles": 2,
    "trianglesPerUnit": null,
    "calls": 1,
-   "bytes": 4988,
+   "bytes": 5036,
    "materials": [
     "material|waterfall"
    ],
@@ -14148,7 +14141,7 @@
    "triangles": 12,
    "trianglesPerUnit": 8,
    "calls": 1,
-   "bytes": 5588,
+   "bytes": 5636,
    "materials": [
     "material|waterfall"
    ],
@@ -14185,7 +14178,7 @@
    "triangles": 12,
    "trianglesPerUnit": 8,
    "calls": 1,
-   "bytes": 5556,
+   "bytes": 5604,
    "materials": [
     "material|waterfall"
    ],
@@ -14222,7 +14215,7 @@
    "triangles": 22,
    "trianglesPerUnit": 4,
    "calls": 3,
-   "bytes": 17336,
+   "bytes": 17384,
    "materials": [
     "material|water-river",
     "material|waterfall",
@@ -14261,7 +14254,7 @@
    "triangles": 81,
    "trianglesPerUnit": 8,
    "calls": 3,
-   "bytes": 20020,
+   "bytes": 20068,
    "materials": [
     "material|water-river",
     "material|waterfall",
@@ -14300,7 +14293,7 @@
    "triangles": 81,
    "trianglesPerUnit": 8,
    "calls": 3,
-   "bytes": 20040,
+   "bytes": 20088,
    "materials": [
     "material|water-river",
     "material|waterfall",
@@ -14339,7 +14332,7 @@
    "triangles": 40,
    "trianglesPerUnit": 19,
    "calls": 5,
-   "bytes": 9004,
+   "bytes": 9052,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -14380,7 +14373,7 @@
    "triangles": 134,
    "trianglesPerUnit": 7,
    "calls": 7,
-   "bytes": 17472,
+   "bytes": 17520,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -14423,7 +14416,7 @@
    "triangles": 134,
    "trianglesPerUnit": 7,
    "calls": 7,
-   "bytes": 17524,
+   "bytes": 17568,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -14482,7 +14475,7 @@
    "triangles": 250,
    "trianglesPerUnit": 1,
    "calls": 12,
-   "bytes": 16904,
+   "bytes": 16940,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -14536,7 +14529,7 @@
    "triangles": 112,
    "trianglesPerUnit": 2,
    "calls": 12,
-   "bytes": 11976,
+   "bytes": 12008,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -14590,7 +14583,7 @@
    "triangles": 330,
    "trianglesPerUnit": 2,
    "calls": 30,
-   "bytes": 28392,
+   "bytes": 28424,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -14659,7 +14652,7 @@
    "triangles": 386,
    "trianglesPerUnit": 1,
    "calls": 20,
-   "bytes": 31956,
+   "bytes": 32012,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -14725,7 +14718,7 @@
    "triangles": 184,
    "trianglesPerUnit": 2,
    "calls": 20,
-   "bytes": 22404,
+   "bytes": 22460,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -14791,7 +14784,7 @@
    "triangles": 554,
    "trianglesPerUnit": 3,
    "calls": 50,
-   "bytes": 56332,
+   "bytes": 56388,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -14856,7 +14849,7 @@
    "triangles": 296,
    "trianglesPerUnit": 1,
    "calls": 14,
-   "bytes": 25704,
+   "bytes": 25748,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -14918,7 +14911,7 @@
    "triangles": 136,
    "trianglesPerUnit": 2,
    "calls": 14,
-   "bytes": 18324,
+   "bytes": 18364,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -14980,7 +14973,7 @@
    "triangles": 414,
    "trianglesPerUnit": 3,
    "calls": 35,
-   "bytes": 45512,
+   "bytes": 45556,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -15045,7 +15038,7 @@
    "triangles": 320,
    "trianglesPerUnit": 1,
    "calls": 16,
-   "bytes": 25980,
+   "bytes": 26024,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15107,7 +15100,7 @@
    "triangles": 140,
    "trianglesPerUnit": 2,
    "calls": 16,
-   "bytes": 18128,
+   "bytes": 18172,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15169,7 +15162,7 @@
    "triangles": 450,
    "trianglesPerUnit": 2,
    "calls": 40,
-   "bytes": 46044,
+   "bytes": 46088,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -15230,7 +15223,7 @@
    "triangles": 234,
    "trianglesPerUnit": 1,
    "calls": 10,
-   "bytes": 22300,
+   "bytes": 22328,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15288,7 +15281,7 @@
    "triangles": 108,
    "trianglesPerUnit": 2,
    "calls": 10,
-   "bytes": 15400,
+   "bytes": 15428,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15346,7 +15339,7 @@
    "triangles": 338,
    "trianglesPerUnit": 2,
    "calls": 25,
-   "bytes": 39528,
+   "bytes": 39560,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -15415,7 +15408,7 @@
    "triangles": 352,
    "trianglesPerUnit": 1,
    "calls": 18,
-   "bytes": 30932,
+   "bytes": 30984,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15481,7 +15474,7 @@
    "triangles": 160,
    "trianglesPerUnit": 2,
    "calls": 18,
-   "bytes": 21840,
+   "bytes": 21892,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15547,7 +15540,7 @@
    "triangles": 514,
    "trianglesPerUnit": 3,
    "calls": 45,
-   "bytes": 55136,
+   "bytes": 55192,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -15600,7 +15593,7 @@
    "triangles": 240,
    "trianglesPerUnit": 2,
    "calls": 14,
-   "bytes": 11348,
+   "bytes": 11392,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15650,7 +15643,7 @@
    "triangles": 108,
    "trianglesPerUnit": 4,
    "calls": 14,
-   "bytes": 8584,
+   "bytes": 8628,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15700,7 +15693,7 @@
    "triangles": 320,
    "trianglesPerUnit": 5,
    "calls": 35,
-   "bytes": 18984,
+   "bytes": 19032,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -15761,7 +15754,7 @@
    "triangles": 232,
    "trianglesPerUnit": 2,
    "calls": 12,
-   "bytes": 20816,
+   "bytes": 20852,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15819,7 +15812,7 @@
    "triangles": 104,
    "trianglesPerUnit": 3,
    "calls": 12,
-   "bytes": 14632,
+   "bytes": 14664,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -15877,7 +15870,7 @@
    "triangles": 320,
    "trianglesPerUnit": 3,
    "calls": 30,
-   "bytes": 36476,
+   "bytes": 36508,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -15942,7 +15935,7 @@
    "triangles": 384,
    "trianglesPerUnit": 1,
    "calls": 18,
-   "bytes": 26300,
+   "bytes": 26348,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -16004,7 +15997,7 @@
    "triangles": 172,
    "trianglesPerUnit": 2,
    "calls": 18,
-   "bytes": 18876,
+   "bytes": 18928,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -16066,7 +16059,7 @@
    "triangles": 544,
    "trianglesPerUnit": 3,
    "calls": 45,
-   "bytes": 46064,
+   "bytes": 46116,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -16127,7 +16120,7 @@
    "triangles": 280,
    "trianglesPerUnit": 1,
    "calls": 14,
-   "bytes": 21072,
+   "bytes": 21112,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -16185,7 +16178,7 @@
    "triangles": 124,
    "trianglesPerUnit": 2,
    "calls": 14,
-   "bytes": 14928,
+   "bytes": 14968,
    "materials": [
     "hidden|hidden",
     "material|cliff-face"
@@ -16243,7 +16236,7 @@
    "triangles": 384,
    "trianglesPerUnit": 3,
    "calls": 35,
-   "bytes": 36768,
+   "bytes": 36808,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -16300,7 +16293,7 @@
    "triangles": 2292,
    "trianglesPerUnit": 70,
    "calls": 23,
-   "bytes": 137788,
+   "bytes": 137812,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -16361,7 +16354,7 @@
    "triangles": 176,
    "trianglesPerUnit": 4,
    "calls": 11,
-   "bytes": 15400,
+   "bytes": 15424,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16409,7 +16402,7 @@
    "triangles": 48,
    "trianglesPerUnit": 5,
    "calls": 6,
-   "bytes": 5944,
+   "bytes": 5960,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16460,7 +16453,7 @@
    "triangles": 112,
    "trianglesPerUnit": 5,
    "calls": 11,
-   "bytes": 12776,
+   "bytes": 12796,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16512,7 +16505,7 @@
    "triangles": 176,
    "trianglesPerUnit": 3,
    "calls": 11,
-   "bytes": 15392,
+   "bytes": 15416,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16560,7 +16553,7 @@
    "triangles": 48,
    "trianglesPerUnit": 4,
    "calls": 6,
-   "bytes": 5944,
+   "bytes": 5960,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16611,7 +16604,7 @@
    "triangles": 112,
    "trianglesPerUnit": 5,
    "calls": 11,
-   "bytes": 12776,
+   "bytes": 12796,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16663,7 +16656,7 @@
    "triangles": 136,
    "trianglesPerUnit": 7,
    "calls": 11,
-   "bytes": 14020,
+   "bytes": 14044,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16711,7 +16704,7 @@
    "triangles": 32,
    "trianglesPerUnit": 13,
    "calls": 6,
-   "bytes": 5440,
+   "bytes": 5456,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16762,7 +16755,7 @@
    "triangles": 96,
    "trianglesPerUnit": 19,
    "calls": 11,
-   "bytes": 12240,
+   "bytes": 12260,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16814,7 +16807,7 @@
    "triangles": 136,
    "trianglesPerUnit": 6,
    "calls": 11,
-   "bytes": 14020,
+   "bytes": 14044,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16862,7 +16855,7 @@
    "triangles": 32,
    "trianglesPerUnit": 11,
    "calls": 6,
-   "bytes": 5440,
+   "bytes": 5456,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16913,7 +16906,7 @@
    "triangles": 96,
    "trianglesPerUnit": 16,
    "calls": 11,
-   "bytes": 12240,
+   "bytes": 12264,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -16988,7 +16981,7 @@
    "triangles": 228,
    "trianglesPerUnit": 5,
    "calls": 14,
-   "bytes": 32132,
+   "bytes": 32176,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -17049,7 +17042,7 @@
    "triangles": 74,
    "trianglesPerUnit": 6,
    "calls": 9,
-   "bytes": 21124,
+   "bytes": 21164,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -17113,7 +17106,7 @@
    "triangles": 164,
    "trianglesPerUnit": 7,
    "calls": 17,
-   "bytes": 28888,
+   "bytes": 28952,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -17189,7 +17182,7 @@
    "triangles": 232,
    "trianglesPerUnit": 4,
    "calls": 15,
-   "bytes": 32452,
+   "bytes": 32504,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -17250,7 +17243,7 @@
    "triangles": 76,
    "trianglesPerUnit": 5,
    "calls": 10,
-   "bytes": 21428,
+   "bytes": 21476,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -17314,7 +17307,7 @@
    "triangles": 168,
    "trianglesPerUnit": 6,
    "calls": 19,
-   "bytes": 29488,
+   "bytes": 29564,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-green",
@@ -17367,7 +17360,7 @@
    "triangles": 100,
    "trianglesPerUnit": 16,
    "calls": 18,
-   "bytes": 17168,
+   "bytes": 17192,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -17422,7 +17415,7 @@
    "triangles": 100,
    "trianglesPerUnit": 12,
    "calls": 18,
-   "bytes": 17164,
+   "bytes": 17192,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-pink",
@@ -17488,7 +17481,7 @@
    "triangles": 28,
    "trianglesPerUnit": 6,
    "calls": 3,
-   "bytes": 9380,
+   "bytes": 9396,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -17539,7 +17532,7 @@
    "triangles": 14,
    "trianglesPerUnit": 7,
    "calls": 3,
-   "bytes": 8388,
+   "bytes": 8404,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -17590,7 +17583,7 @@
    "triangles": 62,
    "trianglesPerUnit": 12,
    "calls": 8,
-   "bytes": 25760,
+   "bytes": 25780,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -17661,7 +17654,7 @@
    "triangles": 96,
    "trianglesPerUnit": 5,
    "calls": 5,
-   "bytes": 15856,
+   "bytes": 15876,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -17716,7 +17709,7 @@
    "triangles": 44,
    "trianglesPerUnit": 8,
    "calls": 5,
-   "bytes": 12412,
+   "bytes": 12432,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -17767,7 +17760,7 @@
    "triangles": 215,
    "trianglesPerUnit": 10,
    "calls": 10,
-   "bytes": 36912,
+   "bytes": 36928,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -17840,7 +17833,7 @@
    "triangles": 96,
    "trianglesPerUnit": 5,
    "calls": 5,
-   "bytes": 15848,
+   "bytes": 15872,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -17895,7 +17888,7 @@
    "triangles": 44,
    "trianglesPerUnit": 8,
    "calls": 5,
-   "bytes": 12388,
+   "bytes": 12412,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -17946,7 +17939,7 @@
    "triangles": 215,
    "trianglesPerUnit": 10,
    "calls": 10,
-   "bytes": 36936,
+   "bytes": 36952,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -18023,7 +18016,7 @@
    "triangles": 168,
    "trianglesPerUnit": 4,
    "calls": 8,
-   "bytes": 22096,
+   "bytes": 22132,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -18082,7 +18075,7 @@
    "triangles": 76,
    "trianglesPerUnit": 7,
    "calls": 8,
-   "bytes": 17936,
+   "bytes": 17976,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -18137,7 +18130,7 @@
    "triangles": 430,
    "trianglesPerUnit": 10,
    "calls": 20,
-   "bytes": 56692,
+   "bytes": 56720,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -18218,7 +18211,7 @@
    "triangles": 172,
    "trianglesPerUnit": 4,
    "calls": 9,
-   "bytes": 26920,
+   "bytes": 26964,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -18281,7 +18274,7 @@
    "triangles": 78,
    "trianglesPerUnit": 6,
    "calls": 9,
-   "bytes": 22612,
+   "bytes": 22656,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -18344,7 +18337,7 @@
    "triangles": 492,
    "trianglesPerUnit": 10,
    "calls": 28,
-   "bytes": 81088,
+   "bytes": 81132,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -18425,7 +18418,7 @@
    "triangles": 176,
    "trianglesPerUnit": 3,
    "calls": 10,
-   "bytes": 27228,
+   "bytes": 27280,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -18488,7 +18481,7 @@
    "triangles": 80,
    "trianglesPerUnit": 5,
    "calls": 10,
-   "bytes": 22912,
+   "bytes": 22968,
    "materials": [
     "hidden|hidden",
     "material|cliff-face",
@@ -18551,7 +18544,7 @@
    "triangles": 514,
    "trianglesPerUnit": 9,
    "calls": 31,
-   "bytes": 81696,
+   "bytes": 81752,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -18669,7 +18662,7 @@
    "triangles": 894,
    "trianglesPerUnit": 7,
    "calls": 101,
-   "bytes": 96896,
+   "bytes": 97020,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -18763,7 +18756,7 @@
    "triangles": 586,
    "trianglesPerUnit": 9,
    "calls": 63,
-   "bytes": 71128,
+   "bytes": 71212,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -18773,70 +18766,6 @@
     "material|grass"
    ],
    "missingTextures": []
-  },
-  {
-   "id": "Large_Island_v2_terrain",
-   "name": "Large Island v2 terrain",
-   "file": "assemblies/Large_Island_v2_terrain.glb",
-   "group": "assembly-structure",
-   "family": null,
-   "shape": null,
-   "layer": null,
-   "size": null,
-   "sizeGroup": null,
-   "traits": [],
-   "variant": null,
-   "placed": 0,
-   "missingPieces": [],
-   "incomplete": false,
-   "pieces": [],
-   "dwh": [
-    157,
-    134,
-    19.25
-   ],
-   "min": [
-    -64,
-    -7,
-    -94
-   ],
-   "max": [
-    93,
-    12.25,
-    40
-   ],
-   "triangles": 119688,
-   "trianglesPerUnit": 0,
-   "calls": 10402,
-   "bytes": 2605376,
-   "materials": [
-    "hidden|hidden",
-    "hidden|hidden-blue",
-    "hidden|hidden-green",
-    "hidden|hidden-orange",
-    "hidden|hidden-pink",
-    "hidden|hidden-red",
-    "hidden|hidden-violet",
-    "hidden|hidden-yellow",
-    "material|cliff-face",
-    "material|dirt",
-    "material|grass",
-    "material|rock-light",
-    "material|rock-lightest",
-    "material|rock-medium",
-    "material|rope",
-    "material|stone-walkway",
-    "material|water-river",
-    "material|waterfall",
-    "material|waterfall-crest",
-    "material|wood-dark",
-    "material|wood-light",
-    "material|wood-light-end",
-    "material|wood-medium"
-   ],
-   "missingTextures": [
-    "Rope NM.png"
-   ]
   },
   {
    "id": "Path_Bridge_End",
@@ -18885,7 +18814,7 @@
    "triangles": 1316,
    "trianglesPerUnit": 65,
    "calls": 30,
-   "bytes": 89380,
+   "bytes": 89420,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-red",
@@ -18958,7 +18887,7 @@
    "triangles": 3976,
    "trianglesPerUnit": 74,
    "calls": 86,
-   "bytes": 162312,
+   "bytes": 162448,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19038,7 +18967,7 @@
    "triangles": 5292,
    "trianglesPerUnit": 78,
    "calls": 105,
-   "bytes": 168572,
+   "bytes": 168764,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19102,7 +19031,7 @@
    "triangles": 164,
    "trianglesPerUnit": 4,
    "calls": 11,
-   "bytes": 31580,
+   "bytes": 31596,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19160,7 +19089,7 @@
    "triangles": 164,
    "trianglesPerUnit": 4,
    "calls": 11,
-   "bytes": 31640,
+   "bytes": 31656,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19218,7 +19147,7 @@
    "triangles": 134,
    "trianglesPerUnit": 7,
    "calls": 10,
-   "bytes": 28920,
+   "bytes": 28940,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19276,7 +19205,7 @@
    "triangles": 134,
    "trianglesPerUnit": 7,
    "calls": 10,
-   "bytes": 28984,
+   "bytes": 29004,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19342,7 +19271,7 @@
    "triangles": 186,
    "trianglesPerUnit": 4,
    "calls": 14,
-   "bytes": 44824,
+   "bytes": 44852,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19408,7 +19337,7 @@
    "triangles": 186,
    "trianglesPerUnit": 4,
    "calls": 14,
-   "bytes": 44948,
+   "bytes": 44976,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19462,7 +19391,7 @@
    "triangles": 120,
    "trianglesPerUnit": 5,
    "calls": 11,
-   "bytes": 21288,
+   "bytes": 21308,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19516,7 +19445,7 @@
    "triangles": 120,
    "trianglesPerUnit": 5,
    "calls": 11,
-   "bytes": 21292,
+   "bytes": 21308,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19570,7 +19499,7 @@
    "triangles": 134,
    "trianglesPerUnit": 4,
    "calls": 11,
-   "bytes": 21868,
+   "bytes": 21888,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19624,7 +19553,7 @@
    "triangles": 134,
    "trianglesPerUnit": 4,
    "calls": 11,
-   "bytes": 21848,
+   "bytes": 21868,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19682,7 +19611,7 @@
    "triangles": 164,
    "trianglesPerUnit": 5,
    "calls": 14,
-   "bytes": 26980,
+   "bytes": 27004,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19740,7 +19669,7 @@
    "triangles": 164,
    "trianglesPerUnit": 5,
    "calls": 14,
-   "bytes": 27024,
+   "bytes": 27052,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19794,7 +19723,7 @@
    "triangles": 100,
    "trianglesPerUnit": 3,
    "calls": 12,
-   "bytes": 19936,
+   "bytes": 19964,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -19848,7 +19777,7 @@
    "triangles": 96,
    "trianglesPerUnit": 5,
    "calls": 10,
-   "bytes": 18660,
+   "bytes": 18688,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -19905,7 +19834,7 @@
    "triangles": 136,
    "trianglesPerUnit": 3,
    "calls": 19,
-   "bytes": 26940,
+   "bytes": 26988,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-blue",
@@ -19964,7 +19893,7 @@
    "triangles": 128,
    "trianglesPerUnit": 5,
    "calls": 17,
-   "bytes": 25596,
+   "bytes": 25640,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20018,7 +19947,7 @@
    "triangles": 44,
    "trianglesPerUnit": 9,
    "calls": 12,
-   "bytes": 17984,
+   "bytes": 18012,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20076,7 +20005,7 @@
    "triangles": 60,
    "trianglesPerUnit": 8,
    "calls": 17,
-   "bytes": 22416,
+   "bytes": 22464,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20134,7 +20063,7 @@
    "triangles": 132,
    "trianglesPerUnit": 4,
    "calls": 29,
-   "bytes": 28112,
+   "bytes": 28200,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20196,7 +20125,7 @@
    "triangles": 113,
    "trianglesPerUnit": 4,
    "calls": 28,
-   "bytes": 34052,
+   "bytes": 34140,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20258,7 +20187,7 @@
    "triangles": 113,
    "trianglesPerUnit": 4,
    "calls": 28,
-   "bytes": 34076,
+   "bytes": 34160,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20316,7 +20245,7 @@
    "triangles": 132,
    "trianglesPerUnit": 4,
    "calls": 29,
-   "bytes": 28088,
+   "bytes": 28176,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20378,7 +20307,7 @@
    "triangles": 113,
    "trianglesPerUnit": 4,
    "calls": 28,
-   "bytes": 34056,
+   "bytes": 34144,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20440,7 +20369,7 @@
    "triangles": 113,
    "trianglesPerUnit": 4,
    "calls": 28,
-   "bytes": 34056,
+   "bytes": 34144,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
@@ -20464,22 +20393,22 @@
    "traits": [],
    "variant": null,
    "dwh": [
-    0.446,
-    0.38,
-    0.171
+    44.59,
+    38.024,
+    17.095
    ],
    "min": [
-    -0.17,
-    -0.06,
-    -0.16
+    -17.004,
+    -6,
+    -15.999
    ],
    "max": [
-    0.276,
-    0.111,
-    0.22
+    27.586,
+    11.095,
+    22.025
    ],
    "triangles": 57119,
-   "trianglesPerUnit": 57119,
+   "trianglesPerUnit": 2,
    "calls": 2198,
    "bytes": 1471656,
    "materials": [
@@ -20609,22 +20538,22 @@
     }
    ],
    "dwh": [
-    0.043,
-    0.063,
-    0.026
+    4.281,
+    6.281,
+    2.62
    ],
    "min": [
-    -0.026,
-    -0.011,
-    -0.016
+    -2.641,
+    -1.058,
+    -1.641
    ],
    "max": [
-    0.016,
-    0.016,
-    0.046
+    1.641,
+    1.563,
+    4.641
    ],
    "triangles": 13910,
-   "trianglesPerUnit": 13910,
+   "trianglesPerUnit": 197,
    "calls": 321,
    "bytes": 182092,
    "materials": [
@@ -20731,22 +20660,22 @@
     }
    ],
    "dwh": [
-    0.811,
-    0.811,
-    0.055
+    81.065,
+    81.065,
+    5.506
    ],
    "min": [
-    -0.385,
-    -0.002,
-    -0.405
+    -38.532,
+    -0.25,
+    -40.532
    ],
    "max": [
-    0.425,
-    0.053,
-    0.405
+    42.532,
+    5.256,
+    40.532
    ],
    "triangles": 26011,
-   "trianglesPerUnit": 26011,
+   "trianglesPerUnit": 1,
    "calls": 541,
    "bytes": 510908,
    "materials": [
@@ -20772,6 +20701,66 @@
    "missingTextures": []
   },
   {
+   "id": "Large_Island_Terrain_v3",
+   "name": "Large Island Terrain v3",
+   "file": "scenes/Large_Island_Terrain_v3.glb",
+   "group": "scene-diorama",
+   "family": null,
+   "shape": null,
+   "layer": null,
+   "size": null,
+   "sizeGroup": null,
+   "traits": [],
+   "variant": null,
+   "dwh": [
+    157,
+    134,
+    19.25
+   ],
+   "min": [
+    -64,
+    -7,
+    -94
+   ],
+   "max": [
+    93,
+    12.25,
+    40
+   ],
+   "triangles": 119688,
+   "trianglesPerUnit": 0,
+   "calls": 10402,
+   "bytes": 2743384,
+   "materials": [
+    "hidden|hidden",
+    "hidden|hidden-blue",
+    "hidden|hidden-green",
+    "hidden|hidden-orange",
+    "hidden|hidden-pink",
+    "hidden|hidden-red",
+    "hidden|hidden-violet",
+    "hidden|hidden-yellow",
+    "material|cliff-face",
+    "material|dirt",
+    "material|grass",
+    "material|rock-light",
+    "material|rock-lightest",
+    "material|rock-medium",
+    "material|rope",
+    "material|stone-walkway",
+    "material|water-river",
+    "material|waterfall",
+    "material|waterfall-crest",
+    "material|wood-dark",
+    "material|wood-light",
+    "material|wood-light-end",
+    "material|wood-medium"
+   ],
+   "missingTextures": [
+    "Rope NM.png"
+   ]
+  },
+  {
    "id": "Large_Island_v2",
    "name": "Large Island v2",
    "file": "scenes/Large_Island_v2.glb",
@@ -20784,22 +20773,22 @@
    "traits": [],
    "variant": null,
    "dwh": [
-    6.608,
-    6.12,
-    1.366
+    660.806,
+    612.04,
+    136.633
    ],
    "min": [
-    -3.548,
-    -0.376,
-    -3.06
+    -354.786,
+    -37.647,
+    -306.02
    ],
    "max": [
-    3.06,
-    0.99,
-    3.06
+    306.02,
+    98.986,
+    306.02
    ],
    "triangles": 555168,
-   "trianglesPerUnit": 10050,
+   "trianglesPerUnit": 0,
    "calls": 21036,
    "bytes": 10613576,
    "materials": [
@@ -20887,22 +20876,22 @@
    "traits": [],
    "variant": null,
    "dwh": [
-    1.57,
-    1.34,
-    0.361
+    157,
+    134,
+    36.094
    ],
    "min": [
-    -0.64,
-    -0.07,
-    -0.94
+    -64,
+    -7,
+    -94
    ],
    "max": [
-    0.93,
-    0.291,
-    0.4
+    93,
+    29.094,
+    40
    ],
    "triangles": 544823,
-   "trianglesPerUnit": 258971,
+   "trianglesPerUnit": 1,
    "calls": 21010,
    "bytes": 10592472,
    "materials": [
@@ -20988,22 +20977,22 @@
    "traits": [],
    "variant": null,
    "dwh": [
-    1.57,
-    1.34,
-    0.193
+    157,
+    134,
+    19.25
    ],
    "min": [
-    -0.64,
-    -0.07,
-    -0.94
+    -64,
+    -7,
+    -94
    ],
    "max": [
-    0.93,
-    0.123,
-    0.4
+    93,
+    12.25,
+    40
    ],
    "triangles": 190412,
-   "trianglesPerUnit": 90509,
+   "trianglesPerUnit": 0,
    "calls": 12430,
    "bytes": 6087292,
    "materials": [
@@ -21048,22 +21037,22 @@
    "traits": [],
    "variant": null,
    "dwh": [
-    1.57,
-    1.34,
-    0.193
+    157,
+    134,
+    19.25
    ],
    "min": [
-    -0.64,
-    -0.07,
-    -0.94
+    -64,
+    -7,
+    -94
    ],
    "max": [
-    0.93,
-    0.123,
-    0.4
+    93,
+    12.25,
+    40
    ],
    "triangles": 133777,
-   "trianglesPerUnit": 63588,
+   "trianglesPerUnit": 0,
    "calls": 17,
    "bytes": 9643792,
    "materials": [
@@ -21100,22 +21089,22 @@
    "traits": [],
    "variant": null,
    "dwh": [
-    0.45,
-    0.6,
-    0.11
+    45,
+    60.023,
+    11.022
    ],
    "min": [
-    -0.18,
-    -0.006,
-    -0.08
+    -18,
+    -0.636,
+    -8
    ],
    "max": [
-    0.27,
-    0.104,
-    0.52
+    27,
+    10.386,
+    52.023
    ],
    "triangles": 46761,
-   "trianglesPerUnit": 46761,
+   "trianglesPerUnit": 2,
    "calls": 2314,
    "bytes": 1592040,
    "materials": [
