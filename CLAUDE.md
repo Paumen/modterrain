@@ -4,6 +4,8 @@ Never add comments to code files.
 
 Build for touch (mobile/tablet) only.
 
+For testing if fos really needed: 480×720 at deviceScaleFactor: 1. 
+
 ## Building or adjusting terrain
 
 Never assume the kit is wrong or has bugs and adjust it. If something seems
