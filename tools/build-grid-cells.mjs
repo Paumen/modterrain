@@ -7,7 +7,11 @@ if (!input) {
   console.error('usage: node tools/build-grid-cells.mjs <scene.glb> [--force]');
   process.exit(1);
 }
-const outPath = input.replace(/\.glb$/, '_grid2.json');
+if (!/\.glb$/i.test(input)) {
+  console.error(`${input}: input must be a .glb file`);
+  process.exit(1);
+}
+const outPath = input.replace(/\.glb$/i, '_grid2.json');
 if (existsSync(outPath) && !process.argv.includes('--force')) {
   console.error(`${outPath} exists; pass --force to overwrite`);
   process.exit(1);
@@ -123,10 +127,14 @@ function sealCells(p, lo, hi) {
   }
 });
 
+if (!pos3.length) {
+  console.error(`${input}: no visible non-water triangles found`);
+  process.exit(1);
+}
 const index = buildIndex(Float64Array.from(pos3), 1);
-const { tris, box, bins, cols, bx, bz } = index;
-const wIdx = buildIndex(Float64Array.from(wallPos), 1);
-const oIdx = buildIndex(Float64Array.from(obsPos), 1);
+const { tris, box, bins, cols, bx, bz, seen } = index;
+const wIdx = wallPos.length ? buildIndex(Float64Array.from(wallPos), 1) : null;
+const oIdx = obsPos.length ? buildIndex(Float64Array.from(obsPos), 1) : null;
 
 function hitY(T, t, x, z) {
   const a = t * 9;
@@ -184,11 +192,12 @@ function triBoxHit(T, t, minX, minY, minZ, maxX, maxY, maxZ) {
 }
 
 function boxBlocked(idx2, minX, minY, minZ, maxX, maxY, maxZ) {
-  const seen = new Set();
+  if (!idx2) return false;
+  const stamp = ++idx2.stamp;
   for (const px of [minX, maxX]) for (const pz of [minZ, maxZ]) {
     for (const t of idx2.bins[idx2.bz(pz) * idx2.cols + idx2.bx(px)]) {
-      if (seen.has(t)) continue;
-      seen.add(t);
+      if (idx2.seen[t] === stamp) continue;
+      idx2.seen[t] = stamp;
       const b = t * 6;
       if (idx2.box[b] > maxX || idx2.box[b + 3] < minX || idx2.box[b + 1] > maxY
         || idx2.box[b + 4] < minY || idx2.box[b + 2] > maxZ || idx2.box[b + 5] < minZ) continue;
@@ -204,11 +213,11 @@ function cubeFits(x, z, gTop) {
 
 function groundUnder(x, z, yTop, reach) {
   const h = CUBE / 2;
-  const seen = new Set();
+  const stamp = ++index.stamp;
   let best = null;
   for (const px of [x - h, x + h]) for (const pz of [z - h, z + h]) for (const t of bins[bz(pz) * cols + bx(px)]) {
-    if (seen.has(t)) continue;
-    seen.add(t);
+    if (seen[t] === stamp) continue;
+    seen[t] = stamp;
     const b = t * 6, a = t * 9;
     if (box[b] > x + h || box[b + 3] < x - h || box[b + 2] > z + h || box[b + 5] < z - h || box[b + 1] > yTop || box[b + 4] < yTop - reach) continue;
     if ((tris[a + 5] - tris[a + 2]) * (tris[a + 6] - tris[a]) - (tris[a + 3] - tris[a]) * (tris[a + 8] - tris[a + 2]) <= 0) continue;
