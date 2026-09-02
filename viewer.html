@@ -51,7 +51,6 @@
 <script type="module">
 import { buildIndex, raycast as castRay } from './tools/ray.mjs';
 import { isSeeThrough } from './tools/see-through.mjs';
-import { isBridge } from './tools/bridge.mjs';
 
 const VIEWER_VERSION = '1.0.0';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
@@ -144,10 +143,8 @@ function fromGrid(grid) {
   scene.clearColor = BABYLON.Color4.FromHexString('#1a2028ff');
 
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
-  const bridges = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isBridge(m.name));
-  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name) && !isBridge(m.name));
+  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
-  for (const b of bridges) b.bridgeFade = damped(1, 10);
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
   sun.intensity = 1.3;
@@ -200,6 +197,7 @@ function fromGrid(grid) {
   const planSegs = [];
   const castSegs = [];
   const fanSegs = [];
+  const dropSegs = [];
   let mapView = false;
   let mapZoom = 0.55;
   const view = () => (mapView ? MAP_VIEW : VIEWS[viewIdx]);
@@ -322,7 +320,6 @@ function fromGrid(grid) {
       held.v = heldBeta.v = null;
       castSegs.length = 0;
       planSegs.length = 0;
-      for (const b of bridges) b.visibility = b.bridgeFade.step(1, dt, 10);
       return;
     }
     const want = plan();
@@ -337,14 +334,6 @@ function fromGrid(grid) {
       debugRays ? castSegs : null) - Math.hypot(camera.minZ, probe) * 1.3;
     camera.radius = Math.max(0, Math.min(back, room));
     held.v = Math.min(held.v, camera.radius + rate * dt);
-    if (bridges.length) {
-      const dist = camera.radius;
-      const ray = dist > 1e-4 ? new BABYLON.Ray(camera.target, new BABYLON.Vector3(dx, dy, dz), dist) : null;
-      for (const b of bridges) {
-        const hit = ray && b.intersects(ray, false).hit;
-        b.visibility = b.bridgeFade.step(hit ? 0.12 : 1, dt, 10);
-      }
-    }
   });
 
   scene.onBeforeRenderObservable.add(() => {
@@ -357,6 +346,7 @@ function fromGrid(grid) {
     { segs: castSegs, from: new BABYLON.Color4(0.35, 0.95, 0.55, 0.5), miss: new BABYLON.Color4(0.35, 0.95, 0.55, 0.5) },
     { segs: planSegs, from: new BABYLON.Color4(1, 0.72, 0.25, 0.8), miss: new BABYLON.Color4(1, 0.72, 0.25, 0.5) },
     { segs: fanSegs, from: new BABYLON.Color4(0.45, 0.75, 1, 0.55), miss: new BABYLON.Color4(0.45, 0.75, 1, 0.3) },
+    { segs: dropSegs, drop: true, from: new BABYLON.Color4(1, 0.4, 0.95, 0.95), miss: new BABYLON.Color4(1, 0.4, 0.95, 0.5) },
   ];
   const rayCount = () => GROUPS.reduce((n, g) => n + g.segs.length, 0);
   function drawRays() {
@@ -381,6 +371,13 @@ function fromGrid(grid) {
     }
     rayMesh.setEnabled(true);
   }
+  const DROP = 16;
+  function castDrop() {
+    dropSegs.length = 0;
+    if (!debugRays) return;
+    const a = avatar.position;
+    dropSegs.push([a.x, a.y, a.z, 0, -1, 0, raycast(a.x, a.y, a.z, 0, -1, 0, DROP), DROP]);
+  }
   function castFan() {
     fanSegs.length = 0;
     if (!debugRays) return;
@@ -390,6 +387,7 @@ function fromGrid(grid) {
 
   let hudAt = 0;
   scene.onBeforeRenderObservable.add(() => {
+    castDrop();
     if (performance.now() - hudAt >= 120) {
       hudAt = performance.now();
       castFan();
@@ -713,8 +711,9 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
   const helpText = () => (!editMode ? '' : (pathMode ? PATH_HELP() : EDIT_HELP()) + TALLY() + '<br>');
   function debugText() {
     const n = nav.nodes[cur];
-    let hits = 0;
-    for (const g of GROUPS) for (const seg of g.segs) if (Number.isFinite(seg[6])) hits++;
+    let hits = 0, near = Infinity;
+    for (const g of GROUPS) for (const seg of g.segs) if (Number.isFinite(seg[6])) { hits++; if (!g.drop) near = Math.min(near, seg[6]); }
+    const drop = dropSegs.length ? dropSegs[0][6] : Infinity;
     return `<small class="dbg">`
       + `<i>fps</i> ${engine.getFps().toFixed(0)} <i>frame</i> ${engine.getDeltaTime().toFixed(1)}ms<br>`
       + `<i>yaw</i> ${deg(camera.alpha)}&deg; <i>step</i> ${step()}/${STEPS} <i>tilt</i> ${deg(camera.beta)}&deg;<br>`
@@ -724,6 +723,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
       + `<i>eye</i> ${num(camera.position.x, 1)},${num(camera.position.y, 1)},${num(camera.position.z, 1)}<br>`
       + `<i>route</i> ${route.length} ${tween ? 'moving' : 'idle'} <i>pads</i> ${shown.size} <i>back</i> ${history.length}<br>`
       + `<i>rays</i> ${debugRays ? `${rayCount()} hit ${hits}` : 'off'}`
+      + `${debugRays ? ` <i>near</i> ${num(near)} <i>drop</i> ${num(drop)}` : ''}`
       + `</small>`;
   }
   function renderHud() {
