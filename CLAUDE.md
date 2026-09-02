@@ -25,22 +25,11 @@ Practical facts about the kit:
 - **Scale:** 1 grid cell = 100 glTF units (`UNITS_PER_CELL` in
   `tools/glb.mjs`). Piece origins are cell centres, and multi-cell pieces
   anchor on one specific cell.
-- **Layers:** pieces come in `Under` / `Base` / `Mid` / `Top` variants that
-  stack vertically.
+- **Layers:** some pieces come in `Under` / `Base` / `Mid` / `Top` variants that
+  stack vertically. Pieces edges always connect on levels of 25 units. 
 - **Index:** `catalog/catalog.json` lists every piece's family, shape, layer,
   grid size, bounds (in cells), and materials/sockets — check it before
   opening GLBs. Browse the pieces visually via `index.html`.
-- **Color:** visible surfaces take their color from `textures/colormap.png`,
-  the shared map the Taalei kits use, by pointing their UVs at it — so the
-  color is one edit to one file, not a number in each material.
-  `catalog/palette.json` records which surface sits on which cell, and
-  `tools/recolor.mjs` put it there and can do it again. Wood, rope and water
-  keep their own textures; the `Hidden` faces keep their own colors, which
-  are socket identity rather than decoration.
-- **Shading:** cliff faces are shaded by height along their color's band, and
-  the four layers share it — `Top` in its lightest quarter, `Under` in its
-  darkest, so a stack reads as one gradient. `Mid` is one flat tone, since a
-  ramp on the piece meant to repeat would band at every seam.
 - **Rendering:** make sure backface culling is enabled, as standard glTF
   behavior requires. Every material is single-sided and most pieces are
   one-sided shells; drawing backfaces hides the shells, a real glTF viewer
