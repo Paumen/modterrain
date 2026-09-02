@@ -3,6 +3,23 @@ import { basename } from 'node:path';
 import { assemble } from './assemble.mjs';
 import { writeGlb, measureScene } from './glb.mjs';
 
+const PIVOTS = {
+  Prop_Bridge_Rope_End_Basic_1x3: [0, 0, 0.5],
+  Prop_Bridge_Rope_Middle_Basic_1x1: [0, 0, 0.5],
+  Prop_Bridge_Rope_Middle_Cracked_1_1x1: [0, 0, 0.5],
+  Prop_Bridge_Rope_Middle_Cracked_2_1x1: [0, 0, 0.5],
+};
+
+const onPivot = (prefab, matrix) => {
+  const offset = PIVOTS[prefab];
+  if (!offset) return matrix;
+  const out = [...matrix];
+  for (let row = 0; row < 3; row++) {
+    out[row * 4 + 3] += offset.reduce((sum, cell, axis) => sum + cell * matrix[row * 4 + axis], 0);
+  }
+  return out;
+};
+
 const argv = process.argv.slice(2);
 const option = (name) => {
   const at = argv.indexOf(`--${name}`);
@@ -18,7 +35,7 @@ const skip = option('skip') && new RegExp(option('skip'));
 const dump = JSON.parse(readFileSync(input, 'utf8'));
 const placements = dump.pieces
   .filter(({ prefab }) => !skip || !skip.test(prefab))
-  .map(({ prefab, matrix }) => ({ piece: prefab, matrix }));
+  .map(({ prefab, matrix }) => ({ piece: prefab, matrix: onPivot(prefab, matrix) }));
 const built = assemble(placements);
 
 if (!built.placed) {

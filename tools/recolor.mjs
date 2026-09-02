@@ -561,9 +561,6 @@ for (const directory of DIRECTORIES) {
     const id = file.replace(/\.glb$/, '');
     const { json, bin } = readGlb(path);
 
-    /* Something this repo assembled is made of pieces that are already on the
-     * map, and its meshes are shared between placements at different heights:
-     * re-ramping them here would shade one cliff by another's position. */
     if (json.asset?.generator === ASSEMBLED) continue;
 
     const mapped = new Set();
