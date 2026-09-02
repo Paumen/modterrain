@@ -18,6 +18,18 @@ const placeNode = (pos, quat, scale, mirror) => ({
   scale,
 });
 
+const placeMatrixNode = (matrix, mirror) => {
+  const sign = mirror ? [-1, 1, 1, 1] : [1, 1, 1, 1];
+  const out = [];
+  for (let column = 0; column < 4; column++) {
+    for (let row = 0; row < 4; row++) {
+      const value = matrix[row * 4 + column] * sign[row] * sign[column];
+      out.push(row === 3 || column !== 3 ? value : value * UNITS_PER_CELL);
+    }
+  }
+  return { matrix: out };
+};
+
 const align4 = (n) => (4 - (n % 4)) % 4;
 
 function createMerged() {
@@ -178,7 +190,7 @@ export function assemble(placements, { mirror = true, models = ATOMS } = {}) {
   const inside = new Set();
   let placed = 0;
 
-  for (const { piece, pos, quat, scale } of placements) {
+  for (const { piece, pos, quat, scale, matrix } of placements) {
     if (!pieces.has(piece)) {
       let glb = null;
       try {
@@ -192,7 +204,10 @@ export function assemble(placements, { mirror = true, models = ATOMS } = {}) {
     const merged = pieces.get(piece);
     if (!merged) continue;
 
-    const node = { name: piece, ...placeNode(pos, quat, scale, mirror) };
+    const node = {
+      name: piece,
+      ...(matrix ? placeMatrixNode(matrix, mirror) : placeNode(pos, quat, scale, mirror)),
+    };
     node.children = merged.roots.map((root) => cloneNode(out, merged, root));
     out.json.nodes.push(node);
     out.json.scenes[0].nodes.push(out.json.nodes.length - 1);
