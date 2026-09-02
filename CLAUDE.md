@@ -4,7 +4,7 @@ Never add comments to code files.
 
 Build for touch (mobile/tablet) only.
 
-For testing if fos really needed: 480×720 at deviceScaleFactor: 1. 
+For testing if fos really needed (I can test if you're pretty confident): 480×720 at deviceScaleFactor: 1. 
 
 ## Building or adjusting terrain
 
