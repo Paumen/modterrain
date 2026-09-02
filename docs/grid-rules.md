@@ -34,20 +34,24 @@ The avatar is a 0.5×0.5×0.5 cube. Cells are 1×1×1 units.
     0.5 per 0.5 of run, measured at 0.5 granularity; the clear space travels
     with it, 0.5 above the local ground. Missing ground (a void) blocks.
 
-Implementation readings, calibrated against the kit and confirmed in play:
+Implementation readings, per the confirmed answers:
 
-- Rule 5 is tested at the standing point, not per cell: a spot is wet when the
-  water surface there is at or above its floor. Riverbank cells whose dry
-  floor rises above the waterline stay walkable; wading and water crossings
-  stay impossible.
-- Rule 6 seals a cell when cliff geometry enters its heart (the middle
-  0.5×0.5); surface relief spilling less than 0.25 over a border does not
-  count as occupying the neighbour cell.
-- Rule 7 counts all 8 exit directions, so a corner cell whose only
-  continuation is diagonal survives.
-- Rule 8's cube may cross anywhere along an edge, not only dead center: the
-  sweep tries corridors shifted sideways up to 0.25.
-- Rule 14's limit is 0.5 plus float tolerance (0.55), because the kit's own
-  stair and terrace risers are exactly 0.5; ground relief lower than the
-  0.28 step-over never counts as an obstacle.
-
+- The cube is a real volume: standing and every crossing test the 0.5 box
+  itself against geometry (no rays, no piece lists for obstacles). It rests
+  on the highest ground under its footprint; anything else inside the box
+  blocks - fences, rails, crates, walls, whatever is added later.
+- Ground belongs to rule 14, not to collision: faces walkable-steep or
+  flatter carry the cube; the strict <0.5 per 0.5 rise limit (measured over
+  the footprint, so a plank seam narrower than the cube is not a void)
+  decides what it may climb. Kit slopes max 0.375, walkway risers 0.25;
+  terrace walls at 0.5 are blocked by the limit itself.
+- Rules 5 and 6 are literal: a cell containing any water or cliff-family
+  geometry (beyond 0.02 float tolerance) is sealed shut.
+- Rule 13 is not redundant: retaining walls block their edge even when the
+  cube would fit - the one declared exception, because a wall flush with the
+  upper terrace is invisible to collision from above.
+- Rule 7 counts all 8 exit directions; rule 8's cube may cross anywhere
+  along an edge (corridors shifted sideways up to 0.25).
+- A floor exactly on a cell boundary belongs to the cell above it.
+- Decoration lower than 0.25 resting on an eligible floor is ground relief:
+  the cube stands on it, the floor beneath grants the node.

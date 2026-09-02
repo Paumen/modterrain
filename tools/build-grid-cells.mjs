@@ -1,6 +1,6 @@
 import { writeFileSync, existsSync } from 'node:fs';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
-import { buildIndex, raycast } from './ray.mjs';
+import { buildIndex } from './ray.mjs';
 
 const input = process.argv[2];
 if (!input) {
@@ -21,7 +21,7 @@ const ALWAYS = new Set([
   'Path_Bridge_Edge_Top_1x2', 'Prop_Bridge_Center_1x2', 'Prop_Bridge_End_2x2',
 ]);
 const CLIFF = /^(Basic_|Cracked_|Wall_|Cave_Edge_)/;
-const BARRIER = /^(Path_Fence_(?!Gate_Frame)|Tiered_Retaining_Wall_|Docks_Railing_|Docks_Bumper_)/;
+const WALL13 = /^Tiered_Retaining_Wall_/;
 const CAVE_FLOOR = /^(Cave_Center_|Floor_)/;
 const WALKWAY = /^Tiered_Walkway_/;
 const FLOOR_MAT = /^(Grass|Dirt)$/;
@@ -29,24 +29,48 @@ const isWater = (m) => /Water|Pool/.test(m);
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Dark', 'Wood Light', 'Wood Light End', 'Wood Medium']);
 
 const CUBE = 0.5;
-const RISE = 0.55;
-const LAT = 0.2;
+const RISE = 0.499;
 const STEP = 0.1;
 const EPS = 0.02;
-const HEART = 0.12;
 
 const glb = readGlb(input);
 const { json } = glb;
 const world = nodeWorldMatrices(json);
 const pos3 = [];
-const waterPos = [];
-const barPos = [];
+const wallPos = [];
+const obsPos = [];
 const triMat = [];
 const triFloor = [];
 const triAlways = [];
 const sealed = new Set();
 const cellKey = (cx, cy, cz) => cx * 4000000 + cy * 4000 + cz + 2000000000;
 const candidates = new Map();
+
+function sealCells(p, lo, hi) {
+  for (let cx = Math.floor(lo[0] + EPS); cx <= Math.floor(hi[0] - EPS); cx++)
+    for (let cz = Math.floor(lo[2] + EPS); cz <= Math.floor(hi[2] - EPS); cz++) {
+      let poly = p;
+      for (const [axis, limit, keep] of [[0, cx + EPS, 1], [0, cx + 1 - EPS, -1], [2, cz + EPS, 1], [2, cz + 1 - EPS, -1]]) {
+        const next = [];
+        for (let v = 0; v < poly.length; v++) {
+          const a = poly[v], b = poly[(v + 1) % poly.length];
+          const ia = (a[axis] - limit) * keep >= 0, ib = (b[axis] - limit) * keep >= 0;
+          if (ia) next.push(a);
+          if (ia !== ib) {
+            const f = (limit - a[axis]) / (b[axis] - a[axis]);
+            next.push([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f]);
+          }
+        }
+        poly = next;
+        if (!poly.length) break;
+      }
+      if (!poly.length) continue;
+      let y0 = Infinity, y1 = -Infinity;
+      for (const q of poly) { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); }
+      for (let cy = Math.floor(y0); cy <= Math.floor(y1); cy++)
+        if (y1 > cy + EPS && y0 < cy + 1 - EPS) sealed.add(cellKey(cx, cy, cz));
+    }
+}
 
 (json.nodes ?? []).forEach((node, i) => {
   if (node.mesh === undefined || !world[i]) return;
@@ -71,35 +95,15 @@ const candidates = new Map();
       }
       const lo = [0, 1, 2].map((a) => Math.min(p[0][a], p[1][a], p[2][a]));
       const hi = [0, 1, 2].map((a) => Math.max(p[0][a], p[1][a], p[2][a]));
-      if (water) {
-        waterPos.push(...p[0], ...p[1], ...p[2]);
-        continue;
-      }
-      if (BARRIER.test(piece)) barPos.push(...p[0], ...p[1], ...p[2]);
-      if (cliff) {
-        for (let cx = Math.floor(lo[0] + EPS); cx <= Math.floor(hi[0] - EPS); cx++)
-          for (let cz = Math.floor(lo[2] + EPS); cz <= Math.floor(hi[2] - EPS); cz++) {
-            let poly = p;
-            for (const [axis, limit, keep] of [[0, cx + HEART, 1], [0, cx + 1 - HEART, -1], [2, cz + HEART, 1], [2, cz + 1 - HEART, -1]]) {
-              const next = [];
-              for (let v = 0; v < poly.length; v++) {
-                const a = poly[v], b = poly[(v + 1) % poly.length];
-                const ia = (a[axis] - limit) * keep >= 0, ib = (b[axis] - limit) * keep >= 0;
-                if (ia) next.push(a);
-                if (ia !== ib) {
-                  const f = (limit - a[axis]) / (b[axis] - a[axis]);
-                  next.push([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f]);
-                }
-              }
-              poly = next;
-              if (!poly.length) break;
-            }
-            if (!poly.length) continue;
-            let y0 = Infinity, y1 = -Infinity;
-            for (const q of poly) { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); }
-            for (let cy = Math.floor(y0); cy <= Math.floor(y1); cy++)
-              if (y1 > cy + EPS && y0 < cy + 1 - EPS) sealed.add(cellKey(cx, cy, cz));
-          }
+      if (water || cliff) sealCells(p, lo, hi);
+      if (water) continue;
+      if (WALL13.test(piece)) wallPos.push(...p[0], ...p[1], ...p[2]);
+      {
+        const ux2 = p[1][0] - p[0][0], uy2 = p[1][1] - p[0][1], uz2 = p[1][2] - p[0][2];
+        const vx2 = p[2][0] - p[0][0], vy2 = p[2][1] - p[0][1], vz2 = p[2][2] - p[0][2];
+        const nx2 = uy2 * vz2 - uz2 * vy2, ny2 = uz2 * vx2 - ux2 * vz2, nz2 = ux2 * vy2 - uy2 * vx2;
+        const ln = Math.hypot(nx2, ny2, nz2);
+        if (ln > 1e-12 && ny2 / ln < 0.5) obsPos.push(...p[0], ...p[1], ...p[2]);
       }
       pos3.push(...p[0], ...p[1], ...p[2]);
       triMat.push(mat);
@@ -117,34 +121,8 @@ const candidates = new Map();
 
 const index = buildIndex(Float64Array.from(pos3), 1);
 const { tris, box, bins, cols, bx, bz } = index;
-const wIdx = buildIndex(Float64Array.from(waterPos), 1);
-const bIdx = buildIndex(Float64Array.from(barPos), 1);
-
-function seg2d(ax, az, bx2, bz2, cx2, cz2, dx2, dz2) {
-  const d1 = (bx2 - ax) * (cz2 - az) - (bz2 - az) * (cx2 - ax);
-  const d2 = (bx2 - ax) * (dz2 - az) - (bz2 - az) * (dx2 - ax);
-  const d3 = (dx2 - cx2) * (az - cz2) - (dz2 - cz2) * (ax - cx2);
-  const d4 = (dx2 - cx2) * (bz2 - cz2) - (dz2 - cz2) * (bx2 - cx2);
-  return d1 * d2 <= 0 && d3 * d4 <= 0;
-}
-
-function curtainHit(x0, z0, x1, z1, yLo, yHi) {
-  const seen = new Set();
-  for (const px of [x0, (x0 + x1) / 2, x1]) for (const pz of [z0, (z0 + z1) / 2, z1]) {
-    const bin = bIdx.bins[bIdx.bz(pz) * bIdx.cols + bIdx.bx(px)];
-    for (const t of bin) {
-      if (seen.has(t)) continue;
-      seen.add(t);
-      const b = t * 6;
-      if (bIdx.box[b + 1] > yHi || bIdx.box[b + 4] < yLo) continue;
-      const a = t * 9;
-      const T = bIdx.tris;
-      for (const [i1, i2] of [[0, 3], [3, 6], [6, 0]])
-        if (seg2d(x0, z0, x1, z1, T[a + i1], T[a + i1 + 2], T[a + i2], T[a + i2 + 2])) return true;
-    }
-  }
-  return false;
-}
+const wIdx = buildIndex(Float64Array.from(wallPos), 1);
+const oIdx = buildIndex(Float64Array.from(obsPos), 1);
 
 function hitY(T, t, x, z) {
   const a = t * 9;
@@ -160,15 +138,6 @@ function hitY(T, t, x, z) {
   return { y: w0 * y0 + w1 * y1 + w2 * y2, up: (z1 - z0) * (x2 - x0) - (x1 - x0) * (z2 - z0) > 0 };
 }
 
-function waterTopAt(x, z) {
-  let top = -Infinity;
-  for (const t of wIdx.bins[wIdx.bz(z) * wIdx.cols + wIdx.bx(x)]) {
-    const h = hitY(wIdx.tris, t, x, z);
-    if (h) top = Math.max(top, h.y);
-  }
-  return top;
-}
-
 function groundAt(x, z, yTop, reach) {
   let best = null;
   for (const t of bins[bz(z) * cols + bx(x)]) {
@@ -182,49 +151,96 @@ function groundAt(x, z, yTop, reach) {
   return best;
 }
 
-function headGap(x, y, z) {
-  return raycast(index, x, y + 0.03, z, 0, 1, 0, CUBE - 0.06) >= CUBE - 0.06;
+function triBoxHit(T, t, minX, minY, minZ, maxX, maxY, maxZ) {
+  const a = t * 9;
+  const cx2 = (minX + maxX) / 2, cy2 = (minY + maxY) / 2, cz2 = (minZ + maxZ) / 2;
+  const ex = (maxX - minX) / 2, ey = (maxY - minY) / 2, ez = (maxZ - minZ) / 2;
+  const v = [];
+  for (let k = 0; k < 3; k++) v.push([T[a + k * 3] - cx2, T[a + k * 3 + 1] - cy2, T[a + k * 3 + 2] - cz2]);
+  for (let ax = 0; ax < 3; ax++) {
+    const lo = Math.min(v[0][ax], v[1][ax], v[2][ax]), hi = Math.max(v[0][ax], v[1][ax], v[2][ax]);
+    if (lo > [ex, ey, ez][ax] || hi < -[ex, ey, ez][ax]) return false;
+  }
+  const e = [[v[1][0] - v[0][0], v[1][1] - v[0][1], v[1][2] - v[0][2]],
+    [v[2][0] - v[1][0], v[2][1] - v[1][1], v[2][2] - v[1][2]],
+    [v[0][0] - v[2][0], v[0][1] - v[2][1], v[0][2] - v[2][2]]];
+  const n = [e[0][1] * e[1][2] - e[0][2] * e[1][1], e[0][2] * e[1][0] - e[0][0] * e[1][2], e[0][0] * e[1][1] - e[0][1] * e[1][0]];
+  const dN = n[0] * v[0][0] + n[1] * v[0][1] + n[2] * v[0][2];
+  const rN = ex * Math.abs(n[0]) + ey * Math.abs(n[1]) + ez * Math.abs(n[2]);
+  if (Math.abs(dN) > rN) return false;
+  for (const ed of e) for (let ax = 0; ax < 3; ax++) {
+    const A = [0, 0, 0];
+    A[(ax + 1) % 3] = -ed[(ax + 2) % 3];
+    A[(ax + 2) % 3] = ed[(ax + 1) % 3];
+    const ps = v.map((q) => A[0] * q[0] + A[1] * q[1] + A[2] * q[2]);
+    const r = ex * Math.abs(A[0]) + ey * Math.abs(A[1]) + ez * Math.abs(A[2]);
+    if (Math.min(...ps) > r || Math.max(...ps) < -r) return false;
+  }
+  return true;
 }
 
-function corridor(x0, z0, g0, x1, z1, checkSeal, declared) {
+function boxBlocked(idx2, minX, minY, minZ, maxX, maxY, maxZ) {
+  const seen = new Set();
+  for (const px of [minX, maxX]) for (const pz of [minZ, maxZ]) {
+    for (const t of idx2.bins[idx2.bz(pz) * idx2.cols + idx2.bx(px)]) {
+      if (seen.has(t)) continue;
+      seen.add(t);
+      const b = t * 6;
+      if (idx2.box[b] > maxX || idx2.box[b + 3] < minX || idx2.box[b + 1] > maxY
+        || idx2.box[b + 4] < minY || idx2.box[b + 2] > maxZ || idx2.box[b + 5] < minZ) continue;
+      if (triBoxHit(idx2.tris, t, minX, minY, minZ, maxX, maxY, maxZ)) return true;
+    }
+  }
+  return false;
+}
+
+function cubeFits(x, z, corners) {
+  const gTop = Math.max(...corners);
+  return !boxBlocked(oIdx, x - CUBE / 2, gTop + 0.03, z - CUBE / 2, x + CUBE / 2, gTop + CUBE - 0.02, z + CUBE / 2);
+}
+
+function cornersAt(x, z, gRef) {
+  const vals = [];
+  let top = null;
+  for (const dx of [-CUBE / 2, CUBE / 2]) for (const dz of [-CUBE / 2, CUBE / 2]) {
+    const h = groundAt(x + dx, z + dz, gRef + RISE + 0.05, RISE * 2 + 0.2);
+    if (h && (top === null || h.y > top)) top = h.y;
+    vals.push(h ? h.y : gRef);
+  }
+  return { vals, top };
+}
+
+function corridor(x0, z0, g0, x1, z1, checkSeal) {
   const len = Math.hypot(x1 - x0, z1 - z0);
   const n = Math.max(1, Math.round(len / STEP));
   const sl = len / n;
   const ux = (x1 - x0) / len, uz = (z1 - z0) / len;
   const gs = [g0];
-  const lane = [g0, g0, g0];
   for (let i = 1; i <= n; i++) {
     const x = x0 + ux * sl * i, z = z0 + uz * sl * i;
-    for (let l = 0; l < 3; l++) {
-      const off = [0, LAT, -LAT][l];
-      const ox = uz * off, oz = -ux * off;
-      let hit = groundAt(x + ox, z + oz, lane[l] + RISE + 0.05, RISE * 2 + 0.2);
-      if (!hit && declared) hit = { y: declared[0] + (declared[1] - declared[0]) * i / n };
-      if (l === 0) {
-        if (!hit) return false;
-        if (Math.abs(hit.y - gs[Math.max(0, i - Math.round(0.5 / sl))]) >= RISE) return false;
-        if (checkSeal && sealed.has(cellKey(Math.floor(x), Math.floor(hit.y + 0.25), Math.floor(z)))) return false;
-        if (waterTopAt(x, z) > hit.y - 0.02) return false;
-        if (!headGap(x, hit.y, z)) return false;
-        gs.push(hit.y);
-      }
-      const gNew = hit ? hit.y : lane[0];
-      const hi = Math.max(lane[l], gNew);
-      for (const h of [hi + 0.28, hi + CUBE - 0.06]) {
-        if (raycast(index, x - ux * sl + ox, h, z - uz * sl + oz, ux, 0, uz, sl) < sl) return false;
-      }
-      if (curtainHit(x - ux * sl + ox, z - uz * sl + oz, x + ox, z + oz, Math.min(lane[l], gNew) - 0.05, hi + CUBE)) return false;
-      lane[l] = gNew;
-    }
+    const here = cornersAt(x, z, gs[i - 1]);
+    const hit = groundAt(x, z, gs[i - 1] + RISE + 0.05, RISE * 2 + 0.2) ?? (here.top !== null ? { y: here.top } : null);
+    if (!hit) return false;
+    if (Math.abs(hit.y - gs[Math.max(0, i - Math.round(0.5 / sl))]) >= RISE) return false;
+    if (checkSeal && sealed.has(cellKey(Math.floor(x), Math.floor(hit.y + 0.25), Math.floor(z)))) return false;
+    const px = x - ux * sl, pz = z - uz * sl;
+    const minX = Math.min(px, x) - CUBE / 2, maxX = Math.max(px, x) + CUBE / 2;
+    const minZ = Math.min(pz, z) - CUBE / 2, maxZ = Math.max(pz, z) + CUBE / 2;
+    const prev = cornersAt(px, pz, gs[i - 1]);
+    const corners = here.vals.concat(prev.vals);
+    const gTop = Math.max(...corners), gBot = Math.min(...corners);
+    if (boxBlocked(oIdx, minX, gTop + 0.03, minZ, maxX, gTop + CUBE - 0.02, maxZ)) return false;
+    if (boxBlocked(wIdx, minX, gBot - 0.05, minZ, maxX, gTop + CUBE, maxZ)) return false;
+    gs.push(hit.y);
   }
   return true;
 }
 
-function sweep(x0, z0, g0, x1, z1, checkSeal, declared) {
+function sweep(x0, z0, g0, x1, z1, checkSeal) {
   const len = Math.hypot(x1 - x0, z1 - z0);
   const px = (z1 - z0) / len, pz = -(x1 - x0) / len;
   for (const off of [0, 0.15, -0.15, 0.25, -0.25]) {
-    if (corridor(x0 + px * off, z0 + pz * off, g0, x1 + px * off, z1 + pz * off, checkSeal, declared)) return true;
+    if (corridor(x0 + px * off, z0 + pz * off, g0, x1 + px * off, z1 + pz * off, checkSeal)) return true;
   }
   return false;
 }
@@ -242,9 +258,7 @@ for (const { cx, cy, cz } of candidates.values()) {
   }
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
-  if (!always && waterTopAt(x, z) > hit.y - 0.02) continue;
-  if (!headGap(x, hit.y, z)) continue;
-  if (always && raycast(index, x, hit.y + 0.03, z, 0, 1, 0, 0.9) < 0.9) continue;
+  if (!cubeFits(x, z, cornersAt(x, z, hit.y).vals)) continue;
   if (!always) {
     let open = 0;
     for (const [dx, dz] of [[0.5, 0], [-0.5, 0], [0, 0.5], [0, -0.5], [0.5, 0.5], [0.5, -0.5], [-0.5, 0.5], [-0.5, -0.5]])
@@ -263,7 +277,7 @@ for (const a of nodes) {
     for (let dy = -1; dy <= 1; dy++) {
       const b = byCell.get(cellKey(a.cx + dx, a.cy + dy, a.cz + dz));
       if (!b) continue;
-      if (!sweep(a.x, a.z, a.y, b.x, b.z, !(a.always && b.always), a.always && b.always ? [a.y, b.y] : null)) continue;
+      if (!sweep(a.x, a.z, a.y, b.x, b.z, !(a.always && b.always))) continue;
       links[a.i].push(b.i); links[b.i].push(a.i);
       edges.push(a.i, b.i);
     }
