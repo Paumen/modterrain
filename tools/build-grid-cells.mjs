@@ -2,6 +2,8 @@ import { writeFileSync, existsSync } from 'node:fs';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
 import { buildIndex } from './ray.mjs';
 
+const VERSION = '1.0.0';
+
 const input = process.argv[2];
 if (!input) {
   console.error('usage: node tools/build-grid-cells.mjs <scene.glb> [--force]');
@@ -338,6 +340,8 @@ const round = (v) => Math.round(v * 1000) / 1000;
 
 writeFileSync(outPath, JSON.stringify({
   meta: {
+    version: VERSION,
+    built: new Date().toISOString(),
     scene: input.split('/').pop(),
     cell: 1,
     origin: { c: minX, r: minZ },

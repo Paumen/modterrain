@@ -15,6 +15,9 @@
   }
   .hud b { font-size: 14px; }
   .hud small { opacity: 0.75; }
+  .hud .ver { display: block; margin-top: 6px; opacity: 0.45; font-size: 11px; }
+  .hud .dbg { display: block; font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; opacity: 0.85; }
+  .hud .dbg i { font-style: normal; opacity: 0.55; }
   .bar {
     position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
     display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: calc(100vw - 24px);
@@ -38,6 +41,7 @@
   <button id="tiltD" title="Closer, lower view">&#9660;</button>
   <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
   <button id="edit" title="Review the walkable grid (E)">&#9998;</button>
+  <button id="dbg" title="Collision rays (D)" class="on">&#9788;</button>
   <button id="path" title="Record a path: tap start, then end (P)" hidden>&#8618;</button>
   <button id="undo" title="Undo last mark (Z)" hidden>&#8634;</button>
   <button id="save" title="Download the review JSON" hidden>&#128190;</button>
@@ -47,8 +51,8 @@
 <script type="module">
 import { buildIndex, raycast as castRay } from './tools/ray.mjs';
 import { isSeeThrough } from './tools/see-through.mjs';
-import { isBridge } from './tools/bridge.mjs';
 
+const VIEWER_VERSION = '1.0.0';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
 const GRID = new URLSearchParams(location.search).get('grid') || '';
 const canvas = document.getElementById('view');
@@ -89,10 +93,12 @@ function damped(v, rate) {
   };
 }
 
-const VIEW_HELP = `<b>Walkthrough</b><br>
-<small>Tap a cell or any spot to travel there<br>
-Swipe &#8596; orbit &middot; swipe &#8597; or &#9650;/&#9660; closer/wider &middot; &#8617; back &middot; &#9998; review grid</small>`;
-const WHERE = (n) => `<br><small>at ${n.p[0]},${n.p[2]} &middot; height ${n.p[1].toFixed(2)} &middot; ${n.n.length} way${n.n.length === 1 ? '' : 's'} out</small>`;
+const buildStamp = (iso) => {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? String(iso) : d.toISOString().slice(0, 16).replace('T', ' ') + 'Z';
+};
+const deg = (r) => (((r * 180) / Math.PI) % 360).toFixed(0);
+const num = (v, d = 2) => (Number.isFinite(v) ? v.toFixed(d) : '\u221e');
 
 async function makeEngine() {
   if (navigator.gpu && BABYLON.WebGPUEngine) {
@@ -126,16 +132,19 @@ function fromGrid(grid) {
     fetch(`scenes/${SCENE}_grid${GRID}.json`).then((r) => r.json()),
   ]);
   const nav = fromGrid(grid);
+  const VERSION_LINE = () => {
+    const g = nav.meta.version ? `grid ${nav.meta.version}` : 'grid unversioned';
+    const b = nav.meta.built ? ` &middot; built ${buildStamp(nav.meta.built)}` : '';
+    return `<small class="ver">viewer ${VIEWER_VERSION} &middot; ${g}${b}</small>`;
+  };
   const { eye, cell } = nav.meta;
   const scene = new BABYLON.Scene(engine);
   scene.useRightHandedSystem = true;
   scene.clearColor = BABYLON.Color4.FromHexString('#1a2028ff');
 
   await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
-  const bridges = scene.meshes.filter((m) => m.getTotalVertices() > 0 && isBridge(m.name));
-  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name) && !isBridge(m.name));
+  const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
-  for (const b of bridges) b.bridgeFade = damped(1, 10);
 
   const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.5, -1, -0.35), scene);
   sun.intensity = 1.3;
@@ -184,6 +193,11 @@ function fromGrid(grid) {
   let cur = Number.isInteger(asked) && asked >= 0 && asked < nav.nodes.length ? asked : start;
   let stepCont = 0;
   let viewIdx = 1;
+  let debugRays = true;
+  const planSegs = [];
+  const castSegs = [];
+  const fanSegs = [];
+  const dropSegs = [];
   let mapView = false;
   let mapZoom = 0.55;
   const view = () => (mapView ? MAP_VIEW : VIEWS[viewIdx]);
@@ -203,20 +217,22 @@ function fromGrid(grid) {
     ux /= ul; uy /= ul; uz /= ul;
     return [[ux, uy, uz], [dy * uz - dz * uy, dz * ux - dx * uz, dx * uy - dy * ux]];
   };
-  function thickCast(ox, oy, oz, dx, dy, dz, tMax, probe) {
+  function thickCast(ox, oy, oz, dx, dy, dz, tMax, probe, out) {
     let best = raycast(ox, oy, oz, dx, dy, dz, tMax);
+    if (out) out.push([ox, oy, oz, dx, dy, dz, best, tMax]);
     const [u, v] = perp(dx, dy, dz);
     for (const [sx, sy, sz] of [u, v, [-u[0], -u[1], -u[2]], [-v[0], -v[1], -v[2]]]) {
       const hit = raycast(ox + sx * probe, oy + sy * probe, oz + sz * probe, dx, dy, dz, tMax);
+      if (out) out.push([ox + sx * probe, oy + sy * probe, oz + sz * probe, dx, dy, dz, hit, tMax]);
       if (hit < best) best = hit;
     }
     return best;
   }
 
-  function roomAt(n, k, beta) {
+  function roomAt(n, k, beta, out) {
     const p = nav.nodes[n].p;
     const [dx, dy, dz] = dirAt(k * STEP_ANGLE, beta);
-    return Math.min(maxR, thickCast(p[0], p[1] + eye, p[2], dx, dy, dz, maxR + margin, nearRadius()) - margin);
+    return Math.min(maxR, thickCast(p[0], p[1] + eye, p[2], dx, dy, dz, maxR + margin, nearRadius(), out) - margin);
   }
   function fitBeta(n, k) {
     const want = view().beta;
@@ -225,7 +241,8 @@ function fromGrid(grid) {
   }
   function plan() {
     const beta = fitBeta(cur, step());
-    return { beta, radius: Math.min(view().far, roomAt(cur, step(), beta)) };
+    planSegs.length = 0;
+    return { beta, radius: Math.min(view().far, roomAt(cur, step(), beta, debugRays ? planSegs : null)) };
   }
   const open = (n, k) => roomAt(n, ((k % STEPS) + STEPS) % STEPS, view().beta) > BACK;
 
@@ -272,7 +289,7 @@ function fromGrid(grid) {
   function glideTo(node, ms) {
     if (recording && cur !== node) pushHistory(cur);
     cur = node;
-    hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
+    renderHud();
     tween = {
       t0: performance.now(), ms,
       aT0: performance.now(), aMs: ms,
@@ -301,7 +318,8 @@ function fromGrid(grid) {
       const want = Math.max(2.4, maxR * mapZoom);
       camera.radius += (want - camera.radius) * Math.min(1, dt * 6);
       held.v = heldBeta.v = null;
-      for (const b of bridges) b.visibility = b.bridgeFade.step(1, dt, 10);
+      castSegs.length = 0;
+      planSegs.length = 0;
       return;
     }
     const want = plan();
@@ -311,22 +329,71 @@ function fromGrid(grid) {
     if (!tween) camera.target.y = nav.nodes[cur].p[1] + eye;
     const [dx, dy, dz] = dirAt(camera.alpha, camera.beta);
     const probe = nearRadius();
-    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe)
-      - Math.hypot(camera.minZ, probe) * 1.3;
+    castSegs.length = 0;
+    const room = thickCast(camera.target.x, camera.target.y, camera.target.z, dx, dy, dz, back + margin, probe,
+      debugRays ? castSegs : null) - Math.hypot(camera.minZ, probe) * 1.3;
     camera.radius = Math.max(0, Math.min(back, room));
     held.v = Math.min(held.v, camera.radius + rate * dt);
-    if (bridges.length) {
-      const dist = camera.radius;
-      const ray = dist > 1e-4 ? new BABYLON.Ray(camera.target, new BABYLON.Vector3(dx, dy, dz), dist) : null;
-      for (const b of bridges) {
-        const hit = ray && b.intersects(ray, false).hit;
-        b.visibility = b.bridgeFade.step(hit ? 0.12 : 1, dt, 10);
-      }
-    }
   });
 
   scene.onBeforeRenderObservable.add(() => {
     avatar.position.set(camera.target.x, Math.floor(camera.target.y - eye + 0.02) + 0.75, camera.target.z);
+  });
+
+  let rayMesh = null;
+  const HIT = new BABYLON.Color4(1, 0.35, 0.35, 0.95);
+  const GROUPS = [
+    { segs: castSegs, from: new BABYLON.Color4(0.35, 0.95, 0.55, 0.5), miss: new BABYLON.Color4(0.35, 0.95, 0.55, 0.5) },
+    { segs: planSegs, from: new BABYLON.Color4(1, 0.72, 0.25, 0.8), miss: new BABYLON.Color4(1, 0.72, 0.25, 0.5) },
+    { segs: fanSegs, from: new BABYLON.Color4(0.45, 0.75, 1, 0.55), miss: new BABYLON.Color4(0.45, 0.75, 1, 0.3) },
+    { segs: dropSegs, drop: true, from: new BABYLON.Color4(1, 0.4, 0.95, 0.95), miss: new BABYLON.Color4(1, 0.4, 0.95, 0.5) },
+  ];
+  const rayCount = () => GROUPS.reduce((n, g) => n + g.segs.length, 0);
+  function drawRays() {
+    if (!debugRays || !rayCount()) { if (rayMesh) rayMesh.setEnabled(false); return; }
+    const lines = [], colors = [];
+    for (const g of GROUPS) {
+      for (const [ox, oy, oz, dx, dy, dz, t, tMax] of g.segs) {
+        const len = Math.min(Number.isFinite(t) ? t : tMax, tMax);
+        lines.push([new BABYLON.Vector3(ox, oy, oz),
+          new BABYLON.Vector3(ox + dx * len, oy + dy * len, oz + dz * len)]);
+        colors.push([g.from, Number.isFinite(t) ? HIT : g.miss]);
+      }
+    }
+    const same = rayMesh && rayMesh.rayCount === lines.length;
+    rayMesh = BABYLON.MeshBuilder.CreateLineSystem('rays',
+      { lines, colors, updatable: true, instance: same ? rayMesh : null }, scene);
+    if (!same) {
+      rayMesh.rayCount = lines.length;
+      rayMesh.isPickable = false;
+      rayMesh.alwaysSelectAsActiveMesh = true;
+      rayMesh.renderingGroupId = 1;
+    }
+    rayMesh.setEnabled(true);
+  }
+  const DROP = 16;
+  function castDrop() {
+    dropSegs.length = 0;
+    if (!debugRays) return;
+    const a = avatar.position;
+    dropSegs.push([a.x, a.y, a.z, 0, -1, 0, raycast(a.x, a.y, a.z, 0, -1, 0, DROP), DROP]);
+  }
+  function castFan() {
+    fanSegs.length = 0;
+    if (!debugRays) return;
+    const beta = mapView ? VIEWS[viewIdx].beta : camera.beta;
+    for (let k = 0; k < STEPS; k++) roomAt(cur, k, beta, fanSegs);
+  }
+
+  let hudAt = 0;
+  scene.onBeforeRenderObservable.add(() => {
+    castDrop();
+    if (performance.now() - hudAt >= 120) {
+      hudAt = performance.now();
+      castFan();
+      renderHud();
+    }
+    drawRays();
   });
 
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
@@ -473,16 +540,20 @@ function fromGrid(grid) {
     }
     glideTo(cur, Math.min(300 + 120 * steps, 700));
   };
+  const walking = () => tween !== null || route.length > 0;
   const setView = (dir) => {
     if (mapView) {
       mapZoom = Math.min(1.8, Math.max(0.18, mapZoom * (dir > 0 ? 1.4 : 1 / 1.4)));
+      if (walking()) { updateMarkers(); return; }
       glideTo(cur, 260);
       return;
     }
     const next = Math.min(VIEWS.length - 1, Math.max(0, viewIdx + dir));
-    if (next === viewIdx && !mapView) return;
-    viewIdx = next; mapView = false; route = [];
+    if (next === viewIdx) return;
+    viewIdx = next;
     held.ease(420); heldBeta.ease(420);
+    if (walking()) return;
+    route = [];
     stepCont = headingNear(cur, Math.round(stepCont), STEPS - 1) ?? stepCont;
     glideTo(cur, 400);
   };
@@ -509,7 +580,7 @@ function fromGrid(grid) {
     if (alpha) m.alpha = alpha;
     return m;
   };
-  const nearMat = mat('#ffd75e'), farMat = mat('#b9c8d6', 0.5), hereMat = mat('#7ee081');
+  const nearMat = mat('#ffd75e', 0.45), farMat = mat('#b9c8d6', 0.5), hereMat = mat('#7ee081', 0.4);
   const routeMat = mat('#ff9d47'), selMat = mat('#5ed7ff');
   const missMat = mat('#ff5ec8'), wrongMat = mat('#ff4d4d'), pathMat = mat('#ffb347');
   for (const m of [nearMat, hereMat, routeMat, selMat, missMat, wrongMat, pathMat]) m.disableDepthWrite = true;
@@ -600,7 +671,7 @@ function fromGrid(grid) {
     setPads('wrong', wrong, 1.5);
     setPads('path', ends, 1.5);
     drawEdges();
-    hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
+    renderHud();
   }
 
   let editMode = false;
@@ -637,7 +708,27 @@ Tap anything marked again to unmark it &middot; &#8634; undo<br>
 Its start, its end and the steps between them are recorded.<br>
 Tap the start again to cancel &middot; &#8618; back to marking</small>`;
   const TALLY = () => `<br><small>${countKind('missing')} missing &middot; ${countKind('wrong')} wrong &middot; ${paths.length} path${paths.length === 1 ? '' : 's'}</small>`;
-  const helpText = () => (!editMode ? VIEW_HELP : (pathMode ? PATH_HELP() : EDIT_HELP()) + TALLY());
+  const helpText = () => (!editMode ? '' : (pathMode ? PATH_HELP() : EDIT_HELP()) + TALLY() + '<br>');
+  function debugText() {
+    const n = nav.nodes[cur];
+    let hits = 0, near = Infinity;
+    for (const g of GROUPS) for (const seg of g.segs) if (Number.isFinite(seg[6])) { hits++; if (!g.drop) near = Math.min(near, seg[6]); }
+    const drop = dropSegs.length ? dropSegs[0][6] : Infinity;
+    return `<small class="dbg">`
+      + `<i>fps</i> ${engine.getFps().toFixed(0)} <i>frame</i> ${engine.getDeltaTime().toFixed(1)}ms<br>`
+      + `<i>yaw</i> ${deg(camera.alpha)}&deg; <i>step</i> ${step()}/${STEPS} <i>tilt</i> ${deg(camera.beta)}&deg;<br>`
+      + `<i>zoom</i> ${mapView ? `map ${num(mapZoom)}` : `${viewIdx + 1}/${VIEWS.length} far ${view().far}`}`
+      + ` <i>r</i> ${num(camera.radius)} <i>fov</i> ${deg(camera.fov)}&deg;<br>`
+      + `<i>node</i> ${cur}/${nav.nodes.length} <i>cell</i> ${n.c},${n.r} <i>y</i> ${num(n.p[1])} <i>ways</i> ${n.n.length}<br>`
+      + `<i>eye</i> ${num(camera.position.x, 1)},${num(camera.position.y, 1)},${num(camera.position.z, 1)}<br>`
+      + `<i>route</i> ${route.length} ${tween ? 'moving' : 'idle'} <i>pads</i> ${shown.size} <i>back</i> ${history.length}<br>`
+      + `<i>rays</i> ${debugRays ? `${rayCount()} hit ${hits}` : 'off'}`
+      + `${debugRays ? ` <i>near</i> ${num(near)} <i>drop</i> ${num(drop)}` : ''}`
+      + `</small>`;
+  }
+  function renderHud() {
+    hud.innerHTML = helpText() + debugText() + VERSION_LINE();
+  }
 
   const undoStack = [];
   const snapshot = () => JSON.stringify({ n: [...marks.nodes], l: [...marks.links], p: paths });
@@ -776,6 +867,12 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     updateMarkers();
     glideTo(cur, 450);
   }
+  function setDebugRays(on) {
+    debugRays = on;
+    if (!on) for (const g of GROUPS) g.segs.length = 0;
+    document.getElementById('dbg').classList.toggle('on', on);
+    renderHud();
+  }
   function setPathMode(on) {
     pathMode = on;
     selected = -1;
@@ -837,6 +934,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     if (e.key === 'PageDown') setView(-1);
     if (e.key === 'Backspace' && !editMode) { e.preventDefault(); goBack(); }
     if (e.key === 'e' || e.key === 'E') setEditMode(!editMode);
+    if (e.key === 'd' || e.key === 'D') setDebugRays(!debugRays);
     if (editMode && (e.key === 'p' || e.key === 'P')) setPathMode(!pathMode);
     if (editMode && e.key === 'Escape' && selected >= 0) { selected = -1; updateMarkers(); }
     if (editMode && (e.key === 'z' || e.key === 'Z')) undo();
@@ -853,18 +951,20 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
   document.getElementById('tiltU').addEventListener('click', () => setView(1));
   document.getElementById('tiltD').addEventListener('click', () => setView(-1));
   document.getElementById('edit').addEventListener('click', () => setEditMode(!editMode));
+  document.getElementById('dbg').addEventListener('click', () => setDebugRays(!debugRays));
   document.getElementById('undo').addEventListener('click', undo);
   document.getElementById('path').addEventListener('click', () => setPathMode(!pathMode));
   document.getElementById('save').addEventListener('click', exportReview);
 
-  hud.innerHTML = helpText() + WHERE(nav.nodes[cur]);
+  renderHud();
   rebuildMarkers();
   glideFacing(cur, 1);
   engine.runRenderLoop(() => scene.render());
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
   hud.innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
-Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>`;
+Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>
+<small class="ver">viewer ${VIEWER_VERSION}</small>`;
   throw e;
 });
 </script>
