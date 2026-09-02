@@ -3,10 +3,9 @@ import { GLTFLoader } from '../vendor/three/loaders/GLTFLoader.js';
 import { OrbitControls } from '../vendor/three/controls/OrbitControls.js';
 import { GLTFExporter } from '../vendor/three/exporters/GLTFExporter.js';
 
-/* The pack stores 100 units to a cell; the viewport works in cells, so every
- * loaded piece is scaled down once on the way in and all placement maths stays
- * in the same units as the socket data. */
-const UNITS_PER_CELL = 100;
+/* Every model in the repo is one unit to a cell, which is what the viewport
+ * and the socket data already work in. */
+const UNITS_PER_CELL = 1;
 
 /* How far from the origin a piece may be dropped. Near the horizon a ray
  * meets the ground a very long way off, and a piece placed out there is gone

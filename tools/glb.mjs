@@ -109,7 +109,7 @@ export function readAccessor({ json, bin }, index) {
   return { data: out, width, count: accessor.count };
 }
 
-export const UNITS_PER_CELL = 100;
+export const UNITS_PER_CELL = 1;
 
 /* Where each node ends up once its parents have had their say. Indexed like
  * `json.nodes`; a node the scene never reaches stays null. */
