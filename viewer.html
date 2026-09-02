@@ -43,6 +43,7 @@
   <button id="edit" title="Review the walkable grid (E)">&#9998;</button>
   <button id="dbg" title="Collision rays (D)" class="on">&#9788;</button>
   <button id="path" title="Record a path: tap start, then end (P)" hidden>&#8618;</button>
+  <button id="kind" title="Mark kind: auto, missing, wrong" hidden>A</button>
   <button id="undo" title="Undo last mark (Z)" hidden>&#8634;</button>
   <button id="save" title="Download the review JSON" hidden>&#128190;</button>
 </div>
@@ -249,7 +250,7 @@ function fromGrid(grid) {
   const camera = new BABYLON.ArcRotateCamera('cam', 0, view().beta, 1, eyePoint(start), scene);
   camera.minZ = 0.09;
   camera.maxZ = 1200;
-  camera.fov = 0.9;
+  camera.fov = (75 * Math.PI) / 180;
   camera.inputs.clear();
 
   const avatar = BABYLON.MeshBuilder.CreateBox('avatar', { size: 0.5 }, scene);
@@ -317,6 +318,10 @@ function fromGrid(grid) {
       camera.beta += (MAP_VIEW.beta - camera.beta) * Math.min(1, dt * 6);
       const want = Math.max(2.4, maxR * mapZoom);
       camera.radius += (want - camera.radius) * Math.min(1, dt * 6);
+      if (!tween) {
+        const b = nav.nodes[cur].p;
+        camera.target.set(b[0] + pan.x, b[1] + eye, b[2] + pan.z);
+      }
       held.v = heldBeta.v = null;
       castSegs.length = 0;
       planSegs.length = 0;
@@ -350,7 +355,7 @@ function fromGrid(grid) {
   ];
   const rayCount = () => GROUPS.reduce((n, g) => n + g.segs.length, 0);
   function drawRays() {
-    if (!debugRays || !rayCount()) { if (rayMesh) rayMesh.setEnabled(false); return; }
+    if (!debugRays || editMode || !rayCount()) { if (rayMesh) rayMesh.setEnabled(false); return; }
     const lines = [], colors = [];
     for (const g of GROUPS) {
       for (const [ox, oy, oz, dx, dy, dz, t, tMax] of g.segs) {
@@ -374,13 +379,13 @@ function fromGrid(grid) {
   const DROP = 16;
   function castDrop() {
     dropSegs.length = 0;
-    if (!debugRays) return;
+    if (!debugRays || editMode) return;
     const a = avatar.position;
     dropSegs.push([a.x, a.y, a.z, 0, -1, 0, raycast(a.x, a.y, a.z, 0, -1, 0, DROP), DROP]);
   }
   function castFan() {
     fanSegs.length = 0;
-    if (!debugRays) return;
+    if (!debugRays || editMode) return;
     const beta = mapView ? VIEWS[viewIdx].beta : camera.beta;
     for (let k = 0; k < STEPS; k++) roomAt(cur, k, beta, fanSegs);
   }
@@ -585,70 +590,82 @@ function fromGrid(grid) {
   const missMat = mat('#ff5ec8'), wrongMat = mat('#ff4d4d'), pathMat = mat('#ffb347');
   for (const m of [nearMat, hereMat, routeMat, selMat, missMat, wrongMat, pathMat]) m.disableDepthWrite = true;
   const PAD = 0.72;
+  const TILE = 0.96;
   const LIFT = 0.05;
-  const padOf = (material, key) => {
-    const m = BABYLON.MeshBuilder.CreateCylinder('pad', { diameter: PAD, height: 0.04, tessellation: 14 }, scene);
+  const padOf = (material, key, square) => {
+    const m = square
+      ? BABYLON.MeshBuilder.CreateBox('pad', { width: TILE, depth: TILE, height: 0.04 }, scene)
+      : BABYLON.MeshBuilder.CreateCylinder('pad', { diameter: PAD, height: 0.04, tessellation: 14 }, scene);
     m.material = material;
     m.isPickable = false;
     m.renderingGroupId = key ? 1 : 0;
     m.alwaysSelectAsActiveMesh = true;
     m.thinInstanceCount = 0;
+    m.setEnabled(false);
     return m;
   };
-  const pads = {
-    far: padOf(farMat, false),
-    near: padOf(nearMat, true),
-    here: padOf(hereMat, true),
-    route: padOf(routeMat, true),
-    sel: padOf(selMat, true),
-    path: padOf(pathMat, true),
-    missing: padOf(missMat, true),
-    wrong: padOf(wrongMat, true),
-  };
-  const padBuf = {};
-  function setPads(kind, list, scale) {
+  const PAD_KINDS = [['far', farMat, false], ['near', nearMat, true], ['here', hereMat, true],
+    ['route', routeMat, true], ['sel', selMat, true], ['path', pathMat, true],
+    ['missing', missMat, true], ['wrong', wrongMat, true]];
+  const padSet = (square) =>
+    Object.fromEntries(PAD_KINDS.map(([k, material, key]) => [k, padOf(material, key, square)]));
+  const padSets = { round: padSet(false), square: padSet(true) };
+  let pads = padSets.round;
+  function usePads(square) {
+    const next = square ? padSets.square : padSets.round;
+    if (next === pads) return;
+    for (const m of Object.values(pads)) { m.thinInstanceCount = 0; m.setEnabled(false); }
+    pads = next;
+  }
+  function setPads(kind, list, scale, lift = LIFT) {
     const mesh = pads[kind];
-    let buf = padBuf[kind];
-    if (!buf || buf.length < list.length * 16) buf = padBuf[kind] = new Float32Array(Math.max(16, list.length * 16) * 2);
+    let buf = mesh.padBuf;
+    if (!buf || buf.length < list.length * 16) buf = mesh.padBuf = new Float32Array(Math.max(16, list.length * 16) * 2);
     list.forEach((p, k) => {
       const o = k * 16;
       buf[o] = scale; buf[o + 5] = scale; buf[o + 10] = scale; buf[o + 15] = 1;
       buf[o + 1] = buf[o + 2] = buf[o + 3] = buf[o + 4] = buf[o + 6] = buf[o + 7] = 0;
       buf[o + 8] = buf[o + 9] = buf[o + 11] = 0;
-      buf[o + 12] = p[0]; buf[o + 13] = p[1] + LIFT; buf[o + 14] = p[2];
+      buf[o + 12] = p[0]; buf[o + 13] = p[1] + lift; buf[o + 14] = p[2];
     });
     mesh.thinInstanceSetBuffer('matrix', buf, 16, false);
     mesh.thinInstanceCount = list.length;
     mesh.setEnabled(list.length > 0);
   }
 
+  const pan = { x: 0, z: 0 };
   let shown = new Set();
   function rebuildMarkers() { updateMarkers(); }
   const SHOW_WITHIN = 18;
   const EDIT_WITHIN_BASE = 22;
-  const editWithin = () => Math.min(48, Math.max(20, EDIT_WITHIN_BASE * (mapZoom / 0.55)));
-  const nearCur = (i) => {
-    const a = nav.nodes[i].p, b = nav.nodes[cur].p;
-    return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= editWithin();
-  };
+  const editWithin = () => Math.min(64, Math.max(20, EDIT_WITHIN_BASE * (mapZoom / 0.55)));
+  const focus = () => { const b = nav.nodes[cur].p; return [b[0] + pan.x, b[1], b[2] + pan.z]; };
+  const flat = (a, b) => Math.hypot(a[0] - b[0], a[2] - b[2]);
+  const nearCur = (i) => flat(nav.nodes[i].p, focus()) <= editWithin();
+  const nearMark = (m) => flat([m.x, m.y, m.z], focus()) <= editWithin();
+  let markersDirty = false;
+  const needMarkers = () => { markersDirty = true; };
   function updateMarkers() {
+    markersDirty = false;
+    usePads(editMode);
     const near = new Set(nav.nodes[cur].n);
     const onRoute = new Set(route);
-    const here = nav.nodes[cur].p;
+    const f = focus();
     const radius = editMode ? editWithin() : SHOW_WITHIN;
     const lists = { far: [], near: [], here: [], route: [], sel: [] };
     shown = new Set();
     const kindOf = (i) => (i === selected ? 'sel' : i === cur ? 'here' : onRoute.has(i) ? 'route' : near.has(i) ? 'near' : 'far');
     const add = (i) => { if (shown.has(i)) return; lists[kindOf(i)].push(i); shown.add(i); };
     const span = Math.ceil(radius);
-    const home = nav.nodes[cur];
+    const hc = Math.floor(f[0] - O().c), hr = Math.floor(f[2] - O().r);
     for (let dc = -span; dc <= span; dc++) {
       for (let dr = -span; dr <= span; dr++) {
-        const bucket = byCell.get(cellKey(home.c + dc, home.r + dr));
+        const bucket = byCell.get(cellKey(hc + dc, hr + dr));
         if (!bucket) continue;
         for (const i of bucket) {
           const p = nav.nodes[i].p;
-          if (Math.hypot(p[0] - here[0], p[1] - here[1], p[2] - here[2]) > radius) continue;
+          const d = editMode ? flat(p, f) : Math.hypot(p[0] - f[0], p[1] - f[1], p[2] - f[2]);
+          if (d > radius) continue;
           add(i);
         }
       }
@@ -658,7 +675,9 @@ function fromGrid(grid) {
     for (const i of route) add(i);
     if (selected >= 0) add(selected);
     const at = (i) => nav.nodes[i].p;
-    for (const kind of Object.keys(lists)) setPads(kind, lists[kind].map(at), kind === 'far' ? 0.62 : 1.25);
+    const sq = editMode;
+    for (const kind of Object.keys(lists))
+      setPads(kind, lists[kind].map(at), kind === 'far' ? (sq ? 0.92 : 0.62) : (sq ? 1 : 1.25));
     const missing = [], wrong = [], ends = [];
     if (editMode) {
       for (const m of marks.nodes.values()) {
@@ -667,9 +686,9 @@ function fromGrid(grid) {
       }
       for (const q of paths) for (const e of [q.start, q.end]) if (nearMark(e)) ends.push([e.x, e.y, e.z]);
     }
-    setPads('missing', missing, 1.5);
-    setPads('wrong', wrong, 1.5);
-    setPads('path', ends, 1.5);
+    setPads('missing', missing, sq ? 1 : 1.5, LIFT + 0.09);
+    setPads('wrong', wrong, sq ? 1 : 1.5, LIFT + 0.09);
+    setPads('path', ends, sq ? 1 : 1.5, LIFT + 0.18);
     drawEdges();
     renderHud();
   }
@@ -680,6 +699,8 @@ function fromGrid(grid) {
   let edgeMesh = null;
   let missMesh = null;
   let wrongMesh = null;
+  let dragMesh = null;
+  let linkDrag = null;
   const marks = { nodes: new Map(), links: new Map() };
   const paths = [];
   const countKind = (kind) =>
@@ -691,24 +712,13 @@ function fromGrid(grid) {
   };
   const refKey = (a) => `${a.c},${a.r},${a.y.toFixed(2)}`;
   const linkKey = (a, b) => [refKey(a), refKey(b)].sort().join('|');
-  const nearMark = (m) => {
-    const b = nav.nodes[cur].p;
-    return Math.hypot(m.x - b[0], m.y - b[1], m.z - b[2]) <= editWithin();
-  };
-  const EDIT_HELP = () => `<b>Grid review</b><br>
-<small>Nothing here changes the grid &mdash; it records what is wrong with it.<br>
-Tap a cell, then that same cell again: it should not be walkable<br>
-Tap open ground: a cell is missing there<br>
-Tap a cell, then a touching one: that link is missing, or wrong if it exists<br>
-Tap clear of the cells to drop the one you tapped first<br>
-Tap anything marked again to unmark it &middot; &#8634; undo<br>
-&#128190; downloads ${SCENE}_grid.review.json</small>`;
-  const PATH_HELP = () => `<b>Path recorder</b><br>
-<small>Tap the cell to start from, then the cell to reach.<br>
-Its start, its end and the steps between them are recorded.<br>
-Tap the start again to cancel &middot; &#8618; back to marking</small>`;
-  const TALLY = () => `<br><small>${countKind('missing')} missing &middot; ${countKind('wrong')} wrong &middot; ${paths.length} path${paths.length === 1 ? '' : 's'}</small>`;
-  const helpText = () => (!editMode ? '' : (pathMode ? PATH_HELP() : EDIT_HELP()) + TALLY() + '<br>');
+  const KINDS = ['auto', 'missing', 'wrong'];
+  const KIND_GLYPH = { auto: 'A', missing: '+', wrong: '\u2717' };
+  let kindIdx = 0;
+  const statusText = () => (!editMode ? '' : `<small>${pathMode ? 'path' : KINDS[kindIdx]}`
+    + `${pathMode && selected >= 0 ? ' &middot; start set' : ''}`
+    + ` &middot; ${countKind('missing')} missing &middot; ${countKind('wrong')} wrong`
+    + ` &middot; ${paths.length} path${paths.length === 1 ? '' : 's'}</small><br>`);
   function debugText() {
     const n = nav.nodes[cur];
     let hits = 0, near = Infinity;
@@ -727,7 +737,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
       + `</small>`;
   }
   function renderHud() {
-    hud.innerHTML = helpText() + debugText() + VERSION_LINE();
+    hud.innerHTML = statusText() + debugText() + VERSION_LINE();
   }
 
   const undoStack = [];
@@ -757,18 +767,22 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     return m;
   }
   function drawEdges() {
-    for (const m of [edgeMesh, missMesh, wrongMesh]) if (m) m.dispose();
-    edgeMesh = missMesh = wrongMesh = null;
+    for (const m of [edgeMesh, missMesh, wrongMesh, dragMesh]) if (m) m.dispose();
+    edgeMesh = missMesh = wrongMesh = dragMesh = null;
     if (!editMode) return;
     const lines = [];
+    const web = Math.min(editWithin(), 8);
+    const f = focus();
+    const onWeb = (i) => flat(nav.nodes[i].p, f) <= web;
     nav.nodes.forEach((n, i) => {
-      if (!nearCur(i)) return;
-      for (const j of n.n) if (j > i && nearCur(j)) lines.push([
+      if (!onWeb(i)) return;
+      for (const j of n.n) if (j > i && onWeb(j)) lines.push([
         new BABYLON.Vector3(n.p[0], n.p[1] + 0.35, n.p[2]),
         new BABYLON.Vector3(nav.nodes[j].p[0], nav.nodes[j].p[1] + 0.35, nav.nodes[j].p[2]),
       ]);
     });
     edgeMesh = lineSystem('edges', lines, '#7fe4ff');
+    if (edgeMesh) edgeMesh.alpha = 0.5;
     const miss = [], bad = [];
     for (const l of marks.links.values()) {
       if (!nearMark(l.a) && !nearMark(l.b)) continue;
@@ -779,47 +793,56 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     }
     missMesh = lineSystem('missing', miss, '#ff5ec8');
     wrongMesh = lineSystem('wrong', bad, '#ff4d4d');
+    if (linkDrag) dragMesh = lineSystem('drag', [[
+      new BABYLON.Vector3(linkDrag.from.x, linkDrag.from.y + 0.45, linkDrag.from.z),
+      new BABYLON.Vector3(linkDrag.to.x, linkDrag.to.y + 0.45, linkDrag.to.z),
+    ]], touching(linkDrag.from, linkDrag.to) ? '#5ed7ff' : '#7c8894');
   }
-  const linkable = (a, b) => {
-    const x = nav.nodes[a], y = nav.nodes[b];
-    return Math.abs(x.c - y.c) <= 1 && Math.abs(x.r - y.r) <= 1 && !(x.c === y.c && x.r === y.r);
-  };
-  function markNode(ref, kind) {
-    const k = refKey(ref);
-    pushUndo();
-    if (marks.nodes.has(k)) marks.nodes.delete(k);
-    else marks.nodes.set(k, { ...ref, kind });
-  }
+  const touching = (a, b) =>
+    Math.abs(a.c - b.c) <= 1 && Math.abs(a.r - b.r) <= 1 && !(a.c === b.c && a.r === b.r);
   function markLink(a, b, kind) {
     const k = linkKey(a, b);
     pushUndo();
     if (marks.links.has(k)) marks.links.delete(k);
     else marks.links.set(k, { a, b, kind });
   }
-  function markPair(a, b) {
-    const wrong = nav.nodes[a].n.includes(b);
-    if (!wrong && !linkable(a, b)) return false;
-    markLink(refOf(a), refOf(b), wrong ? 'wrong' : 'missing');
+  const cellRefOf = (cell) => ({ c: cell.c, r: cell.r, y: +cell.y.toFixed(3), x: cell.x, z: cell.z });
+  function markCellPair(a, b) {
+    if (!touching(a, b)) return false;
+    const wrong = a.node >= 0 && b.node >= 0 && nav.nodes[a.node].n.includes(b.node);
+    markLink(cellRefOf(a), cellRefOf(b), wrong ? 'wrong' : 'missing');
     return true;
   }
   const O = () => nav.meta.origin;
-  function cellOf(point) {
-    const c = Math.floor(point.x - O().c), r = Math.floor(point.z - O().r);
+  const SAME_Y = 0.75;
+  function pickCell(sx, sy) {
+    const ray = scene.createPickingRay(sx, sy, BABYLON.Matrix.Identity(), camera);
+    const o = ray.origin, d = ray.direction;
+    const t = raycast(o.x, o.y, o.z, d.x, d.y, d.z, 400);
+    if (!Number.isFinite(t)) return null;
+    const p = { x: o.x + d.x * t, y: o.y + d.y * t, z: o.z + d.z * t };
+    const c = Math.floor(p.x - O().c), r = Math.floor(p.z - O().r);
     const x = O().c + c + 0.5, z = O().r + r + 0.5;
-    const from = point.y + 2.7;
-    const hit = raycast(x, from, z, 0, -1, 0, 12);
-    return { c, r, x, z, y: hit === Infinity ? point.y : from - hit };
-  }
-  function markCell(raw) {
-    const at = cellOf(raw);
-    const here = [...marks.nodes.entries()]
-      .find(([, m]) => m.c === at.c && m.r === at.r && Math.abs(m.y - at.y) < nav.meta.step);
-    pushUndo();
-    if (here) marks.nodes.delete(here[0]);
-    else {
-      const ref = { c: at.c, r: at.r, y: +at.y.toFixed(3), x: at.x, z: at.z };
-      marks.nodes.set(refKey(ref), { ...ref, kind: 'missing' });
+    let node = -1, best = SAME_Y;
+    for (const i of byCell.get(cellKey(c, r)) ?? []) {
+      const d = Math.abs(nav.nodes[i].p[1] - p.y);
+      if (d < best) { best = d; node = i; }
     }
+    if (node >= 0) return { c, r, x, z, y: nav.nodes[node].p[1], node };
+    const from = p.y + 2.7;
+    const drop = raycast(x, from, z, 0, -1, 0, 12);
+    return { c, r, x, z, y: drop === Infinity ? p.y : from - drop, node: -1 };
+  }
+  const markAt = (cell) => [...marks.nodes.entries()]
+    .find(([, m]) => m.c === cell.c && m.r === cell.r && Math.abs(m.y - cell.y) < SAME_Y);
+  const kindFor = (cell) => (KINDS[kindIdx] === 'auto' ? (cell.node >= 0 ? 'wrong' : 'missing') : KINDS[kindIdx]);
+  function setMark(cell, on) {
+    const at = markAt(cell);
+    if (!on) { if (at) marks.nodes.delete(at[0]); return; }
+    const kind = kindFor(cell);
+    if (at) { marks.nodes.get(at[0]).kind = kind; return; }
+    const ref = cellRefOf(cell);
+    marks.nodes.set(refKey(ref), { ...ref, kind });
   }
   function recordPath(from, to) {
     const steps = stepsBetween(from, to);
@@ -854,16 +877,29 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     a.download = `${SCENE}_grid.review.json`;
     a.click();
   }
+  const renderKind = () => {
+    const b = document.getElementById('kind');
+    b.textContent = KIND_GLYPH[KINDS[kindIdx]];
+    b.classList.toggle('on', kindIdx > 0);
+  };
+  function cycleKind() {
+    kindIdx = (kindIdx + 1) % KINDS.length;
+    renderKind();
+    renderHud();
+  }
   function setEditMode(on) {
     editMode = on;
     mapView = on;
     if (on) mapZoom = 0.55;
     if (!on) pathMode = false;
     selected = -1;
+    linkDrag = null;
+    pan.x = pan.z = 0;
     document.getElementById('edit').classList.toggle('on', on);
     document.getElementById('path').classList.toggle('on', pathMode);
-    for (const id of ['save', 'path', 'undo']) document.getElementById(id).hidden = !on;
+    for (const id of ['save', 'path', 'undo', 'kind']) document.getElementById(id).hidden = !on;
     document.getElementById('undo').disabled = !undoStack.length;
+    renderKind();
     updateMarkers();
     glideTo(cur, 450);
   }
@@ -882,6 +918,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
 
   let down = null;
   scene.onPointerObservable.add((info) => {
+    if (editMode) return;
     const e = info.event;
     if (info.type === BABYLON.PointerEventTypes.POINTERDOWN) down = { x: e.clientX, y: e.clientY };
     if (info.type !== BABYLON.PointerEventTypes.POINTERUP || !down) return;
@@ -889,33 +926,6 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     down = null;
     if (Math.hypot(dx, dy) < 40) {
       const tapped = markerAtScreen(scene.pointerX, scene.pointerY);
-      if (editMode) {
-        if (pathMode) {
-          let i = tapped;
-          if (i < 0) {
-            const ground = scene.pick(scene.pointerX, scene.pointerY);
-            if (ground?.hit) i = nearestNode(ground.pickedPoint);
-          }
-          if (i < 0) return;
-          if (selected === -1) selected = i;
-          else if (selected === i) selected = -1;
-          else { recordPath(selected, i); selected = -1; }
-          updateMarkers();
-          return;
-        }
-        if (tapped >= 0) {
-          if (selected === -1) selected = tapped;
-          else if (selected === tapped) { markNode(refOf(tapped), 'wrong'); selected = -1; }
-          else if (markPair(selected, tapped)) selected = -1;
-          else selected = tapped;
-          updateMarkers();
-          return;
-        }
-        if (selected >= 0) { selected = -1; updateMarkers(); return; }
-        const ground = scene.pick(scene.pointerX, scene.pointerY);
-        if (ground?.hit) { markCell(ground.pickedPoint); updateMarkers(); }
-        return;
-      }
       if (tapped >= 0) return travelTo(tapped);
       const ground = scene.pick(scene.pointerX, scene.pointerY);
       if (ground?.hit) travelTo(nearestNode(ground.pickedPoint));
@@ -925,6 +935,171 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
       setView(dy > 0 ? 1 : -1);
     }
   });
+  const CANCEL_PX = 12;
+  const HOLD_MS = 450;
+  const touches = new Map();
+  let stroke = null;
+  let press = null;
+  let gesture = null;
+  const renderXY = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    return [(e.clientX - rect.left) * (engine.getRenderWidth() / (rect.width || 1)),
+      (e.clientY - rect.top) * (engine.getRenderHeight() / (rect.height || 1))];
+  };
+  const pxScale = () => engine.getRenderHeight() / (canvas.getBoundingClientRect().height || 1);
+  const clearHold = () => { if (press?.timer) { clearTimeout(press.timer); press.timer = 0; } };
+  function clampPan() {
+    const b = nav.nodes[cur].p, size = nav.meta.size, o = O();
+    pan.x = Math.min(o.c + size.cols + 2, Math.max(o.c - 2, b[0] + pan.x)) - b[0];
+    pan.z = Math.min(o.r + size.rows + 2, Math.max(o.r - 2, b[2] + pan.z)) - b[2];
+  }
+  function panBy(dx, dy) {
+    const wpp = (2 * Math.max(camera.radius, 1) * Math.tan(camera.fov / 2)) / engine.getRenderHeight();
+    const right = camera.getDirection(BABYLON.Axis.X);
+    const up = camera.getDirection(BABYLON.Axis.Y);
+    if (Math.hypot(up.x, up.z) < 1e-3) up.copyFrom(camera.getDirection(BABYLON.Axis.Z).scale(-1));
+    right.y = 0; up.y = 0;
+    right.normalize(); up.normalize();
+    pan.x -= (right.x * dx - up.x * dy) * wpp;
+    pan.z -= (right.z * dx - up.z * dy) * wpp;
+    clampPan();
+    needMarkers();
+  }
+  function pinch(ratio) {
+    mapZoom = Math.min(1.8, Math.max(0.18, mapZoom / ratio));
+    needMarkers();
+  }
+  const strokeKey = (cell) => `${cell.c},${cell.r},${Math.round(cell.y * 2)}`;
+  function paintCell(cell) {
+    if (stroke.seen.has(strokeKey(cell))) return;
+    stroke.seen.add(strokeKey(cell));
+    setMark(cell, stroke.on);
+    needMarkers();
+  }
+  function beginStroke(cell, sx, sy) {
+    pushUndo();
+    stroke = { on: !markAt(cell), seen: new Set(), sx, sy };
+    paintCell(cell);
+  }
+  const PAINT_STEP = 9;
+  function paintTo(sx, sy) {
+    const n = Math.max(1, Math.ceil(Math.hypot(sx - stroke.sx, sy - stroke.sy) / PAINT_STEP));
+    for (let i = 1; i <= n; i++) {
+      const cell = pickCell(stroke.sx + ((sx - stroke.sx) * i) / n, stroke.sy + ((sy - stroke.sy) * i) / n);
+      if (cell) paintCell(cell);
+    }
+    stroke.sx = sx; stroke.sy = sy;
+  }
+  function tapCell(cell) {
+    pushUndo();
+    setMark(cell, !markAt(cell));
+    needMarkers();
+  }
+  function pathTap(cell) {
+    let i = cell.node;
+    if (i < 0) i = nearestNode(new BABYLON.Vector3(cell.x, cell.y, cell.z));
+    if (i < 0) return;
+    if (selected === -1) selected = i;
+    else if (selected === i) selected = -1;
+    else { recordPath(selected, i); selected = -1; }
+    updateMarkers();
+  }
+  const endTouch = (id) => {
+    touches.delete(id);
+    if (touches.size < 2) gesture = null;
+  };
+  canvas.addEventListener('pointerdown', (e) => {
+    if (!editMode) return;
+    canvas.setPointerCapture?.(e.pointerId);
+    touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (touches.size === 2) {
+      if (stroke) { stroke = null; undo(); }
+      clearHold();
+      press = null;
+      linkDrag = null;
+      const [a, b] = [...touches.values()];
+      gesture = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      updateMarkers();
+      return;
+    }
+    if (touches.size > 2) return;
+    const [sx, sy] = renderXY(e);
+    press = { id: e.pointerId, x: e.clientX, y: e.clientY, sx, sy, cell: pickCell(sx, sy), timer: 0 };
+    if (!pathMode && press.cell && press.cell.node >= 0) {
+      press.timer = setTimeout(() => {
+        if (!press) return;
+        press.timer = 0;
+        linkDrag = { from: press.cell, to: press.cell };
+        selected = press.cell.node;
+        updateMarkers();
+      }, HOLD_MS);
+    }
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!editMode) return;
+    const t = touches.get(e.pointerId);
+    if (!t) return;
+    t.x = e.clientX; t.y = e.clientY;
+    if (touches.size >= 2) {
+      if (!gesture || touches.size !== 2) return;
+      const [a, b] = [...touches.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+      const cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+      const s = pxScale();
+      panBy((cx - gesture.x) * s, (cy - gesture.y) * s);
+      pinch(d / gesture.d);
+      gesture = { d, x: cx, y: cy };
+      return;
+    }
+    if (!press || press.id !== e.pointerId) return;
+    const [sx, sy] = renderXY(e);
+    if (linkDrag) {
+      const cell = pickCell(sx, sy);
+      if (cell) { linkDrag.to = cell; needMarkers(); }
+      return;
+    }
+    if (Math.hypot(e.clientX - press.x, e.clientY - press.y) < CANCEL_PX) return;
+    clearHold();
+    if (pathMode) return;
+    if (!stroke) {
+      const cell = press.cell ?? pickCell(sx, sy);
+      if (!cell) return;
+      beginStroke(cell, press.sx, press.sy);
+    }
+    paintTo(sx, sy);
+  });
+  canvas.addEventListener('pointerup', (e) => {
+    const mine = press && press.id === e.pointerId ? press : null;
+    endTouch(e.pointerId);
+    if (!editMode || !mine) return;
+    clearHold();
+    press = null;
+    const [sx, sy] = renderXY(e);
+    if (linkDrag) {
+      const from = linkDrag.from;
+      const cell = pickCell(sx, sy);
+      linkDrag = null;
+      selected = -1;
+      if (cell) markCellPair(from, cell);
+      updateMarkers();
+      return;
+    }
+    if (stroke) { stroke = null; updateMarkers(); return; }
+    if (Math.hypot(e.clientX - mine.x, e.clientY - mine.y) >= CANCEL_PX) return;
+    const cell = mine.cell ?? pickCell(sx, sy);
+    if (!cell) return;
+    if (pathMode) pathTap(cell);
+    else tapCell(cell);
+  });
+  canvas.addEventListener('pointercancel', (e) => {
+    endTouch(e.pointerId);
+    clearHold();
+    press = null;
+    stroke = null;
+    linkDrag = null;
+    if (editMode) updateMarkers();
+  });
+  scene.onBeforeRenderObservable.add(() => { if (markersDirty) updateMarkers(); });
   addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') orbit(1);
     if (e.key === 'ArrowRight') orbit(-1);
@@ -938,6 +1113,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
     if (editMode && (e.key === 'p' || e.key === 'P')) setPathMode(!pathMode);
     if (editMode && e.key === 'Escape' && selected >= 0) { selected = -1; updateMarkers(); }
     if (editMode && (e.key === 'z' || e.key === 'Z')) undo();
+    if (editMode && (e.key === 'k' || e.key === 'K')) cycleKind();
   });
   let wheelAt = 0;
   addEventListener('wheel', (e) => {
@@ -953,6 +1129,7 @@ Tap the start again to cancel &middot; &#8618; back to marking</small>`;
   document.getElementById('edit').addEventListener('click', () => setEditMode(!editMode));
   document.getElementById('dbg').addEventListener('click', () => setDebugRays(!debugRays));
   document.getElementById('undo').addEventListener('click', undo);
+  document.getElementById('kind').addEventListener('click', cycleKind);
   document.getElementById('path').addEventListener('click', () => setPathMode(!pathMode));
   document.getElementById('save').addEventListener('click', exportReview);
 
