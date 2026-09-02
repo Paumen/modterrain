@@ -61,6 +61,8 @@ const PALETTE = join(ROOT, 'catalog', 'palette.json');
  * have yet. */
 const DIRECTORIES = ['atoms', 'assemblies', 'scenes'];
 
+const ASSEMBLED = 'modterrain tools/assemble.mjs';
+
 /**
  * Surface → the pack material it comes from, as a path inside the zip's
  * `textures_unity/`. The path rather than the name because the pack has two
@@ -75,6 +77,10 @@ const PALETTE_SOURCES = {
   Dirt: 'Terrain/Dirt.mat',
   Grass: 'Terrain/Grass.mat',
   Ice: 'Terrain/Ice.mat',
+  'Rock Light': 'Carved Stone/Carved Stone 2.mat',
+  'Rock Lightest': 'Carved Stone/Carved Stone 3.mat',
+  'Rock Medium': 'Carved Stone/Carved Stone 1.mat',
+  'Stone Walkway': 'Carved Stone/Carved Stone Walkway.mat',
   'Waterfall Crest': 'Water/Waterfall Crest.mat',
 };
 
@@ -557,6 +563,8 @@ for (const directory of DIRECTORIES) {
     const path = join(ROOT, directory, file);
     const id = file.replace(/\.glb$/, '');
     const { json, bin } = readGlb(path);
+
+    if (json.asset?.generator === ASSEMBLED) continue;
 
     const mapped = new Set();
     for (const [index, material] of (json.materials ?? []).entries()) {

@@ -121,6 +121,66 @@
    "packAlbedo": "ice.png",
    "distance": 3
   },
+  "Rock Light": {
+   "hex": "#928377",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.8369140625
+   ],
+   "packColor": "#928573",
+   "packMaterial": "Carved Stone/Carved Stone 2.mat",
+   "packAlbedo": "Carved Stone 2.png",
+   "distance": 7
+  },
+  "Rock Lightest": {
+   "hex": "#a9988b",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.7509765625
+   ],
+   "packColor": "#aca599",
+   "packMaterial": "Carved Stone/Carved Stone 3.mat",
+   "packAlbedo": "Carved Stone 3.png",
+   "distance": 34
+  },
+  "Rock Medium": {
+   "hex": "#816c53",
+   "cell": [
+    14,
+    0
+   ],
+   "uv": [
+    0.9072265625,
+    0.1630859375
+   ],
+   "packColor": "#7d6c59",
+   "packMaterial": "Carved Stone/Carved Stone 1.mat",
+   "packAlbedo": "Carved Stone 1.png",
+   "distance": 11
+  },
+  "Stone Walkway": {
+   "hex": "#8b7c71",
+   "cell": [
+    14,
+    3
+   ],
+   "uv": [
+    0.9072265625,
+    0.8623046875
+   ],
+   "packColor": "#857d74",
+   "packMaterial": "Carved Stone/Carved Stone Walkway.mat",
+   "packAlbedo": "Carved Stone Walkway.png",
+   "distance": 11
+  },
   "Waterfall Crest": {
    "hex": "#00edf9",
    "cell": [
