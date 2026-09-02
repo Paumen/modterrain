@@ -12,8 +12,7 @@ wrong, it's your placement and your understanding of how the kit works.
 **Sockets are color-coded, and the colors live in the glTF material names.**
 Visible surfaces use real names (`Grass`, `Cliff Face`, `Water River`, …);
 connecting faces are named `Hidden <Color>`. Same color means the two
-cross-sections are geometrically identical and butt together exactly — you
-can and must blindly trust this.
+cross-sections are geometrically identical and butt together.
 
 Faces named plain `Hidden` usually don't need to connect to anything; they
 aren't seen once the pieces are placed as intended. There can still be a
