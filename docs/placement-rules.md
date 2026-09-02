@@ -67,30 +67,41 @@ measured. Check a placement set with `tools/lint-sockets.mjs` (below).
 
 ## Sockets
 
-- Same colour butts same colour at the same height. Seams only ever land on
-  quarter levels.
-- Violet: 0 to 0.25 ground lip. Grass, path grass side, hill low end, tiered
-  grass. Sand's Violet is 0 to 0.5, so sand only meets sand.
-- Orange: one-level-up face. Hill high end, cliff Top rear lip, retaining
-  wall earth side, walkway top. Orange meets Violet one level higher (cliff
-  Top meets grass at + 2). Orange to Orange joins retaining Mid to Top (+1).
-- Yellow: cliff-Top profile ends (1.8 to 2.25). Chains Top pieces, waterfall
-  top terrain, `Path_Bridge_Top`, floor and ceiling curves, floor to wall
-  incline.
-- Green: wall profile ends. Chains walls and cave edges at the same y.
-- Blue: gentle hill profile, wall Base to Top seam (+2), waterfall top
-  terrain.
-- Pink: sharp hill profile, walkway transition curves.
-- Red: path dirt edge, sand incline profile, walkway step profile. Incline
-  Red meets the straight at + 1 on the high end.
-- Plain Hidden: bottoms and backs. Needs no partner, only cover.
+Colours name a seam profile, but only within a piece family. Across families
+the same profile can carry a different colour, and the demo scene (whose
+seams are correct) shows which pairings the kit intends:
+
+- Within a family, same colour meets same colour at the same level: Yellow
+  chains cliff tops, Green chains walls, Pink chains sharp hills, Blue chains
+  gentle hills, Red chains path edges, sand inclines and walkway steps,
+  Violet chains ground lips.
+- Orange is the one-level-up face. A hill's high end and a cliff Top's rear
+  lip are Orange and meet Violet one level higher (cliff Top meets grass at
+  +2). Retaining-wall Mid to Top is Orange to Orange at +1.
+- The path family paints its grass side Violet and its dirt side Red whatever
+  the profile, so a gentle path incline's Violet meets hill Blue, and a sharp
+  one's meets hill Pink, at the same level.
+- The walkway family's Pink (path transition curves) meets the path family's
+  Red. Walkway step Red meets retaining-wall Orange and cliff-top Yellow.
+- Plain Hidden is a real seam partner: cliff Base and Mid end caps, wall
+  tops, and every bottom. Foot-level grass butts Base end caps. A
+  retaining-wall Mid's Orange top carries the bottoms of whatever sits on the
+  terrace above (tiered grass, walkway steps, path, grass).
+- Cave floor and ceiling tiles are Yellow and meet wall Green.
+- Sand Violet is 0 to 0.5 and meets sand; sand incline Red meets hill Pink
+  and Blue half a level down.
+
+`docs/seam-vocabulary.json` is the full list, learned from the demo and the
+island scene: colour and family on both sides plus the level offset, with
+counts. Seams outside it are reported by the linter.
 
 ## Linting a placement set
 
 ```
-node tools/lint-sockets.mjs scenes/large_island_terrain_v3.json --ocean -5.5
+node tools/lint-sockets.mjs scenes/large_island_terrain_v3.json --ocean -5.5 --vocab docs/seam-vocabulary.json
 node tools/lint-sockets.mjs assemblies/placements.json --assembly River_Straight_Wide --verbose
 node tools/lint-sockets.mjs scenes/island.json --plain --json report.json
+node tools/lint-sockets.mjs scenes/new_scene.json --learn docs/seam-vocabulary.json
 ```
 
 Input is a scene dump (`pieces` with `prefab` and `matrix`) or an assembly
@@ -110,13 +121,17 @@ placement list (`pos`, `quat`, `scale`). The tool places every atom, then:
   exposed only when a small cone around the escaping ray escapes too;
   otherwise it is a hairline crack, reported separately. `--plain` adds the
   uncoloured `Hidden` faces (bottoms and backs).
+- Seam vocabulary: with `--vocab`, every coplanar seam (colour, family and
+  level offset on both sides) is looked up in the learned list and unknown
+  pairings are reported. `--learn` adds a trusted scene's seams to the list.
 
-Exit code is 1 when any face is exposed. Demo scene: 11 exposed faces, 10 of
+Exit code is 1 when any face is exposed or any seam is outside the vocabulary. Demo scene: 11 exposed faces, 10 of
 them one open retaining-wall corner at (-11, 5, -11) and one sliver where a
 grass slab meets a hill at (-44, -5, -26); both verified by rendering from the
 escaping ray's direction. `scenes/island.json`: 0. Mutating the demo (five
 pieces each: grass tiles removed, cliff tops raised a level, hill esses
 rotated, Mid esses un-mirrored with `--plain`) gives 38, 54, 68 and 33
 exposed faces, all within four cells of a mutated piece; per site the
-detection is 5/5, 5/5, 4/5 and 3/5. A flipped Mid esse whose jog stays inside
-rock is not visible and not caught.
+detection is 5/5, 5/5, 4/5 and 3/5. The vocabulary check adds 0, 99, 36 and
+6 unknown-seam faces for the same mutations, so a raised cliff top or a
+flipped Mid esse is caught by its seams even where nothing becomes visible.

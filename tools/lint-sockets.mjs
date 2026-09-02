@@ -13,10 +13,10 @@ const option = (name, fallback) => {
   const at = argv.indexOf(`--${name}`);
   return at === -1 ? fallback : argv[at + 1];
 };
-const values = new Set(['assembly', 'json', 'limit', 'ocean', 'reach'].map((n) => option(n, null)).filter(Boolean));
+const values = new Set(['assembly', 'json', 'limit', 'ocean', 'reach', 'learn', 'vocab'].map((n) => option(n, null)).filter(Boolean));
 const input = argv.find((a) => !a.startsWith('--') && !values.has(a));
 if (!input) {
-  console.error('usage: node tools/lint-sockets.mjs <scene.json | placements.json> [--assembly name] [--ocean y] [--reach cells] [--no-mirror] [--plain] [--verbose] [--limit n] [--json report.json]');
+  console.error('usage: node tools/lint-sockets.mjs <scene.json | placements.json> [--assembly name] [--ocean y] [--reach cells] [--no-mirror] [--plain] [--verbose] [--limit n] [--json report.json] [--vocab seams.json | --learn seams.json]');
   process.exit(1);
 }
 
@@ -28,7 +28,8 @@ const PLAIN = flag('plain');
 const VERBOSE = flag('verbose');
 const EPS = 0.02;
 const LIFT = 0.01;
-const COMPATIBLE = new Set(['Hidden Orange|Hidden Violet', 'Hidden Violet|Hidden Orange']);
+const family = (name) => name.replace(/_\d+x\d+/, '').replace(/_(Wide|Narrow)/, '');
+const VOCAB = option('vocab', null) ? new Set(Object.keys(JSON.parse(readFileSync(option('vocab'), 'utf8')).seams)) : null;
 
 function quatMatrix(pos, quat, scale) {
   const [qx, qy, qz, qw] = quat;
@@ -140,7 +141,7 @@ placements.forEach((placement, index) => {
     flatMaterial.push(tri.material);
     flatOwner.push(index);
     if (!tri.material.startsWith('Hidden')) continue;
-    if (tri.material === 'Hidden' && !PLAIN) continue;
+    const plainOnly = tri.material === 'Hidden' && !PLAIN;
     const u = [w[1][0] - w[0][0], w[1][1] - w[0][1], w[1][2] - w[0][2]];
     const v = [w[2][0] - w[0][0], w[2][1] - w[0][1], w[2][2] - w[0][2]];
     let n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
@@ -149,7 +150,7 @@ placements.forEach((placement, index) => {
     n = n.map((x) => (x / len) * flip);
     const centroid = [0, 1, 2].map((k) => (w[0][k] + w[1][k] + w[2][k]) / 3);
     const samples = [centroid, ...w.map((p) => [0, 1, 2].map((k) => (p[k] * 2 + centroid[k]) / 3))];
-    const face = { index, piece: placement.piece, material: tri.material, normal: n, centroid, samples, axis: -1, covered: 0, partners: new Set(), exposed: false };
+    const face = { index, piece: placement.piece, material: tri.material, normal: n, centroid, samples, axis: -1, covered: 0, partners: new Set(), seams: new Set(), exposed: false, plainOnly };
     const axis = n.findIndex((x) => Math.abs(x) > 0.999);
     if (axis < 0) {
       skewed++;
@@ -180,6 +181,8 @@ for (const list of planes.values()) {
       if (w <= EPS || h <= EPS) continue;
       a.covered += (w * h) / a.area;
       a.partners.add(b.material);
+      const dy = Math.round((placements[b.index].matrix[7] - placements[a.index].matrix[7]) * 4) / 4;
+      a.seams.add(`${a.material} ${family(a.piece)} > ${b.material} ${family(b.piece)} dy=${dy}`);
     }
   }
 }
@@ -256,6 +259,7 @@ const butted = (face, p) => {
   return false;
 };
 for (const face of faces) {
+  if (face.plainOnly) continue;
   const n = face.normal;
   const dirs = [n, ...DIRECTIONS.filter((d) => d[0] * n[0] + d[1] * n[1] + d[2] * n[2] > 0.05)];
   for (const s of face.samples) {
@@ -275,22 +279,21 @@ for (const face of faces) {
 
 const perMaterial = new Map();
 const perPiece = new Map();
-const mismatches = new Map();
+const seamCounts = new Map();
+const unknown = new Map();
 const stat = (map, key) => {
-  if (!map.has(key)) map.set(key, { faces: 0, seam: 0, mismatched: 0, cracked: 0, exposed: 0 });
+  if (!map.has(key)) map.set(key, { faces: 0, seam: 0, unknown: 0, cracked: 0, exposed: 0 });
   return map.get(key);
 };
 for (const face of faces) {
-  const bad = [...face.partners].filter((p) => p !== face.material && !COMPATIBLE.has(`${face.material}|${p}`));
-  const seam = face.partners.size > 0 && bad.length < face.partners.size;
-  for (const p of bad) {
-    const key = `${face.material} vs ${p}`;
-    mismatches.set(key, (mismatches.get(key) ?? 0) + 1);
-  }
+  for (const key of face.seams) seamCounts.set(key, (seamCounts.get(key) ?? 0) + 1);
+  const novel = VOCAB ? [...face.seams].filter((key) => !VOCAB.has(key)) : [];
+  for (const key of novel) unknown.set(key, (unknown.get(key) ?? 0) + 1);
+  if (face.plainOnly) continue;
   for (const s of [stat(perMaterial, face.material), stat(perPiece, face.piece)]) {
     s.faces++;
-    if (seam) s.seam++;
-    if (bad.length && !seam) s.mismatched++;
+    if (face.seams.size) s.seam++;
+    if (novel.length) s.unknown++;
     if (face.exposed) s.exposed++;
     else if (face.crack) s.cracked++;
   }
@@ -305,18 +308,31 @@ const round = (v) => Math.round(v * 100) / 100;
 const pad = (s, n) => String(s).padEnd(n);
 const label = `${basename(input)}${option('assembly', '') ? ` [${option('assembly', '')}]` : ''}`;
 
-console.log(`${label}: ${placements.length} placements, ${flatMaterial.length} triangles, ${faces.length} socket faces (${skewed} not axis aligned)`);
+const tested = faces.filter((f) => !f.plainOnly);
+console.log(`${label}: ${placements.length} placements, ${flatMaterial.length} triangles, ${tested.length} socket faces (${skewed} not axis aligned)`);
 if (missing.size) console.log(`  not in atoms/: ${[...missing].join(', ')}`);
 const cracked = faces.filter((f) => f.crack && !f.exposed).length;
 console.log(`\nexposed hidden faces: ${exposed.length}  (open to the sky or the horizon through a gap wider than a hairline; the real errors)`);
 console.log(`hairline cracks: ${cracked}  (a hidden face reachable only through a sub-0.06-cell gap; informational)`);
-console.log('\nper socket colour              faces  seam-matched  mismatched  cracked  exposed');
+console.log('\nper socket colour              faces  seam-matched  unknown-seam  cracked  exposed');
 for (const [material, s] of [...perMaterial].sort((a, b) => b[1].faces - a[1].faces)) {
-  console.log(`  ${pad(material, 26)} ${pad(s.faces, 7)} ${pad(s.seam, 13)} ${pad(s.mismatched, 11)} ${pad(s.cracked, 8)} ${s.exposed}`);
+  console.log(`  ${pad(material, 26)} ${pad(s.faces, 7)} ${pad(s.seam, 13)} ${pad(s.unknown, 13)} ${pad(s.cracked, 8)} ${s.exposed}`);
 }
-if (mismatches.size) {
-  console.log('\ncolour mismatches (face colour vs coplanar partner colour)');
-  for (const [key, n] of [...mismatches].sort((a, b) => b[1] - a[1]).slice(0, LIMIT)) console.log(`  ${pad(n, 6)} ${key}`);
+if (VOCAB) {
+  console.log(`\nseams outside the vocabulary: ${[...unknown.values()].reduce((x, y) => x + y, 0)} faces in ${unknown.size} pairings`);
+  for (const [key, n] of [...unknown].sort((a, b) => b[1] - a[1]).slice(0, LIMIT)) console.log(`  ${pad(n, 6)} ${key}`);
+}
+const learn = option('learn', null);
+if (learn) {
+  let previous = { sources: [], seams: {} };
+  try {
+    previous = JSON.parse(readFileSync(learn, 'utf8'));
+  } catch {}
+  const seams = { ...previous.seams };
+  for (const [key, n] of seamCounts) seams[key] = (seams[key] ?? 0) + n;
+  const sources = [...new Set([...(previous.sources ?? []), label])];
+  writeFileSync(learn, JSON.stringify({ sources, seams: Object.fromEntries(Object.entries(seams).sort((a, b) => b[1] - a[1])) }, null, 2));
+  console.log(`\n${seamCounts.size} seam pairings from this input, ${Object.keys(seams).length} in ${learn} (${sources.length} sources)`);
 }
 const worst = [...perPiece].filter(([, s]) => s.exposed).sort((a, b) => b[1].exposed - a[1].exposed);
 if (worst.length) {
@@ -345,7 +361,7 @@ if (report) {
     cracked,
     missing: [...missing],
     materials: Object.fromEntries(perMaterial),
-    mismatches: Object.fromEntries(mismatches),
+    unknownSeams: Object.fromEntries(unknown),
     exposed: exposed.map((f) => ({
       placement: f.index, piece: f.piece, at: placementCenter(f.index), material: f.material,
       normal: f.normal.map(round), near: f.centroid.map(round), open: f.open.map(round),
@@ -354,4 +370,4 @@ if (report) {
   console.log(`\nreport written to ${report}`);
 }
 
-process.exitCode = exposed.length ? 1 : 0;
+process.exitCode = exposed.length || unknown.size ? 1 : 0;
