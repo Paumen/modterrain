@@ -235,6 +235,17 @@ function fromGrid(grid) {
   camera.fov = 0.9;
   camera.inputs.clear();
 
+  const avatar = BABYLON.MeshBuilder.CreateBox('avatar', { size: 0.5 }, scene);
+  avatar.isPickable = false;
+  const avatarMat = new BABYLON.StandardMaterial('avatarMat', scene);
+  avatarMat.emissiveColor = BABYLON.Color3.FromHexString('#2e8cff');
+  avatarMat.disableLighting = true;
+  avatarMat.alpha = 0.55;
+  avatar.material = avatarMat;
+  avatar.enableEdgesRendering();
+  avatar.edgesWidth = 3;
+  avatar.edgesColor = new BABYLON.Color4(0.05, 0.25, 0.7, 1);
+
   let tween = null;
   const held = damped(null, RATE), heldBeta = damped(null, 2);
   let route = [];
@@ -312,6 +323,10 @@ function fromGrid(grid) {
         b.visibility = b.bridgeFade.step(hit ? 0.12 : 1, dt, 10);
       }
     }
+  });
+
+  scene.onBeforeRenderObservable.add(() => {
+    avatar.position.set(camera.target.x, Math.floor(camera.target.y - eye + 0.02) + 0.75, camera.target.z);
   });
 
   const dist3 = (a, b) => Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
