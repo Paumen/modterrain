@@ -1,0 +1,113 @@
+# Placement rules
+
+Derived from `scenes/large_island_terrain_v3.json` (3084 placements), the
+atom and assembly GLBs (geometry and material names) and
+`assemblies/placements.json`. Nothing here is assumed; every rule was
+measured. Check a placement set with `tools/lint-sockets.mjs` (below).
+
+## Grid and transforms
+
+- Scene dumps are in cell units, Unity left-handed. The export mirrors X:
+  conjugate every matrix by diag(-1, 1, 1) (`tools/assemble.mjs`).
+- Every piece origin sits on a cell centre (x.5, z.5).
+- A stretched piece has its origin at the centre of the stretched span, so
+  integer when the stretch factor is even.
+- Multi-cell pieces are not centred on their origin. Take the footprint from
+  the piece bounds in `catalog/catalog.json` (2x2: x -1.5..0.5, z -0.5..1.5;
+  4-long strips: -1.5..2.5).
+- Rotation is about Y only, in 90° steps. Nothing is tilted.
+- Mirroring is a -1 X scale. Used for handed pieces: Esse, Incline, Grade
+  transitions, 45° curves, cave edges, wall esses. No mirrored assets exist.
+- Non-uniform scale only on Straight and Flat pieces, and only along the axis
+  where the cross-section stays constant. Cliff and wall straights lengthen
+  along the wall. Slopes, inclines, steps and sand inclines widen sideways.
+  Flat tiles stretch both ways. Curves, Esses and transitions are never
+  scaled (the demo has one scaled 2x2 hill curve, nothing else).
+- Y is an integer for everything except the sand family (n - 0.5) and a few
+  half-step retaining walls.
+
+## Levels and stacking
+
+- `Grass_Flat` at y is a 0.25 slab. Surface at y + 0.25.
+- Sand flat is a 0.5 slab placed at n - 0.5, so its surface is exactly n. A
+  beach sits 0.25 below the grass beside it. Sand inclines rise 0.5 over 4
+  cells.
+- River flat at y has its surface at y - 0.25. Water is always 0.5 below the
+  ground surface beside it.
+- Hill pieces at y rise from 0.25 to 1.25. Sharp climbs one level in 2 cells,
+  gentle in 4. Low side grass at y, high side grass at y + 1.
+- Cliff Base at y spans y - 1 to y + 2. Mid is 1 tall. Top spans y to
+  y + 2.25 with its grass lip at 2 to 2.25.
+- Cliff stack: Base y, Mid y + 2, y + 3, …, Top one above the last Mid.
+  Without Mids, Top at y + 2. Plateau `Grass_Flat` at Top + 2.
+- Ground at a cliff foot sits at the Base's own y (grass) or y + 0.5 (sand).
+  The Base flares 0.25 cell outward and 1 down, buried under that ground.
+- Walls: Base spans 0 to 2, Top at Base + 2. Cave floor tile at Base y,
+  ceiling tile at Base + 5 (underside at Base + 4). `Wall_Incline` Base pairs
+  with `Floor_Incline` at the same y, Top with `Ceiling_Incline` at + 4.
+- `Cave_Edge_Esse` stacks like cliffs (+2, +3). `Cave_Center_Top` sits at
+  Base + 4.
+- Retaining walls straddle the cell edge (half-cell offset). Mid at the lower
+  terrace y, 1 tall. Top cap at y + 1, the upper terrace level. Mids stack.
+  `Tiered_Grass` lips sit at the upper level.
+- Walkway steps 1x2 climb one level per 2 cells. Path transition pieces at
+  the top level.
+- Path pieces share the grass y. Dirt surface 0.08, grass edge 0.25.
+  `Path_Terrain_Basic` is a one-cell edge strip; `Path_Terrain_Dirt_Flat`
+  fills the centre. Incline gentle 1 in 4, sharp 1 in 2, Edge and Center
+  variants side by side.
+- Bridges: `Prop_Bridge` at bank level, which equals the water y.
+  `Path_Bridge_*_Top` are cliff-Top-layer pieces. Rope end at Top + 2.
+- Waterfall: Mid sheets at every cliff Mid layer, Top sheet at the cliff Top
+  layer, flanked by `Waterfall_Left_Top_Terrain` (mirrored for the right
+  side). Feed river at Top + 2, plunge pool river at Base y.
+- River (assemblies): two Sharp hill banks facing inward at y, water tiles at
+  y + 1, wide river bed `Grass_Flat` at y. Bends use inner plus outer hill
+  curves with a `River_Curve` 3x3 at y + 1.
+
+## Sockets
+
+- Same colour butts same colour at the same height. Seams only ever land on
+  quarter levels.
+- Violet: 0 to 0.25 ground lip. Grass, path grass side, hill low end, tiered
+  grass. Sand's Violet is 0 to 0.5, so sand only meets sand.
+- Orange: one-level-up face. Hill high end, cliff Top rear lip, retaining
+  wall earth side, walkway top. Orange meets Violet one level higher (cliff
+  Top meets grass at + 2). Orange to Orange joins retaining Mid to Top (+1).
+- Yellow: cliff-Top profile ends (1.8 to 2.25). Chains Top pieces, waterfall
+  top terrain, `Path_Bridge_Top`, floor and ceiling curves, floor to wall
+  incline.
+- Green: wall profile ends. Chains walls and cave edges at the same y.
+- Blue: gentle hill profile, wall Base to Top seam (+2), waterfall top
+  terrain.
+- Pink: sharp hill profile, walkway transition curves.
+- Red: path dirt edge, sand incline profile, walkway step profile. Incline
+  Red meets the straight at + 1 on the high end.
+- Plain Hidden: bottoms and backs. Needs no partner, only cover.
+
+## Linting a placement set
+
+```
+node tools/lint-sockets.mjs scenes/large_island_terrain_v3.json --ocean -5.5
+node tools/lint-sockets.mjs assemblies/placements.json --assembly River_Straight_Wide --verbose
+node tools/lint-sockets.mjs scenes/island.json --plain --json report.json
+```
+
+Input is a scene dump (`pieces` with `prefab` and `matrix`) or an assembly
+placement list (`pos`, `quat`, `scale`). The tool places every atom, then:
+
+- Seam match: coplanar, opposite-facing socket faces of two pieces that
+  overlap. Same colour, or Orange against Violet, counts as matched; any
+  other pairing is listed under mismatches. Informational.
+- Exposure: from four points on every hidden face, rays go out along the
+  normal and over a hemisphere of 25 directions. A face is exposed when any
+  ray reaches the horizon or the sky, unless the point is under water. Water
+  is any `Water*` surface above the point, or anything below `--ocean`.
+  `--plain` adds the uncoloured `Hidden` faces (bottoms and backs), which is
+  what catches a mis-mirrored Mid cliff.
+
+Exit code is 1 when any face is exposed. Baselines on the demo scene, which
+is not perfectly tidy: 80 exposed faces, 100 with `--plain`. `scenes/island.json`
+gives 2. Mutating the demo (removing five grass tiles, raising five cliff tops
+by a level, rotating five hill esses, un-mirroring five Mid esses) raises the
+count to 112, 160, 154 and 130, so each class of mistake is visible.
