@@ -127,6 +127,10 @@ function sealCells(p, lo, hi) {
   }
 });
 
+if (!pos3.length) {
+  console.error(`${input}: no visible non-water triangles found`);
+  process.exit(1);
+}
 const index = buildIndex(Float64Array.from(pos3), 1);
 const { tris, box, bins, cols, bx, bz, seen } = index;
 const wIdx = wallPos.length ? buildIndex(Float64Array.from(wallPos), 1) : null;
