@@ -18775,9 +18775,9 @@
    "missingTextures": []
   },
   {
-   "id": "Large_Island_v2_terrain",
-   "name": "Large Island v2 terrain",
-   "file": "assemblies/Large_Island_v2_terrain.glb",
+   "id": "Large_Island_Terrain_v3",
+   "name": "Large Island Terrain v3",
+   "file": "assemblies/Large_Island_Terrain_v3.glb",
    "group": "assembly-structure",
    "family": null,
    "shape": null,
