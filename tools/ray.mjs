@@ -43,6 +43,7 @@ export function raycast(index, ox, oy, oz, dx, dy, dz, tMax, tMin = 0.001) {
   const { tris, bins, cols, rows, cell, minX, minZ, seen } = index;
   const stamp = ++index.stamp;
   let best = Infinity;
+  index.hit = -1;
   let cx = index.bx(ox), cz = index.bz(oz);
   const stepX = dx > 0 ? 1 : -1, stepZ = dz > 0 ? 1 : -1;
   let tX = dx !== 0 ? (minX + (cx + (dx > 0 ? 1 : 0)) * cell - ox) / dx : Infinity;
@@ -69,7 +70,7 @@ export function raycast(index, ox, oy, oz, dx, dy, dz, tMax, tMin = 0.001) {
         const v = (dx * qx + dy * qy + dz * qz) * inv;
         if (v < 0 || u + v > 1) continue;
         const hit = (e2x * qx + e2y * qy + e2z * qz) * inv;
-        if (hit > tMin && hit < tMax && hit < best) best = hit;
+        if (hit > tMin && hit < tMax && hit < best) { best = hit; index.hit = tri; }
       }
     }
     if (tX < tZ) { t = tX; tX += dX; cx += stepX; } else { t = tZ; tZ += dZ; cz += stepZ; }
