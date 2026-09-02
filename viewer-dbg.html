@@ -700,7 +700,8 @@ function fromGrid(grid) {
   let selected = -1;
   let edgeMesh = null;
   let markMeshes = [];
-
+  let dragMesh = null;
+  let linkDrag = null;
   const marks = { nodes: new Map(), links: new Map() };
   const paths = [];
   const countKind = (kind) =>
@@ -713,18 +714,11 @@ function fromGrid(grid) {
   const refKey = (a) => `${a.c},${a.r},${a.y.toFixed(2)}`;
   const linkKey = (a, b) => [refKey(a), refKey(b)].sort().join('|');
   const KINDS = ['add', 'wrong', 'mark'];
+  const KIND_GLYPH = { add: '+', wrong: '\u2717', mark: '\u25cf' };
   const KIND_COLOR = { add: '#3ddc84', wrong: '#ff4d4d', mark: '#ff5ec8' };
-  const MODES = ['auto', 'mark', 'line'];
-  const MODE_GLYPH = { auto: 'A', mark: '\u25cf', line: '\u2571' };
-  const MODE_STYLE = {
-    auto: 'linear-gradient(135deg, #3ddc84 50%, #ff4d4d 50%)',
-    mark: '#ff5ec8',
-    line: '#5ed7ff',
-  };
-  let modeIdx = 0;
-  const mode = () => MODES[modeIdx];
+  let kindIdx = 0;
   let drawing = false;
-  const statusText = () => (!editMode ? '' : `<small>${pathMode ? 'path' : drawing ? `draw ${mode()}` : 'camera'}`
+  const statusText = () => (!editMode ? '' : `<small>${pathMode ? 'path' : drawing ? `draw ${KINDS[kindIdx]}` : 'camera'}`
     + `${pathMode && selected >= 0 ? ' &middot; start set' : ''}`
     + ` &middot; ${KINDS.map((k) => `${countKind(k)} ${k}`).join(' &middot; ')}`
     + ` &middot; ${paths.length} path${paths.length === 1 ? '' : 's'}`
@@ -779,8 +773,8 @@ function fromGrid(grid) {
     return m;
   }
   function drawEdges() {
-    for (const m of [edgeMesh, ...markMeshes]) if (m) m.dispose();
-    edgeMesh = null;
+    for (const m of [edgeMesh, dragMesh, ...markMeshes]) if (m) m.dispose();
+    edgeMesh = dragMesh = null;
     markMeshes = [];
     if (!editMode) return;
     const lines = [];
@@ -799,13 +793,16 @@ function fromGrid(grid) {
     const byKind = { add: [], wrong: [], mark: [] };
     for (const l of marks.links.values()) {
       if (!nearMark(l.a) && !nearMark(l.b)) continue;
-      for (const lift of [0.4, 0.47, 0.54]) (byKind[l.kind] ?? byKind.mark).push([
-        new BABYLON.Vector3(l.a.x, l.a.y + lift, l.a.z),
-        new BABYLON.Vector3(l.b.x, l.b.y + lift, l.b.z),
+      (byKind[l.kind] ?? byKind.mark).push([
+        new BABYLON.Vector3(l.a.x, l.a.y + 0.45, l.a.z),
+        new BABYLON.Vector3(l.b.x, l.b.y + 0.45, l.b.z),
       ]);
     }
     for (const k of KINDS) markMeshes.push(lineSystem(k, byKind[k], KIND_COLOR[k]));
-
+    if (linkDrag) dragMesh = lineSystem('drag', [[
+      new BABYLON.Vector3(linkDrag.from.x, linkDrag.from.y + 0.45, linkDrag.from.z),
+      new BABYLON.Vector3(linkDrag.to.x, linkDrag.to.y + 0.45, linkDrag.to.z),
+    ]], touching(linkDrag.from, linkDrag.to) ? '#5ed7ff' : '#7c8894');
   }
   const touching = (a, b) =>
     Math.abs(a.c - b.c) <= 1 && Math.abs(a.r - b.r) <= 1 && !(a.c === b.c && a.r === b.r);
@@ -816,13 +813,10 @@ function fromGrid(grid) {
     else marks.links.set(k, { a, b, kind });
   }
   const cellRefOf = (cell) => ({ c: cell.c, r: cell.r, y: +cell.y.toFixed(3), x: cell.x, z: cell.z });
-  const linkKindOf = (a, b) =>
-    (a.node >= 0 && b.node >= 0 && nav.nodes[a.node].n.includes(b.node) ? 'wrong' : 'add');
-  function setLink(a, b, on) {
-    if (!touching(a, b)) return;
-    const k = linkKey(cellRefOf(a), cellRefOf(b));
-    if (!on) { marks.links.delete(k); return; }
-    marks.links.set(k, { a: cellRefOf(a), b: cellRefOf(b), kind: linkKindOf(a, b) });
+  function markCellPair(a, b) {
+    if (!touching(a, b)) return false;
+    markLink(cellRefOf(a), cellRefOf(b), KINDS[kindIdx]);
+    return true;
   }
   const O = () => nav.meta.origin;
   const SAME_Y = 0.75;
@@ -849,7 +843,7 @@ function fromGrid(grid) {
   function setMark(cell, on) {
     const at = markAt(cell);
     if (!on) { if (at) marks.nodes.delete(at[0]); return; }
-    const kind = mode() === 'mark' ? 'mark' : cell.node >= 0 ? 'wrong' : 'add';
+    const kind = KINDS[kindIdx];
     if (at) { marks.nodes.get(at[0]).kind = kind; return; }
     const ref = cellRefOf(cell);
     marks.nodes.set(refKey(ref), { ...ref, kind });
@@ -915,8 +909,9 @@ function fromGrid(grid) {
   }
   const renderKind = () => {
     const b = document.getElementById('kind');
-    b.textContent = MODE_GLYPH[mode()];
-    b.style.background = MODE_STYLE[mode()];
+    const kind = KINDS[kindIdx];
+    b.textContent = KIND_GLYPH[kind];
+    b.style.background = KIND_COLOR[kind];
     b.style.color = '#1a2028';
     b.style.opacity = drawing ? '1' : '0.45';
     const d = document.getElementById('draw');
@@ -924,14 +919,15 @@ function fromGrid(grid) {
     d.classList.toggle('on', drawing);
   };
   function cycleKind() {
-    modeIdx = (modeIdx + 1) % MODES.length;
+    kindIdx = (kindIdx + 1) % KINDS.length;
     renderKind();
     renderHud();
   }
   function setDrawing(on) {
     drawing = on;
     if (!on) {
-      stroke = null;
+      if (stroke) { stroke = null; }
+      linkDrag = null;
       press = null;
       selected = -1;
       if (pathMode) setPathMode(false);
@@ -942,10 +938,11 @@ function fromGrid(grid) {
   function setEditMode(on) {
     editMode = on;
     mapView = on;
-    if (on) mapZoom = 0.18;
+    if (on) mapZoom = 0.55;
     if (!on) pathMode = false;
     drawing = false;
     selected = -1;
+    linkDrag = null;
     pan.x = pan.z = 0;
     document.getElementById('edit').classList.toggle('on', on);
     document.getElementById('path').classList.toggle('on', pathMode);
@@ -992,6 +989,7 @@ function fromGrid(grid) {
     }
   });
   const CANCEL_PX = 12;
+  const HOLD_MS = 450;
   const touches = new Map();
   let stroke = null;
   let press = null;
@@ -1003,6 +1001,7 @@ function fromGrid(grid) {
       (e.clientY - rect.top) * (engine.getRenderHeight() / (rect.height || 1))];
   };
   const pxScale = () => engine.getRenderHeight() / (canvas.getBoundingClientRect().height || 1);
+  const clearHold = () => { if (press?.timer) { clearTimeout(press.timer); press.timer = 0; } };
   function clampPan() {
     const b = nav.nodes[cur].p, size = nav.meta.size, o = O();
     pan.x = Math.min(o.c + size.cols + 2, Math.max(o.c - 2, b[0] + pan.x)) - b[0];
@@ -1021,19 +1020,7 @@ function fromGrid(grid) {
     needMarkers();
   }
   const strokeKey = (cell) => `${cell.c},${cell.r},${Math.round(cell.y * 2)}`;
-  function paintLink(cell) {
-    const prev = stroke.prev;
-    stroke.prev = cell;
-    if (!prev || !touching(prev, cell)) return;
-    const k = linkKey(cellRefOf(prev), cellRefOf(cell));
-    if (stroke.seen.has(k)) return;
-    stroke.seen.add(k);
-    if (stroke.on === null) stroke.on = !marks.links.has(k);
-    setLink(prev, cell, stroke.on);
-    needMarkers();
-  }
   function paintCell(cell) {
-    if (mode() === 'line') { paintLink(cell); return; }
     if (stroke.seen.has(strokeKey(cell))) return;
     stroke.seen.add(strokeKey(cell));
     setMark(cell, stroke.on);
@@ -1041,7 +1028,7 @@ function fromGrid(grid) {
   }
   function beginStroke(cell, sx, sy) {
     pushUndo();
-    stroke = { on: mode() === 'line' ? null : !markAt(cell), seen: new Set(), sx, sy, prev: null };
+    stroke = { on: !markAt(cell), seen: new Set(), sx, sy };
     paintCell(cell);
   }
   const PAINT_STEP = 9;
@@ -1054,7 +1041,6 @@ function fromGrid(grid) {
     stroke.sx = sx; stroke.sy = sy;
   }
   function tapCell(cell) {
-    if (mode() === 'line') return;
     pushUndo();
     setMark(cell, !markAt(cell));
     needMarkers();
@@ -1073,21 +1059,34 @@ function fromGrid(grid) {
     if (touches.size < 2) gesture = null;
   };
   canvas.addEventListener('pointerdown', (e) => {
+    console.log('PD', e.pointerId, 'edit', editMode, 'draw', drawing, 'touches', [...touches.keys()].join('/'));
     if (!editMode) return;
     touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (touches.size === 2) {
       multiTouch = true;
       if (stroke) { stroke = null; undo(); }
+      clearHold();
       press = null;
+      linkDrag = null;
       const [a, b] = [...touches.values()];
       gesture = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
       updateMarkers();
       return;
     }
-    if (touches.size > 2 || !drawing) return;
-    if (press && !touches.has(press.id)) { press = null; stroke = null; }
+    if (touches.size > 2 || !drawing) { console.log('PD reject size', touches.size, 'draw', drawing); return; }
+    if (press && !touches.has(press.id)) { clearHold(); press = null; stroke = null; linkDrag = null; }
     const [sx, sy] = renderXY(e);
-    press = { id: e.pointerId, x: e.clientX, y: e.clientY, sx, sy, cell: pickCell(sx, sy) };
+    press = { id: e.pointerId, x: e.clientX, y: e.clientY, sx, sy, cell: pickCell(sx, sy), timer: 0 };
+    console.log('PD press', JSON.stringify(press.cell));
+    if (!pathMode && press.cell && press.cell.node >= 0) {
+      press.timer = setTimeout(() => {
+        if (!press || !touches.has(press.id)) return;
+        press.timer = 0;
+        linkDrag = { from: press.cell, to: press.cell };
+        selected = press.cell.node;
+        updateMarkers();
+      }, HOLD_MS);
+    }
   });
   addEventListener('pointermove', (e) => {
     if (!editMode) return;
@@ -1105,7 +1104,13 @@ function fromGrid(grid) {
     }
     if (!press || press.id !== e.pointerId) return;
     const [sx, sy] = renderXY(e);
+    if (linkDrag) {
+      const cell = pickCell(sx, sy);
+      if (cell) { linkDrag.to = cell; needMarkers(); }
+      return;
+    }
     if (Math.hypot(e.clientX - press.x, e.clientY - press.y) < CANCEL_PX) return;
+    clearHold();
     if (pathMode) return;
     if (!stroke) {
       const cell = press.cell ?? pickCell(sx, sy);
@@ -1118,11 +1123,22 @@ function fromGrid(grid) {
     const mine = press && press.id === e.pointerId ? press : null;
     endTouch(e.pointerId);
     if (!touches.size) multiTouch = false;
-    if (!editMode || !mine) return;
+    if (!editMode || !mine) { console.log('PU skip', e.pointerId, 'mine', !!mine); return; }
+    clearHold();
     press = null;
     const [sx, sy] = renderXY(e);
+    if (linkDrag) {
+      const from = linkDrag.from;
+      const cell = pickCell(sx, sy);
+      linkDrag = null;
+      selected = -1;
+      if (cell) markCellPair(from, cell);
+      updateMarkers();
+      return;
+    }
     if (stroke) { stroke = null; updateMarkers(); return; }
     const swiped = Math.hypot(e.clientX - mine.x, e.clientY - mine.y) >= CANCEL_PX;
+    console.log('PU', 'swiped', swiped, 'stroke', !!stroke, 'link', !!linkDrag, 'cell', JSON.stringify(mine.cell));
     const cell = mine.cell ?? pickCell(sx, sy);
     if (!cell) return;
     if (pathMode) { if (!swiped) pathTap(cell); return; }
@@ -1135,8 +1151,10 @@ function fromGrid(grid) {
   addEventListener('pointercancel', (e) => {
     endTouch(e.pointerId);
     if (!touches.size) multiTouch = false;
+    clearHold();
     press = null;
     stroke = null;
+    linkDrag = null;
     if (editMode) updateMarkers();
   });
   scene.onBeforeRenderObservable.add(() => { if (markersDirty) updateMarkers(); });
