@@ -77,6 +77,9 @@ const PALETTE_SOURCES = {
   Dirt: 'Terrain/Dirt.mat',
   Grass: 'Terrain/Grass.mat',
   Ice: 'Terrain/Ice.mat',
+  'Rock Light': 'Carved Stone/Carved Stone 2.mat',
+  'Rock Lightest': 'Carved Stone/Carved Stone 3.mat',
+  'Rock Medium': 'Carved Stone/Carved Stone 1.mat',
   'Stone Walkway': 'Carved Stone/Carved Stone Walkway.mat',
   'Waterfall Crest': 'Water/Waterfall Crest.mat',
 };
