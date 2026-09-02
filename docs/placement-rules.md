@@ -99,15 +99,24 @@ placement list (`pos`, `quat`, `scale`). The tool places every atom, then:
 - Seam match: coplanar, opposite-facing socket faces of two pieces that
   overlap. Same colour, or Orange against Violet, counts as matched; any
   other pairing is listed under mismatches. Informational.
-- Exposure: from four points on every hidden face, rays go out along the
-  normal and over a hemisphere of 25 directions. A face is exposed when any
-  ray reaches the horizon or the sky, unless the point is under water. Water
-  is any `Water*` surface above the point, or anything below `--ocean`.
-  `--plain` adds the uncoloured `Hidden` faces (bottoms and backs), which is
-  what catches a mis-mirrored Mid cliff.
+- Butt joints: a sample point that lies on an opposite-facing triangle of
+  another piece (any material, any orientation, within 0.002) is covered.
+  This is the kit's own rule, socket against socket, and it is what keeps
+  nested curved stairs and stacked cliffs from being tested by rays at all.
+- Exposure: from four points on every hidden face not covered by a butt
+  joint, rays go out along the normal and over a hemisphere of 25
+  directions. A ray reaching the sky or the horizon marks the face, unless
+  the point is under water (`Water*` above it, or below `--ocean`). A face is
+  exposed only when a small cone around the escaping ray escapes too;
+  otherwise it is a hairline crack, reported separately. `--plain` adds the
+  uncoloured `Hidden` faces (bottoms and backs).
 
-Exit code is 1 when any face is exposed. Baselines on the demo scene, which
-is not perfectly tidy: 80 exposed faces, 100 with `--plain`. `scenes/island.json`
-gives 2. Mutating the demo (removing five grass tiles, raising five cliff tops
-by a level, rotating five hill esses, un-mirroring five Mid esses) raises the
-count to 112, 160, 154 and 130, so each class of mistake is visible.
+Exit code is 1 when any face is exposed. Demo scene: 11 exposed faces, 10 of
+them one open retaining-wall corner at (-11, 5, -11) and one sliver where a
+grass slab meets a hill at (-44, -5, -26); both verified by rendering from the
+escaping ray's direction. `scenes/island.json`: 0. Mutating the demo (five
+pieces each: grass tiles removed, cliff tops raised a level, hill esses
+rotated, Mid esses un-mirrored with `--plain`) gives 38, 54, 68 and 33
+exposed faces, all within four cells of a mutated piece; per site the
+detection is 5/5, 5/5, 4/5 and 3/5. A flipped Mid esse whose jog stays inside
+rock is not visible and not caught.

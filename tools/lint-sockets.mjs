@@ -123,6 +123,7 @@ const faces = [];
 const missing = new Set();
 const flat = [];
 const flatMaterial = [];
+const flatOwner = [];
 let skewed = 0;
 
 placements.forEach((placement, index) => {
@@ -137,6 +138,7 @@ placements.forEach((placement, index) => {
     const w = tri.points.map((p) => apply(m, p));
     for (const p of w) flat.push(p[0], p[1], p[2]);
     flatMaterial.push(tri.material);
+    flatOwner.push(index);
     if (!tri.material.startsWith('Hidden')) continue;
     if (tri.material === 'Hidden' && !PLAIN) continue;
     const u = [w[1][0] - w[0][0], w[1][1] - w[0][1], w[1][2] - w[0][2]];
@@ -192,26 +194,82 @@ for (const elevation of [15, 40, 70]) {
     DIRECTIONS.push([Math.cos(a) * flatLen, -up, Math.sin(a) * flatLen]);
   }
 }
+const CONE = 0.06;
 const escapes = (p, d) => {
   if (raycast(index, p[0], p[1], p[2], d[0], d[1], d[2], REACH) !== Infinity) return false;
   return !(d[1] < 0 && OCEAN > -Infinity);
+};
+const wideOpen = (p, d) => {
+  const side = Math.abs(d[1]) < 0.9 ? [-d[2], 0, d[0]] : [1, 0, 0];
+  const lift = [d[1] * side[2] - d[2] * side[1], d[2] * side[0] - d[0] * side[2], d[0] * side[1] - d[1] * side[0]];
+  for (const [a, b] of [[CONE, 0], [-CONE, 0], [0, CONE], [0, -CONE]]) {
+    const q = [0, 1, 2].map((k) => d[k] + side[k] * a + lift[k] * b);
+    const len = Math.hypot(...q);
+    if (!escapes(p, q.map((v) => v / len))) return false;
+  }
+  return true;
 };
 const underwater = (p) => {
   if (p[1] <= OCEAN) return true;
   const t = raycast(index, p[0], p[1], p[2], 0, 1, 0, REACH);
   return t !== Infinity && flatMaterial[index.hit].startsWith('Water');
 };
+const triNormal = (t) => {
+  const a = t * 9;
+  const u = [flat[a + 3] - flat[a], flat[a + 4] - flat[a + 1], flat[a + 5] - flat[a + 2]];
+  const v = [flat[a + 6] - flat[a], flat[a + 7] - flat[a + 1], flat[a + 8] - flat[a + 2]];
+  const n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
+  const len = Math.hypot(...n);
+  return len < 1e-9 ? null : n.map((x) => x / len);
+};
+const BUTT = 2e-3;
+const butted = (face, p) => {
+  const n = face.normal;
+  for (let ix = index.bx(p[0] - 0.01); ix <= index.bx(p[0] + 0.01); ix++) {
+    for (let iz = index.bz(p[2] - 0.01); iz <= index.bz(p[2] + 0.01); iz++) {
+      for (const t of index.bins[iz * index.cols + ix]) {
+        if (flatOwner[t] === face.index) continue;
+        const a = t * 9;
+        const m = triNormal(t);
+        if (!m) continue;
+        const raw = m[0] * n[0] + m[1] * n[1] + m[2] * n[2];
+        if (Math.abs(raw) < 0.95) continue;
+        const d = (p[0] - flat[a]) * m[0] + (p[1] - flat[a + 1]) * m[1] + (p[2] - flat[a + 2]) * m[2];
+        if (Math.abs(d) > BUTT) continue;
+        const q = [p[0] - d * m[0], p[1] - d * m[1], p[2] - d * m[2]];
+        const v0 = [flat[a + 3] - flat[a], flat[a + 4] - flat[a + 1], flat[a + 5] - flat[a + 2]];
+        const v1 = [flat[a + 6] - flat[a], flat[a + 7] - flat[a + 1], flat[a + 8] - flat[a + 2]];
+        const v2 = [q[0] - flat[a], q[1] - flat[a + 1], q[2] - flat[a + 2]];
+        const d00 = v0[0] * v0[0] + v0[1] * v0[1] + v0[2] * v0[2];
+        const d01 = v0[0] * v1[0] + v0[1] * v1[1] + v0[2] * v1[2];
+        const d11 = v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2];
+        const d20 = v2[0] * v0[0] + v2[1] * v0[1] + v2[2] * v0[2];
+        const d21 = v2[0] * v1[0] + v2[1] * v1[1] + v2[2] * v1[2];
+        const den = d00 * d11 - d01 * d01;
+        if (Math.abs(den) < 1e-12) continue;
+        const bv = (d11 * d20 - d01 * d21) / den;
+        const bw = (d00 * d21 - d01 * d20) / den;
+        if (bv >= -1e-3 && bw >= -1e-3 && bv + bw <= 1 + 1e-3) return true;
+      }
+    }
+  }
+  return false;
+};
 for (const face of faces) {
   const n = face.normal;
   const dirs = [n, ...DIRECTIONS.filter((d) => d[0] * n[0] + d[1] * n[1] + d[2] * n[2] > 0.05)];
   for (const s of face.samples) {
+    if (butted(face, s)) continue;
     const p = [s[0] + n[0] * LIFT, s[1] + n[1] * LIFT, s[2] + n[2] * LIFT];
     if (underwater(p)) continue;
     const open = dirs.find((d) => escapes(p, d));
     if (!open) continue;
-    face.exposed = true;
-    face.open = open;
-    break;
+    if (wideOpen(p, open)) {
+      face.exposed = true;
+      face.open = open;
+      break;
+    }
+    face.crack = true;
   }
 }
 
@@ -219,7 +277,7 @@ const perMaterial = new Map();
 const perPiece = new Map();
 const mismatches = new Map();
 const stat = (map, key) => {
-  if (!map.has(key)) map.set(key, { faces: 0, seam: 0, mismatched: 0, exposed: 0 });
+  if (!map.has(key)) map.set(key, { faces: 0, seam: 0, mismatched: 0, cracked: 0, exposed: 0 });
   return map.get(key);
 };
 for (const face of faces) {
@@ -234,6 +292,7 @@ for (const face of faces) {
     if (seam) s.seam++;
     if (bad.length && !seam) s.mismatched++;
     if (face.exposed) s.exposed++;
+    else if (face.crack) s.cracked++;
   }
 }
 const exposed = faces.filter((f) => f.exposed);
@@ -248,10 +307,12 @@ const label = `${basename(input)}${option('assembly', '') ? ` [${option('assembl
 
 console.log(`${label}: ${placements.length} placements, ${flatMaterial.length} triangles, ${faces.length} socket faces (${skewed} not axis aligned)`);
 if (missing.size) console.log(`  not in atoms/: ${[...missing].join(', ')}`);
-console.log(`\nexposed socket faces: ${exposed.length}  (a hidden face open to the sky or the horizon; the real errors)`);
-console.log('\nper socket colour              faces  seam-matched  mismatched  exposed');
+const cracked = faces.filter((f) => f.crack && !f.exposed).length;
+console.log(`\nexposed hidden faces: ${exposed.length}  (open to the sky or the horizon through a gap wider than a hairline; the real errors)`);
+console.log(`hairline cracks: ${cracked}  (a hidden face reachable only through a sub-0.06-cell gap; informational)`);
+console.log('\nper socket colour              faces  seam-matched  mismatched  cracked  exposed');
 for (const [material, s] of [...perMaterial].sort((a, b) => b[1].faces - a[1].faces)) {
-  console.log(`  ${pad(material, 26)} ${pad(s.faces, 7)} ${pad(s.seam, 13)} ${pad(s.mismatched, 11)} ${s.exposed}`);
+  console.log(`  ${pad(material, 26)} ${pad(s.faces, 7)} ${pad(s.seam, 13)} ${pad(s.mismatched, 11)} ${pad(s.cracked, 8)} ${s.exposed}`);
 }
 if (mismatches.size) {
   console.log('\ncolour mismatches (face colour vs coplanar partner colour)');
@@ -281,6 +342,7 @@ if (report) {
     placements: placements.length,
     triangles: flatMaterial.length,
     faces: faces.length,
+    cracked,
     missing: [...missing],
     materials: Object.fromEntries(perMaterial),
     mismatches: Object.fromEntries(mismatches),
