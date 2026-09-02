@@ -700,6 +700,7 @@ function fromGrid(grid) {
   let selected = -1;
   let edgeMesh = null;
   let markMeshes = [];
+  let linkDrag = null;
 
   const marks = { nodes: new Map(), links: new Map() };
   const paths = [];
@@ -805,6 +806,14 @@ function fromGrid(grid) {
       ]);
     }
     for (const k of KINDS) markMeshes.push(lineSystem(k, byKind[k], KIND_COLOR[k]));
+    if (linkDrag?.to) {
+      const aim = [];
+      for (const lift of [0.4, 0.47, 0.54, 0.61]) aim.push([
+        new BABYLON.Vector3(linkDrag.from.x, linkDrag.from.y + lift, linkDrag.from.z),
+        new BABYLON.Vector3(linkDrag.to.x, linkDrag.to.y + lift, linkDrag.to.z),
+      ]);
+      markMeshes.push(lineSystem('aim', aim, KIND_COLOR[linkKindOf(linkDrag.from, linkDrag.to)]));
+    }
 
   }
   const touching = (a, b) =>
@@ -843,6 +852,18 @@ function fromGrid(grid) {
     const from = p.y + 2.7;
     const drop = raycast(x, from, z, 0, -1, 0, 12);
     return { c, r, x, z, y: drop === Infinity ? p.y : from - drop, node: -1 };
+  }
+  function cellAt(c, r, nearY) {
+    const x = O().c + c + 0.5, z = O().r + r + 0.5;
+    let node = -1, best = Infinity;
+    for (const i of byCell.get(cellKey(c, r)) ?? []) {
+      const d = Math.abs(nav.nodes[i].p[1] - nearY);
+      if (d < best) { best = d; node = i; }
+    }
+    if (node >= 0) return { c, r, x, z, y: nav.nodes[node].p[1], node };
+    const top = nearY + 2.7;
+    const drop = raycast(x, top, z, 0, -1, 0, 12);
+    return { c, r, x, z, y: drop === Infinity ? nearY : top - drop, node: -1 };
   }
   const markAt = (cell) => [...marks.nodes.entries()]
     .find(([, m]) => m.c === cell.c && m.r === cell.r && Math.abs(m.y - cell.y) < SAME_Y);
@@ -933,6 +954,7 @@ function fromGrid(grid) {
     if (!on) {
       stroke = null;
       press = null;
+      linkDrag = null;
       selected = -1;
       if (pathMode) setPathMode(false);
     }
@@ -946,6 +968,7 @@ function fromGrid(grid) {
     if (!on) pathMode = false;
     drawing = false;
     selected = -1;
+    linkDrag = null;
     pan.x = pan.z = 0;
     document.getElementById('edit').classList.toggle('on', on);
     document.getElementById('path').classList.toggle('on', pathMode);
@@ -1021,19 +1044,28 @@ function fromGrid(grid) {
     needMarkers();
   }
   const strokeKey = (cell) => `${cell.c},${cell.r},${Math.round(cell.y * 2)}`;
-  function paintLink(cell) {
-    const prev = stroke.prev;
-    stroke.prev = cell;
-    if (!prev || !touching(prev, cell)) return;
-    const k = linkKey(cellRefOf(prev), cellRefOf(cell));
-    if (stroke.seen.has(k)) return;
-    stroke.seen.add(k);
-    if (stroke.on === null) stroke.on = !marks.links.has(k);
-    setLink(prev, cell, stroke.on);
+  function aimLink(sx, sy) {
+    const from = press.cell;
+    if (!from) return;
+    const at = pickCell(sx, sy);
+    if (!at) return;
+    const dc = Math.max(-1, Math.min(1, at.c - from.c));
+    const dr = Math.max(-1, Math.min(1, at.r - from.r));
+    const to = dc || dr ? (touching(from, at) ? at : cellAt(from.c + dc, from.r + dr, from.y)) : null;
+    linkDrag = { from, to };
     needMarkers();
   }
+  function dropLink() {
+    const drag = linkDrag;
+    linkDrag = null;
+    if (!drag?.to) { updateMarkers(); return; }
+    pushUndo();
+    const k = linkKey(cellRefOf(drag.from), cellRefOf(drag.to));
+    if (marks.links.has(k)) marks.links.delete(k);
+    else setLink(drag.from, drag.to, true);
+    updateMarkers();
+  }
   function paintCell(cell) {
-    if (mode() === 'line') { paintLink(cell); return; }
     if (stroke.seen.has(strokeKey(cell))) return;
     stroke.seen.add(strokeKey(cell));
     setMark(cell, stroke.on);
@@ -1041,7 +1073,7 @@ function fromGrid(grid) {
   }
   function beginStroke(cell, sx, sy) {
     pushUndo();
-    stroke = { on: mode() === 'line' ? null : !markAt(cell), seen: new Set(), sx, sy, prev: null };
+    stroke = { on: !markAt(cell), seen: new Set(), sx, sy };
     paintCell(cell);
   }
   const PAINT_STEP = 9;
@@ -1079,6 +1111,7 @@ function fromGrid(grid) {
       multiTouch = true;
       if (stroke) { stroke = null; undo(); }
       press = null;
+      linkDrag = null;
       const [a, b] = [...touches.values()];
       gesture = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
       updateMarkers();
@@ -1107,6 +1140,7 @@ function fromGrid(grid) {
     const [sx, sy] = renderXY(e);
     if (Math.hypot(e.clientX - press.x, e.clientY - press.y) < CANCEL_PX) return;
     if (pathMode) return;
+    if (mode() === 'line') { aimLink(sx, sy); return; }
     if (!stroke) {
       const cell = press.cell ?? pickCell(sx, sy);
       if (!cell) return;
@@ -1121,6 +1155,7 @@ function fromGrid(grid) {
     if (!editMode || !mine) return;
     press = null;
     const [sx, sy] = renderXY(e);
+    if (mode() === 'line') { dropLink(); return; }
     if (stroke) { stroke = null; updateMarkers(); return; }
     const swiped = Math.hypot(e.clientX - mine.x, e.clientY - mine.y) >= CANCEL_PX;
     const cell = mine.cell ?? pickCell(sx, sy);
@@ -1137,6 +1172,7 @@ function fromGrid(grid) {
     if (!touches.size) multiTouch = false;
     press = null;
     stroke = null;
+    linkDrag = null;
     if (editMode) updateMarkers();
   });
   scene.onBeforeRenderObservable.add(() => { if (markersDirty) updateMarkers(); });
