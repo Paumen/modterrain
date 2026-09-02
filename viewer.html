@@ -64,7 +64,7 @@ const hud = document.getElementById('hud');
 const TAU = Math.PI * 2;
 const STEPS = 8;
 const STEP_ANGLE = TAU / STEPS;
-const MAP_VIEW = { beta: 0.42, zoom: 0.55 };
+const MAP_VIEW = { beta: 0.26, zoom: 0.55 };
 const VIEWS = [
   { beta: 1.435, far: 4 },
   { beta: 1.365, far: 8 },
@@ -550,7 +550,7 @@ function fromGrid(grid) {
   const walking = () => tween !== null || route.length > 0;
   const setView = (dir) => {
     if (mapView) {
-      mapZoom = Math.min(1.8, Math.max(0.18, mapZoom * (dir > 0 ? 1.4 : 1 / 1.4)));
+      mapZoom = Math.min(0.8, Math.max(0.18, mapZoom * (dir > 0 ? 1.4 : 1 / 1.4)));
       if (walking()) { updateMarkers(); return; }
       glideTo(cur, 260);
       return;
