@@ -18,7 +18,7 @@ const TEXTURES_DIR = join(ROOT, 'textures');
 const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
 const SCENES_DIR = join(ROOT, 'scenes');
 
-/* Written by tools/recolor.mjs: which surfaces take their colour from
+/* Written by tools/import/recolor.mjs: which surfaces take their colour from
  * textures/colormap.png, and what colour that is. */
 const PALETTE = JSON.parse(readFileSync(join(CATALOG_DIR, 'palette.json'), 'utf8'));
 
@@ -111,7 +111,7 @@ const averageColorCache = new Map();
 function swatchColor(source, baseColorFactor) {
   // A surface on the shared colormap has no colour of its own to read: it
   // points a UV at `textures/colormap.png` and takes the colour there, which
-  // tools/recolor.mjs wrote down when it aimed the UV.
+  // tools/import/recolor.mjs wrote down when it aimed the UV.
   const mapped = PALETTE.surfaces[source];
   if (mapped) return mapped.hex;
 

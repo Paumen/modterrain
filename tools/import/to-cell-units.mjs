@@ -1,4 +1,4 @@
-import { readGlb, writeGlb } from './glb.mjs';
+import { readGlb, writeGlb } from '../glb.mjs';
 
 const argv = process.argv.slice(2);
 const at = argv.indexOf('--factor');

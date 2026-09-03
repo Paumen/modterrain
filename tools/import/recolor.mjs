@@ -40,15 +40,15 @@
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readGlb, writeGlb, nodeWorldMatrices, transformPoint } from './glb.mjs';
-import { determineLayer } from './taxonomy.mjs';
-import { decodePng } from './png.mjs';
+import { readGlb, writeGlb, nodeWorldMatrices, transformPoint } from '../glb.mjs';
+import { determineLayer } from '../taxonomy.mjs';
+import { decodePng } from '../png.mjs';
 import { readZip } from './zip.mjs';
 import {
   readAtlas, writeAtlas, atlasPoints, filledCells, fillCell, nearestPoint, toHex, ROWS, COLUMNS,
 } from './colormap.mjs';
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ATLAS = join(ROOT, 'textures', 'colormap.png');
 const PACK = join(ROOT, 'modular_terrain_2_0_textures.zip');
 const PALETTE = join(ROOT, 'catalog', 'palette.json');

@@ -37,9 +37,14 @@ Practical facts about the kit:
   culls them.
 - **Mirroring:** the pack ships almost no pre-mirrored pieces. When you need
   a mirrored variant, mirror the piece yourself.
+- **Sockets as data:** `catalog/sockets.json` holds every coloured socket of
+  every piece — cell edge, height band and exact outline — so piece choice is
+  a lookup, not a geometry problem. See `docs/socket-table.md`.
 - **Rules and checking:** `docs/placement-rules.md` lists the measured
   placement rules. Run `node tools/lint-sockets.mjs <scene.json>` on any
   placement set; exposed hidden faces are placement mistakes.
+  `node tools/check-sockets.mjs <scene.json> --open` is the fast table-only
+  pass: it names each unpaired socket and what covers it.
 
 ## Environment
 
