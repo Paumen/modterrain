@@ -44,6 +44,14 @@ Practical facts about the kit:
 - **Sockets as data:** `catalog/sockets.json` holds every coloured socket of
   every piece — cell edge, height band and exact outline — so piece choice is
   a lookup, not a geometry problem. See `docs/socket-table.md`.
+- **Level maps:** the reliable way to write terrain is not pieces but a grid
+  of whole levels (`modterrain-levels-1`); `tools/scene/levels-to-cells.mjs`
+  picks the pieces, `tools/check/verify-scene.mjs` checks and renders the
+  result in one go, and `tools/check/test-levels.mjs` runs every probe in
+  `models/levels/`. Grass, cliffs and sharp hills so far. See
+  `docs/level-map.md`. For a scene written by hand,
+  `node tools/check/check-sockets.mjs <scene.json> --suggest` lists the
+  placements that would close each unpaired socket.
 - **Rules and checking:** `docs/placement-rules.md` lists the measured
   placement rules. Run `node tools/check/lint-sockets.mjs <scene.json>` on any
   placement set; exposed hidden faces are placement mistakes.

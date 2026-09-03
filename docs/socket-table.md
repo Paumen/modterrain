@@ -65,9 +65,22 @@ node tools/check/check-sockets.mjs models/assemblies/placements.json --assembly 
 ```
 
 Each socket comes out `paired`, `wrong` or `open`. The pairing rules are the
-ones in `docs/placement-rules.md`. `--open` lists unpaired sockets with the
+ones in `docs/placement-rules.md`. Cover split across several allowed colours
+counts too: a plateau slab's Violet edge met half by a curve's Orange and half
+by the next slab's Violet is paired, reported as `Orange+Violet`. On the demo
+that moves 255 sockets from open to paired (6258 to 6513 of 8041), almost all
+Violet; the comparison with the geometry linter below predates it. `--open` lists unpaired sockets with the
 cell edge, the height band and what covers them, which is what a generator
 needs to pick the next piece. `--json` writes per-socket verdicts.
+
+`--suggest` turns the table around: for each unpaired socket it lists the
+placements that would pair it, searching every piece, every socket of an
+allowed colour, the four rotations, both mirrorings, and for `*_Flat_1x1`
+pieces whole-number stretches, and keeping those whose socket outline lands
+on this one within the same 90% rule with `at` on the grid. Same-colour
+partners come first, then the closest area. `--per n` caps the list per
+socket. It is a lookup, not a judgement: it does not check that the piece
+fits the rest of the scene.
 
 `open` merges the geometry linter's `buried` and `exposed`: deciding which of
 those an unpaired socket is needs rays, so `tools/check/lint-sockets.mjs` stays the
