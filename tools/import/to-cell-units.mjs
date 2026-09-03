@@ -1,4 +1,4 @@
-import { readGlb, writeGlb } from '../glb.mjs';
+import { readGlb, writeGlb } from '../lib/glb.mjs';
 
 const argv = process.argv.slice(2);
 const at = argv.indexOf('--factor');
@@ -6,7 +6,7 @@ const factor = at === -1 ? null : Number(argv[at + 1]);
 const files = argv.filter((arg, index) => !arg.startsWith('--') && !argv[index - 1]?.startsWith('--'));
 
 if (!files.length || !Number.isFinite(factor) || factor <= 0) {
-  console.error('usage: node tools/to-cell-units.mjs <model.glb>... --factor <n>');
+  console.error('usage: node tools/import/to-cell-units.mjs <model.glb>... --factor <n>');
   process.exit(1);
 }
 

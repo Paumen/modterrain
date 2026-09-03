@@ -1,9 +1,9 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadPlacements } from './scene-cells.mjs';
+import { loadPlacements } from '../scene/scene-cells.mjs';
 
-const ROOT = fileURLToPath(new URL('..', import.meta.url));
+const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const TABLE = JSON.parse(readFileSync(join(ROOT, 'catalog', 'sockets.json'), 'utf8'));
 
 const argv = process.argv.slice(2);
@@ -12,7 +12,7 @@ const option = (n, d) => { const i = argv.indexOf(`--${n}`); return i === -1 ? d
 const taken = new Set(['assembly', 'limit', 'json'].map((n) => option(n, null)).filter(Boolean));
 const input = argv.find((a) => !a.startsWith('--') && !taken.has(a));
 if (!input) {
-  console.error('usage: node tools/check-sockets.mjs <scene.json | placements.json> [--assembly name] [--no-mirror] [--verbose] [--limit n]');
+  console.error('usage: node tools/check/check-sockets.mjs <scene.json | placements.json> [--assembly name] [--no-mirror] [--verbose] [--limit n]');
   process.exit(1);
 }
 const MIRROR = !flag('no-mirror');

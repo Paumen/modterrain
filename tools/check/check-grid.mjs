@@ -4,7 +4,7 @@ import { dirname, resolve } from 'node:path';
 const args = process.argv.slice(2);
 const reviewPath = args.find((a) => !a.startsWith('--'));
 if (!reviewPath) {
-  console.error('usage: node tools/check-grid.mjs <scene_grid.review.json> [grid.json] [--tolerance 0.1]');
+  console.error('usage: node tools/check/check-grid.mjs <scene_grid.review.json> [grid.json] [--tolerance 0.1]');
   process.exit(1);
 }
 const gridArg = args.filter((a) => !a.startsWith('--'))[1];

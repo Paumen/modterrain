@@ -1,7 +1,7 @@
 # The cell scene format
 
 `modterrain-cells-1` is what a scene looks like when it is written rather than
-dumped. `tools/scene-cells.mjs` converts a Unity dump into it and back, and
+dumped. `tools/scene/scene-cells.mjs` converts a Unity dump into it and back, and
 `lint-sockets.mjs` and `check-sockets.mjs` read it directly.
 
 ```json
@@ -33,14 +33,14 @@ dumped. `tools/scene-cells.mjs` converts a Unity dump into it and back, and
 ## Converting
 
 ```
-node tools/scene-cells.mjs scenes/winter_terrain.json --out winter_cells.json --verify
-node tools/scene-cells.mjs winter_cells.json --to-dump --out winter_dump.json
-node tools/check-sockets.mjs winter_cells.json --open
+node tools/scene/scene-cells.mjs models/scenes/winter_terrain.json --out winter_cells.json --verify
+node tools/scene/scene-cells.mjs winter_cells.json --to-dump --out winter_dump.json
+node tools/check/check-sockets.mjs winter_cells.json --open
 ```
 
 ## What fits, measured
 
-Over the five scenes in `scenes/`, 4340 placements:
+Over the five scenes in `models/scenes/`, 4340 placements:
 
 | scene | as cells | escapes |
 | --- | --- | --- |
@@ -78,12 +78,12 @@ the scene; jitter does not.
 
 ## Authoring by hand
 
-`scenes/hill_and_plateau.json` is six pieces written directly in this format:
+`models/scenes/hill_and_plateau.json` is six pieces written directly in this format:
 a grass field, a four-row sharp hill, and the plateau it climbs to. It was
 written once, without a correction, and
 
 ```
-node tools/check-sockets.mjs scenes/hill_and_plateau.json --open
+node tools/check/check-sockets.mjs models/scenes/hill_and_plateau.json --open
 ```
 
 pairs all four Orange sockets and leaves eight unpaired, every one of them a

@@ -1,6 +1,6 @@
 {
- "generated": "node tools/recolor.mjs",
- "atlas": "textures/colormap.png",
+ "generated": "node tools/import/recolor.mjs",
+ "atlas": "models/textures/colormap.png",
  "surfaces": {
   "Cliff Face": {
    "hex": "#88796d",

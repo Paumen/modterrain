@@ -1,9 +1,9 @@
-import { readGlb, writeGlb, readAccessor, transformPoint } from './glb.mjs';
-import { markSeeThrough, TERRAIN } from './see-through.mjs';
+import { readGlb, writeGlb, readAccessor, transformPoint } from '../lib/glb.mjs';
+import { markSeeThrough, TERRAIN } from '../lib/see-through.mjs';
 
 const input = process.argv[2];
 if (!input) {
-  console.error('usage: node tools/merge-scene.mjs <scene.glb>');
+  console.error('usage: node tools/scene/merge-scene.mjs <scene.glb>');
   process.exit(1);
 }
 const outGlb = input.replace(/\.glb$/, '_merged.glb');

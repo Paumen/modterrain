@@ -1,11 +1,11 @@
 import { readdirSync, readFileSync, mkdirSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readGlb, writeGlb, measureScene, UNITS_PER_CELL } from './glb.mjs';
+import { readGlb, writeGlb, measureScene, UNITS_PER_CELL } from '../lib/glb.mjs';
 
-const ROOT = fileURLToPath(new URL('..', import.meta.url));
-const ATOMS = join(ROOT, 'atoms');
-const PLACEMENTS = join(ROOT, 'assemblies', 'placements.json');
+const ROOT = fileURLToPath(new URL('../..', import.meta.url));
+const ATOMS = join(ROOT, 'models', 'atoms');
+const PLACEMENTS = join(ROOT, 'models', 'assemblies', 'placements.json');
 
 /* Placements are Unity left-handed; the GLBs were mirrored in X by the FBX →
  * glTF conversion, so each transform must be conjugated by diag(-1, 1, 1):
@@ -233,12 +233,12 @@ function main(argv) {
 
   const data = JSON.parse(readFileSync(option('data', PLACEMENTS), 'utf8'));
   const assemblies = data.assemblies ?? data;
-  const outDir = resolve(ROOT, option('out', 'assemblies'));
+  const outDir = resolve(ROOT, option('out', 'models/assemblies'));
   const mirror = !flag('no-mirror');
 
   const wanted = flag('all') ? Object.keys(assemblies) : names;
   if (!wanted.length) {
-    console.error('usage: node tools/assemble.mjs <assembly>... [--all] [--out dir] [--no-mirror]');
+    console.error('usage: node tools/build/assemble.mjs <assembly>... [--all] [--out dir] [--no-mirror]');
     console.error(`${Object.keys(assemblies).length} assemblies in ${basename(option('data', PLACEMENTS))}`);
     process.exitCode = 1;
     return;
@@ -269,7 +269,7 @@ function main(argv) {
     const measured = measureScene(built);
     const size = measured.dwh.map((value) => Math.round(value * 10) / 10).join(' × ');
     console.log(`  ${name}: ${built.placed}/${placements.length} pieces, ${size} cells, ${measured.triangles} tris, ${(built.bin.length / 1024).toFixed(0)} KB`);
-    if (built.missing.length) console.log(`    not in atoms/: ${built.missing.join(', ')}`);
+    if (built.missing.length) console.log(`    not in models/atoms/: ${built.missing.join(', ')}`);
   }
 }
 

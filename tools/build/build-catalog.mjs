@@ -2,24 +2,24 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { readGlb, measureScene, trianglesPerUnit, BUDGET_PER_UNIT, UNITS_PER_CELL } from './glb.mjs';
+import { readGlb, measureScene, trianglesPerUnit, BUDGET_PER_UNIT, UNITS_PER_CELL } from '../lib/glb.mjs';
 import {
   FAMILIES, SHAPES, LAYERS, SIZE_GROUPS, ASSEMBLY_GROUPS, SCENE_GROUPS, TABS,
   determineFamily, determineShape, determineLayer, determineSize, determineSizeGroup,
   determineAssemblyGroup, determineSceneGroup, determineTraits, determineVariant, readableName,
-} from './taxonomy.mjs';
-import { TEXTURE_BY_MATERIAL } from './textures.mjs';
-import { averageColor } from './png.mjs';
+} from '../lib/taxonomy.mjs';
+import { TEXTURE_BY_MATERIAL } from '../lib/textures.mjs';
+import { averageColor } from '../lib/png.mjs';
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const ATOMS_DIR = join(ROOT, 'atoms');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ATOMS_DIR = join(ROOT, 'models', 'atoms');
 const CATALOG_DIR = join(ROOT, 'catalog');
-const TEXTURES_DIR = join(ROOT, 'textures');
-const ASSEMBLIES_DIR = join(ROOT, 'assemblies');
-const SCENES_DIR = join(ROOT, 'scenes');
+const TEXTURES_DIR = join(ROOT, 'models', 'textures');
+const ASSEMBLIES_DIR = join(ROOT, 'models', 'assemblies');
+const SCENES_DIR = join(ROOT, 'models', 'scenes');
 
 /* Written by tools/import/recolor.mjs: which surfaces take their colour from
- * textures/colormap.png, and what colour that is. */
+ * models/textures/colormap.png, and what colour that is. */
 const PALETTE = JSON.parse(readFileSync(join(CATALOG_DIR, 'palette.json'), 'utf8'));
 
 const MATERIAL_NAMES = {
@@ -110,7 +110,7 @@ function toHex([r, g, b] = [1, 1, 1]) {
 const averageColorCache = new Map();
 function swatchColor(source, baseColorFactor) {
   // A surface on the shared colormap has no colour of its own to read: it
-  // points a UV at `textures/colormap.png` and takes the colour there, which
+  // points a UV at `models/textures/colormap.png` and takes the colour there, which
   // tools/import/recolor.mjs wrote down when it aimed the UV.
   const mapped = PALETTE.surfaces[source];
   if (mapped) return mapped.hex;
@@ -147,7 +147,7 @@ function writeVersion() {
 }
 
 const files = readdirSync(ATOMS_DIR).filter((name) => name.endsWith('.glb')).sort();
-if (files.length === 0) throw new Error('no .glb files in atoms/');
+if (files.length === 0) throw new Error('no .glb files in models/atoms/');
 
 const nodeNames = new Map();
 
@@ -207,7 +207,7 @@ function describe(dir, prefix, file, classify) {
 }
 
 const models = files.map((file) => ({
-  ...describe(ATOMS_DIR, 'atoms', file, (id) => {
+  ...describe(ATOMS_DIR, 'models/atoms', file, (id) => {
     const size = determineSize(id);
     return {
       family: determineFamily(id).id,
@@ -233,7 +233,7 @@ const assemblyFiles = existsSync(ASSEMBLIES_DIR)
   ? readdirSync(ASSEMBLIES_DIR).filter((name) => name.endsWith('.glb')).sort()
   : [];
 
-const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assemblies', file, (id) => {
+const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'models/assemblies', file, (id) => {
   const placed = placements[id] ?? [];
 
   const counts = new Map();
@@ -266,7 +266,7 @@ const assemblies = assemblyFiles.map((file) => describe(ASSEMBLIES_DIR, 'assembl
 
 // Scenes are full built dioramas, not reusable kit pieces; a scene's piece
 // breakdown comes from a same-named JSON file next to its glb, if one exists
-// (scenes/riverfall-bluff.json for scenes/Riverfall_Bluff.glb). Scenes with no
+// (models/scenes/riverfall-bluff.json for models/scenes/Riverfall_Bluff.glb). Scenes with no
 // such file (hand-authored, not built from placements.json) just show no
 // piece breakdown, the same as a plain model.
 const scenePlacementsCache = new Map();
@@ -284,7 +284,7 @@ const sceneFiles = existsSync(SCENES_DIR)
   ? readdirSync(SCENES_DIR).filter((name) => name.endsWith('.glb')).sort()
   : [];
 
-const scenes = sceneFiles.map((file) => describe(SCENES_DIR, 'scenes', file, (id) => {
+const scenes = sceneFiles.map((file) => describe(SCENES_DIR, 'models/scenes', file, (id) => {
   const placed = scenePlacements(id);
   if (!placed) {
     return {
@@ -343,7 +343,7 @@ const FACETS = {
 
 const allIds = [...FAMILIES, ...SHAPES, ...LAYERS, ...SIZE_GROUPS, ...ASSEMBLY_GROUPS, ...SCENE_GROUPS].map((g) => g.id);
 const duplicateIds = allIds.filter((id, i) => allIds.indexOf(id) !== i);
-if (duplicateIds.length) throw new Error(`duplicate facet id in tools/taxonomy.mjs: ${[...new Set(duplicateIds)].join(', ')}`);
+if (duplicateIds.length) throw new Error(`duplicate facet id in tools/lib/taxonomy.mjs: ${[...new Set(duplicateIds)].join(', ')}`);
 
 const views = TABS.map((tab) => {
   const { list, field, source = models, offset = 0 } = FACETS[tab.facet];
@@ -380,7 +380,7 @@ const placed = new Set(views.flatMap((v) => v.sections.flatMap((s) => s.models))
 const orphaned = entries.filter((_, index) => !placed.has(index));
 
 const catalog = {
-  generated: 'node tools/build-catalog.mjs',
+  generated: 'node tools/build/build-catalog.mjs',
   total: models.length,
   assemblies: assemblies.length,
   scenes: scenes.length,
@@ -422,7 +422,7 @@ if (orphaned.length) {
   console.warn(`\n! ${orphaned.length} models land in no tab: ${orphaned.map((m) => m.id).join(', ')}`);
 }
 if (unknownMaterials.size) {
-  console.warn(`\n! material without a cleaned-up name in tools/build-catalog.mjs: ${[...unknownMaterials].join(', ')}`);
+  console.warn(`\n! material without a cleaned-up name in tools/build/build-catalog.mjs: ${[...unknownMaterials].join(', ')}`);
 }
 
 const missingTexture = models.filter((m) => m.missingTextures.length > 0);

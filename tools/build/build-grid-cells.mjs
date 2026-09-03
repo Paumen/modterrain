@@ -1,13 +1,13 @@
 import { writeFileSync, existsSync } from 'node:fs';
-import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
-import { buildIndex, raycast } from './ray.mjs';
-import { TERRAIN } from './see-through.mjs';
+import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from '../lib/glb.mjs';
+import { buildIndex, raycast } from '../lib/ray.mjs';
+import { TERRAIN } from '../lib/see-through.mjs';
 
 const VERSION = '1.0.0';
 
 const input = process.argv[2];
 if (!input) {
-  console.error('usage: node tools/build-grid-cells.mjs <scene.glb> [--force]');
+  console.error('usage: node tools/build/build-grid-cells.mjs <scene.glb> [--force]');
   process.exit(1);
 }
 if (!/\.glb$/i.test(input)) {

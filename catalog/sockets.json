@@ -1,5 +1,5 @@
 {
- "generated": "node tools/build-sockets.mjs",
+ "generated": "node tools/build/build-sockets.mjs",
  "note": "Coloured sockets per piece, in the piece's own frame. Cell (0,0) is the origin cell, spanning -0.5..0.5. Props and docks are excluded. tris are the exact 2D profile in the socket plane: for a vertical socket (u = the lateral axis, v = height), for a horizontal one (u = x, v = z).",
  "skipped": "^(Docks_|Prop_)",
  "pieces": {
