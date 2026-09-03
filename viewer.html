@@ -42,6 +42,7 @@
   <button id="rotR" title="Orbit right (&#8594;)">&#10227;</button>
   <button id="edit" title="Review the walkable grid (E)">&#9998;</button>
   <button id="dbg" title="Collision rays (D)" class="on">&#9788;</button>
+  <button id="grass" title="Scattered grass (G)">&#127807;</button>
   <button id="path" title="Record a path: tap start, then end (P)" hidden>&#8618;</button>
   <button id="draw" title="Draw marks, or move the camera" hidden>&#9995;</button>
   <button id="kind" title="What a mark means: add, wrong, mark" hidden>+</button>
@@ -54,6 +55,7 @@
 <script type="module">
 import { buildIndex, raycast as castRay } from './tools/lib/ray.mjs';
 import { isSeeThrough } from './tools/lib/see-through.mjs';
+import { instanceMatrix } from './tools/lib/scatter.mjs';
 
 const VIEWER_VERSION = '1.0.0';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
@@ -742,6 +744,7 @@ function fromGrid(grid) {
       + `<i>node</i> ${cur}/${nav.nodes.length} <i>cell</i> ${n.c},${n.r} <i>y</i> ${num(n.p[1])} <i>ways</i> ${n.n.length}<br>`
       + `<i>eye</i> ${num(camera.position.x, 1)},${num(camera.position.y, 1)},${num(camera.position.z, 1)}<br>`
       + `<i>route</i> ${route.length} ${tween ? 'moving' : 'idle'} <i>pads</i> ${shown.size} <i>back</i> ${history.length}<br>`
+      + `<i>grass</i> ${grass ? (grassOn ? `${grass.meta.counts.reduce((a, b) => a + b, 0)} &middot; ${grassBandAt(n.p)}` : 'off') : '\u2014'}<br>`
       + `<i>rays</i> ${debugRays ? `${rayCount()} hit ${hits}` : 'off'}`
       + `${debugRays ? ` <i>near</i> ${num(near)} <i>drop</i> ${num(drop)}` : ''}`
       + `</small>`;
@@ -972,7 +975,7 @@ function fromGrid(grid) {
     document.getElementById('edit').classList.toggle('on', on);
     document.getElementById('path').classList.toggle('on', pathMode);
     for (const id of ['save', 'pin', 'path', 'undo', 'kind', 'draw']) document.getElementById(id).hidden = !on;
-    for (const id of ['back', 'dbg']) document.getElementById(id).hidden = on;
+    for (const id of ['back', 'dbg', 'grass']) document.getElementById(id).hidden = on;
     document.getElementById('undo').disabled = !undoStack.length;
     renderKind();
     updateMarkers();
@@ -1185,6 +1188,7 @@ function fromGrid(grid) {
     if (e.key === 'Backspace' && !editMode) { e.preventDefault(); goBack(); }
     if (e.key === 'e' || e.key === 'E') setEditMode(!editMode);
     if (e.key === 'd' || e.key === 'D') setDebugRays(!debugRays);
+    if (e.key === 'g' || e.key === 'G') setGrass(!grassOn);
     if (editMode && (e.key === 'p' || e.key === 'P')) setPathMode(!pathMode);
     if (editMode && e.key === 'Escape' && selected >= 0) { selected = -1; updateMarkers(); }
     if (editMode && (e.key === 'z' || e.key === 'Z')) undo();
@@ -1192,6 +1196,45 @@ function fromGrid(grid) {
     if (editMode && (e.key === 'b' || e.key === 'B')) setDrawing(!drawing);
     if (editMode && (e.key === 'v' || e.key === 'V')) pinView();
   });
+  let grassOn = true;
+  let grass = null;
+  async function loadGrass() {
+    const data = await fetch(`models/scenes/${SCENE}_grass.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    if (!data) { document.getElementById('grass').hidden = true; return; }
+    const buckets = data.pieces.map(() => []);
+    for (const item of data.items) buckets[item[0]].push(item);
+    const meshes = [];
+    for (let i = 0; i < data.pieces.length; i++) {
+      if (!buckets[i].length) continue;
+      const loaded = await BABYLON.SceneLoader.ImportMeshAsync('', 'models/props/', `${data.pieces[i]}.glb`, scene);
+      const mesh = loaded.meshes.find((m) => m.getTotalVertices() > 0);
+      if (!mesh) continue;
+      mesh.setParent(null);
+      mesh.bakeCurrentTransformIntoVertices();
+      mesh.isPickable = false;
+      mesh.alwaysSelectAsActiveMesh = true;
+      const buf = new Float32Array(buckets[i].length * 16);
+      buckets[i].forEach((item, k) => buf.set(instanceMatrix(item), k * 16));
+      mesh.thinInstanceSetBuffer('matrix', buf, 16);
+      for (const root of loaded.meshes) if (root !== mesh && root.getTotalVertices() === 0) root.dispose();
+      meshes.push(mesh);
+    }
+    grass = { meta: data.meta, meshes };
+    setGrass(grassOn);
+  }
+  function grassBandAt(p) {
+    if (!grass) return null;
+    const { axis, cuts, bands } = grass.meta;
+    const v = axis === 'x' ? p[0] : p[2];
+    return bands[v < cuts[0] ? 0 : v < cuts[1] ? 1 : 2];
+  }
+  function setGrass(on) {
+    grassOn = on;
+    if (grass) for (const m of grass.meshes) m.setEnabled(on);
+    document.getElementById('grass').classList.toggle('on', on);
+    renderHud();
+  }
+
   let wheelAt = 0;
   addEventListener('wheel', (e) => {
     if (performance.now() - wheelAt < 350) return;
@@ -1205,6 +1248,7 @@ function fromGrid(grid) {
   document.getElementById('tiltD').addEventListener('click', () => setView(-1));
   document.getElementById('edit').addEventListener('click', () => setEditMode(!editMode));
   document.getElementById('dbg').addEventListener('click', () => setDebugRays(!debugRays));
+  document.getElementById('grass').addEventListener('click', () => setGrass(!grassOn));
   document.getElementById('undo').addEventListener('click', undo);
   document.getElementById('kind').addEventListener('click', cycleKind);
   document.getElementById('draw').addEventListener('click', () => setDrawing(!drawing));
@@ -1212,6 +1256,7 @@ function fromGrid(grid) {
   document.getElementById('path').addEventListener('click', () => setPathMode(!pathMode));
   document.getElementById('save').addEventListener('click', exportReview);
 
+  loadGrass();
   renderHud();
   rebuildMarkers();
   glideFacing(cur, 1);
