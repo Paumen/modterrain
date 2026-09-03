@@ -342,7 +342,7 @@ function fromGrid(grid) {
   });
 
   scene.onBeforeRenderObservable.add(() => {
-    avatar.position.set(camera.target.x, camera.target.y - eye + 0.25, camera.target.z);
+    avatar.position.set(camera.target.x, Math.floor(camera.target.y - eye + 0.02) + 0.75, camera.target.z);
   });
 
   let rayMesh = null;
