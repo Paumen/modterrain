@@ -78,10 +78,22 @@ Babylon's PBR path is not a plain sum of the two light intensities.
 Matching it exactly is a trap: the darkest tuft texel is still inside the range
 the blades themselves cover, so the tufts dissolve into the ground and read as
 noise. `--ground-shade` (0.5) takes the ground down in value while keeping the
-hue, and the tufts carry a baked base-to-tip ramp in `COLOR_0` —
-`--base-tint` 0.58 to `--tip-tint` 1.15, jittered ±10% per clump, because the
-atlas gradient alone is a 13% change that nothing survives. Measured on the
-same view, ground and grass went from 1.46:1 to 1.94:1 in contrast.
+hue.
+
+The other half is the lighting. A 1.2 hemispheric fill on top of a 1.3 key put
+every slope at nearly the same value, which is what made the terrain read flat
+and left the grass nothing to sit against. The key now carries the scene at
+1.75, warm, against a cool 0.5 sky. Measured on one view, blade against the
+ground under it:
+
+| | ground | contrast vs tuft texel |
+| --- | --- | --- |
+| ground matched to tufts, old lights | 117,148,64 | 1.13:1 |
+| ground shaded, old lights | 88,110,52 | 1.86:1 |
+| ground shaded, new lights | 68,85,44 | 2.67:1 |
+
+The tufts' own baked shading is untouched throughout — it is the authored
+atlas gradient, and nothing in this pipeline rewrites it.
 
 Toggling the grass off puts the original green back.
 
