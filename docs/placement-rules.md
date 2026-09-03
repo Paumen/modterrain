@@ -67,49 +67,49 @@ measured. Check a placement set with `tools/lint-sockets.mjs` (below).
 
 ## Sockets
 
-Colours name a seam profile, but only within a piece family. Across families
-the same profile can carry a different colour, and the demo scene (whose
-seams are correct) shows which pairings the kit intends:
+The demo scene is the legend. Read at socket level (one piece, one colour,
+one plane, and what covers it), it says:
 
-- Within a family, same colour meets same colour at the same level: Yellow
-  chains cliff tops, Green chains walls, Pink chains sharp hills, Blue chains
-  gentle hills, Red chains path edges, sand inclines and walkway steps,
-  Violet chains ground lips.
-- Orange is the one-level-up face. A hill's high end and a cliff Top's rear
-  lip are Orange and meet Violet one level higher (cliff Top meets grass at
-  +2). Retaining-wall Mid to Top is Orange to Orange at +1.
-- The path family paints its grass side Violet and its dirt side Red whatever
-  the profile, so a gentle path incline's Violet meets hill Blue, and a sharp
-  one's meets hill Pink, at the same level.
-- The walkway family's Pink (path transition curves) meets the path family's
-  Red. Walkway step Red meets retaining-wall Orange and cliff-top Yellow.
-- Plain Hidden is a real seam partner: cliff Base and Mid end caps, wall
-  tops, and every bottom. Foot-level grass butts Base end caps. A
-  retaining-wall Mid's Orange top carries the bottoms of whatever sits on the
-  terrace above (tiered grass, walkway steps, path, grass).
-- Cave floor and ceiling tiles are Yellow and meet wall Green.
-- Sand Violet is 0 to 0.5 and meets sand; sand incline Red meets hill Pink
-  and Blue half a level down.
+- A coloured socket is paired by the same colour covering its full outline.
+  Yellow chains cliff tops and cave tiles, Green chains walls, Pink chains
+  sharp hills, Blue chains gentle hills, Red chains path edges, sand inclines
+  and walkway steps, Violet chains ground lips, Orange chains retaining walls
+  and walkway tops. Level offsets are fixed by the pieces (retaining Mid to
+  Top +1, Wall_Incline ±2, cave-edge Top +1).
+- Orange takes Violet from the level above. A cliff Top's rear lip (0.25
+  tall) is covered in full by grass Violet at +2. A hill's high end (1.25
+  tall) is covered along its top 0.25 by grass Violet at +1; the rest faces
+  the enclosed void under the plateau.
+- A ground lip may meet the low band of a hill side: Violet against Pink or
+  Blue, either way round. Violet also meets Red where a grass lip runs
+  against a path edge or a step side, Red meets Green where a path enters a
+  cave, and cave floor and ceiling tiles (Yellow) seat under wall ends
+  (Green).
+- Plain Hidden is the free socket. Cliff Base and Mid pieces chain through
+  plain end caps, bottoms are plain, and a retaining-wall Mid's Orange top
+  carries plain bottoms of whatever sits on the terrace above. Plain never
+  pairs and never counts as misuse.
+- Anything else fully covering a coloured socket is misuse. A socket with no
+  full-cover partner is buried (informational) unless it is exposed.
 
-`docs/seam-vocabulary.json` is the full list, learned from the demo and the
-island scene: colour and family on both sides plus the level offset, with
-counts. Seams outside it are reported by the linter.
+The path family paints its grass side Violet and its dirt side Red whatever
+the profile; its outer side, which is buried against a hill, is plain.
 
 ## Linting a placement set
 
 ```
-node tools/lint-sockets.mjs scenes/large_island_terrain_v3.json --ocean -5.5 --vocab docs/seam-vocabulary.json
+node tools/lint-sockets.mjs scenes/large_island_terrain_v3.json --ocean -5.5
 node tools/lint-sockets.mjs assemblies/placements.json --assembly River_Straight_Wide --verbose
 node tools/lint-sockets.mjs scenes/island.json --plain --json report.json
-node tools/lint-sockets.mjs scenes/new_scene.json --learn docs/seam-vocabulary.json
 ```
 
 Input is a scene dump (`pieces` with `prefab` and `matrix`) or an assembly
 placement list (`pos`, `quat`, `scale`). The tool places every atom, then:
 
-- Seam match: coplanar, opposite-facing socket faces of two pieces that
-  overlap. Same colour, or Orange against Violet, counts as matched; any
-  other pairing is listed under mismatches. Informational.
+- Socket pairing: coplanar, opposite-facing faces of other pieces are
+  summed per colour over each socket. A socket is paired when an allowed
+  colour covers at least 90% of it (or, for Orange, 90% of its top 0.25
+  band with Violet), wrong when any other colour does, buried otherwise.
 - Butt joints: a sample point that lies on an opposite-facing triangle of
   another piece (any material, any orientation, within 0.002) is covered.
   This is the kit's own rule, socket against socket, and it is what keeps
@@ -121,17 +121,13 @@ placement list (`pos`, `quat`, `scale`). The tool places every atom, then:
   exposed only when a small cone around the escaping ray escapes too;
   otherwise it is a hairline crack, reported separately. `--plain` adds the
   uncoloured `Hidden` faces (bottoms and backs).
-- Seam vocabulary: with `--vocab`, every coplanar seam (colour, family and
-  level offset on both sides) is looked up in the learned list and unknown
-  pairings are reported. `--learn` adds a trusted scene's seams to the list.
-
-Exit code is 1 when any face is exposed or any seam is outside the vocabulary. Demo scene: 11 exposed faces, 10 of
+Exit code is 1 when any face is exposed or any socket is paired with a wrong colour. Demo scene: 11 exposed faces, 10 of
 them one open retaining-wall corner at (-11, 5, -11) and one sliver where a
 grass slab meets a hill at (-44, -5, -26); both verified by rendering from the
 escaping ray's direction. `scenes/island.json`: 0. Mutating the demo (five
 pieces each: grass tiles removed, cliff tops raised a level, hill esses
 rotated, Mid esses un-mirrored with `--plain`) gives 38, 54, 68 and 33
 exposed faces, all within four cells of a mutated piece; per site the
-detection is 5/5, 5/5, 4/5 and 3/5. The vocabulary check adds 0, 99, 36 and
-6 unknown-seam faces for the same mutations, so a raised cliff top or a
-flipped Mid esse is caught by its seams even where nothing becomes visible.
+detection is 5/5, 5/5, 4/5 and 3/5. Wrong-colour sockets: demo 17 (among
+them the two cliff Tops placed at Base height at glTF (23.5, -4, -27.5) and
+(14.5, 6, -37.5)), island 0.

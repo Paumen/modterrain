@@ -13,10 +13,10 @@ const option = (name, fallback) => {
   const at = argv.indexOf(`--${name}`);
   return at === -1 ? fallback : argv[at + 1];
 };
-const values = new Set(['assembly', 'json', 'limit', 'ocean', 'reach', 'learn', 'vocab'].map((n) => option(n, null)).filter(Boolean));
+const values = new Set(['assembly', 'json', 'limit', 'ocean', 'reach'].map((n) => option(n, null)).filter(Boolean));
 const input = argv.find((a) => !a.startsWith('--') && !values.has(a));
 if (!input) {
-  console.error('usage: node tools/lint-sockets.mjs <scene.json | placements.json> [--assembly name] [--ocean y] [--reach cells] [--no-mirror] [--plain] [--verbose] [--limit n] [--json report.json] [--vocab seams.json | --learn seams.json]');
+  console.error('usage: node tools/lint-sockets.mjs <scene.json | placements.json> [--assembly name] [--ocean y] [--reach cells] [--no-mirror] [--plain] [--verbose] [--limit n] [--json report.json]');
   process.exit(1);
 }
 
@@ -28,8 +28,18 @@ const PLAIN = flag('plain');
 const VERBOSE = flag('verbose');
 const EPS = 0.02;
 const LIFT = 0.01;
-const family = (name) => name.replace(/_\d+x\d+/, '').replace(/_(Wide|Narrow)/, '');
-const VOCAB = option('vocab', null) ? new Set(Object.keys(JSON.parse(readFileSync(option('vocab'), 'utf8')).seams)) : null;
+const FULL = 0.9;
+const BAND = 0.25;
+const PAIRS = [
+  ['Hidden Orange', 'Hidden Violet'],
+  ['Hidden Violet', 'Hidden Pink'],
+  ['Hidden Violet', 'Hidden Blue'],
+  ['Hidden Violet', 'Hidden Red'],
+  ['Hidden Red', 'Hidden Green'],
+  ['Hidden Yellow', 'Hidden Green'],
+];
+const ALLOWED = (socket, partner) => partner === socket.material
+  || PAIRS.some(([a, b]) => (a === socket.material && b === partner) || (b === socket.material && a === partner));
 
 function quatMatrix(pos, quat, scale) {
   const [qx, qy, qz, qw] = quat;
@@ -150,7 +160,7 @@ placements.forEach((placement, index) => {
     n = n.map((x) => (x / len) * flip);
     const centroid = [0, 1, 2].map((k) => (w[0][k] + w[1][k] + w[2][k]) / 3);
     const samples = [centroid, ...w.map((p) => [0, 1, 2].map((k) => (p[k] * 2 + centroid[k]) / 3))];
-    const face = { index, piece: placement.piece, material: tri.material, normal: n, centroid, samples, axis: -1, covered: 0, partners: new Set(), seams: new Set(), exposed: false, plainOnly };
+    const face = { index, piece: placement.piece, material: tri.material, normal: n, centroid, samples, axis: -1, cover: new Map(), exposed: false, plainOnly };
     const axis = n.findIndex((x) => Math.abs(x) > 0.999);
     if (axis < 0) {
       skewed++;
@@ -179,10 +189,7 @@ for (const list of planes.values()) {
       const w = Math.min(a.max[0], b.max[0]) - Math.max(a.min[0], b.min[0]);
       const h = Math.min(a.max[1], b.max[1]) - Math.max(a.min[1], b.min[1]);
       if (w <= EPS || h <= EPS) continue;
-      a.covered += (w * h) / a.area;
-      a.partners.add(b.material);
-      const dy = Math.round((placements[b.index].matrix[7] - placements[a.index].matrix[7]) * 4) / 4;
-      a.seams.add(`${a.material} ${family(a.piece)} > ${b.material} ${family(b.piece)} dy=${dy}`);
+      a.cover.set(b.material, (a.cover.get(b.material) ?? 0) + w * h);
     }
   }
 }
@@ -277,25 +284,58 @@ for (const face of faces) {
   }
 }
 
+const sockets = new Map();
+for (const face of faces) {
+  if (face.plainOnly || face.material === 'Hidden' || face.axis < 0 || face.area === undefined) continue;
+  const key = `${face.index}|${face.material}|${face.axis}|${face.coord}|${face.sign}`;
+  const s = sockets.get(key) ?? sockets.set(key, { index: face.index, piece: face.piece, material: face.material, axis: face.axis, coord: face.coord, sign: face.sign, faces: [], area: 0, top: -Infinity }).get(key);
+  s.faces.push(face);
+  s.area += face.area;
+  if (face.axis !== 1) s.top = Math.max(s.top, face.max[0]);
+}
+const judge = (s) => {
+  const total = new Map();
+  for (const face of s.faces) for (const [m, a] of face.cover) total.set(m, (total.get(m) ?? 0) + a);
+  const fraction = (m) => (total.get(m) ?? 0) / s.area;
+  for (const [m] of total) if (fraction(m) >= FULL && ALLOWED(s, m)) return { state: 'paired', partner: m };
+  if (s.material === 'Hidden Orange' && s.axis !== 1) {
+    const band = s.faces.filter((f) => f.min[0] >= s.top - BAND - 0.01);
+    const bandArea = band.reduce((sum, f) => sum + f.area, 0);
+    const violet = band.reduce((sum, f) => sum + (f.cover.get('Hidden Violet') ?? 0), 0);
+    if (bandArea > 0 && violet / bandArea >= FULL) return { state: 'paired', partner: 'Hidden Violet (top band)' };
+  }
+  for (const [m] of total) if (m !== 'Hidden' && fraction(m) >= FULL) return { state: 'wrong', partner: m };
+  return { state: s.faces.some((f) => f.exposed) ? 'exposed' : 'buried', partner: null };
+};
 const perMaterial = new Map();
 const perPiece = new Map();
-const seamCounts = new Map();
-const unknown = new Map();
+const wrongPairs = new Map();
+const wrongSockets = [];
 const stat = (map, key) => {
-  if (!map.has(key)) map.set(key, { faces: 0, seam: 0, unknown: 0, cracked: 0, exposed: 0 });
+  if (!map.has(key)) map.set(key, { sockets: 0, paired: 0, buried: 0, wrong: 0, faces: 0, cracked: 0, exposed: 0 });
   return map.get(key);
 };
+for (const s of sockets.values()) {
+  const verdict = judge(s);
+  s.verdict = verdict;
+  for (const st of [stat(perMaterial, s.material), stat(perPiece, s.piece)]) {
+    st.sockets++;
+    if (verdict.state === 'paired') st.paired++;
+    if (verdict.state === 'buried') st.buried++;
+    if (verdict.state === 'wrong') st.wrong++;
+  }
+  if (verdict.state === 'wrong') {
+    wrongSockets.push(s);
+    const key = `${s.material} on ${s.piece} covered by ${verdict.partner}`;
+    wrongPairs.set(key, (wrongPairs.get(key) ?? 0) + 1);
+  }
+}
 for (const face of faces) {
-  for (const key of face.seams) seamCounts.set(key, (seamCounts.get(key) ?? 0) + 1);
-  const novel = VOCAB ? [...face.seams].filter((key) => !VOCAB.has(key)) : [];
-  for (const key of novel) unknown.set(key, (unknown.get(key) ?? 0) + 1);
   if (face.plainOnly) continue;
-  for (const s of [stat(perMaterial, face.material), stat(perPiece, face.piece)]) {
-    s.faces++;
-    if (face.seams.size) s.seam++;
-    if (novel.length) s.unknown++;
-    if (face.exposed) s.exposed++;
-    else if (face.crack) s.cracked++;
+  for (const st of [stat(perMaterial, face.material), stat(perPiece, face.piece)]) {
+    st.faces++;
+    if (face.exposed) st.exposed++;
+    else if (face.crack) st.cracked++;
   }
 }
 const exposed = faces.filter((f) => f.exposed);
@@ -314,25 +354,14 @@ if (missing.size) console.log(`  not in atoms/: ${[...missing].join(', ')}`);
 const cracked = faces.filter((f) => f.crack && !f.exposed).length;
 console.log(`\nexposed hidden faces: ${exposed.length}  (open to the sky or the horizon through a gap wider than a hairline; the real errors)`);
 console.log(`hairline cracks: ${cracked}  (a hidden face reachable only through a sub-0.06-cell gap; informational)`);
-console.log('\nper socket colour              faces  seam-matched  unknown-seam  cracked  exposed');
+console.log(`wrong-colour sockets: ${wrongSockets.length}  (a coloured socket fully covered by a colour the kit does not pair it with)`);
+console.log('\nper socket colour           sockets  paired  buried  wrong | faces  cracked  exposed');
 for (const [material, s] of [...perMaterial].sort((a, b) => b[1].faces - a[1].faces)) {
-  console.log(`  ${pad(material, 26)} ${pad(s.faces, 7)} ${pad(s.seam, 13)} ${pad(s.unknown, 13)} ${pad(s.cracked, 8)} ${s.exposed}`);
+  console.log(`  ${pad(material, 24)} ${pad(s.sockets, 8)} ${pad(s.paired, 7)} ${pad(s.buried, 7)} ${pad(s.wrong, 5)} | ${pad(s.faces, 6)} ${pad(s.cracked, 8)} ${s.exposed}`);
 }
-if (VOCAB) {
-  console.log(`\nseams outside the vocabulary: ${[...unknown.values()].reduce((x, y) => x + y, 0)} faces in ${unknown.size} pairings`);
-  for (const [key, n] of [...unknown].sort((a, b) => b[1] - a[1]).slice(0, LIMIT)) console.log(`  ${pad(n, 6)} ${key}`);
-}
-const learn = option('learn', null);
-if (learn) {
-  let previous = { sources: [], seams: {} };
-  try {
-    previous = JSON.parse(readFileSync(learn, 'utf8'));
-  } catch {}
-  const seams = { ...previous.seams };
-  for (const [key, n] of seamCounts) seams[key] = (seams[key] ?? 0) + n;
-  const sources = [...new Set([...(previous.sources ?? []), label])];
-  writeFileSync(learn, JSON.stringify({ sources, seams: Object.fromEntries(Object.entries(seams).sort((a, b) => b[1] - a[1])) }, null, 2));
-  console.log(`\n${seamCounts.size} seam pairings from this input, ${Object.keys(seams).length} in ${learn} (${sources.length} sources)`);
+if (wrongPairs.size) {
+  console.log(`\nwrong-colour pairings (top ${LIMIT})`);
+  for (const [key, n] of [...wrongPairs].sort((a, b) => b[1] - a[1]).slice(0, LIMIT)) console.log(`  ${pad(n, 6)} ${key}`);
 }
 const worst = [...perPiece].filter(([, s]) => s.exposed).sort((a, b) => b[1].exposed - a[1].exposed);
 if (worst.length) {
@@ -351,6 +380,18 @@ if (VERBOSE && exposed.length) {
   }
 }
 
+if (VERBOSE && wrongSockets.length) {
+  console.log('\nwrong-colour sockets');
+  for (const s of wrongSockets) {
+    const o = [0, 1, 2].filter((k) => k !== s.axis);
+    const c = [0, 0, 0];
+    c[s.axis] = s.coord;
+    c[o[0]] = (Math.min(...s.faces.map((f) => f.min[0])) + Math.max(...s.faces.map((f) => f.max[0]))) / 2;
+    c[o[1]] = (Math.min(...s.faces.map((f) => f.min[1])) + Math.max(...s.faces.map((f) => f.max[1]))) / 2;
+    console.log(`  #${s.index} ${s.piece} at ${placementCenter(s.index).join(',')}  ${s.material} facing ${s.sign > 0 ? '+' : '-'}${'xyz'[s.axis]} near ${c.map(round).join(',')}  covered by ${s.verdict.partner}`);
+  }
+}
+
 const report = option('json', null);
 if (report) {
   writeFileSync(report, JSON.stringify({
@@ -361,7 +402,8 @@ if (report) {
     cracked,
     missing: [...missing],
     materials: Object.fromEntries(perMaterial),
-    unknownSeams: Object.fromEntries(unknown),
+    wrongColour: wrongSockets.map((s) => ({ placement: s.index, piece: s.piece, at: placementCenter(s.index), material: s.material, partner: s.verdict.partner })),
+    sockets: Object.fromEntries(perMaterial),
     exposed: exposed.map((f) => ({
       placement: f.index, piece: f.piece, at: placementCenter(f.index), material: f.material,
       normal: f.normal.map(round), near: f.centroid.map(round), open: f.open.map(round),
@@ -370,4 +412,4 @@ if (report) {
   console.log(`\nreport written to ${report}`);
 }
 
-process.exitCode = exposed.length || unknown.size ? 1 : 0;
+process.exitCode = exposed.length || wrongSockets.length ? 1 : 0;
