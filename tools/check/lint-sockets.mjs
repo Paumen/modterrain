@@ -1,12 +1,12 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadPlacements } from './scene-cells.mjs';
-import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
-import { buildIndex, raycast } from './ray.mjs';
+import { loadPlacements } from '../scene/scene-cells.mjs';
+import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from '../lib/glb.mjs';
+import { buildIndex, raycast } from '../lib/ray.mjs';
 
-const ROOT = fileURLToPath(new URL('..', import.meta.url));
-const ATOMS = join(ROOT, 'atoms');
+const ROOT = fileURLToPath(new URL('../..', import.meta.url));
+const ATOMS = join(ROOT, 'models', 'atoms');
 
 const argv = process.argv.slice(2);
 const flag = (name) => argv.includes(`--${name}`);
@@ -17,7 +17,7 @@ const option = (name, fallback) => {
 const values = new Set(['assembly', 'json', 'limit', 'ocean', 'reach'].map((n) => option(n, null)).filter(Boolean));
 const input = argv.find((a) => !a.startsWith('--') && !values.has(a));
 if (!input) {
-  console.error('usage: node tools/lint-sockets.mjs <scene.json | placements.json> [--assembly name] [--ocean y] [--reach cells] [--no-mirror] [--plain] [--verbose] [--limit n] [--json report.json]');
+  console.error('usage: node tools/check/lint-sockets.mjs <scene.json | placements.json> [--assembly name] [--ocean y] [--reach cells] [--no-mirror] [--plain] [--verbose] [--limit n] [--json report.json]');
   process.exit(1);
 }
 
@@ -326,7 +326,7 @@ const label = `${basename(input)}${option('assembly', '') ? ` [${option('assembl
 
 const tested = faces.filter((f) => !f.plainOnly);
 console.log(`${label}: ${placements.length} placements, ${flatMaterial.length} triangles, ${tested.length} socket faces (${skewed} not axis aligned)`);
-if (missing.size) console.log(`  not in atoms/: ${[...missing].join(', ')}`);
+if (missing.size) console.log(`  not in models/atoms/: ${[...missing].join(', ')}`);
 const cracked = faces.filter((f) => f.crack && !f.exposed).length;
 console.log(`\nexposed hidden faces: ${exposed.length}  (open to the sky or the horizon through a gap wider than a hairline; the real errors)`);
 console.log(`  at an open edge of the scene: ${atEdge}  (nothing stands in the escaping ray's direction: a cut-out scene simply ends there)`);

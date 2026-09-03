@@ -3,7 +3,7 @@
 `catalog/sockets.json` holds every coloured socket of every terrain piece as
 data: which plane it lies in, which cell edge it belongs to, how tall it is,
 and its exact outline. It is generated from the GLBs by
-`node tools/build-sockets.mjs` and is checked by `tools/check-sockets.mjs`,
+`node tools/build/build-sockets.mjs` and is checked by `tools/check/check-sockets.mjs`,
 which validates a placement set from the table alone — no meshes, no rays.
 
 The point is that piece choice becomes a lookup instead of a geometry problem.
@@ -38,7 +38,7 @@ The point is that piece choice becomes a lookup instead of a geometry problem.
 - `skewed` records, per material, the area of coloured faces that are not
   axis-aligned. 43 pieces have some — the 45° lips on outer curves and the
   curved walkway steps. **The table does not hold those faces**; a placement
-  whose validity rests on one still needs `tools/lint-sockets.mjs`.
+  whose validity rests on one still needs `tools/check/lint-sockets.mjs`.
 
 ## Measured facts behind it
 
@@ -59,9 +59,9 @@ Read off the kit and the three Unity demo dumps (4229 placements):
 ## Checking a placement set
 
 ```
-node tools/check-sockets.mjs scenes/large_island_terrain_v3.json
-node tools/check-sockets.mjs scenes/autumn_terrain.json --open --limit 40
-node tools/check-sockets.mjs assemblies/placements.json --assembly River_Straight_Wide
+node tools/check/check-sockets.mjs models/scenes/large_island_terrain_v3.json
+node tools/check/check-sockets.mjs models/scenes/autumn_terrain.json --open --limit 40
+node tools/check/check-sockets.mjs models/assemblies/placements.json --assembly River_Straight_Wide
 ```
 
 Each socket comes out `paired`, `wrong` or `open`. The pairing rules are the
@@ -70,7 +70,7 @@ cell edge, the height band and what covers them, which is what a generator
 needs to pick the next piece. `--json` writes per-socket verdicts.
 
 `open` merges the geometry linter's `buried` and `exposed`: deciding which of
-those an unpaired socket is needs rays, so `tools/lint-sockets.mjs` stays the
+those an unpaired socket is needs rays, so `tools/check/lint-sockets.mjs` stays the
 authority on whether a scene is actually watertight.
 
 ## How well the table matches the geometry
@@ -97,9 +97,9 @@ two-cell grass strip whose Violet edge is met by a one-cell tile is 50%
 covered, and
 
 ```
-node tools/lint-sockets.mjs  scenes/half_cover_probe.json ->  Violet: 8 sockets, 2 paired
-node tools/check-sockets.mjs scenes/half_cover_probe.json ->  Violet: 8 sockets, 1 paired
-                                            ... +x at x=1 spanning z 0..2  <- Violet 0.50
+node tools/check/lint-sockets.mjs  models/scenes/half_cover_probe.json ->  Violet: 8 sockets, 2 paired
+node tools/check/check-sockets.mjs models/scenes/half_cover_probe.json ->  Violet: 8 sockets, 1 paired
+                                                         ... +x at x=1 spanning z 0..2  <- Violet 0.50
 ```
 
 The linter's exposure pass still fails that scene, so no demo baseline in

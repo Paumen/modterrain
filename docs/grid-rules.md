@@ -1,6 +1,6 @@
 # Walkable grid rules
 
-The grid is built from these rules and nothing else (`tools/build-grid-cells.mjs`).
+The grid is built from these rules and nothing else (`tools/build/build-grid-cells.mjs`).
 The avatar is a 0.5×0.5×0.5 cube. Cells are 1×1×1 units.
 
 1. A cell is a 1×1×1 unit. A node connects only to the 8 surrounding columns at

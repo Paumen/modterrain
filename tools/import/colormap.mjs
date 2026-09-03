@@ -1,7 +1,7 @@
 /* The shared colormap: what a colour means and where to find it.
  *
  * The image is the one the Taalei kits use (github.com/Paumen/Taalei,
- * `kits/colormap.png`), copied here as `textures/colormap.png`. It is a raster
+ * `kits/colormap.png`), copied here as `models/textures/colormap.png`. It is a raster
  * of 16 × 4 cells. Each cell is one vertical colour band: horizontally it is a
  * single colour, vertically it runs from light at the top to dark at the
  * bottom. A model points a UV at a spot on a band and takes that colour; two
@@ -11,7 +11,7 @@
  * Cells that are pure black are empty, not black — nothing may land there.
  */
 
-import { readPng, writePng } from '../png.mjs';
+import { readPng, writePng } from '../lib/png.mjs';
 
 export const COLUMNS = 16;
 export const ROWS = 4;

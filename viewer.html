@@ -52,8 +52,8 @@
 <script src="vendor/babylon/babylon.js"></script>
 <script src="vendor/babylon/babylonjs.loaders.min.js"></script>
 <script type="module">
-import { buildIndex, raycast as castRay } from './tools/ray.mjs';
-import { isSeeThrough } from './tools/see-through.mjs';
+import { buildIndex, raycast as castRay } from './tools/lib/ray.mjs';
+import { isSeeThrough } from './tools/lib/see-through.mjs';
 
 const VIEWER_VERSION = '1.0.0';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
@@ -131,7 +131,7 @@ function fromGrid(grid) {
 (async () => {
   const [engine, grid] = await Promise.all([
     makeEngine(),
-    fetch(`scenes/${SCENE}_grid2.json`).then((r) => r.json()),
+    fetch(`models/scenes/${SCENE}_grid2.json`).then((r) => r.json()),
   ]);
   const nav = fromGrid(grid);
   const VERSION_LINE = () => {
@@ -144,7 +144,7 @@ function fromGrid(grid) {
   scene.useRightHandedSystem = true;
   scene.clearColor = BABYLON.Color4.FromHexString('#1a2028ff');
 
-  await BABYLON.SceneLoader.AppendAsync('scenes/', `${SCENE}_merged.glb`, scene);
+  await BABYLON.SceneLoader.AppendAsync('models/scenes/', `${SCENE}_merged.glb`, scene);
   const terrain = scene.meshes.filter((m) => m.getTotalVertices() > 0 && !isSeeThrough(m.name));
   for (const mesh of scene.meshes) mesh.freezeWorldMatrix();
 
@@ -1219,7 +1219,7 @@ function fromGrid(grid) {
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
   hud.innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
-Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid-cells.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>
+Run <code>node tools/scene/merge-scene.mjs models/scenes/${SCENE}.glb</code> and\n<code>node tools/build/build-grid-cells.mjs models/scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>
 <small class="ver">viewer ${VIEWER_VERSION}</small>`;
   throw e;
 });

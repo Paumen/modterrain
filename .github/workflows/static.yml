@@ -52,22 +52,22 @@ jobs:
       # above — and without that step every run here fails.
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      # catalog/pieces.json is derived from atoms/, assemblies/ and scenes/,
-      # so it is generated here rather than committed. build-catalog.mjs must
-      # run after it: index.html's cache-busting stamp is a hash over the
-      # catalog files, pieces.json among them.
+      # catalog/pieces.json is derived from models/atoms/, models/assemblies/
+      # and models/scenes/, so it is generated here rather than committed.
+      # build-catalog.mjs must run after it: index.html's cache-busting stamp
+      # is a hash over the catalog files, pieces.json among them.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Build the catalog
         run: |
-          node tools/build-pieces.mjs
-          node tools/build-catalog.mjs
+          node tools/build/build-pieces.mjs
+          node tools/build/build-catalog.mjs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # The whole repo: the page needs atoms/ and vendor/.
+          # The whole repo: the page needs models/atoms/ and vendor/.
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment

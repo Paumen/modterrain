@@ -24,7 +24,7 @@ plain hidden back, or terrain filling the bottom half of the same square.
 Practical facts about the kit:
 
 - **Scale:** 1 grid cell = 100 glTF units (`UNITS_PER_CELL` in
-  `tools/glb.mjs`). Piece origins are cell centres, and multi-cell pieces
+  `tools/lib/glb.mjs`). Piece origins are cell centres, and multi-cell pieces
   anchor on one specific cell.
 - **Layers:** some pieces come in `Under` / `Base` / `Mid` / `Top` variants that
   stack vertically. Pieces edges always connect on levels of 25 units. 
@@ -39,15 +39,15 @@ Practical facts about the kit:
   a mirrored variant, mirror the piece yourself.
 - **Writing a scene:** author in `modterrain-cells-1`, the cell format —
   right-handed, `{piece, at, rot, mirror, stretch}`, no matrices. Both linters
-  read it; `tools/scene-cells.mjs` converts to and from a Unity dump. See
+  read it; `tools/scene/scene-cells.mjs` converts to and from a Unity dump. See
   `docs/scene-format.md`.
 - **Sockets as data:** `catalog/sockets.json` holds every coloured socket of
   every piece — cell edge, height band and exact outline — so piece choice is
   a lookup, not a geometry problem. See `docs/socket-table.md`.
 - **Rules and checking:** `docs/placement-rules.md` lists the measured
-  placement rules. Run `node tools/lint-sockets.mjs <scene.json>` on any
+  placement rules. Run `node tools/check/lint-sockets.mjs <scene.json>` on any
   placement set; exposed hidden faces are placement mistakes.
-  `node tools/check-sockets.mjs <scene.json> --open` is the fast table-only
+  `node tools/check/check-sockets.mjs <scene.json> --open` is the fast table-only
   pass: it names each unpaired socket and what covers it.
 
 ## Environment

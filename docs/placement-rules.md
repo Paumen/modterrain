@@ -1,14 +1,14 @@
 # Placement rules
 
-Derived from `scenes/large_island_terrain_v3.json` (3084 placements), the
+Derived from `models/scenes/large_island_terrain_v3.json` (3084 placements), the
 atom and assembly GLBs (geometry and material names) and
-`assemblies/placements.json`. Nothing here is assumed; every rule was
-measured. Check a placement set with `tools/lint-sockets.mjs` (below).
+`models/assemblies/placements.json`. Nothing here is assumed; every rule was
+measured. Check a placement set with `tools/check/lint-sockets.mjs` (below).
 
 ## Grid and transforms
 
 - Scene dumps are in cell units, Unity left-handed. The export mirrors X:
-  conjugate every matrix by diag(-1, 1, 1) (`tools/assemble.mjs`).
+  conjugate every matrix by diag(-1, 1, 1) (`tools/build/assemble.mjs`).
 - Every piece origin sits on a cell centre (x.5, z.5).
 - A stretched piece has its origin at the centre of the stretched span, so
   integer when the stretch factor is even.
@@ -95,7 +95,7 @@ one plane, and what covers it), it says:
 The path family paints its grass side Violet and its dirt side Red whatever
 the profile; its outer side, which is buried against a hill, is plain.
 
-The Autumn demo (`scenes/autumn_terrain.json`) butts cave floor tiles, Yellow
+The Autumn demo (`models/scenes/autumn_terrain.json`) butts cave floor tiles, Yellow
 edge on, straight against hill sides (Orange, Pink and Violet) around its
 cave mouth, and one grass carpet's Orange against a wall's Green. The pairing
 rule above is read from the island demo and does not admit these, so the
@@ -104,11 +104,11 @@ linter reports them as wrong colour: 8 sockets, all at that cave.
 ## Linting a placement set
 
 ```
-node tools/lint-sockets.mjs scenes/large_island_terrain_v3.json --ocean -5.5
-node tools/lint-sockets.mjs scenes/winter_terrain.json --ocean 0.75
-node tools/lint-sockets.mjs scenes/autumn_terrain.json --ocean -6
-node tools/lint-sockets.mjs assemblies/placements.json --assembly River_Straight_Wide --verbose
-node tools/lint-sockets.mjs scenes/island.json --plain --json report.json
+node tools/check/lint-sockets.mjs models/scenes/large_island_terrain_v3.json --ocean -5.5
+node tools/check/lint-sockets.mjs models/scenes/winter_terrain.json --ocean 0.75
+node tools/check/lint-sockets.mjs models/scenes/autumn_terrain.json --ocean -6
+node tools/check/lint-sockets.mjs models/assemblies/placements.json --assembly River_Straight_Wide --verbose
+node tools/check/lint-sockets.mjs models/scenes/island.json --plain --json report.json
 ```
 
 Input is a scene dump (`pieces` with `prefab` and `matrix`) or an assembly

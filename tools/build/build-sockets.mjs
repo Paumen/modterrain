@@ -1,10 +1,10 @@
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
+import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from '../lib/glb.mjs';
 
-const ROOT = fileURLToPath(new URL('..', import.meta.url));
-const ATOMS = join(ROOT, 'atoms');
+const ROOT = fileURLToPath(new URL('../..', import.meta.url));
+const ATOMS = join(ROOT, 'models', 'atoms');
 const OUT = join(ROOT, 'catalog', 'sockets.json');
 const SKIP = /^(Docks_|Prop_)/;
 
@@ -103,7 +103,7 @@ for (const file of readdirSync(ATOMS).filter((f) => f.endsWith('.glb')).sort()) 
 }
 
 writeFileSync(OUT, `${JSON.stringify({
-  generated: 'node tools/build-sockets.mjs',
+  generated: 'node tools/build/build-sockets.mjs',
   note: 'Coloured sockets per piece, in the piece\'s own frame. Cell (0,0) is the origin cell, spanning -0.5..0.5. Props and docks are excluded. tris are the exact 2D profile in the socket plane: for a vertical socket (u = the lateral axis, v = height), for a horizontal one (u = x, v = z).',
   skipped: SKIP.source,
   pieces,

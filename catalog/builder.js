@@ -96,7 +96,7 @@ const STORAGE = 'modterrain-build';
 
 /* A build is a list of placements and nothing else, so it saves as plain
  * JSON: small enough to keep in the browser between visits, and readable
- * enough to hand to tools/assemble.mjs or keep under version control. */
+ * enough to hand to tools/build/assemble.mjs or keep under version control. */
 const toJson = () => JSON.stringify({
   format: 'modterrain-build/1',
   units: 'cells',
@@ -461,11 +461,11 @@ export async function mount(container, catalog) {
 
   familySelect.append(new Option('Everything', ''));
   for (const id of [...new Set(Object.values(pieces)
-    .filter((piece) => piece.dir === 'atoms').map((piece) => piece.family))].filter(Boolean).sort()) {
-    familySelect.append(new Option(families.get(id) ?? id, `atoms:${id}`));
+    .filter((piece) => piece.dir === 'models/atoms').map((piece) => piece.family))].filter(Boolean).sort()) {
+    familySelect.append(new Option(families.get(id) ?? id, `models/atoms:${id}`));
   }
-  familySelect.append(new Option('Assemblies', 'assemblies:'));
-  familySelect.append(new Option('Scenes', 'scenes:'));
+  familySelect.append(new Option('Assemblies', 'models/assemblies:'));
+  familySelect.append(new Option('Scenes', 'models/scenes:'));
 
   role('rotate').addEventListener('click', () => { rotation = (rotation + 1) % 4; syncToolbar(); });
   mirrorButton.addEventListener('click', () => { mirrored = !mirrored; syncToolbar(); });

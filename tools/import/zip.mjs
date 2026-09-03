@@ -1,6 +1,6 @@
 /* Just enough ZIP to read `modular_terrain_2_0_textures.zip` without unpacking
  * it first: the central directory, and stored or deflated entries. The pack's
- * own textures are the source of every colour in `textures/colormap.png`, so
+ * own textures are the source of every colour in `models/textures/colormap.png`, so
  * the tool that derives them reads the archive the repo already ships rather
  * than a folder someone has to produce by hand.
  */

@@ -1,7 +1,7 @@
 /**
  * Writes a copy of a scene with named pieces left out.
  *
- *     node tools/prune-scene.mjs <scene.glb> <out.glb> <selector> [selector …]
+ *     node tools/scene/prune-scene.mjs <scene.glb> <out.glb> <selector> [selector …]
  *
  * A scene names every mesh `<Piece>__<Material>__<submesh>__<instance>`, so a
  * selector is either a piece — `Mountain_2` — or a piece and one of its
@@ -15,11 +15,11 @@
  * at any more, with the binary chunk rebuilt around what is left.
  */
 
-import { readGlb, writeGlb } from './glb.mjs';
+import { readGlb, writeGlb } from '../lib/glb.mjs';
 
 const [scene, out, ...selectors] = process.argv.slice(2);
 if (!scene || !out || selectors.length === 0) {
-  console.error('usage: node tools/prune-scene.mjs <scene.glb> <out.glb> <selector> [selector …]');
+  console.error('usage: node tools/scene/prune-scene.mjs <scene.glb> <out.glb> <selector> [selector …]');
   process.exit(1);
 }
 

@@ -1,7 +1,7 @@
 /**
  * Puts the pack's surfaces on the shared colormap.
  *
- *     node tools/recolor.mjs [--check]
+ *     node tools/import/recolor.mjs [--check]
  *
  * Why: the pack's terrain materials are a texture *tinted* by a colour, and the
  * glTF export kept only the tint. `Cliff Face` therefore arrives as #e0ddd7 and
@@ -12,7 +12,7 @@
  * actually reads one — which, in this pack, is almost nowhere.
  *
  * Where the colour then comes from is the point of the exercise. It is not
- * written into the material as a number but taken from `textures/colormap.png`,
+ * written into the material as a number but taken from `models/textures/colormap.png`,
  * the shared map the Taalei kits use (github.com/Paumen/Taalei). A surface
  * points a UV at a spot on that map and takes the colour there, so a piece of
  * this pack and a piece of any of those kits are coloured by the same image and
@@ -40,17 +40,17 @@
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readGlb, writeGlb, nodeWorldMatrices, transformPoint } from '../glb.mjs';
-import { determineLayer } from '../taxonomy.mjs';
-import { decodePng } from '../png.mjs';
+import { readGlb, writeGlb, nodeWorldMatrices, transformPoint } from '../lib/glb.mjs';
+import { determineLayer } from '../lib/taxonomy.mjs';
+import { decodePng } from '../lib/png.mjs';
 import { readZip } from './zip.mjs';
 import {
   readAtlas, writeAtlas, atlasPoints, filledCells, fillCell, nearestPoint, toHex, ROWS, COLUMNS,
 } from './colormap.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const ATLAS = join(ROOT, 'textures', 'colormap.png');
-const PACK = join(ROOT, 'modular_terrain_2_0_textures.zip');
+const ATLAS = join(ROOT, 'models', 'textures', 'colormap.png');
+const PACK = join(ROOT, 'tools', 'import', 'modular_terrain_2_0_textures.zip');
 const PALETTE = join(ROOT, 'catalog', 'palette.json');
 
 /* The scenes are in because they are built from these same surfaces and would
@@ -59,7 +59,7 @@ const PALETTE = join(ROOT, 'catalog', 'palette.json');
  * dioramas bring of their own — flowers, mushrooms, autumn leaves, twelve snow
  * variants — are left alone, and several of them want cells this map does not
  * have yet. */
-const DIRECTORIES = ['atoms', 'assemblies', 'scenes'];
+const DIRECTORIES = ['models/atoms', 'models/assemblies', 'models/scenes'];
 
 const ASSEMBLED = 'modterrain tools/assemble.mjs';
 
@@ -334,7 +334,7 @@ for (const [surface, source] of colors) {
   placement.set(surface, { source, point, flat });
 }
 
-console.log(`\n${placement.size} surfaces on textures/colormap.png:`);
+console.log(`\n${placement.size} surfaces on models/textures/colormap.png:`);
 for (const [surface, { source, point }] of [...placement].sort((a, b) => b[1].point.distance - a[1].point.distance)) {
   console.log(
     `  ${surface.padEnd(16)} ${toHex(source.rgb)} → ${toHex(point.rgb)}  cell [${String(point.cell).padEnd(5)}]` +
@@ -360,8 +360,8 @@ if (process.argv.includes('--check')) {
 writeAtlas(ATLAS, atlas);
 
 writeFileSync(PALETTE, `${JSON.stringify({
-  generated: 'node tools/recolor.mjs',
-  atlas: 'textures/colormap.png',
+  generated: 'node tools/import/recolor.mjs',
+  atlas: 'models/textures/colormap.png',
   surfaces: Object.fromEntries([...placement].map(([surface, { source, point, flat }]) => [surface, {
     // A shaded surface has no single colour: it runs down its cell's band. The
     // swatch is the middle of the ladder, which is what a cliff averages out to.
@@ -662,4 +662,4 @@ console.log(`\n${changed} models rewritten in ${DIRECTORIES.join(', ')}:`);
 for (const [surface, count] of [...counts].sort((a, b) => b[1] - a[1])) {
   console.log(`  ${String(count).padStart(3)}  ${surface}${ramped.has(surface) ? '  (shaded by height)' : ''}`);
 }
-console.log('\nrun tools/build-catalog.mjs and tools/build-pieces.mjs next');
+console.log('\nrun tools/build/build-catalog.mjs and tools/build/build-pieces.mjs next');

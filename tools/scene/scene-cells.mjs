@@ -11,7 +11,7 @@ const option = (n, d) => { const i = argv.indexOf(`--${n}`); return i === -1 ? d
 const taken = new Set(['out', 'snap', 'assembly'].map((n) => option(n, null)).filter(Boolean));
 const input = argv.find((a) => !a.startsWith('--') && !taken.has(a));
 if (isMain && !input) {
-  console.error('usage: node tools/scene-cells.mjs <scene.json | cells.json> [--to-dump] [--out file.json] [--verify] [--snap cells]');
+  console.error('usage: node tools/scene/scene-cells.mjs <scene.json | cells.json> [--to-dump] [--out file.json] [--verify] [--snap cells]');
   process.exit(1);
 }
 

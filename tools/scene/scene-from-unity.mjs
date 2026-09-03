@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { basename } from 'node:path';
-import { assemble } from './assemble.mjs';
-import { writeGlb, measureScene } from './glb.mjs';
+import { assemble } from '../build/assemble.mjs';
+import { writeGlb, measureScene } from '../lib/glb.mjs';
 import { onPivot } from './scene-cells.mjs';
 
 const argv = process.argv.slice(2);
@@ -11,7 +11,7 @@ const option = (name) => {
 };
 const [input, output] = argv.filter((arg, index) => !arg.startsWith('--') && !argv[index - 1]?.startsWith('--'));
 if (!input || !output) {
-  console.error('usage: node tools/scene-from-unity.mjs <dump.json> <scene.glb> [--skip regex]');
+  console.error('usage: node tools/scene/scene-from-unity.mjs <dump.json> <scene.glb> [--skip regex]');
   process.exit(1);
 }
 
@@ -23,11 +23,11 @@ const placements = dump.pieces
 const built = assemble(placements);
 
 if (!built.placed) {
-  console.error(`${basename(input)}: none of its ${placements.length} pieces are in atoms/`);
+  console.error(`${basename(input)}: none of its ${placements.length} pieces are in models/atoms/`);
   process.exit(1);
 }
 
 writeGlb(output, built.json, built.bin);
 const measured = measureScene(built);
 console.log(`${output}: ${built.placed}/${dump.pieces.length} pieces, ${measured.dwh.map((v) => Math.round(v)).join(' × ')} cells, ${measured.triangles} tris`);
-if (built.missing.length) console.log(`  not in atoms/: ${built.missing.join(', ')}`);
+if (built.missing.length) console.log(`  not in models/atoms/: ${built.missing.join(', ')}`);

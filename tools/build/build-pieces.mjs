@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { UNITS_PER_CELL } from './glb.mjs';
+import { UNITS_PER_CELL } from '../lib/glb.mjs';
 
-const ROOT = fileURLToPath(new URL('..', import.meta.url));
+const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const OUT = join(ROOT, 'catalog', 'pieces.json');
 
 /* A piece's origin is the centre of its anchor cell, so cell i covers
@@ -32,9 +32,9 @@ const meta = new Map(catalog.models.map((entry) => [entry.id, entry]));
  * unit to a cell, so the factor the viewport applies is one throughout.
  */
 const SOURCES = [
-  { dir: 'atoms', scale: 1 },
-  { dir: 'assemblies', scale: 1 },
-  { dir: 'scenes', scale: UNITS_PER_CELL },
+  { dir: 'models/atoms', scale: 1 },
+  { dir: 'models/assemblies', scale: 1 },
+  { dir: 'models/scenes', scale: UNITS_PER_CELL },
 ];
 
 const pieces = {};
@@ -61,7 +61,7 @@ for (const { dir, scale } of SOURCES) {
   }
 }
 
-writeFileSync(OUT, JSON.stringify({ generated: 'node tools/build-pieces.mjs', pieces }));
+writeFileSync(OUT, JSON.stringify({ generated: 'node tools/build/build-pieces.mjs', pieces }));
 const perDir = SOURCES.map(({ dir }) =>
   `${Object.values(pieces).filter((piece) => piece.dir === dir).length} ${dir}`).join(', ');
 console.log(`${perDir} → catalog/pieces.json`);
