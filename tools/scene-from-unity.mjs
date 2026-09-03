@@ -2,23 +2,7 @@ import { readFileSync } from 'node:fs';
 import { basename } from 'node:path';
 import { assemble } from './assemble.mjs';
 import { writeGlb, measureScene } from './glb.mjs';
-
-const PIVOTS = {
-  Prop_Bridge_Rope_End_Basic_1x3: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Basic_1x1: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Cracked_1_1x1: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Cracked_2_1x1: [0, 0, 0.5],
-};
-
-const onPivot = (prefab, matrix) => {
-  const offset = PIVOTS[prefab];
-  if (!offset) return matrix;
-  const out = [...matrix];
-  for (let row = 0; row < 3; row++) {
-    out[row * 4 + 3] += offset.reduce((sum, cell, axis) => sum + cell * matrix[row * 4 + axis], 0);
-  }
-  return out;
-};
+import { onPivot } from './scene-cells.mjs';
 
 const argv = process.argv.slice(2);
 const option = (name) => {

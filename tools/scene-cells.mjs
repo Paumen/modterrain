@@ -8,7 +8,7 @@ const argv = process.argv.slice(2);
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
 const flag = (n) => argv.includes(`--${n}`);
 const option = (n, d) => { const i = argv.indexOf(`--${n}`); return i === -1 ? d : argv[i + 1]; };
-const taken = new Set(['out', 'snap'].map((n) => option(n, null)).filter(Boolean));
+const taken = new Set(['out', 'snap', 'assembly'].map((n) => option(n, null)).filter(Boolean));
 const input = argv.find((a) => !a.startsWith('--') && !taken.has(a));
 if (isMain && !input) {
   console.error('usage: node tools/scene-cells.mjs <scene.json | cells.json> [--to-dump] [--out file.json] [--verify] [--snap cells]');
@@ -61,16 +61,40 @@ export function toMatrix({ at, rot = 0, mirror = false, stretch = [1, 1] }) {
   return conjugate(W);
 }
 
-function loadDump(path) {
+export const PIVOTS = {
+  Prop_Bridge_Rope_End_Basic_1x3: [0, 0, 0.5],
+  Prop_Bridge_Rope_Middle_Basic_1x1: [0, 0, 0.5],
+  Prop_Bridge_Rope_Middle_Cracked_1_1x1: [0, 0, 0.5],
+  Prop_Bridge_Rope_Middle_Cracked_2_1x1: [0, 0, 0.5],
+};
+
+export const onPivot = (piece, matrix) => {
+  const offset = PIVOTS[piece];
+  if (!offset) return matrix;
+  const out = [...matrix];
+  for (let row = 0; row < 3; row++) {
+    out[row * 4 + 3] += offset.reduce((sum, cell, axis) => sum + cell * matrix[row * 4 + axis], 0);
+  }
+  return out;
+};
+
+export function loadPlacements(path, { assembly = null, pivots = true } = {}) {
   const data = JSON.parse(readFileSync(path, 'utf8'));
-  if (data.pieces) return data.pieces.map(({ prefab, matrix }) => ({ piece: prefab, matrix }));
+  const pivot = pivots ? onPivot : (piece, matrix) => matrix;
+  if (data.format === FORMAT) {
+    return data.pieces.map((p) => ({ piece: p.piece, matrix: pivot(p.piece, p.matrix ?? toMatrix(p)) }));
+  }
+  if (data.pieces) return data.pieces.map(({ prefab, matrix }) => ({ piece: prefab, matrix: pivot(prefab, matrix) }));
   const assemblies = data.assemblies ?? data;
   const names = Object.keys(assemblies);
-  const name = option('assembly', names.length === 1 ? names[0] : null);
+  const name = assembly ?? (names.length === 1 ? names[0] : null);
   if (!name) throw new Error(`${basename(path)} holds ${names.length} assemblies; pick one with --assembly <name>`);
-  return assemblies[name].map((p) => ({ piece: p.piece, matrix: p.matrix ?? quatMatrix(p.pos, p.quat, p.scale) }));
+  const list = assemblies[name];
+  if (!list) throw new Error(`no assembly named ${name}`);
+  return list.map((p) => ({ piece: p.piece, matrix: p.matrix ?? quatMatrix(p.pos, p.quat, p.scale) }));
 }
-function quatMatrix(pos, quat, scale) {
+
+export function quatMatrix(pos, quat, scale) {
   const [qx, qy, qz, qw] = quat, [sx, sy, sz] = scale;
   const x2 = qx + qx, y2 = qy + qy, z2 = qz + qz;
   const xx = qx * x2, xy = qx * y2, xz = qx * z2;
@@ -99,7 +123,7 @@ if (isMain) {
     process.exit(0);
   }
 
-  const placements = loadDump(input);
+  const placements = loadPlacements(input, { assembly: option('assembly', null), pivots: false });
   const pieces = [];
   let raw = 0;
   let worst = 0;

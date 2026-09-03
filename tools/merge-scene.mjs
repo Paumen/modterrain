@@ -1,4 +1,4 @@
-import { readGlb, writeGlb } from './glb.mjs';
+import { readGlb, writeGlb, readAccessor, transformPoint } from './glb.mjs';
 import { markSeeThrough, TERRAIN } from './see-through.mjs';
 
 const input = process.argv[2];
@@ -10,24 +10,9 @@ const outGlb = input.replace(/\.glb$/, '_merged.glb');
 
 const { json, bin } = readGlb(input);
 
-const CTOR = { 5120: Int8Array, 5121: Uint8Array, 5122: Int16Array, 5123: Uint16Array, 5125: Uint32Array, 5126: Float32Array };
 const NCOMP = { SCALAR: 1, VEC2: 2, VEC3: 3, VEC4: 4 };
 
-function accessorData(i) {
-  const a = json.accessors[i];
-  const bv = json.bufferViews[a.bufferView];
-  const offset = (bv.byteOffset || 0) + (a.byteOffset || 0);
-  const Ctor = CTOR[a.componentType];
-  return new Ctor(bin.buffer, bin.byteOffset + offset, a.count * NCOMP[a.type]);
-}
-
-function xformPoint(m, x, y, z) {
-  return [
-    m[0] * x + m[4] * y + m[8] * z + m[12],
-    m[1] * x + m[5] * y + m[9] * z + m[13],
-    m[2] * x + m[6] * y + m[10] * z + m[14],
-  ];
-}
+const accessorData = (i) => readAccessor({ json, bin }, i).data;
 
 function det3(m) {
   return (
@@ -97,9 +82,9 @@ function emitNode(nodeIndex, parent) {
         let i1 = idx ? idx[t + 1] : t + 1;
         let i2 = idx ? idx[t + 2] : t + 2;
         if (flip) [i1, i2] = [i2, i1];
-        const p0 = xformPoint(world, pos[i0 * 3], pos[i0 * 3 + 1], pos[i0 * 3 + 2]);
-        const p1 = xformPoint(world, pos[i1 * 3], pos[i1 * 3 + 1], pos[i1 * 3 + 2]);
-        const p2 = xformPoint(world, pos[i2 * 3], pos[i2 * 3 + 1], pos[i2 * 3 + 2]);
+        const p0 = transformPoint(world, pos[i0 * 3], pos[i0 * 3 + 1], pos[i0 * 3 + 2]);
+        const p1 = transformPoint(world, pos[i1 * 3], pos[i1 * 3 + 1], pos[i1 * 3 + 2]);
+        const p2 = transformPoint(world, pos[i2 * 3], pos[i2 * 3 + 1], pos[i2 * 3 + 2]);
         const ax = p1[0] - p0[0], ay = p1[1] - p0[1], az = p1[2] - p0[2];
         const bx = p2[0] - p0[0], by = p2[1] - p0[1], bz = p2[2] - p0[2];
         let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
