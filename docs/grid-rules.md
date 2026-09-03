@@ -1,64 +1,53 @@
 # Walkable grid rules
 
 The grid is built from these rules and nothing else (`tools/build/build-grid-cells.mjs`).
-The avatar is a 0.5×0.5×0.5 cube. Cells are 1×1×1 units.
 
-1. A cell is a 1×1×1 unit. A node connects only to the 8 surrounding columns at
-   level −1, 0 or +1, and only if the target cell has a node too. No vertical moves.
-2. A cell's node is always at its horizontal center, at the height of its floor.
-3. Never a node: `Prop_Bridge_Rope_Middle_Cracked_2_1x1` (the broken-bridge gap).
-4. Always a node, regardless of rules 5–7 (still honouring 3, and edge rules 8/14):
-   `Docks_Decking_Flat_1x1`, `Docks_Decking_Flat_1x2`, `Docks_Decking_Steps_1x2`,
-   `Prop_Bridge_Rope_Middle_Cracked_1_1x1`, `Prop_Bridge_Rope_Middle_Basic_1x1`,
-   `Prop_Bridge_Rope_End_Basic_1x3`, `Path_Bridge_Center_Top_1x2`,
-   `Path_Bridge_Edge_Top_1x2`, `Prop_Bridge_Center_1x2`, `Prop_Bridge_End_2x2` —
-   on the cells where the piece has a top surface with standing clearance.
-5. A cell containing water is sealed: no node, no edge may pass through it.
-   Even when grass or sand lies below the water.
-6. A cell containing cliff-family geometry (`Basic_`, `Cracked_`,
-   `Cave_Edge_`) is sealed the same way. Except where rule 4 applies.
-   (For now cliff is defined by piece family; later by material, when cave
-   floors get their own material. `Wall_` pieces are not in the family: their
-   sloped foot spills into the passage cells beside them, so they are left to
-   the cube like any other obstacle.)
-7. A cell only gets a node if the cube, standing on the floor, has clear space
-   (the 0.5 above the local floor) at the center and can cross out via at least
-   two of its 8 directions (the 4 edges and the 4 diagonals).
-8. An obstacle that stops the cube crossing a particular edge blocks the
-   connections through that edge only.
-9. Grass floors get a node, unless restricted above.
-10. Dirt floors (including sand and dirt paths) get a node, unless restricted above.
-11. Cave floors (`Cave_Center_`, `Floor_` pieces) get a node, unless restricted above.
-12. `Tiered_Walkway_*` pieces always get a node.
-13. Tiered retaining walls block the edge they sit on (they are obstacles under
-    rule 8; no special code).
-14. The cube climbs and descends the ground as long as it changes less than
-    0.5 per 0.5 of run, measured at 0.5 granularity; the clear space travels
-    with it, 0.5 above the local ground. Missing ground (a void) blocks.
+1. A grid cell is a 1x1x1 unit, connection if no obstacles, only travel to the 9
+   cells around it in its 3x3x3, if they have a node too.
+2. If a cell has a walkable node, its node is always at its center.
+3. Magic number one never gets a node: `Prop_Bridge_Rope_Middle_Cracked_2_1x1`.
+4. Magic number ten always get a node, regardless of any following rules:
+   - `atoms/Docks_Decking_Flat_1x1.glb`
+   - `atoms/Docks_Decking_Flat_1x2.glb`
+   - `atoms/Docks_Decking_Steps_1x2.glb`
+   - `atoms/Prop_Bridge_Rope_Middle_Cracked_1_1x1.glb`
+   - `atoms/Prop_Bridge_Rope_Middle_Basic_1x1.glb`
+   - `atoms/Prop_Bridge_Rope_End_Basic_1x3.glb`
+   - `atoms/Path_Bridge_Center_Top_1x2.glb`
+   - `atoms/Path_Bridge_Edge_Top_1x2.glb`
+   - `atoms/Prop_Bridge_Center_1x2.glb`
+   - `atoms/Prop_Bridge_End_2x2.glb`
+5. If a cell contains water it's not walkable or crossable (basically the 1x1x1
+   cube around it is closed on all six sides, no nodes, no edges, no
+   connections). Even when grass or sand below it.
+6. If a cell contains cliff it's never walkable / crossable (basically the 1x1x1
+   cube around it is closed on all six sides, no nodes, no edges, no
+   connections). Except when rule 4 applies.
+7. If a cell contains an obstacle that prevents a 0.5/0.5/0.5 unit cube to cross
+   its upper half in two edges and the center, the cell does not get a node or
+   any connections.
+8. If rule 7 is not triggered, and terrain is eligible node, it gets a node; any
+   obstacles that prevent a 0.5/0.5/0.5 unit cube to cross it an edge block
+   connections via those edges.
+9. A node with grass gets a node except if any of above rules restrict it.
+10. A node with dirt gets a node except if any of above rules restrict it.
+11. A node with cave floor gets a node except if any of above rules restrict it.
+12. Tiered walkway steps always get node.
+13. Tiered retaining wall always block connection on the edge they sit on.
+14. Slope is allowed by less than 0.5 per 0.5 unit, and the cell above it has to
+    have free space too.
 
-Implementation readings, per the confirmed answers:
+## Answers given on these rules
 
-- The cube is a real volume: standing and every crossing test the 0.5 box
-  itself against geometry (no rays, no piece lists for obstacles). It rests
-  on the highest ground under its footprint; anything else inside the box
-  blocks - fences, rails, crates, walls, whatever is added later.
-- Ground belongs to rule 14, not to collision: faces walkable-steep or
-  flatter carry the cube; the strict <0.5 per 0.5 rise limit decides what it
-  may climb. Kit slopes max 0.375, walkway risers 0.25; terrace walls at 0.5
-  are blocked by the limit itself.
-- Ground is read over the whole 0.5×0.5 footprint (the highest up-facing
-  surface anywhere under the square), never at points. The kit's plank seams
-  sit exactly on the quarter lines of a cell, so point probes at the centre
-  and corners all fall through them; the footprint reading makes a seam
-  narrower than the cube invisible, and the cube stands and climbs on what
-  is really under it.
-- Rules 5 and 6 are literal: a cell containing any water or cliff-family
-  geometry (beyond 0.02 float tolerance) is sealed shut.
-- Rule 13 is not redundant: retaining walls block their edge even when the
-  cube would fit - the one declared exception, because a wall flush with the
-  upper terrace is invisible to collision from above.
-- Rule 7 counts all 8 exit directions; rule 8's cube may cross anywhere
-  along an edge (corridors shifted sideways up to 0.25).
-- A floor exactly on a cell boundary belongs to the cell above it.
-- Decoration lower than 0.25 resting on an eligible floor is ground relief:
-  the cube stands on it, the floor beneath grants the node.
+- Rule 7's cube: 0.5 from the solid ground empty, then the cube. So the ground
+  to ground+0.5 is empty and the cube occupies ground+0.5 to ground+1.0. The
+  cube goes hard up down vertically while on slopes.
+- Rule 7 is 3 spots: the middle, and 2 directions.
+- The cube crossing a cell is 0.5 x 1.0 x 0.5 — the 1.0 is the length across the
+  cell, not the height.
+- Rule 1: travel to the 8 surrounding columns at level -1, 0 or +1; rule 7's
+  directions are the 8 horizontal ones (4 edges and 4 diagonals).
+- Rule 2: the node is at the cell's horizontal center, at the height of the
+  floor.
+- Rule 6: cliff is defined by piece family for now, by material later, when cave
+  gets a different material.
