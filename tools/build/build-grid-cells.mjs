@@ -302,7 +302,9 @@ for (const { cx, cy, cz } of candidates.values()) {
   if (!hit || !triFloor[hit.t]) continue;
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
-  const stand = groundUnder(x, z, hit.y + RISE + 0.05, RISE * 2 + 0.2)?.y ?? hit.y;
+  const top = hit.y + RISE + 0.05;
+  const under = groundUnder(x, z, top, RISE * 2 + 0.2);
+  const stand = under && under.y < top - 1e-6 ? under.y : hit.y;
   const sy = Math.floor(stand + EPS);
   if (byCell.has(cellKey(cx, sy, cz))) continue;
   if (!cubeFits(x, z, stand)) continue;
