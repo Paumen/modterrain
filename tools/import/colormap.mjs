@@ -11,7 +11,7 @@
  * Cells that are pure black are empty, not black — nothing may land there.
  */
 
-import { readPng, writePng } from './png.mjs';
+import { readPng, writePng } from '../png.mjs';
 
 export const COLUMNS = 16;
 export const ROWS = 4;
