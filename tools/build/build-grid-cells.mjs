@@ -67,7 +67,6 @@ const triAlways = [];
 const camPos = [];
 const camPiece = [];
 const sealed = new Set();
-const sealedWater = new Set();
 const cellKey = (cx, cy, cz) => cx * 4000000 + cy * 4000 + cz + 2000000000;
 const candidates = new Map();
 
@@ -89,7 +88,7 @@ function clip(poly, x0, x1, z0, z1) {
   return poly;
 }
 
-function sealCells(p, lo, hi, isWaterSeal) {
+function sealCells(p, lo, hi) {
   for (let cx = Math.floor(lo[0] + EPS); cx <= Math.floor(hi[0] - EPS); cx++)
     for (let cz = Math.floor(lo[2] + EPS); cz <= Math.floor(hi[2] - EPS); cz++) {
       const poly = clip(p, cx + EPS, cx + 1 - EPS, cz + EPS, cz + 1 - EPS);
@@ -97,10 +96,7 @@ function sealCells(p, lo, hi, isWaterSeal) {
       let y0 = Infinity, y1 = -Infinity;
       for (const q of poly) { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); }
       for (let cy = Math.floor(y0); cy <= Math.floor(y1); cy++)
-        if (y1 > cy + EPS && y0 < cy + 1 - EPS) {
-          sealed.add(cellKey(cx, cy, cz));
-          if (isWaterSeal) sealedWater.add(cellKey(cx, cy, cz));
-        }
+        if (y1 > cy + EPS && y0 < cy + 1 - EPS) sealed.add(cellKey(cx, cy, cz));
     }
 }
 
@@ -117,7 +113,7 @@ function sealCells(p, lo, hi, isWaterSeal) {
     const cliff = CLIFF.test(piece);
     const always = ALWAYS.has(piece);
     const floorSrc = !NEVER.has(piece) && !water && (
-      always || FLOOR_MAT.test(mat) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
+      always || (FLOOR_MAT.test(mat) && !cliff) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
     const standSrc = !water && (always || STAND_MAT.test(mat) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
     const pos = readAccessor(glb, prim.attributes.POSITION);
     const idx = prim.indices !== undefined ? readAccessor(glb, prim.indices).data : null;
@@ -131,7 +127,7 @@ function sealCells(p, lo, hi, isWaterSeal) {
       if (LINT && solid) { camPos.push(...p[0], ...p[1], ...p[2]); camPiece.push(node.name || `mesh ${node.mesh}`); }
       const lo = [0, 1, 2].map((a) => Math.min(p[0][a], p[1][a], p[2][a]));
       const hi = [0, 1, 2].map((a) => Math.max(p[0][a], p[1][a], p[2][a]));
-      if (water || cliff) sealCells(p, lo, hi, water);
+      if (water || cliff) sealCells(p, lo, hi);
       if (water) continue;
       if (WALL13.test(piece)) wallPos.push(...p[0], ...p[1], ...p[2]);
       {
@@ -275,7 +271,7 @@ function corridor(x0, z0, g0, x1, z1, checkSeal) {
     const here = groundUnder(x, z, gs[i - 1] + RISE + 0.05, RISE * 2 + 0.2);
     if (!here) return false;
     if (Math.abs(here.y - gs[Math.max(0, i - Math.round(0.5 / sl))]) >= RISE) return false;
-    if (checkSeal && sealedWater.has(cellKey(Math.floor(x), Math.floor(here.y + 0.25), Math.floor(z)))) return false;
+    if (checkSeal && sealed.has(cellKey(Math.floor(x), Math.floor(here.y + 0.25), Math.floor(z)))) return false;
     const px = x - ux * sl, pz = z - uz * sl;
     const minX = Math.min(px, x) - CUBE / 2, maxX = Math.max(px, x) + CUBE / 2;
     const minZ = Math.min(pz, z) - CUBE / 2, maxZ = Math.max(pz, z) + CUBE / 2;
@@ -304,7 +300,7 @@ for (const { cx, cy, cz } of candidates.values()) {
   const hit = groundAt(x, z, cy + 0.98, 1.0) ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0));
   if (!hit || !triFloor[hit.t]) continue;
   const always = triAlways[hit.t];
-  if (!always && sealedWater.has(cellKey(cx, cy, cz))) continue;
+  if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
   if (!cubeFits(x, z, groundUnder(x, z, hit.y + RISE + 0.05, RISE * 2 + 0.2)?.y ?? hit.y)) continue;
   if (!always) {
     let open = 0;
