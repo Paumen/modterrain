@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { FORMAT as CELLS_FORMAT, toMatrix as cellsToMatrix } from './scene-cells.mjs';
+import { loadPlacements } from './scene-cells.mjs';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
 import { buildIndex, raycast } from './ray.mjs';
 
@@ -41,53 +41,6 @@ const PAIRS = [
 ];
 const ALLOWED = (socket, partner) => partner === socket.material
   || PAIRS.some(([a, b]) => (a === socket.material && b === partner) || (b === socket.material && a === partner));
-
-function quatMatrix(pos, quat, scale) {
-  const [qx, qy, qz, qw] = quat;
-  const [sx, sy, sz] = scale;
-  const x2 = qx + qx, y2 = qy + qy, z2 = qz + qz;
-  const xx = qx * x2, xy = qx * y2, xz = qx * z2;
-  const yy = qy * y2, yz = qy * z2, zz = qz * z2;
-  const wx = qw * x2, wy = qw * y2, wz = qw * z2;
-  return [
-    (1 - (yy + zz)) * sx, (xy - wz) * sy, (xz + wy) * sz, pos[0],
-    (xy + wz) * sx, (1 - (xx + zz)) * sy, (yz - wx) * sz, pos[1],
-    (xz - wy) * sx, (yz + wx) * sy, (1 - (xx + yy)) * sz, pos[2],
-    0, 0, 0, 1,
-  ];
-}
-
-const PIVOTS = {
-  Prop_Bridge_Rope_End_Basic_1x3: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Basic_1x1: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Cracked_1_1x1: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Cracked_2_1x1: [0, 0, 0.5],
-};
-
-const onPivot = (piece, matrix) => {
-  const offset = PIVOTS[piece];
-  if (!offset) return matrix;
-  const out = [...matrix];
-  for (let row = 0; row < 3; row++) {
-    out[row * 4 + 3] += offset.reduce((sum, cell, axis) => sum + cell * matrix[row * 4 + axis], 0);
-  }
-  return out;
-};
-
-function loadPlacements(path) {
-  const data = JSON.parse(readFileSync(path, 'utf8'));
-  if (data.format === CELLS_FORMAT) {
-    return data.pieces.map((p) => ({ piece: p.piece, matrix: onPivot(p.piece, p.matrix ?? cellsToMatrix(p)) }));
-  }
-  if (data.pieces) return data.pieces.map(({ prefab, matrix }) => ({ piece: prefab, matrix: onPivot(prefab, matrix) }));
-  const assemblies = data.assemblies ?? data;
-  const names = Object.keys(assemblies);
-  const name = option('assembly', names.length === 1 ? names[0] : null);
-  if (!name) throw new Error(`${basename(path)} holds ${names.length} assemblies; pick one with --assembly <name>`);
-  const list = assemblies[name];
-  if (!list) throw new Error(`no assembly named ${name}`);
-  return list.map((p) => ({ piece: p.piece, matrix: p.matrix ?? quatMatrix(p.pos, p.quat, p.scale) }));
-}
 
 function worldMatrix(matrix) {
   const sign = MIRROR ? [-1, 1, 1, 1] : [1, 1, 1, 1];
@@ -133,7 +86,7 @@ function atomTriangles(name) {
   return tris;
 }
 
-const placements = loadPlacements(input);
+const placements = loadPlacements(input, { assembly: option('assembly', null) });
 const faces = [];
 const missing = new Set();
 const flat = [];

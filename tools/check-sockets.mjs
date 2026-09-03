@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { FORMAT as CELLS_FORMAT, toMatrix as cellsToMatrix } from './scene-cells.mjs';
+import { loadPlacements } from './scene-cells.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TABLE = JSON.parse(readFileSync(join(ROOT, 'catalog', 'sockets.json'), 'utf8'));
@@ -26,44 +26,6 @@ const PAIRS = [
 ];
 const allowed = (a, b) => a === b || PAIRS.some(([x, y]) => (x === a && y === b) || (y === a && x === b));
 
-const PIVOTS = {
-  Prop_Bridge_Rope_End_Basic_1x3: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Basic_1x1: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Cracked_1_1x1: [0, 0, 0.5],
-  Prop_Bridge_Rope_Middle_Cracked_2_1x1: [0, 0, 0.5],
-};
-const onPivot = (piece, m) => {
-  const o = PIVOTS[piece];
-  if (!o) return m;
-  const out = [...m];
-  for (let row = 0; row < 3; row++) out[row * 4 + 3] += o.reduce((s, c, a) => s + c * m[row * 4 + a], 0);
-  return out;
-};
-function quatMatrix(pos, quat, scale) {
-  const [qx, qy, qz, qw] = quat, [sx, sy, sz] = scale;
-  const x2 = qx + qx, y2 = qy + qy, z2 = qz + qz;
-  const xx = qx * x2, xy = qx * y2, xz = qx * z2;
-  const yy = qy * y2, yz = qy * z2, zz = qz * z2;
-  const wx = qw * x2, wy = qw * y2, wz = qw * z2;
-  return [
-    (1 - (yy + zz)) * sx, (xy - wz) * sy, (xz + wy) * sz, pos[0],
-    (xy + wz) * sx, (1 - (xx + zz)) * sy, (yz - wx) * sz, pos[1],
-    (xz - wy) * sx, (yz + wx) * sy, (1 - (xx + yy)) * sz, pos[2],
-    0, 0, 0, 1,
-  ];
-}
-function loadPlacements(path) {
-  const data = JSON.parse(readFileSync(path, 'utf8'));
-  if (data.format === CELLS_FORMAT) {
-    return data.pieces.map((p) => ({ piece: p.piece, matrix: onPivot(p.piece, p.matrix ?? cellsToMatrix(p)) }));
-  }
-  if (data.pieces) return data.pieces.map(({ prefab, matrix }) => ({ piece: prefab, matrix: onPivot(prefab, matrix) }));
-  const assemblies = data.assemblies ?? data;
-  const names = Object.keys(assemblies);
-  const name = option('assembly', names.length === 1 ? names[0] : null);
-  if (!name) throw new Error(`${basename(path)} holds ${names.length} assemblies; pick one with --assembly <name>`);
-  return assemblies[name].map((p) => ({ piece: p.piece, matrix: p.matrix ?? quatMatrix(p.pos, p.quat, p.scale) }));
-}
 const worldMatrix = (m) => {
   const s = MIRROR ? [-1, 1, 1, 1] : [1, 1, 1, 1];
   return m.map((v, i) => v * s[Math.floor(i / 4)] * s[i % 4]);
@@ -112,7 +74,7 @@ function clipOverlap(a, b) {
   return poly.length < 3 ? 0 : Math.abs(area2(poly));
 }
 
-const placements = loadPlacements(input);
+const placements = loadPlacements(input, { assembly: option('assembly', null) });
 const world = [];
 const missing = new Set();
 placements.forEach((placement, index) => {

@@ -57,7 +57,6 @@ import { isSeeThrough } from './tools/see-through.mjs';
 
 const VIEWER_VERSION = '1.0.0';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
-const GRID = new URLSearchParams(location.search).get('grid') || '';
 const canvas = document.getElementById('view');
 const hud = document.getElementById('hud');
 
@@ -132,7 +131,7 @@ function fromGrid(grid) {
 (async () => {
   const [engine, grid] = await Promise.all([
     makeEngine(),
-    fetch(`scenes/${SCENE}_grid${GRID}.json`).then((r) => r.json()),
+    fetch(`scenes/${SCENE}_grid2.json`).then((r) => r.json()),
   ]);
   const nav = fromGrid(grid);
   const VERSION_LINE = () => {
@@ -896,7 +895,7 @@ function fromGrid(grid) {
       radius: +camera.radius.toFixed(2),
       eye: [+camera.position.x.toFixed(2), +camera.position.y.toFixed(2), +camera.position.z.toFixed(2)],
       pan: mapView ? [+pan.x.toFixed(2), +pan.z.toFixed(2)] : [0, 0],
-      url: `${location.pathname}?scene=${SCENE}${GRID ? `&grid=${GRID}` : ''}&node=${cur}`,
+      url: `${location.pathname}?scene=${SCENE}&node=${cur}`,
     };
   }
   function pinView() {
@@ -913,7 +912,7 @@ function fromGrid(grid) {
     });
     return {
       scene: SCENE,
-      grid: `${SCENE}_grid${GRID}.json`,
+      grid: `${SCENE}_grid2.json`,
       recorded: new Date().toISOString(),
       origin: nav.meta.origin,
       cell: nav.meta.cell,
@@ -1220,7 +1219,7 @@ function fromGrid(grid) {
   addEventListener('resize', () => engine.resize());
 })().catch((e) => {
   hud.innerHTML = `<b>Failed to load</b><br><small>${e.message}<br>
-Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>
+Run <code>node tools/merge-scene.mjs scenes/${SCENE}.glb</code> and\n<code>node tools/build-grid-cells.mjs scenes/${SCENE}.glb</code> first, and serve this page over HTTP.</small>
 <small class="ver">viewer ${VIEWER_VERSION}</small>`;
   throw e;
 });
