@@ -139,6 +139,7 @@ cells scene. `--out dir` also writes the compiled cells and a render per map.
 | `lshape` | L, one inner curve, one sharp fallback | 28 | 48 / 18 | clean |
 | `terrace` | 8×8 plateau with a 4×4 at level 9 on it (one Mid) | 39 | 64 / 24 | clean |
 | `cliff_corner` | hand-written: two runs, a wide curve, plateau | 10 | 14 / 12 | clean |
+| `cliff8` | 14×14 at level 8, four Mid layers, ground apron | 59 | 48 / 24 | clean |
 | `hill` | 6×6 at level 1, ramp band with four outer hill curves | 13 | 31 / 13 | clean |
 | `hill_lshape` | L at level 1, one inner hill curve | 16 | 37 / 17 | clean |
 
