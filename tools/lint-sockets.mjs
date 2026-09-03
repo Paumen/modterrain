@@ -425,6 +425,11 @@ if (report) {
     materials: Object.fromEntries(perMaterial),
     wrongColour: wrongSockets.map((s) => ({ placement: s.index, piece: s.piece, at: placementCenter(s.index), material: s.material, partner: s.verdict.partner })),
     sockets: Object.fromEntries(perMaterial),
+    socketList: [...sockets.values()].map((s) => ({
+      placement: s.index, piece: s.piece, material: s.material,
+      axis: s.axis, coord: s.coord, sign: s.sign,
+      state: s.verdict.state, partner: s.verdict.partner,
+    })),
     exposed: exposed.map((f) => ({
       placement: f.index, piece: f.piece, at: placementCenter(f.index), material: f.material,
       normal: f.normal.map(round), near: f.centroid.map(round), open: f.open.map(round), edge: f.edge,

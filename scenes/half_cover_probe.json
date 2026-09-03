@@ -1,0 +1,9 @@
+{
+ "note": "Two grass tiles: a two-cell strip whose +x Violet edge is met by a one-cell tile, so that socket is exactly half covered. Minimal reproduction of the coverage difference documented in docs/socket-table.md.",
+ "assemblies": {
+  "HalfCover": [
+   { "piece": "Grass_Flat_1x1", "pos": [-0.5, 0, 1], "quat": [0, 0, 0, 1], "scale": [1, 1, 2] },
+   { "piece": "Grass_Flat_1x1", "pos": [-1.5, 0, 0.5], "quat": [0, 0, 0, 1], "scale": [1, 1, 1] }
+  ]
+ }
+}
