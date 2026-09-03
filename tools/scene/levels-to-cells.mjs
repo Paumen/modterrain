@@ -67,27 +67,38 @@ export function compile(map) {
   const claimed = new Map();
   const groundUnder = new Map();
   const at = (x, z) => cells.get(key(x, z));
-  const claim = (x, z, role) => {
-    const k = key(x, z);
-    if (claimed.has(k)) errors.push(`cell ${k}: ${role} collides with ${claimed.get(k)}`);
+  const held = (kind, x, z) => claimed.has(`${kind}|${key(x, z)}`);
+  const claim = (kind, x, z, role) => {
+    const k = `${kind}|${key(x, z)}`;
+    if (claimed.has(k)) errors.push(`cell ${key(x, z)}: ${role} collides with ${claimed.get(k)}`);
     claimed.set(k, role);
   };
   const bury = (x, z, ground) => {
     const k = key(x, z);
-    if (groundUnder.has(k) && groundUnder.get(k) !== ground) errors.push(`cell ${k}: pieces standing on two ground levels (${groundUnder.get(k)} and ${ground}) meet here`);
-    groundUnder.set(k, ground);
+    if (!groundUnder.has(k)) groundUnder.set(k, new Set());
+    groundUnder.get(k).add(ground);
   };
-  const take = (x, z, kind, role, ground) => { claim(x, z, role); bury(x, z, ground); symbols.set(key(x, z), SYMBOL[kind][role.split(' ')[0]] ?? SYMBOL[kind][role]); };
-  const place = (kind, shape, x, z, rot, ground, level, stretch = [1, 1]) => {
+  const take = (kind, x, z, role, ground) => {
+    claim(kind, x, z, role);
+    bury(x, z, ground);
+    const s = SYMBOL[kind][role.split(' ')[0]] ?? SYMBOL[kind][role];
+    symbols.set(key(x, z), symbols.has(key(x, z)) && symbols.get(key(x, z)) !== s ? '+' : s);
+  };
+  const place = (kind, shape, x, z, rot, ground, level, stretch = [1, 1], cap = null) => {
     const put = (piece, y) => pieces.push({ piece, at: [x, y, z], rot, mirror: false, stretch });
     if (kind === 'hill') { put(PIECES.hill[shape], ground); return; }
     const names = PIECES.cliff[shape];
     put(names.Base, ground);
+    if (cap !== null) {
+      for (let y = ground + 2; y <= cap - 1; y++) put(names.Mid, y);
+      return;
+    }
     for (let y = ground + 2; y <= level - 3; y++) put(names.Mid, y);
     put(names.Top, level - 2);
   };
 
   const drops = new Map();
+  const capped = new Map();
   for (const [k, level] of cells) {
     const [x, z] = unkey(k);
     const low = [];
@@ -111,57 +122,66 @@ export function compile(map) {
       drops.get(k).low.push({ side, ground: hit.ground, kind: 'hill', depth: 2 });
     }
   }
-  for (const [k, { low }] of drops) {
-    const kinds = new Set(low.map((l) => l.kind));
-    if (kinds.size > 1) errors.push(`cell ${k}: a hill and a cliff meet here; keep them apart by a cell`);
-    const grounds = new Set(low.map((l) => l.ground));
-    if (grounds.size > 1) errors.push(`cell ${k}: falls to two different ground levels (${[...grounds].join(', ')})`);
-    const sides = low.filter((l) => l.depth === 1).map((l) => l.side);
-    if (sides.length > 2 || (sides.length === 2 && OPPOSITE[sides[0]] === sides[1])) {
-      errors.push(`cell ${k}: low on ${sides.join(', ')}; a plateau must be at least two cells wide everywhere`);
+  const sidesOf = (low, kind) => low.filter((l) => l.depth === 1 && l.kind === kind).map((l) => l.side);
+  for (const [k, { level, low }] of drops) {
+    const hills = low.filter((l) => l.kind === 'hill');
+    const cliffs = low.filter((l) => l.kind === 'cliff');
+    if (hills.length && cliffs.length) {
+      errors.push(`cell ${k}: a hill edge and a cliff edge meet here. Capping the cliff stack under the hill was measured and does not close: it leaves the hill's Pink flank and the neighbouring cliff Top's Yellow open, and pairs Yellow against Orange. The kit's answer is the Grass_Hill_Grade_Transition_* family, which is not compiled yet.`);
+    }
+    for (const group of [hills, cliffs]) {
+      const grounds = new Set(group.filter((l) => l.depth === 1).map((l) => l.ground));
+      if (grounds.size > 1) errors.push(`cell ${k}: falls to two different ground levels (${[...grounds].join(', ')})`);
+    }
+    for (const kind of ['hill', 'cliff']) {
+      const sides = sidesOf(low, kind);
+      if (sides.length > 2 || (sides.length === 2 && OPPOSITE[sides[0]] === sides[1])) {
+        errors.push(`cell ${k}: low on ${sides.join(', ')}; a plateau must be at least two cells wide everywhere`);
+      }
     }
     const deep = low.filter((l) => l.depth === 2).map((l) => l.side);
-    if (deep.some((s) => deep.includes(OPPOSITE[s]) || sides.includes(OPPOSITE[s]))) {
+    if (deep.some((s) => deep.includes(OPPOSITE[s]) || sidesOf(low, 'hill').includes(OPPOSITE[s]))) {
       errors.push(`cell ${k}: two hill ramps overlap; a hill plateau must be at least four cells wide`);
     }
   }
   if (errors.length) return { pieces, errors, symbols };
 
-  const cornerOf = (low) => {
-    const sides = low.filter((l) => l.depth === 1).map((l) => l.side);
+  const cornerOf = (low, kind) => {
+    const sides = sidesOf(low, kind);
     if (sides.length !== 2) return null;
     for (const pair of Object.keys(CORNER_ROT)) if (sides.includes(pair[0]) && sides.includes(pair[1])) return pair;
     return null;
   };
-  for (const [k, { level, low }] of drops) {
-    const pair = cornerOf(low);
-    if (!pair) continue;
-    const [x, z] = unkey(k);
-    const { kind, ground } = low[0];
-    const rot = CORNER_ROT[pair];
-    const rv = ROT_VEC[rot];
-    const [cx, cz] = rv(OUTER.corner);
-    const origin = [x - cx, z - cz];
-    const block = OUTER.cells.map(([a, b]) => { const [dx, dz] = rv([a, b]); return [origin[0] + dx, origin[1] + dz]; });
-    const free = block.every(([bx, bz]) => at(bx, bz) === level && !claimed.has(key(bx, bz)));
-    const fits = free && block.every(([bx, bz]) => {
-      const d = drops.get(key(bx, bz));
-      if (kind === 'hill') return d && d.low.every((l) => l.kind === 'hill' && l.ground === ground);
-      if (bx === origin[0] && bz === origin[1]) return !d;
-      return (bx === x && bz === z) || (d && d.low.length === 1 && d.low[0].kind === 'cliff');
-    });
-    if (kind === 'cliff' && (corners !== 'wide' || !fits)) {
-      take(x, z, kind, 'sharp corner', ground);
-      place(kind, 'sharp', x + 0.5, z + 0.5, rot, ground, level);
-      continue;
+  for (const kind of ['cliff', 'hill']) {
+    for (const [k, { level, low }] of drops) {
+      const pair = cornerOf(low, kind);
+      if (!pair) continue;
+      const [x, z] = unkey(k);
+      const ground = low.find((l) => l.depth === 1 && l.kind === kind).ground;
+      const rot = CORNER_ROT[pair];
+      const rv = ROT_VEC[rot];
+      const [cx, cz] = rv(OUTER.corner);
+      const origin = [x - cx, z - cz];
+      const block = OUTER.cells.map(([a, b]) => { const [dx, dz] = rv([a, b]); return [origin[0] + dx, origin[1] + dz]; });
+      const free = block.every(([bx, bz]) => at(bx, bz) === level && !held(kind, bx, bz) && !capped.has(key(bx, bz)));
+      const fits = free && block.every(([bx, bz]) => {
+        const d = drops.get(key(bx, bz));
+        if (kind === 'hill') return d && d.low.every((l) => l.kind === 'hill' && l.ground === ground);
+        if (bx === origin[0] && bz === origin[1]) return !d;
+        return (bx === x && bz === z) || (d && d.low.length === 1 && d.low[0].kind === 'cliff');
+      });
+      if (kind === 'cliff' && (corners !== 'wide' || !fits)) {
+        take(kind, x, z, 'sharp corner', ground);
+        place(kind, 'sharp', x + 0.5, z + 0.5, rot, ground, level, [1, 1], capped.get(k) ?? null);
+        continue;
+      }
+      if (!fits) { errors.push(`cell ${k}: a hill corner needs its 2x2 block free; the plateau is too small here`); continue; }
+      for (const [bx, bz] of block) take(kind, bx, bz, 'outer corner', ground);
+      place(kind, 'outer', origin[0] + 0.5, origin[1] + 0.5, rot, ground, level);
     }
-    if (!fits) { errors.push(`cell ${k}: a hill corner needs its 2x2 block free; the plateau is too small here`); continue; }
-    for (const [bx, bz] of block) take(bx, bz, kind, 'outer corner', ground);
-    place(kind, 'outer', origin[0] + 0.5, origin[1] + 0.5, rot, ground, level);
   }
 
   for (const [k, level] of cells) {
-    if (claimed.has(k)) continue;
     const d = drops.get(k);
     if (d && d.low.some((l) => l.depth === 1)) continue;
     const [x, z] = unkey(k);
@@ -172,19 +192,19 @@ export function compile(map) {
       if (lowLevel === undefined || lowLevel >= level) continue;
       const drop = level - lowLevel;
       const kind = drop === 1 ? 'hill' : drop >= CLIFF ? 'cliff' : null;
-      if (!kind) continue;
+      if (!kind || held(kind, x, z)) continue;
       const lips = [[lx, 0], [0, lz]].map(([dx, dz]) => key(x + dx, z + dz));
       const facing = [pair[0], pair[1]];
-      const ok = lips.every((lk, i) => {
+      const ok = lips.every((lk) => {
         const ld = drops.get(lk);
         return at(...unkey(lk)) === level && ld && ld.low.some((l) => l.depth === 1 && l.kind === kind && l.ground === lowLevel && (l.side === facing[0] || l.side === facing[1]));
       });
       if (!ok) continue;
       const shape = INNER[kind];
       const block = shape.cells.map(([a, b]) => { const [dx, dz] = rv([a, b]); return [x + dx, z + dz]; });
-      if (block.some(([bx, bz]) => at(bx, bz) !== level || claimed.has(key(bx, bz)))) { errors.push(`cell ${k}: an inner corner collides with a neighbouring corner`); break; }
-      for (const [bx, bz] of block) take(bx, bz, kind, 'inner corner', lowLevel);
-      if (shape.foot) take(x + lx, z + lz, kind, 'foot', lowLevel);
+      if (block.some(([bx, bz]) => at(bx, bz) !== level || held(kind, bx, bz) || capped.has(key(bx, bz)))) { errors.push(`cell ${k}: an inner corner collides with a neighbouring corner`); break; }
+      for (const [bx, bz] of block) take(kind, bx, bz, 'inner corner', lowLevel);
+      if (shape.foot) take(kind, x + lx, z + lz, 'foot', lowLevel);
       place(kind, 'inner', x + 0.5, z + 0.5, rot, lowLevel, level);
       break;
     }
@@ -192,32 +212,34 @@ export function compile(map) {
 
   const runs = new Map();
   for (const [k, { level, low }] of drops) {
-    if (claimed.has(k)) continue;
-    const front = low.filter((l) => l.depth === 1);
-    if (front.length !== 1) continue;
-    const { side, ground, kind } = front[0];
-    const [x, z] = unkey(k);
-    const along = side === 'W' || side === 'E' ? 'z' : 'x';
-    const line = along === 'z' ? x : z;
-    const runKey = `${kind}|${side}|${level}|${ground}|${line}`;
-    if (!runs.has(runKey)) runs.set(runKey, []);
-    runs.get(runKey).push(along === 'z' ? z : x);
-    take(x, z, kind, side, ground);
-    if (kind === 'hill') {
-      const [dx, dz] = SIDES[OPPOSITE[side]];
-      if (at(x + dx, z + dz) !== level) { errors.push(`cell ${k}: a hill ramp needs the cell behind it at the same level`); continue; }
-      take(x + dx, z + dz, kind, side, ground);
+    for (const front of low.filter((l) => l.depth === 1)) {
+      const { side, ground, kind } = front;
+      if (held(kind, ...unkey(k))) continue;
+      if (sidesOf(low, kind).length !== 1) continue;
+      const [x, z] = unkey(k);
+      const along = side === 'W' || side === 'E' ? 'z' : 'x';
+      const line = along === 'z' ? x : z;
+      const cap = kind === 'cliff' ? capped.get(k) ?? '' : '';
+      const runKey = `${kind}|${side}|${level}|${ground}|${line}|${cap}`;
+      if (!runs.has(runKey)) runs.set(runKey, []);
+      runs.get(runKey).push(along === 'z' ? z : x);
+      take(kind, x, z, side, ground);
+      if (kind === 'hill') {
+        const [dx, dz] = SIDES[OPPOSITE[side]];
+        if (at(x + dx, z + dz) !== level) { errors.push(`cell ${k}: a hill ramp needs the cell behind it at the same level`); continue; }
+        take(kind, x + dx, z + dz, side, ground);
+      }
     }
   }
   for (const [runKey, coords] of runs) {
-    const [kind, side, level, ground, line] = runKey.split('|');
+    const [kind, side, level, ground, line, cap] = runKey.split('|');
     coords.sort((a, b) => a - b);
     let start = coords[0], prev = coords[0];
     const flush = (a, b) => {
       const n = b - a + 1;
       const centre = a + n / 2;
       const [x, z] = side === 'W' || side === 'E' ? [Number(line) + 0.5, centre] : [centre, Number(line) + 0.5];
-      place(kind, 'straight', x, z, FACING_ROT[side], Number(ground), Number(level), [1, n]);
+      place(kind, 'straight', x, z, FACING_ROT[side], Number(ground), Number(level), [1, n], cap === '' ? null : Number(cap));
     };
     for (const c of coords.slice(1)) {
       if (c !== prev + 1) { flush(start, prev); start = c; }
@@ -232,12 +254,12 @@ export function compile(map) {
     slabs.get(y).add(key(x, z));
   };
   for (const [k, level] of cells) {
-    if (claimed.has(k)) continue;
+    if (held('hill', ...unkey(k)) || held('cliff', ...unkey(k))) continue;
     const [x, z] = unkey(k);
     slab(x, z, level);
     symbols.set(k, '.');
   }
-  for (const [k, ground] of groundUnder) slab(...unkey(k), ground);
+  for (const [k, levels] of groundUnder) for (const g of levels) slab(...unkey(k), g);
   for (const [y, set] of [...slabs].sort((a, b) => a[0] - b[0])) {
     for (const [x0, z0, w, h] of rectangles(set)) {
       pieces.push({ piece: 'Grass_Flat_1x1', at: [x0 + w / 2, y, z0 + h / 2], rot: 0, mirror: false, stretch: [w, h] });

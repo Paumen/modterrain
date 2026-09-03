@@ -57,8 +57,8 @@ Everything else is refused with the cell named:
   one-cell-wide ridge or spire. A plateau must be two cells wide everywhere.
 - A hill plateau narrower than four: the two-cell ramps from opposite sides
   would overlap.
-- A hill and a cliff meeting in one cell, or a corner whose two sides fall to
-  different ground levels.
+- A hill edge and a cliff edge meeting in one cell (see **The junction** below),
+  or a corner whose two sides fall to different ground levels.
 - An inner corner that collides with another corner (a one-cell notch).
 
 ## The rules it applies
@@ -113,6 +113,44 @@ whole band. Measured on the demo's hill banks, for instance the outer curve
 at (−5.5, 4, −16.5) with rot-90 straights east of it and rot-0 straights
 south of it.
 
+## The junction, and why a walkable route to a clifftop is not compiled
+
+A cell where a hill edge and a cliff edge meet is refused, and that one
+refusal is what stops a hill ramp climbing to the top of a cliff. It is worth
+recording what was measured, because the obvious fix does not work.
+
+The obvious fix is to truncate the cliff stack under the hill: Base and Mids
+up to the hill's ground, then the hill on top, with no cliff Top. The demo
+appears to do this (`Grass_Hill_Sharp_Curve_Outer_2x2` at y −3 sits exactly on
+a `Basic_Curve_Outer_2x2_Wide_Base` at y −5, whose top is −3). Implemented and
+checked on a plateau at 5 with a cliff north and a hill terrace east, it fails:
+4 wrong-colour sockets and 8 exposed faces. The truncated run's Orange meets
+the neighbouring cliff Top's Yellow, the hill's Pink flank is left open where
+the Top used to cap it, and a plateau slab's Violet lands on Yellow. The kit's
+own answer is the `Grass_Hill_Grade_Transition_*` family, which is not
+compiled yet.
+
+A second wall sits behind the same goal. With only 1-drops and 4-and-more
+drops, a boundary can never pass through a height difference of 2 or 3. A
+terraced hillside climbing to a plateau whose other side is a cliff to open
+ground always produces such a boundary where the terraces run alongside the
+cliff's foot: the terrace at 3 stands 3 above the plain, the terrace at 2
+stands 2. Both are refused. The kit covers those with
+`Tiered_Retaining_Wall_*`, a 1-tall wall straddling a cell edge that stacks,
+also not compiled yet.
+
+So a walkable climb to a clifftop needs both families. What does work today is
+a cliff standing on level ground with hills rolling against its foot
+(`cliff_foot_hills`), and a cliff standing on a terraced apron the hills climb
+to (that apron is what makes the cliff's foot one height everywhere).
+
+**A cliff run stands on one ground level.** Measured on the demo: among 3084
+placements there is exactly one pair of adjacent cliff Base pieces at
+different heights, and that pair is 2 apart at a corner. A cliff foot is never
+stepped. So if a hill's high ground touches a cliff, the cliff's foot rises
+there and the cliff stands on the hill; to keep a cliff on the low ground, the
+hill's raised cells must stay a cell clear of the face.
+
 **Ground under cliffs.** The ground slab at G extends under every cliff
 footprint that stands on G. The demo does this everywhere (for example the
 `Grass_Flat_1x1` stretched 6×3 at (−5, −1, 11.5) runs under the wide curve at
@@ -140,6 +178,7 @@ cells scene. `--out dir` also writes the compiled cells and a render per map.
 | `terrace` | 8×8 plateau with a 4×4 at level 9 on it (one Mid) | 39 | 64 / 24 | clean |
 | `cliff_corner` | hand-written: two runs, a wide curve, plateau | 10 | 14 / 12 | clean |
 | `cliff8` | 14×14 at level 8, four Mid layers, ground apron | 59 | 48 / 24 | clean |
+| `cliff_foot_hills` | a cliff wall on level ground, four hill mounds at its foot | 46 | 107 / 36 | clean |
 | `hill` | 6×6 at level 1, ramp band with four outer hill curves | 13 | 31 / 13 | clean |
 | `hill_lshape` | L at level 1, one inner hill curve | 16 | 37 / 17 | clean |
 
@@ -159,7 +198,8 @@ querying the demo dump, is why the compiler exists: the rule is written once
 here and applied by code, and the LLM writes numbers on a grid.
 
 Not compiled yet, in the order they would pay off: retaining walls (a drop
-of 1 to 3 as a terrace wall), gentle hills (`Grass_Hill_Gentle_*`, four cells
+of 2 or 3 as a stacked terrace wall) and the hill-to-cliff grade transitions,
+which together unlock a walkable climb to a clifftop; gentle hills (`Grass_Hill_Gentle_*`, four cells
 deep), water, sand, paths, the `Under` layers for cliffs seen from below, and
 the esses and 3x3 curves the demo uses to soften long runs.
 
