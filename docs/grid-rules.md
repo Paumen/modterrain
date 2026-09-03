@@ -36,6 +36,9 @@ The grid is built from these rules and nothing else (`tools/build/build-grid-cel
 13. Tiered retaining wall always block connection on the edge they sit on.
 14. Slope is allowed by less than 0.5 per 0.5 unit, and the cell above it has to
     have free space too.
+15. The cube has to be held up. A cell whose ground does not carry the cube's
+    0.5/0.5 base gets no node — a handrail cap or the sliver of a piece edge is
+    not something to stand on.
 
 ## Answers given on these rules
 
@@ -51,3 +54,6 @@ The grid is built from these rules and nothing else (`tools/build/build-grid-cel
   floor.
 - Rule 6: cliff is defined by piece family for now, by material later, when cave
   gets a different material.
+- Rule 15 is measured on a 5x5 grid across the cube's base: at least 8 of the 25
+  points need standable ground within 0.3 below the node. A bridge handrail cap
+  carries 5 of 25, a deck carries 25.
