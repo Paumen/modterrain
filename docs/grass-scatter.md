@@ -77,20 +77,25 @@ Babylon's PBR path is not a plain sum of the two light intensities.
 
 Matching it exactly is a trap: the darkest tuft texel is still inside the range
 the blades themselves cover, so the tufts dissolve into the ground and read as
-noise. `--ground-shade` (0.5) takes the ground down in value while keeping the
-hue.
+noise. `--ground-shade` (0.62) takes the ground down in value while keeping the
+hue, which is the whole of the fix — the scene's lights are left alone.
 
-The other half is the lighting. A 1.2 hemispheric fill on top of a 1.3 key put
-every slope at nearly the same value, which is what made the terrain read flat
-and left the grass nothing to sit against. The key now carries the scene at
-1.75, warm, against a cool 0.5 sky. Measured on one view, blade against the
-ground under it:
+Retuning the lights was tried and reverted. Trading the ambient fill for a
+stronger, warmer key does raise the contrast, but a directional light with no
+shadow map only darkens; there is no shadow to give the darkness a shape, and
+tinting the lights recolours every material in the scene, not just the grass.
 
-| | ground | contrast vs tuft texel |
+Measured on one view, tuft texel against the ground under it:
+
+| | ground | contrast |
 | --- | --- | --- |
-| ground matched to tufts, old lights | 117,148,64 | 1.13:1 |
-| ground shaded, old lights | 88,110,52 | 1.86:1 |
-| ground shaded, new lights | 68,85,44 | 2.67:1 |
+| terrain untouched, forest green | 56,167,56 | 1.02:1 |
+| ground matched to the tuft base | 117,148,64 | 1.13:1 |
+| ground shaded to 0.62 | 96,120,55 | 1.62:1 |
+| (reverted) shaded 0.5 + retinted lights | 68,85,44 | 2.67:1 |
+
+The original terrain green scores worst of all: it differs from the tufts in
+hue but barely in value, which is why the grass never separated from it.
 
 The tufts' own baked shading is untouched throughout — it is the authored
 atlas gradient, and nothing in this pipeline rewrites it.

@@ -22,7 +22,7 @@ const SEED = Number(flag('seed', 20260903));
 const MATERIAL = flag('material', 'Grass');
 const MIN_UP = Number(flag('min-up', 0.55));
 const ATLAS = flag('atlas', 'models/textures/colormap.png');
-const SHADE = Number(flag('ground-shade', 0.5));
+const SHADE = Number(flag('ground-shade', 0.62));
 const outPath = input.replace(/(_merged)?\.glb$/i, '_grass.json');
 const meshPath = input.replace(/(_merged)?\.glb$/i, '_grass.glb');
 
