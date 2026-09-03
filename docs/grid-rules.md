@@ -23,7 +23,7 @@ The avatar is a 0.5×0.5×0.5 cube. Cells are 1×1×1 units.
    the cube like any other obstacle.)
 7. A cell only gets a node if the cube, standing on the floor, has clear space
    (the 0.5 above the local floor) at the center and can cross out via at least
-   two of its four edges.
+   two of its 8 directions (the 4 edges and the 4 diagonals).
 8. An obstacle that stops the cube crossing a particular edge blocks the
    connections through that edge only.
 9. Grass floors get a node, unless restricted above.
