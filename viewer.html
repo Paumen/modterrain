@@ -55,7 +55,6 @@
 <script type="module">
 import { buildIndex, raycast as castRay } from './tools/lib/ray.mjs';
 import { isSeeThrough } from './tools/lib/see-through.mjs';
-import { instanceMatrix } from './tools/lib/scatter.mjs';
 
 const VIEWER_VERSION = '1.0.0';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
@@ -744,7 +743,8 @@ function fromGrid(grid) {
       + `<i>node</i> ${cur}/${nav.nodes.length} <i>cell</i> ${n.c},${n.r} <i>y</i> ${num(n.p[1])} <i>ways</i> ${n.n.length}<br>`
       + `<i>eye</i> ${num(camera.position.x, 1)},${num(camera.position.y, 1)},${num(camera.position.z, 1)}<br>`
       + `<i>route</i> ${route.length} ${tween ? 'moving' : 'idle'} <i>pads</i> ${shown.size} <i>back</i> ${history.length}<br>`
-      + `<i>grass</i> ${grass ? (grassOn ? `${grass.meta.counts.reduce((a, b) => a + b, 0)} &middot; ${grassBandAt(n.p)}` : 'off') : '\u2014'}<br>`
+      + `<i>grass</i> ${grass ? (grassOn ? `${grass.meta.counts.reduce((a, b) => a + b, 0)} &middot; ${grassBandAt(n.p)}` : 'off') : '\u2014'}`
+      + `${grass && grassOn ? ` <i>tris</i> ${(grass.meta.triangles / 1000).toFixed(0)}k` : ''}<br>`
       + `<i>rays</i> ${debugRays ? `${rayCount()} hit ${hits}` : 'off'}`
       + `${debugRays ? ` <i>near</i> ${num(near)} <i>drop</i> ${num(drop)}` : ''}`
       + `</small>`;
@@ -1198,28 +1198,27 @@ function fromGrid(grid) {
   });
   let grassOn = true;
   let grass = null;
+  /* The tufts are unlit: what you see is the gradient baked into the atlas.
+   * The ground has to be told to land on the same colour once the lights have
+   * had their say. Babylon's PBR path is not a plain sum of the two light
+   * intensities, so the factor below is measured, not derived: with the sun
+   * and sky above, a flat up-facing albedo renders about 1.43x itself. */
+  const GROUND_GAIN = 1.43;
   async function loadGrass() {
-    const data = await fetch(`models/scenes/${SCENE}_grass.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-    if (!data) { document.getElementById('grass').hidden = true; return; }
-    const buckets = data.pieces.map(() => []);
-    for (const item of data.items) buckets[item[0]].push(item);
-    const meshes = [];
-    for (let i = 0; i < data.pieces.length; i++) {
-      if (!buckets[i].length) continue;
-      const loaded = await BABYLON.SceneLoader.ImportMeshAsync('', 'models/props/', `${data.pieces[i]}.glb`, scene);
-      const mesh = loaded.meshes.find((m) => m.getTotalVertices() > 0);
-      if (!mesh) continue;
-      mesh.setParent(null);
-      mesh.bakeCurrentTransformIntoVertices();
-      mesh.isPickable = false;
-      mesh.alwaysSelectAsActiveMesh = true;
-      const buf = new Float32Array(buckets[i].length * 16);
-      buckets[i].forEach((item, k) => buf.set(instanceMatrix(item), k * 16));
-      mesh.thinInstanceSetBuffer('matrix', buf, 16);
-      for (const root of loaded.meshes) if (root !== mesh && root.getTotalVertices() === 0) root.dispose();
-      meshes.push(mesh);
-    }
-    grass = { meta: data.meta, meshes };
+    const meta = await fetch(`models/scenes/${SCENE}_grass.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    if (!meta) { document.getElementById('grass').hidden = true; return; }
+    const loaded = await BABYLON.SceneLoader.ImportMeshAsync('', 'models/scenes/', meta.meta.mesh, scene);
+    const mesh = loaded.meshes.find((m) => m.getTotalVertices() > 0);
+    if (!mesh) { document.getElementById('grass').hidden = true; return; }
+    mesh.isPickable = false;
+    mesh.freezeWorldMatrix();
+    mesh.material.freeze();
+    const ground = scene.materials.find((m) => m.name === meta.meta.material);
+    const was = ground ? ground.albedoColor.clone() : null;
+    const want = ground
+      ? new BABYLON.Color3(...meta.meta.ground.linear.map((c) => Math.min(1, c / GROUND_GAIN)))
+      : null;
+    grass = { meta: meta.meta, mesh, ground, was, want };
     setGrass(grassOn);
   }
   function grassBandAt(p) {
@@ -1230,7 +1229,10 @@ function fromGrid(grid) {
   }
   function setGrass(on) {
     grassOn = on;
-    if (grass) for (const m of grass.meshes) m.setEnabled(on);
+    if (grass) {
+      grass.mesh.setEnabled(on);
+      if (grass.ground) grass.ground.albedoColor.copyFrom(on ? grass.want : grass.was);
+    }
     document.getElementById('grass').classList.toggle('on', on);
     renderHud();
   }

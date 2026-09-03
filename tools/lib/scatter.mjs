@@ -3,6 +3,11 @@ export const GRASS_PIECES = [
   'grass-2-a', 'grass-2-b', 'grass-2-c', 'grass-2-d',
 ];
 
+/* The 'a' variant of each family is a single blade and is never used: grass
+ * reads as clumps. b is 132 triangles, c and d are 396 to 528, and everything
+ * is baked into one buffer, so this mix is what the scene costs. */
+export const PIECE_WEIGHTS = [0, 0.9, 0.08, 0.02];
+
 export const BANDS = ['type 1', 'type 2', 'mixed'];
 
 export function mulberry32(seed) {
@@ -16,21 +21,21 @@ export function mulberry32(seed) {
   };
 }
 
+/* Column-major, glTF order. The local +y ends up along the surface normal the
+ * tuft grew from, so a tuft on a hillside leans with the hill. */
 export function instanceMatrix([, x, y, z, yaw, s, h, nx, nz]) {
   const ny = Math.sqrt(Math.max(0, 1 - nx * nx - nz * nz));
   const ux = nz, uz = -nx;
   const len = Math.hypot(ux, uz);
-  const c = ny;
-  const sn = len;
   let r;
   if (len < 1e-6) {
     r = [1, 0, 0, 0, 1, 0, 0, 0, 1];
   } else {
-    const ax = ux / len, az = uz / len, t = 1 - c;
+    const ax = ux / len, az = uz / len, t = 1 - ny;
     r = [
-      t * ax * ax + c, -sn * az, t * ax * az,
-      sn * az, c, -sn * ax,
-      t * ax * az, sn * ax, t * az * az + c,
+      t * ax * ax + ny, -len * az, t * ax * az,
+      len * az, ny, -len * ax,
+      t * ax * az, len * ax, t * az * az + ny,
     ];
   }
   const cy = Math.cos(yaw), sy = Math.sin(yaw);
