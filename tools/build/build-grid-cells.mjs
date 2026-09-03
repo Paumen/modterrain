@@ -38,11 +38,13 @@ const ALWAYS = new Set([
   'Prop_Bridge_Rope_End_Basic_1x3', 'Path_Bridge_Center_Top_1x2',
   'Path_Bridge_Edge_Top_1x2', 'Prop_Bridge_Center_1x2', 'Prop_Bridge_End_2x2',
 ]);
+const IGNORE = /^Path_Edging_Stones_/;
 const CLIFF = /^(Basic_|Cracked_|Cave_Edge_)/;
 const WALL13 = /^Tiered_Retaining_Wall_/;
 const CAVE_FLOOR = /^(Cave_Center_|Floor_)/;
 const WALKWAY = /^Tiered_Walkway_/;
 const FLOOR_MAT = /^(Grass|Dirt)$/;
+const STAND_MAT = /^(Grass|Dirt|Cliff|Cliff Face|Carved Stone( \d| Walkway)?)$/;
 const isWater = (m) => /Water|Pool/.test(m);
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Dark', 'Wood Light', 'Wood Light End', 'Wood Medium']);
 
@@ -60,6 +62,7 @@ const wallPos = [];
 const obsPos = [];
 const triMat = [];
 const triFloor = [];
+const triStand = [];
 const triAlways = [];
 const camPos = [];
 const camPiece = [];
@@ -104,13 +107,14 @@ function sealCells(p, lo, hi) {
     if ((prim.mode ?? 4) !== 4) continue;
     const mat = json.materials?.[prim.material]?.name ?? '';
     const hidden = /^Hidden/.test(mat);
-    if (hidden) continue;
+    if (hidden || IGNORE.test(piece)) continue;
     const solid = TERRAIN.has(mat);
     const water = isWater(mat);
     const cliff = CLIFF.test(piece);
     const always = ALWAYS.has(piece);
     const floorSrc = !NEVER.has(piece) && !water && (
       always || (FLOOR_MAT.test(mat) && !cliff) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
+    const standSrc = !water && (always || STAND_MAT.test(mat) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
     const pos = readAccessor(glb, prim.attributes.POSITION);
     const idx = prim.indices !== undefined ? readAccessor(glb, prim.indices).data : null;
     const count = idx ? idx.length : pos.count;
@@ -131,11 +135,12 @@ function sealCells(p, lo, hi) {
         const vx2 = p[2][0] - p[0][0], vy2 = p[2][1] - p[0][1], vz2 = p[2][2] - p[0][2];
         const nx2 = uy2 * vz2 - uz2 * vy2, ny2 = uz2 * vx2 - ux2 * vz2, nz2 = ux2 * vy2 - uy2 * vx2;
         const ln = Math.hypot(nx2, ny2, nz2);
-        if (!floorSrc || ln < 1e-12 || ny2 / ln < 0.5) obsPos.push(...p[0], ...p[1], ...p[2]);
+        if (!standSrc || ln < 1e-12 || ny2 / ln < 0.5) obsPos.push(...p[0], ...p[1], ...p[2]);
       }
       pos3.push(...p[0], ...p[1], ...p[2]);
       triMat.push(mat);
       triFloor.push(floorSrc);
+      triStand.push(standSrc);
       triAlways.push(always);
       if (floorSrc) {
         for (let cx = Math.floor(lo[0]); cx <= Math.floor(hi[0]); cx++)
@@ -176,7 +181,7 @@ function groundAt(x, z, yTop, reach) {
     const b = t * 6;
     if (x < box[b] - 1e-4 || x > box[b + 3] + 1e-4 || z < box[b + 2] - 1e-4 || z > box[b + 5] + 1e-4) continue;
     if (box[b + 1] > yTop || box[b + 4] < yTop - reach) continue;
-    if (!triFloor[t]) continue;
+    if (!triStand[t]) continue;
     const h = hitY(tris, t, x, z);
     if (!h || !h.up || h.y > yTop || h.y < yTop - reach) continue;
     if (!best || h.y > best.y) best = { y: h.y, t };
@@ -229,7 +234,7 @@ function boxBlocked(idx2, minX, minY, minZ, maxX, maxY, maxZ) {
 }
 
 function cubeFits(x, z, gTop) {
-  return !boxBlocked(oIdx, x - CUBE / 2, gTop + 0.03, z - CUBE / 2, x + CUBE / 2, gTop + CLEAR - 0.02, z + CUBE / 2);
+  return !boxBlocked(oIdx, x - CUBE / 2, gTop + CUBE + 0.03, z - CUBE / 2, x + CUBE / 2, gTop + CLEAR - 0.02, z + CUBE / 2);
 }
 
 function groundUnder(x, z, yTop, reach) {
@@ -241,7 +246,7 @@ function groundUnder(x, z, yTop, reach) {
     seen[t] = stamp;
     const b = t * 6, a = t * 9;
     if (box[b] > x + h || box[b + 3] < x - h || box[b + 2] > z + h || box[b + 5] < z - h || box[b + 1] > yTop || box[b + 4] < yTop - reach) continue;
-    if (!triFloor[t]) continue;
+    if (!triStand[t]) continue;
     if ((tris[a + 5] - tris[a + 2]) * (tris[a + 6] - tris[a]) - (tris[a + 3] - tris[a]) * (tris[a + 8] - tris[a + 2]) <= 0) continue;
     const poly = clip([0, 3, 6].map((k) => [tris[a + k], tris[a + k + 1], tris[a + k + 2]]), x - h, x + h, z - h, z + h);
     let y0 = Infinity, y1 = -Infinity;
@@ -271,7 +276,7 @@ function corridor(x0, z0, g0, x1, z1, checkSeal) {
     const minX = Math.min(px, x) - CUBE / 2, maxX = Math.max(px, x) + CUBE / 2;
     const minZ = Math.min(pz, z) - CUBE / 2, maxZ = Math.max(pz, z) + CUBE / 2;
     const gTop = Math.max(here.y, prev.y), gBot = Math.min(here.bot, prev.bot);
-    if (boxBlocked(oIdx, minX, gTop + 0.03, minZ, maxX, gTop + CLEAR - 0.02, maxZ)) return false;
+    if (boxBlocked(oIdx, minX, gTop + CUBE + 0.03, minZ, maxX, gTop + CLEAR - 0.02, maxZ)) return false;
     if (boxBlocked(wIdx, minX, gBot - 0.05, minZ, maxX, gTop + CLEAR, maxZ)) return false;
     gs.push(here.y);
     prev = here;
@@ -293,7 +298,7 @@ const byCell = new Map();
 for (const { cx, cy, cz } of candidates.values()) {
   const x = cx + 0.5, z = cz + 0.5;
   const hit = groundAt(x, z, cy + 0.98, 1.0) ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0));
-  if (!hit) continue;
+  if (!hit || !triFloor[hit.t]) continue;
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
   if (!cubeFits(x, z, groundUnder(x, z, hit.y + RISE + 0.05, RISE * 2 + 0.2)?.y ?? hit.y)) continue;
