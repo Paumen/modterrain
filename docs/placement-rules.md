@@ -95,10 +95,18 @@ one plane, and what covers it), it says:
 The path family paints its grass side Violet and its dirt side Red whatever
 the profile; its outer side, which is buried against a hill, is plain.
 
+The Autumn demo (`scenes/autumn_terrain.json`) butts cave floor tiles, Yellow
+edge on, straight against hill sides (Orange, Pink and Violet) around its
+cave mouth, and one grass carpet's Orange against a wall's Green. The pairing
+rule above is read from the island demo and does not admit these, so the
+linter reports them as wrong colour: 8 sockets, all at that cave.
+
 ## Linting a placement set
 
 ```
 node tools/lint-sockets.mjs scenes/large_island_terrain_v3.json --ocean -5.5
+node tools/lint-sockets.mjs scenes/winter_terrain.json --ocean 0.75
+node tools/lint-sockets.mjs scenes/autumn_terrain.json --ocean -6
 node tools/lint-sockets.mjs assemblies/placements.json --assembly River_Straight_Wide --verbose
 node tools/lint-sockets.mjs scenes/island.json --plain --json report.json
 ```
@@ -121,13 +129,37 @@ placement list (`pos`, `quat`, `scale`). The tool places every atom, then:
   exposed only when a small cone around the escaping ray escapes too;
   otherwise it is a hairline crack, reported separately. `--plain` adds the
   uncoloured `Hidden` faces (bottoms and backs).
-Exit code is 1 when any face is exposed or any socket is paired with a wrong colour. Demo scene: 11 exposed faces, 10 of
-them one open retaining-wall corner at (-11, 5, -11) and one sliver where a
-grass slab meets a hill at (-44, -5, -26); both verified by rendering from the
-escaping ray's direction. `scenes/island.json`: 0. Mutating the demo (five
-pieces each: grass tiles removed, cliff tops raised a level, hill esses
-rotated, Mid esses un-mirrored with `--plain`) gives 38, 54, 68 and 33
-exposed faces, all within four cells of a mutated piece; per site the
-detection is 5/5, 5/5, 4/5 and 3/5. Wrong-colour sockets: demo 17 (among
-them the two cliff Tops placed at Base height at glTF (23.5, -4, -27.5) and
-(14.5, 6, -37.5)), island 0.
+- Scene edge: an exposed face whose escaping ray crosses no occupied cell
+  column at all is tagged `[scene edge]` and counted separately. A dump cut
+  out of a larger Unity scene, with its edging pieces removed, ends like
+  that on every side. It still counts as exposed.
+- `--ocean y` marks samples below y as under water and stops downward rays
+  from counting. Without it a scene with nothing under its lowest ground
+  reports every lip that looks down into the void (Winter: 582 instead of
+  146).
+
+Exit code is 1 when any face is exposed or any socket is paired with a wrong
+colour. Baselines, each exposed face verified by rendering from the escaping
+ray's direction:
+
+- Demo (`large_island_terrain_v3.json`, `--ocean -5.5`): 11 exposed, 0 at
+  the scene edge, 10 of them one open retaining-wall corner at (-11, 5, -11)
+  and one sliver where a grass slab meets a hill at (-44, -5, -26). Wrong
+  colour 17, among them the two cliff Tops placed at Base height at glTF
+  (23.5, -4, -27.5) and (14.5, 6, -37.5).
+- `island.json`: 0 and 0.
+- Winter (`winter_terrain.json`, `--ocean 0.75`): 146 exposed, 87 at the
+  scene edge. Of the rest, 43 are the rear lips (Orange, Yellow) of the
+  cliff Tops at y = 5: the mountain is a hollow ridge with no plateau ground
+  at 7, open from above and from behind. The remaining 16 are grass and
+  hill lips beside that ridge and at the east cut. Wrong colour 0.
+- Autumn (`autumn_terrain.json`, `--ocean -6`): 126 exposed, 41 at the
+  scene edge. The cave is a cut-away with no mountain around it, so its
+  floor and ceiling tile edges (Yellow), the cave-edge ends at the mouth
+  (Green), the grass at y = 4 beside it and the plateau above it are open:
+  about 60 faces. The rest are plateau lips at the rear cut and hill ends at
+  the west cut. Wrong colour 8, all at the cave floor (see Sockets).
+- Mutating the demo (five pieces each: grass tiles removed, cliff tops
+  raised a level, hill esses rotated, Mid esses un-mirrored with `--plain`)
+  gives 38, 54, 68 and 33 exposed faces, all within four cells of a mutated
+  piece; per site the detection is 5/5, 5/5, 4/5 and 3/5.

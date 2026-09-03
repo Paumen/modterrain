@@ -278,11 +278,29 @@ for (const face of faces) {
     if (wideOpen(p, open)) {
       face.exposed = true;
       face.open = open;
+      face.openAt = p;
       break;
     }
     face.crack = true;
   }
 }
+
+const columns = new Set();
+for (let t = 0; t < flat.length; t += 9) {
+  const xs = [flat[t], flat[t + 3], flat[t + 6]], zs = [flat[t + 2], flat[t + 5], flat[t + 8]];
+  for (let x = Math.floor(Math.min(...xs) + 1e-3); x <= Math.floor(Math.max(...xs) - 1e-3); x++) {
+    for (let z = Math.floor(Math.min(...zs) + 1e-3); z <= Math.floor(Math.max(...zs) - 1e-3); z++) columns.add(`${x},${z}`);
+  }
+}
+const leavesScene = (p, d) => {
+  const len = Math.hypot(d[0], d[2]);
+  if (len < 1e-6) return false;
+  for (let t = 1.2; t < REACH; t += 0.25) {
+    if (columns.has(`${Math.floor(p[0] + (d[0] / len) * t)},${Math.floor(p[2] + (d[2] / len) * t)}`)) return false;
+  }
+  return true;
+};
+for (const face of faces) if (face.exposed) face.edge = leavesScene(face.openAt, face.open);
 
 const sockets = new Map();
 for (const face of faces) {
@@ -339,6 +357,7 @@ for (const face of faces) {
   }
 }
 const exposed = faces.filter((f) => f.exposed);
+const atEdge = exposed.filter((f) => f.edge).length;
 
 const placementCenter = (i) => {
   const m = worldMatrix(placements[i].matrix);
@@ -353,6 +372,7 @@ console.log(`${label}: ${placements.length} placements, ${flatMaterial.length} t
 if (missing.size) console.log(`  not in atoms/: ${[...missing].join(', ')}`);
 const cracked = faces.filter((f) => f.crack && !f.exposed).length;
 console.log(`\nexposed hidden faces: ${exposed.length}  (open to the sky or the horizon through a gap wider than a hairline; the real errors)`);
+console.log(`  at an open edge of the scene: ${atEdge}  (nothing stands in the escaping ray's direction: a cut-out scene simply ends there)`);
 console.log(`hairline cracks: ${cracked}  (a hidden face reachable only through a sub-0.06-cell gap; informational)`);
 console.log(`wrong-colour sockets: ${wrongSockets.length}  (a coloured socket fully covered by a colour the kit does not pair it with)`);
 console.log('\nper socket colour           sockets  paired  buried  wrong | faces  cracked  exposed');
@@ -376,7 +396,7 @@ if (VERBOSE && exposed.length) {
     if (seen.has(key)) continue;
     seen.add(key);
     const dir = face.axis >= 0 ? `${face.sign > 0 ? '+' : '-'}${'xyz'[face.axis]} at ${'xyz'[face.axis]}=${face.coord}` : `n=(${face.normal.map(round).join(',')})`;
-    console.log(`  #${face.index} ${face.piece} at ${placementCenter(face.index).join(',')}  ${face.material} facing ${dir}  near ${face.centroid.map(round).join(',')}  open towards (${face.open.map(round).join(',')})`);
+    console.log(`  #${face.index} ${face.piece} at ${placementCenter(face.index).join(',')}  ${face.material} facing ${dir}  near ${face.centroid.map(round).join(',')}  open towards (${face.open.map(round).join(',')})${face.edge ? '  [scene edge]' : ''}`);
   }
 }
 
@@ -400,13 +420,14 @@ if (report) {
     triangles: flatMaterial.length,
     faces: faces.length,
     cracked,
+    atEdge,
     missing: [...missing],
     materials: Object.fromEntries(perMaterial),
     wrongColour: wrongSockets.map((s) => ({ placement: s.index, piece: s.piece, at: placementCenter(s.index), material: s.material, partner: s.verdict.partner })),
     sockets: Object.fromEntries(perMaterial),
     exposed: exposed.map((f) => ({
       placement: f.index, piece: f.piece, at: placementCenter(f.index), material: f.material,
-      normal: f.normal.map(round), near: f.centroid.map(round), open: f.open.map(round),
+      normal: f.normal.map(round), near: f.centroid.map(round), open: f.open.map(round), edge: f.edge,
     })),
   }, null, 2));
   console.log(`\nreport written to ${report}`);
