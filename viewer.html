@@ -55,7 +55,7 @@
 import { buildIndex, raycast as castRay } from './tools/lib/ray.mjs';
 import { isSeeThrough } from './tools/lib/see-through.mjs';
 
-const VIEWER_VERSION = '7ea507ace3';
+const VIEWER_VERSION = '9e69df6cec';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
 const canvas = document.getElementById('view');
 const hud = document.getElementById('hud');
@@ -342,7 +342,7 @@ function fromGrid(grid) {
   });
 
   scene.onBeforeRenderObservable.add(() => {
-    avatar.position.set(camera.target.x, Math.floor(camera.target.y - eye + 0.02) + 0.75, camera.target.z);
+    avatar.position.set(camera.target.x, camera.target.y - eye + 0.75, camera.target.z);
   });
 
   let rayMesh = null;
