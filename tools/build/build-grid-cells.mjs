@@ -1,9 +1,18 @@
 import { writeFileSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from '../lib/glb.mjs';
 import { buildIndex, raycast } from '../lib/ray.mjs';
 import { TERRAIN } from '../lib/see-through.mjs';
+import { sourceVersion } from '../lib/version.mjs';
 
-const VERSION = '1.0.0';
+const LIB = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'lib');
+const VERSION = sourceVersion([
+  fileURLToPath(import.meta.url),
+  resolve(LIB, 'glb.mjs'),
+  resolve(LIB, 'ray.mjs'),
+  resolve(LIB, 'see-through.mjs'),
+]);
 
 const input = process.argv[2];
 if (!input) {

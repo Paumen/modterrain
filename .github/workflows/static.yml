@@ -55,7 +55,9 @@ jobs:
       # catalog/pieces.json is derived from models/atoms/, models/assemblies/
       # and models/scenes/, so it is generated here rather than committed.
       # build-catalog.mjs must run after it: index.html's cache-busting stamp
-      # is a hash over the catalog files, pieces.json among them.
+      # is a hash over the catalog files, pieces.json among them. The same
+      # step stamps viewer.html's version, so the deployed page always names
+      # the build it is actually running.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
