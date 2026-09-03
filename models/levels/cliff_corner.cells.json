@@ -1,0 +1,15 @@
+{
+ "format": "modterrain-cells-1",
+ "pieces": [
+  { "piece": "Grass_Flat_1x1", "at": [-0.5, 0, 4], "rot": 0, "mirror": false, "stretch": [5, 8] },
+  { "piece": "Grass_Flat_1x1", "at": [3, 0, 6.5], "rot": 0, "mirror": false, "stretch": [2, 3] },
+  { "piece": "Basic_Straight_Base_1x2", "at": [0.5, 0, 2], "rot": 0, "mirror": false, "stretch": [1, 4] },
+  { "piece": "Basic_Straight_Top_1x1", "at": [0.5, 2, 2], "rot": 0, "mirror": false, "stretch": [1, 4] },
+  { "piece": "Basic_Curve_Outer_2x2_Wide_Base", "at": [1.5, 0, 4.5], "rot": 0, "mirror": false, "stretch": [1, 1] },
+  { "piece": "Basic_Curve_Outer_2x2_Wide_Top", "at": [1.5, 2, 4.5], "rot": 0, "mirror": false, "stretch": [1, 1] },
+  { "piece": "Basic_Straight_Base_1x2", "at": [3, 0, 5.5], "rot": 90, "mirror": false, "stretch": [1, 2] },
+  { "piece": "Basic_Straight_Top_1x1", "at": [3, 2, 5.5], "rot": 90, "mirror": false, "stretch": [1, 2] },
+  { "piece": "Grass_Flat_1x1", "at": [2.5, 4, 2], "rot": 0, "mirror": false, "stretch": [3, 4] },
+  { "piece": "Grass_Flat_1x1", "at": [3, 4, 4.5], "rot": 0, "mirror": false, "stretch": [2, 1] }
+ ]
+}

@@ -150,6 +150,8 @@ const bandArea = (s) => s.tris.reduce((n, t) => {
 const judge = (s) => {
   const frac = (m) => (s.cover.get(m) ?? 0) / s.area;
   for (const [m] of s.cover) if (frac(m) >= FULL && allowed(s.socket, m)) return { state: 'paired', partner: m };
+  const shared = [...s.cover].filter(([m]) => allowed(s.socket, m));
+  if (shared.length > 1 && shared.reduce((n, [m]) => n + frac(m), 0) >= FULL) return { state: 'paired', partner: shared.map(([m]) => m).join('+') };
   if (s.socket === 'Orange') {
     const ba = bandArea(s);
     if (ba > 0 && (s.band.get('Violet') ?? 0) / ba >= FULL) return { state: 'paired', partner: 'Violet (top band)' };
