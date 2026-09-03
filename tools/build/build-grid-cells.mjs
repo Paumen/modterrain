@@ -233,12 +233,27 @@ function boxBlocked(idx2, minX, minY, minZ, maxX, maxY, maxZ) {
   return false;
 }
 
+function supported(x, z, y) {
+  let n = 0;
+  for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) {
+    const px = x - CUBE / 2 + i * (CUBE / 4), pz = z - CUBE / 2 + j * (CUBE / 4);
+    for (const t of bins[bz(pz) * cols + bx(px)]) {
+      const b = t * 6;
+      if (px < box[b] - 1e-4 || px > box[b + 3] + 1e-4 || pz < box[b + 2] - 1e-4 || pz > box[b + 5] + 1e-4) continue;
+      if (!triStand[t]) continue;
+      const h = hitY(tris, t, px, pz);
+      if (h && h.up && h.y <= y + EPS + 0.01 && h.y >= y - 0.3) { n++; break; }
+    }
+  }
+  return n >= 8;
+}
+
 function cubeFits(x, z, gTop) {
   return !boxBlocked(oIdx, x - CUBE / 2, gTop + CUBE + 0.03, z - CUBE / 2, x + CUBE / 2, gTop + CLEAR - 0.02, z + CUBE / 2);
 }
 
-function groundUnder(x, z, yTop, reach) {
-  const h = CUBE / 2;
+function groundUnder(x, z, yTop, reach, half) {
+  const h = half ?? CUBE / 2;
   const stamp = ++index.stamp;
   let best = null;
   for (const px of [x - h, x + h]) for (const pz of [z - h, z + h]) for (const t of bins[bz(pz) * cols + bx(px)]) {
@@ -298,7 +313,7 @@ const nodes = [];
 const byCell = new Map();
 for (const { cx, cy, cz } of candidates.values()) {
   const x = cx + 0.5, z = cz + 0.5;
-  const hit = groundAt(x, z, cy + 0.98, 1.0) ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0));
+  const hit = groundAt(x, z, cy + 0.98, 1.0) ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0, 0.1));
   if (!hit || !triFloor[hit.t]) continue;
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
@@ -307,6 +322,7 @@ for (const { cx, cy, cz } of candidates.values()) {
   const stand = under && under.y < top - 1e-6 ? under.y : hit.y;
   const sy = Math.floor(stand + EPS);
   if (byCell.has(cellKey(cx, sy, cz))) continue;
+  if (!supported(x, z, stand)) continue;
   if (!cubeFits(x, z, stand)) continue;
   if (!always) {
     let open = 0;
