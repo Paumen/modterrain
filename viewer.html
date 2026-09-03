@@ -55,7 +55,7 @@
 import { buildIndex, raycast as castRay } from './tools/lib/ray.mjs';
 import { isSeeThrough } from './tools/lib/see-through.mjs';
 
-const VIEWER_VERSION = '9e69df6cec';
+const VIEWER_VERSION = 'a9f58fa3ca';
 const SCENE = new URLSearchParams(location.search).get('scene') || 'Large_Island_v2_No_Ocean_No_Props';
 const canvas = document.getElementById('view');
 const hud = document.getElementById('hud');
@@ -512,12 +512,16 @@ function fromGrid(grid) {
   }
 
   function nearestNode(point) {
-    let best = 0, bestD = Infinity;
-    nav.nodes.forEach((n, i) => {
-      const d = Math.hypot(n.p[0] - point.x, (n.p[1] - point.y) * 2, n.p[2] - point.z);
-      if (d < bestD) { bestD = d; best = i; }
-    });
-    return best;
+    let best = -1, bestD = Infinity;
+    for (const under of [false, true]) {
+      nav.nodes.forEach((n, i) => {
+        if (!under && n.p[1] < point.y - 0.5) return;
+        const d = Math.hypot(n.p[0] - point.x, (n.p[1] - point.y) * 2, n.p[2] - point.z);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      if (best >= 0) return best;
+    }
+    return 0;
   }
   function headingNear(node, from, maxTurn = STEPS / 2, dir = 0) {
     for (let d = dir ? 1 : 0; d <= maxTurn; d++)

@@ -111,7 +111,7 @@ function sealCells(p, lo, hi) {
     const solid = TERRAIN.has(mat);
     const water = isWater(mat);
     const cliff = CLIFF.test(piece);
-    const always = ALWAYS.has(piece);
+    const always = ALWAYS.has(piece) || WALKWAY.test(piece);
     const floorSrc = !NEVER.has(piece) && !water && (
       always || (FLOOR_MAT.test(mat) && !cliff) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
     const standSrc = !water && (always || STAND_MAT.test(mat) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
@@ -159,7 +159,7 @@ if (!pos3.length) {
 const index = buildIndex(Float64Array.from(pos3), 1);
 const { tris, box, bins, cols, bx, bz, seen } = index;
 const wIdx = wallPos.length ? buildIndex(Float64Array.from(wallPos), 1) : null;
-const oIdx = obsPos.length ? buildIndex(Float64Array.from(obsPos), 1) : null;
+const oIdx = buildIndex(Float64Array.from(pos3), 1);
 
 function hitY(T, t, x, z) {
   const a = t * 9;
@@ -301,14 +301,15 @@ for (const { cx, cy, cz } of candidates.values()) {
   if (!hit || !triFloor[hit.t]) continue;
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
-  if (!cubeFits(x, z, groundUnder(x, z, hit.y + RISE + 0.05, RISE * 2 + 0.2)?.y ?? hit.y)) continue;
+  const stand = groundUnder(x, z, hit.y + RISE + 0.05, RISE * 2 + 0.2)?.y ?? hit.y;
+  if (!cubeFits(x, z, stand)) continue;
   if (!always) {
     let open = 0;
     for (const [dx, dz] of [[0.5, 0], [-0.5, 0], [0, 0.5], [0, -0.5], [0.5, 0.5], [0.5, -0.5], [-0.5, 0.5], [-0.5, -0.5]])
-      if (sweep(x - dx, z - dz, hit.y, x + dx, z + dz, false)) open++;
+      if (sweep(x - dx, z - dz, stand, x + dx, z + dz, false)) open++;
     if (open < 2) continue;
   }
-  const node = { cx, cy, cz, x, z, y: hit.y, m: triMat[hit.t], always, i: nodes.length };
+  const node = { cx, cy, cz, x, z, y: stand, m: triMat[hit.t], always, i: nodes.length };
   nodes.push(node);
   byCell.set(cellKey(cx, cy, cz), node);
 }
