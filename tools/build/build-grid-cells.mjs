@@ -303,6 +303,8 @@ for (const { cx, cy, cz } of candidates.values()) {
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
   const stand = groundUnder(x, z, hit.y + RISE + 0.05, RISE * 2 + 0.2)?.y ?? hit.y;
+  const sy = Math.floor(stand + EPS);
+  if (byCell.has(cellKey(cx, sy, cz))) continue;
   if (!cubeFits(x, z, stand)) continue;
   if (!always) {
     let open = 0;
@@ -310,9 +312,9 @@ for (const { cx, cy, cz } of candidates.values()) {
       if (sweep(x - dx, z - dz, stand, x + dx, z + dz, false)) open++;
     if (open < 2) continue;
   }
-  const node = { cx, cy, cz, x, z, y: stand, m: triMat[hit.t], always, i: nodes.length };
+  const node = { cx, cy: sy, cz, x, z, y: stand, m: triMat[hit.t], always, i: nodes.length };
   nodes.push(node);
-  byCell.set(cellKey(cx, cy, cz), node);
+  byCell.set(cellKey(cx, sy, cz), node);
 }
 
 const edges = [];
