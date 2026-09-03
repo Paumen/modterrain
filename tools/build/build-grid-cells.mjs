@@ -313,13 +313,14 @@ const nodes = [];
 const byCell = new Map();
 for (const { cx, cy, cz } of candidates.values()) {
   const x = cx + 0.5, z = cz + 0.5;
-  const hit = groundAt(x, z, cy + 0.98, 1.0) ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0, 0.1));
+  const ray = groundAt(x, z, cy + 0.98, 1.0);
+  const hit = ray ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0, 0.1));
   if (!hit || !triFloor[hit.t]) continue;
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
   const top = hit.y + RISE + 0.05;
   const under = groundUnder(x, z, top, RISE * 2 + 0.2);
-  const stand = under && under.y < top - 1e-6 ? under.y : hit.y;
+  const stand = ray ? hit.y : (under && under.y < top - 1e-6 ? under.y : hit.y);
   const sy = Math.floor(stand + EPS);
   if (byCell.has(cellKey(cx, sy, cz))) continue;
   if (!supported(x, z, stand)) continue;
