@@ -10,6 +10,7 @@ import {
 } from '../lib/taxonomy.mjs';
 import { TEXTURE_BY_MATERIAL } from '../lib/textures.mjs';
 import { averageColor } from '../lib/png.mjs';
+import { stampViewer } from '../lib/version.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ATOMS_DIR = join(ROOT, 'models', 'atoms');
@@ -144,6 +145,7 @@ function writeVersion() {
 
   writeFileSync(path, html);
   console.log(`version ${version} → index.html`);
+  console.log(`version ${stampViewer()} → viewer.html`);
 }
 
 const files = readdirSync(ATOMS_DIR).filter((name) => name.endsWith('.glb')).sort();

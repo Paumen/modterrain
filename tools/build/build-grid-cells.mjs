@@ -1,9 +1,18 @@
 import { writeFileSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from '../lib/glb.mjs';
 import { buildIndex, raycast } from '../lib/ray.mjs';
 import { TERRAIN } from '../lib/see-through.mjs';
+import { sourceVersion } from '../lib/version.mjs';
 
-const VERSION = '1.0.0';
+const LIB = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'lib');
+const VERSION = sourceVersion([
+  fileURLToPath(import.meta.url),
+  resolve(LIB, 'glb.mjs'),
+  resolve(LIB, 'ray.mjs'),
+  resolve(LIB, 'see-through.mjs'),
+]);
 
 const input = process.argv[2];
 if (!input) {
@@ -29,15 +38,18 @@ const ALWAYS = new Set([
   'Prop_Bridge_Rope_End_Basic_1x3', 'Path_Bridge_Center_Top_1x2',
   'Path_Bridge_Edge_Top_1x2', 'Prop_Bridge_Center_1x2', 'Prop_Bridge_End_2x2',
 ]);
+const IGNORE = /^Path_Edging_Stones_/;
 const CLIFF = /^(Basic_|Cracked_|Cave_Edge_)/;
 const WALL13 = /^Tiered_Retaining_Wall_/;
 const CAVE_FLOOR = /^(Cave_Center_|Floor_)/;
 const WALKWAY = /^Tiered_Walkway_/;
 const FLOOR_MAT = /^(Grass|Dirt)$/;
+const STAND_MAT = /^(Grass|Dirt|Cliff|Cliff Face|Carved Stone( \d| Walkway)?)$/;
 const isWater = (m) => /Water|Pool/.test(m);
 const PATHY = new Set(['Carved Stone Walkway', 'Wood Dark', 'Wood Light', 'Wood Light End', 'Wood Medium']);
 
 const CUBE = 0.5;
+const CLEAR = 1.0;
 const RISE = 0.499;
 const STEP = 0.1;
 const EPS = 0.02;
@@ -50,6 +62,7 @@ const wallPos = [];
 const obsPos = [];
 const triMat = [];
 const triFloor = [];
+const triStand = [];
 const triAlways = [];
 const camPos = [];
 const camPiece = [];
@@ -94,13 +107,14 @@ function sealCells(p, lo, hi) {
     if ((prim.mode ?? 4) !== 4) continue;
     const mat = json.materials?.[prim.material]?.name ?? '';
     const hidden = /^Hidden/.test(mat);
-    if (hidden) continue;
+    if (hidden || IGNORE.test(piece)) continue;
     const solid = TERRAIN.has(mat);
     const water = isWater(mat);
     const cliff = CLIFF.test(piece);
-    const always = ALWAYS.has(piece);
+    const always = ALWAYS.has(piece) || WALKWAY.test(piece);
     const floorSrc = !NEVER.has(piece) && !water && (
       always || (FLOOR_MAT.test(mat) && !cliff) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
+    const standSrc = !water && (always || STAND_MAT.test(mat) || CAVE_FLOOR.test(piece) || WALKWAY.test(piece));
     const pos = readAccessor(glb, prim.attributes.POSITION);
     const idx = prim.indices !== undefined ? readAccessor(glb, prim.indices).data : null;
     const count = idx ? idx.length : pos.count;
@@ -121,11 +135,12 @@ function sealCells(p, lo, hi) {
         const vx2 = p[2][0] - p[0][0], vy2 = p[2][1] - p[0][1], vz2 = p[2][2] - p[0][2];
         const nx2 = uy2 * vz2 - uz2 * vy2, ny2 = uz2 * vx2 - ux2 * vz2, nz2 = ux2 * vy2 - uy2 * vx2;
         const ln = Math.hypot(nx2, ny2, nz2);
-        if (ln > 1e-12 && ny2 / ln < 0.5) obsPos.push(...p[0], ...p[1], ...p[2]);
+        if (!standSrc || ln < 1e-12 || ny2 / ln < 0.5) obsPos.push(...p[0], ...p[1], ...p[2]);
       }
       pos3.push(...p[0], ...p[1], ...p[2]);
       triMat.push(mat);
       triFloor.push(floorSrc);
+      triStand.push(standSrc);
       triAlways.push(always);
       if (floorSrc) {
         for (let cx = Math.floor(lo[0]); cx <= Math.floor(hi[0]); cx++)
@@ -144,7 +159,7 @@ if (!pos3.length) {
 const index = buildIndex(Float64Array.from(pos3), 1);
 const { tris, box, bins, cols, bx, bz, seen } = index;
 const wIdx = wallPos.length ? buildIndex(Float64Array.from(wallPos), 1) : null;
-const oIdx = obsPos.length ? buildIndex(Float64Array.from(obsPos), 1) : null;
+const oIdx = buildIndex(Float64Array.from(pos3), 1);
 
 function hitY(T, t, x, z) {
   const a = t * 9;
@@ -166,6 +181,7 @@ function groundAt(x, z, yTop, reach) {
     const b = t * 6;
     if (x < box[b] - 1e-4 || x > box[b + 3] + 1e-4 || z < box[b + 2] - 1e-4 || z > box[b + 5] + 1e-4) continue;
     if (box[b + 1] > yTop || box[b + 4] < yTop - reach) continue;
+    if (!triStand[t]) continue;
     const h = hitY(tris, t, x, z);
     if (!h || !h.up || h.y > yTop || h.y < yTop - reach) continue;
     if (!best || h.y > best.y) best = { y: h.y, t };
@@ -217,12 +233,27 @@ function boxBlocked(idx2, minX, minY, minZ, maxX, maxY, maxZ) {
   return false;
 }
 
-function cubeFits(x, z, gTop) {
-  return !boxBlocked(oIdx, x - CUBE / 2, gTop + 0.03, z - CUBE / 2, x + CUBE / 2, gTop + CUBE - 0.02, z + CUBE / 2);
+function supported(x, z, y) {
+  let n = 0;
+  for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) {
+    const px = x - CUBE / 2 + i * (CUBE / 4), pz = z - CUBE / 2 + j * (CUBE / 4);
+    for (const t of bins[bz(pz) * cols + bx(px)]) {
+      const b = t * 6;
+      if (px < box[b] - 1e-4 || px > box[b + 3] + 1e-4 || pz < box[b + 2] - 1e-4 || pz > box[b + 5] + 1e-4) continue;
+      if (!triStand[t]) continue;
+      const h = hitY(tris, t, px, pz);
+      if (h && h.up && h.y <= y + EPS + 0.01 && h.y >= y - 0.3) { n++; break; }
+    }
+  }
+  return n >= 8;
 }
 
-function groundUnder(x, z, yTop, reach) {
-  const h = CUBE / 2;
+function cubeFits(x, z, gTop) {
+  return !boxBlocked(oIdx, x - CUBE / 2, gTop + CUBE + 0.03, z - CUBE / 2, x + CUBE / 2, gTop + CLEAR - 0.02, z + CUBE / 2);
+}
+
+function groundUnder(x, z, yTop, reach, half) {
+  const h = half ?? CUBE / 2;
   const stamp = ++index.stamp;
   let best = null;
   for (const px of [x - h, x + h]) for (const pz of [z - h, z + h]) for (const t of bins[bz(pz) * cols + bx(px)]) {
@@ -230,6 +261,7 @@ function groundUnder(x, z, yTop, reach) {
     seen[t] = stamp;
     const b = t * 6, a = t * 9;
     if (box[b] > x + h || box[b + 3] < x - h || box[b + 2] > z + h || box[b + 5] < z - h || box[b + 1] > yTop || box[b + 4] < yTop - reach) continue;
+    if (!triStand[t]) continue;
     if ((tris[a + 5] - tris[a + 2]) * (tris[a + 6] - tris[a]) - (tris[a + 3] - tris[a]) * (tris[a + 8] - tris[a + 2]) <= 0) continue;
     const poly = clip([0, 3, 6].map((k) => [tris[a + k], tris[a + k + 1], tris[a + k + 2]]), x - h, x + h, z - h, z + h);
     let y0 = Infinity, y1 = -Infinity;
@@ -242,7 +274,7 @@ function groundUnder(x, z, yTop, reach) {
   return best;
 }
 
-function corridor(x0, z0, g0, x1, z1, checkSeal) {
+function corridor(x0, z0, g0, x1, z1, checkSeal, g1) {
   const len = Math.hypot(x1 - x0, z1 - z0);
   const n = Math.max(1, Math.round(len / STEP));
   const sl = len / n;
@@ -259,19 +291,20 @@ function corridor(x0, z0, g0, x1, z1, checkSeal) {
     const minX = Math.min(px, x) - CUBE / 2, maxX = Math.max(px, x) + CUBE / 2;
     const minZ = Math.min(pz, z) - CUBE / 2, maxZ = Math.max(pz, z) + CUBE / 2;
     const gTop = Math.max(here.y, prev.y), gBot = Math.min(here.bot, prev.bot);
-    if (boxBlocked(oIdx, minX, gTop + 0.03, minZ, maxX, gTop + CUBE - 0.02, maxZ)) return false;
-    if (boxBlocked(wIdx, minX, gBot - 0.05, minZ, maxX, gTop + CUBE, maxZ)) return false;
+    if (boxBlocked(oIdx, minX, gTop + CUBE + 0.03, minZ, maxX, gTop + CLEAR - 0.02, maxZ)) return false;
+    if (boxBlocked(wIdx, minX, gBot - 0.05, minZ, maxX, gTop + CLEAR, maxZ)) return false;
     gs.push(here.y);
     prev = here;
   }
+  if (g1 != null && Math.abs(gs[n] - g1) >= RISE) return false;
   return true;
 }
 
-function sweep(x0, z0, g0, x1, z1, checkSeal) {
+function sweep(x0, z0, g0, x1, z1, checkSeal, g1) {
   const len = Math.hypot(x1 - x0, z1 - z0);
   const px = (z1 - z0) / len, pz = -(x1 - x0) / len;
   for (const off of [0, 0.15, -0.15, 0.25, -0.25]) {
-    if (corridor(x0 + px * off, z0 + pz * off, g0, x1 + px * off, z1 + pz * off, checkSeal)) return true;
+    if (corridor(x0 + px * off, z0 + pz * off, g0, x1 + px * off, z1 + pz * off, checkSeal, g1)) return true;
   }
   return false;
 }
@@ -280,25 +313,27 @@ const nodes = [];
 const byCell = new Map();
 for (const { cx, cy, cz } of candidates.values()) {
   const x = cx + 0.5, z = cz + 0.5;
-  let hit = groundAt(x, z, cy + 0.98, 1.0) ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0));
-  if (!hit) continue;
-  if (!triFloor[hit.t]) {
-    const under = groundAt(x, z, hit.y - 0.001, 0.25);
-    if (!under || !triFloor[under.t]) continue;
-    hit = { y: hit.y, t: under.t };
-  }
+  const ray = groundAt(x, z, cy + 0.98, 1.0);
+  const hit = ray ?? (groundAt(x, z, cy + 1.5, 2.0) ? null : groundUnder(x, z, cy + 0.98, 1.0, 0.1));
+  if (!hit || !triFloor[hit.t]) continue;
   const always = triAlways[hit.t];
   if (!always && sealed.has(cellKey(cx, cy, cz))) continue;
-  if (!cubeFits(x, z, groundUnder(x, z, hit.y + RISE + 0.05, RISE * 2 + 0.2)?.y ?? hit.y)) continue;
+  const top = hit.y + RISE + 0.05;
+  const under = groundUnder(x, z, top, RISE * 2 + 0.2);
+  const stand = ray ? hit.y : (under && under.y < top - 1e-6 ? under.y : hit.y);
+  const sy = Math.floor(stand + EPS);
+  if (byCell.has(cellKey(cx, sy, cz))) continue;
+  if (!supported(x, z, stand)) continue;
+  if (!cubeFits(x, z, stand)) continue;
   if (!always) {
     let open = 0;
     for (const [dx, dz] of [[0.5, 0], [-0.5, 0], [0, 0.5], [0, -0.5], [0.5, 0.5], [0.5, -0.5], [-0.5, 0.5], [-0.5, -0.5]])
-      if (sweep(x, z, hit.y, x + dx, z + dz, false)) open++;
+      if (sweep(x - dx, z - dz, stand, x + dx, z + dz, false)) open++;
     if (open < 2) continue;
   }
-  const node = { cx, cy, cz, x, z, y: hit.y, m: triMat[hit.t], always, i: nodes.length };
+  const node = { cx, cy: sy, cz, x, z, y: stand, m: triMat[hit.t], always, i: nodes.length };
   nodes.push(node);
-  byCell.set(cellKey(cx, cy, cz), node);
+  byCell.set(cellKey(cx, sy, cz), node);
 }
 
 const edges = [];
@@ -308,7 +343,7 @@ for (const a of nodes) {
     for (let dy = -1; dy <= 1; dy++) {
       const b = byCell.get(cellKey(a.cx + dx, a.cy + dy, a.cz + dz));
       if (!b) continue;
-      if (!sweep(a.x, a.z, a.y, b.x, b.z, !(a.always && b.always))) continue;
+      if (!sweep(a.x, a.z, a.y, b.x, b.z, !(a.always && b.always), b.y)) continue;
       links[a.i].push(b.i); links[b.i].push(a.i);
       edges.push(a.i, b.i);
     }
