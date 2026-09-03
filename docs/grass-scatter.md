@@ -56,7 +56,7 @@ with no mips — it is a palette of hard-edged swatches, and mip filtering blend
 each swatch with its neighbours and with the black background around them.
 
 The cost is memory: the bake trades a small instance buffer for a large static
-one. At the defaults that is about 1.0 M triangles and 26 MB of vertex data.
+one. At the defaults that is about 1.0 M triangles and 29 MB of vertex data.
 `--clusters` and `--per` are the dials.
 
 `<scene>_grass.json` carries the meta the viewer reads (bands, cuts, counts,
@@ -73,8 +73,15 @@ So the builder reads the texels the tuft UVs actually hit and writes the
 darkest one to `meta.ground`, and the viewer paints the terrain's `Grass`
 material with it while the grass is on. Because the tufts are unlit and the
 ground is not, the viewer divides by `GROUND_GAIN` — a measured factor, since
-Babylon's PBR path is not a plain sum of the two light intensities. Measured
-result: ground renders sRGB 117,148,64 against a tuft base of 112,144,53.
+Babylon's PBR path is not a plain sum of the two light intensities.
+
+Matching it exactly is a trap: the darkest tuft texel is still inside the range
+the blades themselves cover, so the tufts dissolve into the ground and read as
+noise. `--ground-shade` (0.5) takes the ground down in value while keeping the
+hue, and the tufts carry a baked base-to-tip ramp in `COLOR_0` —
+`--base-tint` 0.58 to `--tip-tint` 1.15, jittered ±10% per clump, because the
+atlas gradient alone is a 13% change that nothing survives. Measured on the
+same view, ground and grass went from 1.46:1 to 1.94:1 in contrast.
 
 Toggling the grass off puts the original green back.
 
