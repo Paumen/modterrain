@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { FORMAT as CELLS_FORMAT, toMatrix as cellsToMatrix } from './scene-cells.mjs';
 import { readGlb, readAccessor, nodeWorldMatrices, transformPoint } from './glb.mjs';
 import { buildIndex, raycast } from './ray.mjs';
 
@@ -75,6 +76,9 @@ const onPivot = (piece, matrix) => {
 
 function loadPlacements(path) {
   const data = JSON.parse(readFileSync(path, 'utf8'));
+  if (data.format === CELLS_FORMAT) {
+    return data.pieces.map((p) => ({ piece: p.piece, matrix: onPivot(p.piece, p.matrix ?? cellsToMatrix(p)) }));
+  }
   if (data.pieces) return data.pieces.map(({ prefab, matrix }) => ({ piece: prefab, matrix: onPivot(prefab, matrix) }));
   const assemblies = data.assemblies ?? data;
   const names = Object.keys(assemblies);

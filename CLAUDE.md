@@ -37,6 +37,10 @@ Practical facts about the kit:
   culls them.
 - **Mirroring:** the pack ships almost no pre-mirrored pieces. When you need
   a mirrored variant, mirror the piece yourself.
+- **Writing a scene:** author in `modterrain-cells-1`, the cell format —
+  right-handed, `{piece, at, rot, mirror, stretch}`, no matrices. Both linters
+  read it; `tools/scene-cells.mjs` converts to and from a Unity dump. See
+  `docs/scene-format.md`.
 - **Sockets as data:** `catalog/sockets.json` holds every coloured socket of
   every piece — cell edge, height band and exact outline — so piece choice is
   a lookup, not a geometry problem. See `docs/socket-table.md`.
