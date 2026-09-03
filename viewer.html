@@ -259,7 +259,6 @@ function fromGrid(grid) {
   const avatarMat = new BABYLON.StandardMaterial('avatarMat', scene);
   avatarMat.emissiveColor = BABYLON.Color3.FromHexString('#2e8cff');
   avatarMat.disableLighting = true;
-  avatarMat.alpha = 0.55;
   avatar.material = avatarMat;
   avatar.enableEdgesRendering();
   avatar.edgesWidth = 3;
@@ -343,7 +342,7 @@ function fromGrid(grid) {
   });
 
   scene.onBeforeRenderObservable.add(() => {
-    avatar.position.set(camera.target.x, Math.floor(camera.target.y - eye + 0.02) + 0.75, camera.target.z);
+    avatar.position.set(camera.target.x, camera.target.y - eye + 0.25, camera.target.z);
   });
 
   let rayMesh = null;
