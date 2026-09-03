@@ -9,10 +9,10 @@ const TABLE = JSON.parse(readFileSync(join(ROOT, 'catalog', 'sockets.json'), 'ut
 const argv = process.argv.slice(2);
 const flag = (n) => argv.includes(`--${n}`);
 const option = (n, d) => { const i = argv.indexOf(`--${n}`); return i === -1 ? d : argv[i + 1]; };
-const taken = new Set(['assembly', 'limit', 'json'].map((n) => option(n, null)).filter(Boolean));
+const taken = new Set(['assembly', 'limit', 'json', 'per'].map((n) => option(n, null)).filter(Boolean));
 const input = argv.find((a) => !a.startsWith('--') && !taken.has(a));
 if (!input) {
-  console.error('usage: node tools/check/check-sockets.mjs <scene.json | placements.json> [--assembly name] [--no-mirror] [--verbose] [--limit n]');
+  console.error('usage: node tools/check/check-sockets.mjs <scene.json | placements.json> [--assembly name] [--no-mirror] [--verbose] [--open] [--suggest] [--per n] [--limit n]');
   process.exit(1);
 }
 const MIRROR = !flag('no-mirror');
@@ -220,6 +220,69 @@ if (flag('open')) {
     const u = [Math.min(...us.map((p) => p[0])), Math.max(...us.map((p) => p[0]))].map(r2);
     const y = [Math.min(...us.map((p) => p[1])), Math.max(...us.map((p) => p[1]))].map(r2);
     console.log(`  #${s.index} ${s.piece} at ${centre(s.index).join(',')}  ${s.socket} facing ${s.sign > 0 ? '+' : '-'}${'xyz'[s.axis]} at ${'xyz'[s.axis]}=${s.coord} spanning ${'xyz'[s.axis === 0 ? 2 : 0]} ${u.join('..')} y ${y.join('..')}  <- ${best}`);
+  }
+}
+if (flag('suggest')) {
+  const ROT = { 0: ([a, b]) => [a, b], 90: ([a, b]) => [b, -a], 180: ([a, b]) => [-a, -b], 270: ([a, b]) => [-b, a] };
+  const onGrid = (v, step) => Math.abs(v / step - Math.round(v / step)) < 1e-6;
+  const bbox = (tris) => {
+    const pts = tris.flat();
+    return { u0: Math.min(...pts.map((p) => p[0])), u1: Math.max(...pts.map((p) => p[0])), y0: Math.min(...pts.map((p) => p[1])), y1: Math.max(...pts.map((p) => p[1])) };
+  };
+  const overlap = (a, b) => a.reduce((n, ta) => n + b.reduce((m, tb) => m + clipOverlap(ta, tb), 0), 0);
+  const suggest = (s) => {
+    const wlat = s.axis === 0 ? 2 : 0;
+    const sb = bbox(s.tris);
+    const found = [];
+    for (const [name, entry] of Object.entries(TABLE.pieces)) {
+      for (const t of entry.sockets) {
+        if (t.axis === 1 || !allowed(s.socket, t.socket)) continue;
+        const tlat = t.axis === 0 ? 2 : 0;
+        const factors = /Flat_1x1$/.test(name) ? [1, 2, 3, 4, 5, 6, 7, 8] : [1];
+        for (const rot of [0, 90, 180, 270]) for (const mirror of [false, true]) for (const times of factors) {
+          const local = [0, 0];
+          local[t.axis === 0 ? 0 : 1] = t.sign;
+          if (mirror) local[0] = -local[0];
+          const n = ROT[rot](local);
+          const axis = n[0] !== 0 ? 0 : 2;
+          const sign = n[0] !== 0 ? n[0] : n[1];
+          if (axis !== s.axis || sign !== -s.sign) continue;
+          const toWorld = (u, v) => {
+            const p = [0, 0];
+            p[t.axis === 0 ? 0 : 1] = t.coord;
+            p[tlat === 0 ? 0 : 1] = u * times;
+            if (mirror) p[0] = -p[0];
+            const w = ROT[rot](p);
+            return [w[wlat === 0 ? 0 : 1], v, w[axis === 0 ? 0 : 1]];
+          };
+          const tris = t.tris.map((tri) => [0, 1, 2].map((k) => toWorld(tri[k * 2], tri[k * 2 + 1])));
+          const plane = tris[0][0][2];
+          const flat = tris.map((tri) => tri.map(([u, v]) => [u, v]));
+          const tb = bbox(flat);
+          if (Math.abs((tb.y1 - tb.y0) - (sb.y1 - sb.y0)) > 0.01) continue;
+          const at = [0, 0, 0];
+          at[wlat] = sb.u0 - tb.u0;
+          at[1] = sb.y0 - tb.y0;
+          at[s.axis] = s.coord - plane;
+          if (!onGrid(at[0], 0.5) || !onGrid(at[2], 0.5) || !onGrid(at[1], 0.25)) continue;
+          const moved = flat.map((tri) => tri.map(([u, v]) => [u + at[wlat], v + at[1]]));
+          const o = overlap(s.tris, moved);
+          if (o < FULL * s.area || o < FULL * t.area * times) continue;
+          found.push({ name, at: at.map(r2), rot, mirror, stretch: tlat === 0 ? [times, 1] : [1, times], socket: t.socket, same: t.socket === s.socket ? 0 : 1, own: name === s.piece ? 0 : 1, gap: Math.abs(t.area * times - s.area) });
+        }
+      }
+    }
+    found.sort((a, b) => a.same - b.same || a.own - b.own || a.gap - b.gap || a.name.localeCompare(b.name) || a.rot - b.rot);
+    const seen = new Set();
+    return found.filter((f) => { const k = `${f.name}|${f.at}|${f.rot}|${f.mirror}|${f.stretch}`; if (seen.has(k)) return false; seen.add(k); return true; });
+  };
+  const list = world.filter((s) => s.verdict.state === 'open');
+  const per = Number(option('per', 6));
+  console.log(`\nsuggestions for unpaired sockets (top ${LIMIT} sockets, ${per} each; a placement is one piece whose matching socket lands exactly on this one)`);
+  for (const s of list.slice(0, LIMIT)) {
+    const found = suggest(s);
+    console.log(`  #${s.index} ${s.piece} at ${centre(s.index).join(',')}  ${s.socket} facing ${s.sign > 0 ? '+' : '-'}${'xyz'[s.axis]} at ${'xyz'[s.axis]}=${s.coord}: ${found.length} placements`);
+    for (const f of found.slice(0, per)) console.log(`      ${f.name} at ${f.at.join(',')} rot ${f.rot}${f.mirror ? ' mirror' : ''}${f.stretch[0] * f.stretch[1] > 1 ? ` stretch ${f.stretch.join('x')}` : ''}  (${f.socket})`);
   }
 }
 process.exitCode = wrong.length ? 1 : 0;

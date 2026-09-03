@@ -73,6 +73,15 @@ Violet; the comparison with the geometry linter below predates it. `--open` list
 cell edge, the height band and what covers them, which is what a generator
 needs to pick the next piece. `--json` writes per-socket verdicts.
 
+`--suggest` turns the table around: for each unpaired socket it lists the
+placements that would pair it, searching every piece, every socket of an
+allowed colour, the four rotations, both mirrorings, and for `*_Flat_1x1`
+pieces whole-number stretches, and keeping those whose socket outline lands
+on this one within the same 90% rule with `at` on the grid. Same-colour
+partners come first, then the closest area. `--per n` caps the list per
+socket. It is a lookup, not a judgement: it does not check that the piece
+fits the rest of the scene.
+
 `open` merges the geometry linter's `buried` and `exposed`: deciding which of
 those an unpaired socket is needs rays, so `tools/check/lint-sockets.mjs` stays the
 authority on whether a scene is actually watertight.
