@@ -259,7 +259,7 @@ function groundUnder(x, z, yTop, reach) {
   return best;
 }
 
-function corridor(x0, z0, g0, x1, z1, checkSeal) {
+function corridor(x0, z0, g0, x1, z1, checkSeal, g1) {
   const len = Math.hypot(x1 - x0, z1 - z0);
   const n = Math.max(1, Math.round(len / STEP));
   const sl = len / n;
@@ -281,14 +281,15 @@ function corridor(x0, z0, g0, x1, z1, checkSeal) {
     gs.push(here.y);
     prev = here;
   }
+  if (g1 != null && Math.abs(gs[n] - g1) >= RISE) return false;
   return true;
 }
 
-function sweep(x0, z0, g0, x1, z1, checkSeal) {
+function sweep(x0, z0, g0, x1, z1, checkSeal, g1) {
   const len = Math.hypot(x1 - x0, z1 - z0);
   const px = (z1 - z0) / len, pz = -(x1 - x0) / len;
   for (const off of [0, 0.15, -0.15, 0.25, -0.25]) {
-    if (corridor(x0 + px * off, z0 + pz * off, g0, x1 + px * off, z1 + pz * off, checkSeal)) return true;
+    if (corridor(x0 + px * off, z0 + pz * off, g0, x1 + px * off, z1 + pz * off, checkSeal, g1)) return true;
   }
   return false;
 }
@@ -321,7 +322,7 @@ for (const a of nodes) {
     for (let dy = -1; dy <= 1; dy++) {
       const b = byCell.get(cellKey(a.cx + dx, a.cy + dy, a.cz + dz));
       if (!b) continue;
-      if (!sweep(a.x, a.z, a.y, b.x, b.z, !(a.always && b.always))) continue;
+      if (!sweep(a.x, a.z, a.y, b.x, b.z, !(a.always && b.always), b.y)) continue;
       links[a.i].push(b.i); links[b.i].push(a.i);
       edges.push(a.i, b.i);
     }
