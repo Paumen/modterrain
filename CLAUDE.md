@@ -21,6 +21,10 @@ aren't seen once the pieces are placed as intended. There can still be a
 reason to butt something there: another piece facing the other way with a
 plain hidden back, or terrain filling the bottom half of the same square.
 
+The full placement rulebook — grid, transforms, socket colors, layer
+stacking, rivers, prefab reuse — derived from the pack's own assemblies,
+lives in `docs/kit-rules.md`. Read it before placing pieces.
+
 Practical facts about the kit:
 
 - **Scale:** 1 grid cell = 100 glTF units (`UNITS_PER_CELL` in
