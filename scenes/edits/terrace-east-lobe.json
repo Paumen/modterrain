@@ -1,0 +1,192 @@
+{
+  "remove": [
+    "Basic_Esse_Top_2x2@9.5,2,13.5",
+    "Basic_Esse_Base_2x2@9.5,0,13.5",
+    "Basic_Curve_Outer_2x2_Narrow_Base@11.5,0,14.5",
+    "Basic_Incline_Base_2x2@12.5,-1,15.5",
+    "Basic_Curve_Outer_2x2_Wide_Mid@11.5,1,17.5",
+    "Basic_Curve_Outer_2x2_Wide_Base@11.5,-1,17.5",
+    "Basic_Esse_Mid_2x2@10.5,1,17.5",
+    "Basic_Esse_Base_2x2@10.5,-1,17.5",
+    "Grass_Flat_1x1@10.5,4,16"
+  ],
+  "move": [
+    {
+      "id": "Basic_Curve_Outer_2x2_Narrow_Top@11.5,2,14.5",
+      "pos": [
+        11.5,
+        -1,
+        14.5
+      ],
+      "yaw": 180
+    },
+    {
+      "id": "Basic_Straight_Top_1x1@12.5,2,16",
+      "pos": [
+        12.5,
+        -1,
+        16
+      ],
+      "yaw": 180,
+      "scale": [
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "Basic_Curve_Outer_2x2_Wide_Top@11.5,2,17.5",
+      "pos": [
+        11.5,
+        -1,
+        17.5
+      ],
+      "yaw": 90
+    },
+    {
+      "id": "Basic_Esse_Top_2x2@10.5,2,17.5",
+      "pos": [
+        10.5,
+        -1,
+        17.5
+      ],
+      "yaw": 270
+    },
+    {
+      "id": "Grass_Flat_1x1@10,4,14.5",
+      "pos": [
+        9.5,
+        4,
+        15
+      ],
+      "scale": [
+        1,
+        1,
+        2
+      ]
+    }
+  ],
+  "add": [
+    {
+      "piece": "Basic_Curve_Outer_2x2_Wide_Base",
+      "from": "Basic_Curve_Outer_2x2_Wide_Base@11.5,-1,17.5",
+      "pos": [
+        9.5,
+        0,
+        13.5
+      ],
+      "yaw": 180
+    },
+    {
+      "piece": "Basic_Curve_Outer_2x2_Wide_Top",
+      "from": "Basic_Curve_Outer_2x2_Wide_Top@11.5,2,17.5",
+      "pos": [
+        9.5,
+        2,
+        13.5
+      ],
+      "yaw": 180
+    },
+    {
+      "piece": "Basic_Incline_Base_2x2",
+      "from": "Basic_Incline_Base_2x2@12.5,-1,15.5",
+      "pos": [
+        10.5,
+        -1,
+        14.5
+      ],
+      "yaw": 0
+    },
+    {
+      "piece": "Basic_Straight_Top_1x1",
+      "from": "Basic_Straight_Top_1x1@12.5,2,16",
+      "pos": [
+        10.5,
+        2,
+        15
+      ],
+      "yaw": 180,
+      "scale": [
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "piece": "Basic_Curve_Outer_2x2_Wide_Mid",
+      "from": "Basic_Curve_Outer_2x2_Wide_Mid@11.5,1,17.5",
+      "pos": [
+        9.5,
+        1,
+        16.5
+      ],
+      "yaw": 90
+    },
+    {
+      "piece": "Basic_Curve_Outer_2x2_Wide_Top",
+      "from": "Basic_Curve_Outer_2x2_Wide_Top@11.5,2,17.5",
+      "pos": [
+        9.5,
+        2,
+        16.5
+      ],
+      "yaw": 90
+    },
+    {
+      "piece": "Grass_Flat_1x1",
+      "from": "Grass_Flat_1x1@10.5,4,16",
+      "pos": [
+        10.5,
+        1,
+        15
+      ],
+      "scale": [
+        1,
+        1,
+        4
+      ]
+    },
+    {
+      "piece": "Grass_Flat_1x1",
+      "from": "Grass_Flat_1x1@10.5,4,16",
+      "pos": [
+        11.5,
+        1,
+        16
+      ],
+      "scale": [
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "piece": "Grass_Flat_1x1",
+      "from": "Grass_Flat_1x1@10.5,4,16",
+      "pos": [
+        10.5,
+        0,
+        13.5
+      ],
+      "scale": [
+        3,
+        1,
+        1
+      ]
+    },
+    {
+      "piece": "Grass_Flat_1x1",
+      "from": "Grass_Flat_1x1@10.5,4,16",
+      "pos": [
+        10.5,
+        -1,
+        17.5
+      ],
+      "scale": [
+        5,
+        1,
+        1
+      ]
+    }
+  ]
+}
