@@ -3642,10 +3642,10 @@
     5.25,
     2
    ],
-   "triangles": 68,
+   "triangles": 50,
    "trianglesPerUnit": 2,
    "calls": 5,
-   "bytes": 11652,
+   "bytes": 7876,
    "materials": [
     "hidden|hidden",
     "hidden|hidden-orange",
